@@ -1,0 +1,85 @@
+// *****************************************************************************
+// <ProjectName> ENigMA </ProjectName>
+// <Description> Extended Numerical Multiphysics Analysis </Description>
+// <HeadURL> $HeadURL$ </HeadURL>
+// <LastChangedDate> $LastChangedDate$ </LastChangedDate>
+// <LastChangedRevision> $LastChangedRevision$ </LastChangedRevision>
+// <Author> Billy Araujo </Author>
+// <Copyright> Copyright (c) 2012, All Rights Reserved </Copyright>
+// *****************************************************************************
+
+#pragma once
+
+#include "MshFace.hpp"
+
+namespace ENigMA
+{
+
+    namespace mesh
+    {
+
+        enum EElementType 
+        {
+            ET_NONE = 0,
+            ET_BEAM,
+            ET_TRIANGLE,
+            ET_QUADRILATERAL,
+            ET_TETRAHEDRON,
+            ET_TRIANGULAR_PRISM,
+            ET_HEXAHEDRON,
+            ET_POLYHEDRON
+        };
+
+        template <typename Real>
+        class CMshElement
+        {
+        private:
+
+            std::vector<Integer> m_nodeIds;
+            std::vector<Integer> m_faceIds;
+
+            EElementType m_elementType;
+            
+            Real m_thickness;
+
+        public:
+            
+            CMshElement();
+            CMshElement(EElementType anElementType);
+            ~CMshElement();
+
+            Integer nbNodeIds();
+
+            void addNodeId(const Integer aNodeId);
+            Integer nodeId(const Integer aNodeIndex);
+            void setNodeId(const Integer aNodeIndex, const Integer aNodeId);
+
+            Integer nbFaceIds();
+
+            void addFaceId(const Integer aFaceId);
+            Integer faceId(const Integer aFaceIndex);
+            void setFaceId(const Integer aFaceIndex, const Integer aFaceId);
+
+            void setElementType(EElementType anElementType);
+            EElementType elementType();
+
+            void setThickness(Real aThickness);
+            Real thickness();
+
+            void reset();
+
+            void generateFaces(std::vector<ENigMA::mesh::CMshFace<Real> >& sFaces);
+
+            void invert();
+
+        };
+
+        template <typename Real>
+        std::ostream &operator<< (std::ostream &output, ENigMA::mesh::CMshElement<Real> &anElement);
+
+    }
+
+}
+
+#include "MshElement_Imp.hpp"
+

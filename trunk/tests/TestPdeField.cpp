@@ -1,0 +1,61 @@
+// *****************************************************************************
+// <ProjectName> ENigMA </ProjectName>
+// <Description> Extended Numerical Multiphysics Analysis </Description>
+// <HeadURL> $HeadURL$ </HeadURL>
+// <LastChangedDate> $LastChangedDate$ </LastChangedDate>
+// <LastChangedRevision> $LastChangedRevision$ </LastChangedRevision>
+// <Author> Billy Araujo </Author>
+// <Copyright> Copyright (c) 2012, All Rights Reserved </Copyright>
+// *****************************************************************************
+
+#include "gtest/gtest.h"
+
+#include "TypeDef.hpp"
+
+#include "MshBasicMesher.hpp"
+#include "PdeField.hpp"
+
+using namespace ENigMA::mesh;
+using namespace ENigMA::pde;
+
+class CTestPdeGeometricField : public ::testing::Test {
+protected:
+
+    virtual void SetUp() {
+
+    }
+
+    virtual void TearDown() {
+
+    }
+
+};
+
+TEST_F(CTestPdeGeometricField, set) {
+
+    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+
+    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+
+    CMshBasicMesher<decimal> aBasicMesher;
+
+    const Integer ne = 3;
+
+    aBasicMesher.generate(aLine, ne);
+
+    EXPECT_EQ(ne, aBasicMesher.mesh().nbElements());
+
+    CPdeField<decimal> T;
+
+    T.setMesh(aBasicMesher.mesh());
+    T.setDiscretMethod(DM_FEM);
+    T.setDiscretOrder(DO_LINEAR);
+    T.setDiscretLocation(DL_NODE);
+    T.setSimulationType(ST_GENERIC);
+    T.setNbDofs(1);
+
+    EXPECT_EQ(ne, T.mesh().nbElements());
+
+}
+

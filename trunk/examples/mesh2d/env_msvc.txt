@@ -1,0 +1,8 @@
+PATH=$(QTDIR)\bin;E:\Libraries\VTK\VTK-6.1.0\Build\msvc-win32\bin\Release;%PATH%
+PATH=$(QTDIR)\bin;$(VTK_DIR)\bin\Release;%PATH%
+
+PATH=$(QTDIR)\bin;$(VTK_DIR)\Build\msvc14-win32\bin\Debug;%PATH%
+PATH=$(QTDIR)\bin;$(VTK_DIR)\Build\msvc14-win32\bin\Release;%PATH%
+
+
+

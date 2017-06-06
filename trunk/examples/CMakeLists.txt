@@ -1,0 +1,40 @@
+
+project(Examples)
+
+IF (ENIGMA_BUILD_CONSOLE_EXAMPLES)
+add_subdirectory(mesher)
+add_subdirectory(bemheat)
+add_subdirectory(fdmheat)
+add_subdirectory(fvmheat)
+add_subdirectory(femintro)
+add_subdirectory(femheat)
+add_subdirectory(sphheat)
+add_subdirectory(boxvolumesearch)
+endif(ENIGMA_BUILD_CONSOLE_EXAMPLES)
+
+IF (ENIGMA_BUILD_OPENGL_EXAMPLES)
+add_subdirectory(sphfs)
+add_subdirectory(sphstatic)
+endif(ENIGMA_BUILD_OPENGL_EXAMPLES)
+
+IF (ENIGMA_BUILD_QT_EXAMPLES)
+add_subdirectory(heat1d)
+add_subdirectory(finance)
+add_subdirectory(lineintersection)
+endif(ENIGMA_BUILD_QT_EXAMPLES)
+
+IF (ENIGMA_BUILD_VTK_EXAMPLES)
+add_subdirectory(mesh2d)
+add_subdirectory(femflow)
+add_subdirectory(fvmflow)
+add_subdirectory(fvmhydro)
+add_subdirectory(fvmchannel)
+add_subdirectory(fvmpipe)
+add_subdirectory(fvmvof)
+add_subdirectory(fvmcicsam)
+add_subdirectory(clippolyhedron)
+add_subdirectory(triangleintersection)
+add_subdirectory(stlutils)
+endif(ENIGMA_BUILD_VTK_EXAMPLES)
+
+

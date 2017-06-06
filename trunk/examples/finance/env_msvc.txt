@@ -1,0 +1,3 @@
+PATH=$(QTDIR)\bin;%PATH%
+
+

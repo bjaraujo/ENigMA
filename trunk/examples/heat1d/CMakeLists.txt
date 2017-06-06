@@ -1,0 +1,61 @@
+
+project(Heat1D)
+
+if(NOT Qt5_FOUND)
+  find_package(Qt5Core)
+  find_package(Qt5Gui)
+  find_package(Qt5Widgets)
+  find_package(Qt5PrintSupport)
+endif(NOT Qt5_FOUND)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+include_directories(
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${Qt5Core_INCLUDE_DIRS} 
+  ${Qt5Gui_INCLUDE_DIRS}
+  ${Qt5Widgets_INCLUDE_DIRS} ${Eigen3_DIR}
+  ${ViennaCL_DIR}
+  ${RTree_DIR}
+  ${Exprtk_DIR}
+  ../../src/common
+  ../../src/geometry
+  ../../src/integration
+  ../../src/mesh
+  ../../src/material
+  ../../src/bem
+  ../../src/fdm
+  ../../src/sle
+  ../../src/lbm
+  ../../src/sph
+  ../../src/pde
+  ../../src/pde/fdm
+  ../../src/pde/fem
+  ../../src/pde/fvm
+  ../../src/post
+  ../../src/analytical
+)
+
+set(HEAT1D_HEADERS MainWindow.h QCustomPlot.h)
+set(HEAT1D_SOURCES main.cpp MainWindow.cpp QCustomPlot.cpp)
+set(HEAT1D_UI MainWindow.ui)
+
+add_executable(Heat1D ${HEAT1D_HEADERS} ${HEAT1D_SOURCES} ${HEAT1D_UI})
+
+target_link_libraries(Heat1D
+  Qt5::Core
+  Qt5::Widgets
+  Qt5::Gui
+  Qt5::PrintSupport
+)
+
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+  add_definitions(/bigobj)
+endif()
+
+
+
