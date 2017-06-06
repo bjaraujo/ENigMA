@@ -17,9 +17,7 @@ CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(u) - alpha * laplacian<
 The argument passed to the CPdeEquation accepts an object of type CSleSystem which is a linear system of equations. The solution of the PDE is achieved by simply calling solve method:
 
 ```
-
 aPdeEquation.solve(u);
-
 ```
 
 ### Install ###
