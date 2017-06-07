@@ -24,7 +24,7 @@ aPdeEquation.solve(u);
 
 Core:
 - Eigen: http://eigen.tuxfamily.org/index.php?title=Main_Page
-- Exprtk: https://github.com/ArashPartow/exprtk or dependencies
+- Exprtk: https://github.com/ArashPartow/exprtk or dependencies folder
 - ViennaCL (optional): http://viennacl.sourceforge.net
 
 Tests:
