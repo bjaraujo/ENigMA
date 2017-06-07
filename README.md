@@ -23,17 +23,17 @@ aPdeEquation.solve(u);
 ### Dependencies ###
 
 Core:
-Eigen: http://eigen.tuxfamily.org/index.php?title=Main_Page
-Exprtk: https://github.com/ArashPartow/exprtk or dependencies
-ViennaCL (optional): http://viennacl.sourceforge.net
+- Eigen: http://eigen.tuxfamily.org/index.php?title=Main_Page
+- Exprtk: https://github.com/ArashPartow/exprtk or dependencies
+- ViennaCL (optional): http://viennacl.sourceforge.net
 
 Tests:
-Gtest: https://github.com/google/googletest
+- Gtest: https://github.com/google/googletest
 
 Examples:
-Qt: https://www.qt.io
-VTK: http://www.vtk.org
-OpenGL/GLUT: http://freeglut.sourceforge.net
+- Qt: https://www.qt.io
+- VTK: http://www.vtk.org
+- OpenGL/GLUT: http://freeglut.sourceforge.net
 
 ### Install ###
 
