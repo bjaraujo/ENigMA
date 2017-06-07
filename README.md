@@ -23,3 +23,7 @@ aPdeEquation.solve(u);
 ### Install ###
 
 Configure correct environment variables and run CMake.
+
+### Usage ###
+
+Check the tests and examples folders.
