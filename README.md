@@ -20,9 +20,24 @@ The argument passed to the CPdeEquation accepts an object of type CSleSystem whi
 aPdeEquation.solve(u);
 ```
 
+### Dependencies ###
+
+Core:
+Eigen: http://eigen.tuxfamily.org/index.php?title=Main_Page
+Exprtk: https://github.com/ArashPartow/exprtk or dependencies
+ViennaCL (optional): http://viennacl.sourceforge.net
+
+Tests:
+Gtest: https://github.com/google/googletest
+
+Examples:
+Qt: https://www.qt.io
+VTK: http://www.vtk.org
+OpenGL/GLUT: http://freeglut.sourceforge.net
+
 ### Install ###
 
-Configure correct environment variables and run CMake.
+Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENNACL_DIR, etc.) and run CMake.
 
 ### Usage ###
 
