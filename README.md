@@ -1,6 +1,10 @@
 # ENigMA - Extended Numerical Multiphysics Analysis #
 
-ENigMA is an object-oriented C++ template library which aim is to provide multi-physics simulation in a multi-domain environment. The code implements several numerical methods such as Finite Volume Methods (FVM), Finite Difference Methods (FDM), Finite Element Methods (FEM), Boundary Element Methods (BEM), etc. for numerical approximation of Partial Differential Equations (PDE) in each domain. It can be used for three-dimensional flow, thermal and structural analysis and also provides a series of automatic mesh generators (triangular, constrained tetrahedral, etc). ENigMA provides 3D geometry classes for intersection and clipping operations and implements RTree, Octree and HashGrid methods for spatial searching. It was developed to be cross-platform using STL, Eigen (for vectors and matrices) and exprtk (for math expressions). The SWIG tool is used to expose ENigMA's classes and methods to other languages such as Python, C#, etc. It also uses Gtest for unit testing (> 160 unit tests), CMake is used for cross-platform building and Git is used for source code management.
+ENigMA is an object-oriented C++ template library which aim is to provide multi-physics simulation in a multi-domain environment. The code implements several numerical methods such as Finite Volume Methods (FVM), Finite Difference Methods (FDM), Finite Element Methods (FEM), Boundary Element Methods (BEM), Smoothed Particle Hydrodynamics (SPH), etc. for numerical approximation of Partial Differential Equations (PDE) in each domain. 
+
+ENigMA provides classes for mesh generation (triangular, block, constrained tetrahedral, etc), intersection and clipping operations and implements RTree, Octree and HashGrid methods for spatial searching. It can be used for three-dimensional flow, thermal and structural analysis.
+
+It was developed to be cross-platform using STL, Eigen (for vectors and matrices) and exprtk (for math expressions). The SWIG tool is used to expose ENigMA's classes and methods to other languages such as Python, C#, etc. It also uses Gtest for unit testing (> 160 unit tests), CMake is used for cross-platform building and Git is used for source code management.
 
 ![mesh](https://github.com/bjaraujo/ENigMA/blob/master/images/mesh.png)
 
@@ -19,6 +23,24 @@ The argument passed to the CPdeEquation accepts an object of type CSleSystem whi
 ```cpp
 aPdeEquation.solve(u);
 ```
+
+### Structure ###
+
+ENigMA has the following namespaces:
+
+- analytical: exact analytical solutions
+- geometry: geometry, algebra, spatial search, etc.
+- integration: numerical integration (fem)
+- bem: boundary element method
+- fdm: finite difference method
+- fem: finite element method
+- fvm: finite volume method
+- sph: smoothed particle hydrodynamics
+- pde: partial differential equations
+- sle: system of linear equations
+- mesh: mesh generation
+- post: post-processing
+- stl: stl file processing
 
 ### Dependencies ###
 
