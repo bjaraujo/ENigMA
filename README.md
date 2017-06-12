@@ -1,4 +1,4 @@
-# ENigMA - Extended Numerical Multi-physics Analysis #
+# ENigMA - Extended Numerical Multiphysics Analysis #
 
 ENigMA is an object-oriented C++ template library which aim is to provide multi-physics simulation in a multi-domain environment. The code implements several numerical methods such as Finite Volume Methods (FVM), Finite Difference Methods (FDM), Finite Element Methods (FEM), Boundary Element Methods (BEM), Smoothed Particle Hydrodynamics (SPH), etc. for numerical approximation of Partial Differential Equations (PDE) in each domain. 
 
