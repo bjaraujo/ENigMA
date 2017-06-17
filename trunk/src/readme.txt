@@ -1,5 +1,5 @@
 
-**Abbreviations**
+Abbreviations:
 
 pde - Partial Diferential Equation
 sle - System of Linear Equation
