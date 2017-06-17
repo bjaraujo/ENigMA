@@ -29,7 +29,7 @@ aPdeEquation.solve(u);
 ENigMA has the following namespaces:
 
 - **analytical**: analytical solutions
-- **geometry**: geometry, algebra, spatial search (R-tree, octree, hashgrid), etc.
+- **geometry**: geometry, intersection, clipping, spatial search (R-tree, octree, hashgrid), etc.
 - **integration**: numerical integration
 - **bem**: Boundary Element Method (BEM)
 - **fdm**: Finite Difference Method (FDM)
