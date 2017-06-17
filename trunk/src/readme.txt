@@ -8,4 +8,5 @@ fdm - Finite Difference Method
 fem - Finite Element Method
 fvm - Finite Volume Method
 sph - Smoothed Particle Hydrodynamics
+stl - Stereolithography
 
