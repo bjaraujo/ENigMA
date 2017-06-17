@@ -31,11 +31,11 @@ ENigMA has the following namespaces:
 - **analytical**: analytical solutions
 - **geometry**: geometry, algebra, spatial search, etc.
 - **integration**: numerical integration
-- **bem**: Boundary Element Method
-- **fdm**: Finite Difference Method
-- **fem**: Finite Element Method
-- **fvm**: Finite Volume Method
-- **sph**: Smoothed Particle Hydrodynamics
+- **bem**: Boundary Element Method (BEM)
+- **fdm**: Finite Difference Method (FDM)
+- **fem**: Finite Element Method (FEM)
+- **fvm**: Finite Volume Method (FVM)
+- **sph**: Smoothed Particle Hydrodynamics (SPH)
 - **pde**: Partial Differential Equations
 - **sle**: System of Linear Equations
 - **mesh**: mesh generation
