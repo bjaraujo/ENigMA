@@ -5,7 +5,6 @@
 // <LastChangedDate> $LastChangedDate$ </LastChangedDate>
 // <LastChangedRevision> $LastChangedRevision$ </LastChangedRevision>
 // <Author> Billy Araujo </Author>
-// <Copyright> Copyright (c) 2012, All Rights Reserved </Copyright>
 // *****************************************************************************
 
 #include "ui_FvmCicsam.h"
