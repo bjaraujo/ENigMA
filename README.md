@@ -59,7 +59,7 @@ Examples:
 
 ### Install ###
 
-Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENNACL_DIR, etc.) and run CMake.
+Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENNACL_DIR, etc.) and run CMake (https://cmake.org).
 
 ### Usage ###
 
