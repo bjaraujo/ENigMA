@@ -28,19 +28,19 @@ aPdeEquation.solve(u);
 
 ENigMA has the following namespaces:
 
-- **analytical**: exact analytical solutions
+- **analytical**: analytical solutions
 - **geometry**: geometry, algebra, spatial search, etc.
-- **integration**: numerical integration (fem)
-- **bem**: boundary element method
-- **fdm**: finite difference method
-- **fem**: finite element method
-- **fvm**: finite volume method
-- **sph**: smoothed particle hydrodynamics
-- **pde**: partial differential equations
-- **sle**: system of linear equations
+- **integration**: numerical integration
+- **bem**: Boundary Element Method
+- **fdm**: Finite Difference Method
+- **fem**: Finite Element Method
+- **fvm**: Finite Volume Method
+- **sph**: Smoothed Particle Hydrodynamics
+- **pde**: Partial Differential Equations
+- **sle**: System of Linear Equations
 - **mesh**: mesh generation
 - **post**: post-processing
-- **stl**: stl file processing
+- **stl**: STL file processing
 
 ### Dependencies ###
 
