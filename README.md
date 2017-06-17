@@ -45,17 +45,17 @@ ENigMA has the following namespaces:
 ### Dependencies ###
 
 Core:
-- Eigen: http://eigen.tuxfamily.org/index.php?title=Main_Page
+- Eigen: http://eigen.tuxfamily.org
 - Exprtk: https://github.com/ArashPartow/exprtk or dependencies folder
 - ViennaCL (optional): http://viennacl.sourceforge.net
 
 Tests:
-- Gtest: https://github.com/google/googletest
+- Gtest (optional): https://github.com/google/googletest
 
 Examples:
-- Qt: https://www.qt.io
-- VTK: http://www.vtk.org
-- OpenGL/GLUT: http://freeglut.sourceforge.net
+- Qt (optional): https://www.qt.io
+- VTK (optional): http://www.vtk.org
+- OpenGL/GLUT (optional): http://freeglut.sourceforge.net
 
 ### Install ###
 
