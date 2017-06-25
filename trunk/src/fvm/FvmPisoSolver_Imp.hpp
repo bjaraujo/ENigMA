@@ -77,6 +77,9 @@ namespace ENigMA
 
             }
 
+            m_calcu = m_calcv = m_calcw = false;
+            m_calcp = false;
+
         }
 
         template <typename Real>

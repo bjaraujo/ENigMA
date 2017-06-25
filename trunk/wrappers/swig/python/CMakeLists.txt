@@ -39,9 +39,10 @@ set(ENGIMA_INTERFACE
 set(CMAKE_SWIG_FLAGS "")
 
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_FLAGS "-debug-tmused")
 
-SWIG_ADD_MODULE(ENigMA python ${ENGIMA_INTERFACE})
-SWIG_LINK_LIBRARIES(ENigMA ${PYTHON_LIBRARIES})
+swig_add_module(ENigMA python ${ENGIMA_INTERFACE})
+swig_link_libraries(ENigMA ${PYTHON_LIBRARIES})
 
 if(WIN32)
 add_definitions(/bigobj)

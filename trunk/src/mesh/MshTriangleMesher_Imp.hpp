@@ -23,7 +23,9 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CMshTriangleMesher<Real>::CMshTriangleMesher() : m_timeInterval(1), m_dataInterval(100), m_bStop(false), onUpdate(nullptr)
+        CMshTriangleMesher<Real>::CMshTriangleMesher() : 
+            m_begin(), m_end(), m_nextEdgeId(0), 
+            m_timeInterval(1), m_dataInterval(100), m_bStop(false), onUpdate(nullptr)
         {
 
         }
@@ -606,7 +608,9 @@ namespace ENigMA
 
                 bool bConnectivity = true;
 
-                Integer aFaceId1, aFaceId2;
+                Integer aFaceId1 = 0;
+                Integer aFaceId2 = 0;
+
                 if (anElement.nbFaceIds() == 2)
                 {
                     aFaceId1 = anElement.faceId(0);

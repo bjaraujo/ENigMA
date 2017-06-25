@@ -16,7 +16,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CPdeField<Real>::CPdeField()
+        CPdeField<Real>::CPdeField() : m_nbDofs(0)
         {
 
         }

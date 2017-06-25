@@ -76,14 +76,12 @@
 %rename(Divide) operator /;
 #endif
 
-#if SWIGCSHARP
 namespace std
 {
   %template(StdVectorInt) vector<int>;
   %template(StdVectorFloat) vector<float>;
   %template(StdVectorDouble) vector<double>; 
 }
-#endif
 
 %{
 #include "CmnTypes.hpp"

@@ -16,7 +16,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CAnaFunction<Real>::CAnaFunction()
+        CAnaFunction<Real>::CAnaFunction() : m_constant(false)
         {
 
         }

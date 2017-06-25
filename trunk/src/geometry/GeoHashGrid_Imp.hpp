@@ -16,7 +16,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CGeoHashGrid<Real>::CGeoHashGrid()
+        CGeoHashGrid<Real>::CGeoHashGrid() : m_nbCellsX(0), m_nbCellsY(0), m_nbCellsZ(0), m_nbCellsXY(0)
         {
 
             m_adOrig.resize(3);

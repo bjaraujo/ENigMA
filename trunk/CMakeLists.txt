@@ -7,7 +7,7 @@ if(POLICY CMP0020)
   cmake_policy(SET CMP0020 NEW)
 endif()
 
-project(ENigMA)
+project(ENigMA CXX)
 
 #Configure options
 set(ENigMA_DIR $ENV{ENIGMA_DIR} CACHE FILEPATH "")

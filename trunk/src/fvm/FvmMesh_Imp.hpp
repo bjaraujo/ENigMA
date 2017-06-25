@@ -22,7 +22,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CFvmMesh<Real>::CFvmMesh(CMshMesh<Real>& aMesh)
+        CFvmMesh<Real>::CFvmMesh(CMshMesh<Real>& aMesh) : m_faceIndex(0), m_controlVolumeIndex(0)
         {
 
             this->set(aMesh);

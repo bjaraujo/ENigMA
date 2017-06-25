@@ -60,8 +60,6 @@ set(GEOMETRY_HEADERS
 ../src/geometry/GeoAdtree_Imp.hpp
 ../src/geometry/GeoConvexHull.hpp
 ../src/geometry/GeoConvexHull_Imp.hpp
-../src/geometry/GeoPredicates.hpp
-../src/geometry/GeoPredicates_Imp.hpp
 )
 
 set(MESH_HEADERS

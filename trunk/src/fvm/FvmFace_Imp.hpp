@@ -18,14 +18,14 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CFvmFace<Real>::CFvmFace() : m_boundaryType(BT_NONE)
+        CFvmFace<Real>::CFvmFace() : m_boundaryType(BT_NONE), m_controlVolumeId(0), m_neighborId(0)
         {
 
 
         }
 
         template <typename Real>
-        CFvmFace<Real>::CFvmFace(CGeoPolygon<Real>& aPolygon)
+        CFvmFace<Real>::CFvmFace(CGeoPolygon<Real>& aPolygon) : m_boundaryType(BT_NONE), m_controlVolumeId(0), m_neighborId(0)
         {
 
             this->set(aPolygon);

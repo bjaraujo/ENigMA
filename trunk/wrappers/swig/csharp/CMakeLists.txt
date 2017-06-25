@@ -39,8 +39,9 @@ set(ENGIMA_INTERFACE
 set(CMAKE_SWIG_FLAGS "")
 
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_FLAGS "-debug-tmused")
 
-SWIG_ADD_MODULE(_ENigMAcs csharp ${ENGIMA_INTERFACE})
+swig_add_module(_ENigMAcs csharp ${ENGIMA_INTERFACE})
 
 if(WIN32)
 add_definitions(/bigobj)

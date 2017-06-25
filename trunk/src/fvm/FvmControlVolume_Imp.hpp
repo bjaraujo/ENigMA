@@ -18,7 +18,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CFvmControlVolume<Real>::CFvmControlVolume() : m_clipped(false)
+        CFvmControlVolume<Real>::CFvmControlVolume() : m_clipped(false), m_controlVolumeId(0)
         {
 
             m_clippedFaceId = -1;
@@ -26,7 +26,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CFvmControlVolume<Real>::CFvmControlVolume(CGeoPolyhedron<Real>& aPolyhedron)
+        CFvmControlVolume<Real>::CFvmControlVolume(CGeoPolyhedron<Real>& aPolyhedron) : m_clipped(false), m_controlVolumeId(0)
         {
 
         }

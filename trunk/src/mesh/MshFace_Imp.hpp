@@ -16,14 +16,14 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CMshFace<Real>::CMshFace() : m_faceType(FT_NONE), m_hasPair(false)
+        CMshFace<Real>::CMshFace() : m_faceType(FT_NONE), m_hasPair(false), m_pairFaceId(0), m_elementId(0)
         {
 
             
         }
 
         template <typename Real>
-        CMshFace<Real>::CMshFace(EFaceType aFaceType) : m_faceType(aFaceType), m_hasPair(false)
+        CMshFace<Real>::CMshFace(EFaceType aFaceType) : m_faceType(aFaceType), m_hasPair(false), m_pairFaceId(0), m_elementId(0)
         {
 
             

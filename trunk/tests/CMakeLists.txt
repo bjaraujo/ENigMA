@@ -27,7 +27,6 @@ TestGeoOctree.cpp
 TestGeoRtree.cpp
 TestGeoAdtree.cpp
 TestGeoConvexHull.cpp
-TestGeoPredicates.cpp
 )
 
 set(TEST_MESH_SOURCES
@@ -89,14 +88,9 @@ set(TEST_STL_SOURCES
 TestStlUtils.cpp
 )
 
-set(TEST_ENIGMA_SOURCES
-TestENigMA.cpp
-)
-
 add_subdirectory(${GTest_DIR} GTest)
 enable_testing()
 
-source_group("Source Files" FILES ${TEST_ENIGMA_SOURCES})
 source_group("Source Files\\geo" FILES ${TEST_GEOMETRY_SOURCES})
 source_group("Source Files\\mesh" FILES ${TEST_MESH_SOURCES})
 source_group("Source Files\\bem" FILES ${TEST_BEM_SOURCES})
@@ -131,7 +125,7 @@ ${GTest_DIR}/include
 ../src/stl
 )
 
-add_executable(UnitTests ${TEST_ENIGMA_SOURCES} ${TEST_GEOMETRY_SOURCES} ${TEST_MESH_SOURCES} ${TEST_BEM_SOURCES} ${TEST_FEM_SOURCES} ${TEST_CVFEM_SOURCES} ${TEST_FVM_SOURCES} ${TEST_SPH_SOURCES} ${TEST_PDE_SOURCES} ${TEST_ANA_SOURCES} ${TEST_POS_SOURCES} ${TEST_STL_SOURCES})
+add_executable(UnitTests ${TEST_GEOMETRY_SOURCES} ${TEST_MESH_SOURCES} ${TEST_BEM_SOURCES} ${TEST_FEM_SOURCES} ${TEST_CVFEM_SOURCES} ${TEST_FVM_SOURCES} ${TEST_SPH_SOURCES} ${TEST_PDE_SOURCES} ${TEST_ANA_SOURCES} ${TEST_POS_SOURCES} ${TEST_STL_SOURCES})
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     add_definitions(/bigobj)

@@ -696,7 +696,9 @@ namespace ENigMA
 
                 bool bConnectivity = true;
 
-                Integer aFaceId1, aFaceId2;
+                Integer aFaceId1 = 0;
+                Integer aFaceId2 = 0;
+
                 if (anElement.nbFaceIds() == 2)
                 {
                     aFaceId1 = anElement.faceId(0);
