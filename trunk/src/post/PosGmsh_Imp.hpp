@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <iomanip>
 #include <fstream>
 
 namespace ENigMA
@@ -110,6 +111,13 @@ namespace ENigMA
 
                         fileGmsh >> id >> nType >> nTags;
 
+                        if (nType < 1 || nType > 6)
+                        {
+                            std::string line;
+                            std::getline(fileGmsh, line);
+                            continue;
+                        }
+
                         // TODO: Use tags
                         for (Integer j = 0; j < nTags; ++j)
                         {
@@ -208,7 +216,7 @@ namespace ENigMA
                     Integer id = aField.mesh().nodeId(i);
                     Integer index = aField.mesh().nodeIndex(id);
 
-                    fileGmsh << index + 1 << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
+                    fileGmsh << index + 1 << std::setprecision(16) << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
 
                 }
 

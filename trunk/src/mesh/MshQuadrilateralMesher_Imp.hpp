@@ -23,7 +23,10 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CMshQuadrilateralMesher<Real>::CMshQuadrilateralMesher() : m_timeInterval(1), m_dataInterval(100), m_bStop(false), onUpdate(nullptr)
+        CMshQuadrilateralMesher<Real>::CMshQuadrilateralMesher() : 
+            m_begin(), m_end(), m_nextEdgeId(0),
+            m_previousNbElements(0), 
+            m_timeInterval(1), m_dataInterval(100), m_bStop(false), onUpdate(nullptr)
         {
 
         }
