@@ -75,7 +75,7 @@ namespace ENigMA
 
                     Integer id = aField.mesh().nodeId(i);
 
-                    fileVtk << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
+                    fileVtk << aField.mesh().node(id).x() << std::setprecision(16) << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
 
                 }
 

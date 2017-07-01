@@ -117,7 +117,7 @@ namespace ENigMA
                     Integer id = aField.mesh().nodeId(i);
                     Integer index = aField.mesh().nodeIndex(id);
 
-                    fileQuickMesh << "C " << index + 1 << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
+                    fileQuickMesh << "C " << index + 1 << std::setprecision(16) << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
 
                 }
 

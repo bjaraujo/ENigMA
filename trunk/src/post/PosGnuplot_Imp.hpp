@@ -50,7 +50,7 @@ namespace ENigMA
 
                         Integer id = aField.mesh().nodeIndex(i);
 
-                        fileGnuplot << id + 1 << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << " " << aField.u(i) << std::endl;
+                        fileGnuplot << id + 1 << std::setprecision(16) << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << " " << aField.u(i) << std::endl;
                     
                     }
 
