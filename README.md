@@ -64,3 +64,4 @@ Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENN
 ### Usage ###
 
 Check the tests and examples folders.
+Run demo.
