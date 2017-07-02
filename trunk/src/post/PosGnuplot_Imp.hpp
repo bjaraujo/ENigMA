@@ -66,7 +66,7 @@ namespace ENigMA
 
                         CGeoCoordinate<Real> aCentroid = aField.mesh().elementCentroid(id);
 
-                        fileGnuplot << id + 1 << " " << aCentroid.x() << " " << aCentroid.y() << " " << aCentroid.z() << " " << aField.u(i) << std::endl;
+                        fileGnuplot << id + 1 << std::setprecision(16) << " " << aCentroid.x() << " " << aCentroid.y() << " " << aCentroid.z() << " " << aField.u(i) << std::endl;
                     
                     }
 
