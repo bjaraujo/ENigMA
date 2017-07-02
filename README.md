@@ -56,6 +56,7 @@ Examples:
 - Qt (optional): https://www.qt.io
 - VTK (optional): http://www.vtk.org
 - OpenGL/GLUT (optional): http://freeglut.sourceforge.net
+- Gmsh (optional): http://gmsh.info/
 
 ### Install ###
 
