@@ -38,9 +38,11 @@ ENigMA has the following namespaces:
 - **sph**: Smoothed Particle Hydrodynamics (SPH)
 - **pde**: Partial Differential Equations
 - **sle**: System of Linear Equations
-- **mesh**: mesh generation (block, triangular, tetrahedral, hexahedral, etc.)
+- **mesh**: mesh generation (block, triangular, tetrahedral*, hexahedral, etc.)
 - **post**: post-processing
 - **stl**: STL file processing
+
+* - tetrahedral mesher is part of ENigMA+.
 
 ### Dependencies ###
 
