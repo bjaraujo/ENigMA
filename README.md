@@ -42,7 +42,7 @@ ENigMA has the following namespaces:
 - **post**: post-processing
 - **stl**: STL file processing
 
-Note: tetrahedral mesher is part of ENigMA+.
+Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+.
 
 ### Dependencies ###
 
@@ -67,5 +67,5 @@ Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENN
 ### Usage ###
 
 - Check the tests and examples folders,
-- Check wiki,
+- Check [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
 - Run demo (releases).
