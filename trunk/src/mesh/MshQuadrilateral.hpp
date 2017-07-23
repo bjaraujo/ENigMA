@@ -11,8 +11,6 @@
 
 #include "GeoQuadrilateral.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -20,7 +18,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        class CMshQuadrilateral : public CGeoQuadrilateral<Real>
+        class CMshQuadrilateral : public ENigMA::geometry::CGeoQuadrilateral<Real>
         {
         private:
 

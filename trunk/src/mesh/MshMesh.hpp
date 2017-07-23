@@ -131,6 +131,7 @@ namespace ENigMA
             void meshQuality(Real& aMinQ, Real& aMaxQ, Real& aAveQ);
 
             ENigMA::geometry::CGeoBoundingBox<Real> boundingBox(const Integer anElementId);
+            ENigMA::geometry::CGeoBoundingBox<Real> boundingBox();
 
         };
 

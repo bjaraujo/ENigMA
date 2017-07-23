@@ -1137,6 +1137,26 @@ namespace ENigMA
 
         }
 
+        template <typename Real>
+        CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox()
+        {
+
+            CGeoBoundingBox<Real> aBoundingBox;
+
+            for (Integer i = 0; i < static_cast<Integer>(m_nodes.size()); ++i)
+            {
+
+                Integer aNodeId = m_nodeIds[i];
+                CMshNode<Real>& aNode = m_nodes[aNodeId];
+
+                aBoundingBox.addCoordinate(aNode);
+
+            }
+
+            return aBoundingBox;
+
+        }
+
     }
 
 }

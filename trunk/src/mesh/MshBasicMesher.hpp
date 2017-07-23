@@ -16,8 +16,6 @@
 #include "GeoHexahedron.hpp"
 #include "MshMesh.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -36,9 +34,11 @@ namespace ENigMA
             CMshBasicMesher();
             ~CMshBasicMesher();
 
-            bool generate(CGeoLine<Real>& aLine, const Integer nu);
-            bool generate(CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate = false);
-            bool generate(CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate = false);
+            bool generate(ENigMA::geometry::CGeoLine<Real>& aLine, const Integer nu);
+            bool generate(ENigMA::geometry::CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate = false);
+            bool generate(ENigMA::geometry::CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate = false);
+
+            bool generate(ENigMA::geometry::CGeoBoundingBox<Real>& aBoundingBox, const Real meshSize, bool decimate = false);
 
             ENigMA::mesh::CMshMesh<Real>& mesh();
 

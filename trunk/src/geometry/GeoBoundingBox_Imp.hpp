@@ -146,6 +146,21 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CGeoBoundingBox<Real>::grow(const Real anAmountX, const Real anAmountY, const Real anAmountZ)
+        {
+
+            this->m_min.x() -= anAmountX;
+            this->m_max.x() += anAmountX;
+
+            this->m_min.y() -= anAmountY;
+            this->m_max.y() += anAmountY;
+
+            this->m_min.z() -= anAmountZ;
+            this->m_max.z() += anAmountZ;
+
+        }
+
+        template <typename Real>
         void CGeoBoundingBox<Real>::shrink(const Real anAmount)
         {
 

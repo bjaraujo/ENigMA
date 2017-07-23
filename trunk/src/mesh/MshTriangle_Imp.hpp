@@ -7,6 +7,8 @@
 // <Author> Billy Araujo </Author>
 // *****************************************************************************
 
+using namespace ENigMA::geometry;
+
 namespace ENigMA
 {
 

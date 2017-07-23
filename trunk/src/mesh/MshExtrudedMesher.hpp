@@ -11,8 +11,6 @@
 
 #include "MshMesh.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 

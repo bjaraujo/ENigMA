@@ -12,8 +12,6 @@
 #include "CmnTypes.hpp"
 #include "GeoVector.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -35,9 +33,9 @@ namespace ENigMA
 
             virtual void setDimension(const Integer nDimension);
 
-            virtual Real W(const CGeoVector<Real> r, const Real h) = 0;
-            virtual CGeoVector<Real> gradientW(const CGeoVector<Real> r, const Real h, const Real aTolerance = 0.0) = 0;
-            virtual Real laplacianW(const CGeoVector<Real> r, const Real h) = 0;
+            virtual Real W(const ENigMA::geometry::CGeoVector<Real> r, const Real h) = 0;
+            virtual ENigMA::geometry::CGeoVector<Real> gradientW(const ENigMA::geometry::CGeoVector<Real> r, const Real h, const Real aTolerance = 0.0) = 0;
+            virtual Real laplacianW(const ENigMA::geometry::CGeoVector<Real> r, const Real h) = 0;
 
         };
 

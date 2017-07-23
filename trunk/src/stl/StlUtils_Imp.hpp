@@ -15,6 +15,8 @@
 
 #include "GeoHashGrid.hpp"
 
+using namespace ENigMA::geometry;
+
 namespace ENigMA
 {
 
@@ -76,7 +78,7 @@ namespace ENigMA
 
                     Integer aNodeId = anElement.nodeId(i);
 
-                    ENigMA::geometry::CGeoCoordinate<Real> aVertex = aTriMesh.node(aNodeId);
+                    CGeoCoordinate<Real> aVertex = aTriMesh.node(aNodeId);
 
                     aFacet.addVertex(aVertex);
 
@@ -237,7 +239,7 @@ namespace ENigMA
 
                         for (Integer j = 0; j < 3; ++j)
                         {
-                            ENigMA::geometry::CGeoCoordinate<Real> aVertex;
+                            CGeoCoordinate<Real> aVertex;
 
                             aVertex.x() = this->getFloat(fileSTL);
                             aVertex.y() = this->getFloat(fileSTL);
@@ -266,7 +268,7 @@ namespace ENigMA
 
                         for (Integer j = 0; j < 3; ++j)
                         {
-                            ENigMA::geometry::CGeoCoordinate<Real> aVertex;
+                            CGeoCoordinate<Real> aVertex;
 
                             fileSTL >> strVertex >> aVertex.x() >> aVertex.y() >> aVertex.z();
 
@@ -526,7 +528,7 @@ namespace ENigMA
         bool CStlUtils<Real>::removeDuplicateFacets(const Real aTolerance)
         {
 
-            ENigMA::geometry::CGeoHashGrid<Real> aHashGrid;
+            CGeoHashGrid<Real> aHashGrid;
 
             for (Integer i = 0; i < m_stlFile.nbFacets(); ++i)
             {
@@ -534,7 +536,7 @@ namespace ENigMA
                 Integer aFacetId = m_stlFile.facetId(i);
 
                 m_stlFile.facet(aFacetId).calculateCentroid();
-                ENigMA::geometry::CGeoCoordinate<Real> aCenterCoordinate = m_stlFile.facet(aFacetId).centroid();
+                CGeoCoordinate<Real> aCenterCoordinate = m_stlFile.facet(aFacetId).centroid();
 
                 aHashGrid.addGeometricObject(aFacetId, aCenterCoordinate);
 
@@ -551,7 +553,7 @@ namespace ENigMA
 
                 std::vector<Integer> sCoordinates;
 
-                ENigMA::geometry::CGeoCoordinate<Real> aCenterCoordinate = m_stlFile.facet(aFacetId).centroid();
+                CGeoCoordinate<Real> aCenterCoordinate = m_stlFile.facet(aFacetId).centroid();
 
                 aHashGrid.find(sCoordinates, aCenterCoordinate, aTolerance);
 
@@ -617,9 +619,9 @@ namespace ENigMA
         {
 
             // Discover double edges
-            ENigMA::geometry::CGeoHashGrid<Real> aHashGrid;
+            CGeoHashGrid<Real> aHashGrid;
 
-            std::vector<ENigMA::geometry::CGeoCoordinate<Real> > sCenterCoordinates;
+            std::vector<CGeoCoordinate<Real> > sCenterCoordinates;
 
             Integer anEdgeId;
 
@@ -631,7 +633,7 @@ namespace ENigMA
                 for (Integer j = 0; j < 3; ++j)
                 {
 
-                    ENigMA::geometry::CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) +
+                    CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) +
                         m_stlFile.facet(aFacetId).vertex((j + 1) % 3)) * 0.5;
 
                     sCenterCoordinates.push_back(aCenterCoordinate);
@@ -667,7 +669,7 @@ namespace ENigMA
                 for (Integer j = 0; j < 3; ++j)
                 {
 
-                    ENigMA::geometry::CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) + m_stlFile.facet(aFacetId).vertex((j + 1) % 3)) * 0.5;
+                    CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) + m_stlFile.facet(aFacetId).vertex((j + 1) % 3)) * 0.5;
 
                     std::vector<Integer> sCoordinates;
 
@@ -889,9 +891,9 @@ namespace ENigMA
         bool CStlUtils<Real>::splitFacets(const Real splitSize, const Real fq)
         {
 
-            ENigMA::geometry::CGeoCoordinate<Real> pn;
-            ENigMA::geometry::CGeoCoordinate<Real> p3;
-            ENigMA::geometry::CGeoCoordinate<Real> p[3];
+            CGeoCoordinate<Real> pn;
+            CGeoCoordinate<Real> p3;
+            CGeoCoordinate<Real> p[3];
 
             Real fr;
             Real dx, dy, dz;
@@ -1043,7 +1045,7 @@ namespace ENigMA
         bool CStlUtils<Real>::relaxVertices()
         {
 
-            std::vector<ENigMA::geometry::CGeoCoordinate<Real> > sVertices;
+            std::vector<CGeoCoordinate<Real> > sVertices;
             std::vector<CStlFacet<Real> > aFacet_i;
             std::vector<CStlFacet<Real> > aFacet_f;
             std::vector<Integer> whichVertex;
@@ -1127,7 +1129,7 @@ namespace ENigMA
                     if (fixedNode == true)
                         continue;
 
-                    ENigMA::geometry::CGeoCoordinate<Real> aNewVertex(0.0, 0.0, 0.0);
+                    CGeoCoordinate<Real> aNewVertex(0.0, 0.0, 0.0);
 
                     for (Integer k = 0; k < static_cast<Integer> (sVertices.size()); ++k)
                     {
@@ -1142,7 +1144,7 @@ namespace ENigMA
                     for (Integer k = 0; k < static_cast<Integer> (whichVertex.size()); ++k)
                     {
 
-                        ENigMA::geometry::CGeoNormal<Real> normal_i, normal_f;
+                        CGeoNormal<Real> normal_i, normal_f;
 
                         aFacet_i[k].calculateNormal();
                         normal_i = aFacet_i[k].normal();
@@ -1189,8 +1191,8 @@ namespace ENigMA
                 for (Integer j = 0; j < 3; ++j)
                 {
 
-                    ENigMA::geometry::CGeoCoordinate<Real> p1 = m_stlFile.facet(aFacetId).vertex((j + 0) % 3);
-                    ENigMA::geometry::CGeoCoordinate<Real> p2 = m_stlFile.facet(aFacetId).vertex((j + 1) % 3);
+                    CGeoCoordinate<Real> p1 = m_stlFile.facet(aFacetId).vertex((j + 0) % 3);
+                    CGeoCoordinate<Real> p2 = m_stlFile.facet(aFacetId).vertex((j + 1) % 3);
 
                     m_stlFile.facet(aFacetId).edge(j).setStartPoint(p1);
                     m_stlFile.facet(aFacetId).edge(j).setEndPoint(p2);
@@ -1236,12 +1238,12 @@ namespace ENigMA
                 if (m_stlFile.facet(aFacetId).extra[0] == 'c')
                     continue;
 
-                ENigMA::geometry::CGeoCoordinate<Real> p0 = m_stlFile.facet(aFacetId).vertex(0);
-                ENigMA::geometry::CGeoCoordinate<Real> p1 = m_stlFile.facet(aFacetId).vertex(1);
-                ENigMA::geometry::CGeoCoordinate<Real> p2 = m_stlFile.facet(aFacetId).vertex(2);
+                CGeoCoordinate<Real> p0 = m_stlFile.facet(aFacetId).vertex(0);
+                CGeoCoordinate<Real> p1 = m_stlFile.facet(aFacetId).vertex(1);
+                CGeoCoordinate<Real> p2 = m_stlFile.facet(aFacetId).vertex(2);
 
                 m_stlFile.facet(aFacetId).calculateNormal();
-                ENigMA::geometry::CGeoNormal<Real> normal_i = m_stlFile.facet(aFacetId).normal();
+                CGeoNormal<Real> normal_i = m_stlFile.facet(aFacetId).normal();
 
                 for (Integer j = 0; j < 3; ++j)
                 {
@@ -1258,10 +1260,10 @@ namespace ENigMA
                     if (vertexNot < 0 || vertexNot > 2)
                         continue;
 
-                    ENigMA::geometry::CGeoCoordinate<Real> p3 = m_stlFile.facet(neighbor).vertex(vertexNot);
+                    CGeoCoordinate<Real> p3 = m_stlFile.facet(neighbor).vertex(vertexNot);
 
                     m_stlFile.facet(neighbor).calculateNormal();
-                    ENigMA::geometry::CGeoNormal<Real> normal_j = m_stlFile.facet(neighbor).normal();
+                    CGeoNormal<Real> normal_j = m_stlFile.facet(neighbor).normal();
 
                     Real ang = normal_i.angle(normal_j);
 
@@ -1279,12 +1281,12 @@ namespace ENigMA
                         this->getFacetQuality(m_stlFile.facet(aFacetId), sedg, bedg, dmin, dmax, qi);
 
                         m_stlFile.facet(neighbor).calculateNormal();
-                        ENigMA::geometry::CGeoNormal<Real> iNormal_i = m_stlFile.facet(aFacetId).normal();
+                        CGeoNormal<Real> iNormal_i = m_stlFile.facet(aFacetId).normal();
 
                         this->getFacetQuality(m_stlFile.facet(neighbor), sedg, bedg, dmin, dmax, qj);
 
                         m_stlFile.facet(neighbor).calculateNormal();
-                        ENigMA::geometry::CGeoNormal<Real> iNormal_j = m_stlFile.facet(neighbor).normal();
+                        CGeoNormal<Real> iNormal_j = m_stlFile.facet(neighbor).normal();
 
                         Real qmini = std::min(qi, qj);
 
@@ -1339,12 +1341,12 @@ namespace ENigMA
                         this->getFacetQuality(newFacet_i, sedg, bedg, dmin, dmax, qi);
 
                         newFacet_i.calculateNormal();
-                        ENigMA::geometry::CGeoNormal<Real> fNormal_i = newFacet_i.normal();
+                        CGeoNormal<Real> fNormal_i = newFacet_i.normal();
 
                         this->getFacetQuality(newFacet_j, sedg, bedg, dmin, dmax, qj);
 
                         newFacet_j.calculateNormal();
-                        ENigMA::geometry::CGeoNormal<Real> fNormal_j = newFacet_j.normal();
+                        CGeoNormal<Real> fNormal_j = newFacet_j.normal();
 
                         Real qminf = std::min(qi, qj);
 
@@ -1490,7 +1492,7 @@ namespace ENigMA
                 if (fixedNode)
                     continue;
 
-                ENigMA::geometry::CGeoCoordinate<Real> aNewVertex = m_stlFile.facet(aFacetId).vertex(sedgi);
+                CGeoCoordinate<Real> aNewVertex = m_stlFile.facet(aFacetId).vertex(sedgi);
 
                 fixedNode = false;
 

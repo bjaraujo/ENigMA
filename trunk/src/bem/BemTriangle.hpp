@@ -13,9 +13,6 @@
 #include "GeoTriangle.hpp"
 #include "IntTriangle.hpp"
 
-using namespace ENigMA::geometry;
-using namespace ENigMA::integration;
-
 namespace ENigMA
 {
 
@@ -23,13 +20,13 @@ namespace ENigMA
     {
 
         template <typename Real>
-        class CBemTriangle : public CIntTriangle<Real>, public CGeoTriangle<Real>
+        class CBemTriangle : public ENigMA::integration::CIntTriangle<Real>, public ENigMA::geometry::CGeoTriangle<Real>
         {
         private:
 
         public:
 
-            bool getIntegrationPoints(std::vector<CGeoCoordinate<Real> >& sPoints, std::vector<Real>& sWeights);
+            bool getIntegrationPoints(std::vector<ENigMA::geometry::CGeoCoordinate<Real> >& sPoints, std::vector<Real>& sWeights);
             void laplacianCoeff(const Integer i, const Integer j, CBemTriangle<Real>& aBemTriangle, Real& h, Real& g);
 
             CBemTriangle();

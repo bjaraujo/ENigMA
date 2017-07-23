@@ -11,6 +11,8 @@
 
 #include <cmath>
 
+using namespace ENigMA::geometry;
+
 namespace ENigMA
 {
 

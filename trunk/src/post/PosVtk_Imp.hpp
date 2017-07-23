@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <iomanip>
 #include <fstream>
 
 namespace ENigMA

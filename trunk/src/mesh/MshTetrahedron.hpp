@@ -11,8 +11,6 @@
 
 #include "GeoTetrahedron.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -20,7 +18,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        class CMshTetrahedron : public CGeoTetrahedron<Real>
+        class CMshTetrahedron : public ENigMA::geometry::CGeoTetrahedron<Real>
         {
         private:
 

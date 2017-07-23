@@ -16,6 +16,8 @@
 #include "MshTriangle.hpp"
 #include "MshMeshQuery.hpp"
 
+using namespace ENigMA::geometry;
+
 namespace ENigMA
 {
 
@@ -735,7 +737,7 @@ namespace ENigMA
             try
             {
 
-                std::vector<ENigMA::geometry::CGeoCoordinate<double> > sInteriorPoints;
+                std::vector<CGeoCoordinate<double> > sInteriorPoints;
 
                 ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
                 aAnaFunction.set(meshSize);
@@ -757,7 +759,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real> >& sInteriorPoints, Real meshSize, Real minQuality, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real> >& sInteriorPoints, Real meshSize, Real minQuality, const Real aTolerance)
         {
 
             try
@@ -783,7 +785,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real> >& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minQuality, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real> >& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minQuality, const Real aTolerance)
         {
 
             try

@@ -11,8 +11,6 @@
 
 #include "GeoTriangle.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -20,7 +18,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        class CMshTriangle : public CGeoTriangle<Real>
+        class CMshTriangle : public ENigMA::geometry::CGeoTriangle<Real>
         {
         private:
 

@@ -20,8 +20,6 @@
 #include "SphCubicSpline.hpp"
 #include "SphQuintic.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -32,7 +30,7 @@ namespace ENigMA
         struct CSphParticle
         {
 
-            CGeoVector<Real> velocity;
+            ENigMA::geometry::CGeoVector<Real> velocity;
             Real conductivity;
             Real mass;
             Real density;
@@ -46,24 +44,24 @@ namespace ENigMA
             CSphKernel<Real>* m_kernel;
 
             std::vector<CSphParticle<Real> > m_particles;
-            CGeoBoundingBox<Real> m_boundary;
+            ENigMA::geometry::CGeoBoundingBox<Real> m_boundary;
 
             bool m_bCyclic;
 
             Real m_h;
             Real m_dt;
 
-            void buildHashGrid(CPdeField<Real>& aField, CGeoHashGrid<Real>& aHashGrid);
+            void buildHashGrid(CPdeField<Real>& aField, ENigMA::geometry::CGeoHashGrid<Real>& aHashGrid);
 
             void advectParticles(CPdeField<Real>& aField);
-            void addDiffusion(CPdeField<Real>& aField, CGeoHashGrid<Real>& aHashGrid);
+            void addDiffusion(CPdeField<Real>& aField, ENigMA::geometry::CGeoHashGrid<Real>& aHashGrid);
 
         public:
             CSphParticles(CSphKernel<Real>& kernel);
             ~CSphParticles();
 
-            void setBoundary(const CGeoBoundingBox<Real>& aBoundary);
-            void setInitialVelocity(CPdeField<Real>& aField, const CGeoVector<Real>& aVelocity);
+            void setBoundary(const ENigMA::geometry::CGeoBoundingBox<Real>& aBoundary);
+            void setInitialVelocity(CPdeField<Real>& aField, const ENigMA::geometry::CGeoVector<Real>& aVelocity);
 
             void init(CPdeField<Real>& aField, Real mass, Real rho, Real diff, Real h, Real dt, bool bCyclic = false);
             void solve(CPdeField<Real>& aField);

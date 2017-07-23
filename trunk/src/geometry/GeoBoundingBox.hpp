@@ -40,6 +40,8 @@ namespace ENigMA
             CGeoVector<Real>& max();
 
             void grow(const Real anAmount);
+            void grow(const Real anAmountX, const Real anAmountY, const Real anAmountZ);
+
             void shrink(const Real anAmount);
 
             inline bool intersects(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);

@@ -14,8 +14,6 @@
 #include "GeoLine.hpp"
 #include "GeoTriangle.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -29,7 +27,7 @@ namespace ENigMA
         };
 
         template <typename Real>
-        class CStlEdge : public CGeoLine<Real>
+        class CStlEdge : public ENigMA::geometry::CGeoLine<Real>
         {
         private:
             bool m_outline;
@@ -57,7 +55,7 @@ namespace ENigMA
         };
 
         template <typename Real>
-        class CStlFacet : public CGeoTriangle<Real>
+        class CStlFacet : public ENigMA::geometry::CGeoTriangle<Real>
         {
         private:
             CStlEdge<Real> m_edge[3];
@@ -79,9 +77,9 @@ namespace ENigMA
             char           header[81];
             EStlFileType   type;
 
-            CGeoVector<Real> max;
-            CGeoVector<Real> min;
-            CGeoVector<Real> size;
+            ENigMA::geometry::CGeoVector<Real> max;
+            ENigMA::geometry::CGeoVector<Real> min;
+            ENigMA::geometry::CGeoVector<Real> size;
 
         };
 

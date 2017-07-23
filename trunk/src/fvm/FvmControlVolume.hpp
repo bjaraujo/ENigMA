@@ -13,8 +13,6 @@
 #include "FvmCell.hpp"
 #include "FvmFace.hpp"
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
 
@@ -22,7 +20,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        class CFvmControlVolume : public CFvmCell<Real>, public CGeoVolume<Real>
+        class CFvmControlVolume : public CFvmCell<Real>, public ENigMA::geometry::CGeoVolume<Real>
         {
         private:
 
@@ -31,8 +29,8 @@ namespace ENigMA
             Integer m_clippedFaceId;
             CFvmFace<Real> m_clippedFace;
 
-            CGeoPolyhedron<Real> m_polyhedron;
-            CGeoPolyhedron<Real> m_clippedPolyhedron;
+            ENigMA::geometry::CGeoPolyhedron<Real> m_polyhedron;
+            ENigMA::geometry::CGeoPolyhedron<Real> m_clippedPolyhedron;
 
             Integer m_controlVolumeId;
 
@@ -40,7 +38,7 @@ namespace ENigMA
 
         public:
             CFvmControlVolume();
-            CFvmControlVolume(CGeoPolyhedron<Real>& aPolyhedron);
+            CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
             ~CFvmControlVolume();
 
             void setControlVolumeId(const Integer aControlVolumeId);
@@ -56,7 +54,7 @@ namespace ENigMA
             void calculateFaceCentroid(const Integer aFaceId, bool bRecalculate = false);
 
             Real faceArea(const Integer aFaceId);
-            CGeoNormal<Real>& faceNormal(const Integer aFaceId);
+            ENigMA::geometry::CGeoNormal<Real>& faceNormal(const Integer aFaceId);
             Real faceDist(const Integer aFaceId);
 
             void reset();
@@ -65,7 +63,7 @@ namespace ENigMA
             void setClippedFaceId(Integer aFaceId);
             Integer clippedFaceId();
             CFvmFace<Real>& clippedFace();
-            inline void clip(CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
+            inline void clip(ENigMA::geometry::CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
 
             void calculateOriginalVolume(bool bReCalculate = false);
             Real originalVolume();

@@ -15,9 +15,6 @@
 #include "MshFace.hpp"
 #include "FvmNode.hpp"
 
-using namespace ENigMA::geometry;
-using namespace ENigMA::mesh;
-
 namespace ENigMA
 {
 
@@ -67,7 +64,7 @@ namespace ENigMA
         };
 
         template <typename Real>
-        class CFvmFace : public CMshFace<Real>, public CGeoPolygon<Real>
+        class CFvmFace : public ENigMA::mesh::CMshFace<Real>, public ENigMA::geometry::CGeoPolygon<Real>
         {
         private:
 
@@ -78,10 +75,10 @@ namespace ENigMA
 
         public:
             CFvmFace();
-            CFvmFace(CGeoPolygon<Real>& aPolygon);
+            CFvmFace(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
             ~CFvmFace();
 
-            void set(CGeoPolygon<Real>& aPolygon);
+            void set(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
 
             void addNode(const CFvmNode<Real>& aNode);
 

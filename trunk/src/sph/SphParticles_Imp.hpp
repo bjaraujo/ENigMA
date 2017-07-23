@@ -9,6 +9,10 @@
 
 #pragma once
 
+using namespace ENigMA::geometry;
+using namespace ENigMA::pde;
+using namespace ENigMA::mesh;
+
 namespace ENigMA
 {
 
