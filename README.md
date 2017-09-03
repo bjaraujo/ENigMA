@@ -42,7 +42,7 @@ ENigMA has the following namespaces:
 - **post**: post-processing
 - **stl**: STL file processing
 
-Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+.
+Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Will be added to ENigMA source code base when this project reaches 100 stars. 
 
 ### Dependencies ###
 
