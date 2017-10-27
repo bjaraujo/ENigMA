@@ -28,7 +28,7 @@ namespace ENigMA
         template <typename Real>
         CSphCubicSpline<Real>::CSphCubicSpline() : CSphKernel<Real>()
         {
-            
+
         }
 
         template <typename Real>
@@ -42,7 +42,7 @@ namespace ENigMA
         {
 
             CSphKernel<Real>::m_dim = nDimension;
-            
+
         }
 
         template <typename Real>
@@ -60,12 +60,12 @@ namespace ENigMA
                 CSphKernel<Real>::m_C = 10.0 / (7.0 * CSphKernel<Real>::m_pi * h * h);
             else if (CSphKernel<Real>::m_dim == 3)
                 CSphKernel<Real>::m_C = 1.0 / (CSphKernel<Real>::m_pi * h * h * h);
-                
+
             if (q >= 0 && q < 1.0)
                 return CSphKernel<Real>::m_C * ((2 - q) * (2 - q) * (2 - q) - 4 * (1 - q) * (1 - q) * (1 - q));
             else
                 return CSphKernel<Real>::m_C * (2 - q) * (2 - q) * (2 - q);
-            
+
         }
 
         template <typename Real>
@@ -73,23 +73,23 @@ namespace ENigMA
         {
 
             Real q = r.norm() / h;
-            
+
             if (q < aTolerance)
                 q = aTolerance;
 
             if (q > 2.0)
                 return typename CGeoVector<Real>::CGeoVector(0, 0, 0);
-            
+
             if (CSphKernel<Real>::m_dim == 1)
                 CSphKernel<Real>::m_C = 2.0 / (3.0 * h);
             else if (CSphKernel<Real>::m_dim == 2)
                 CSphKernel<Real>::m_C = 10.0 / (7.0 * CSphKernel<Real>::m_pi * h * h);
             else if (CSphKernel<Real>::m_dim == 3)
                 CSphKernel<Real>::m_C = 1.0 / (CSphKernel<Real>::m_pi * h * h * h);
-            
+
             if (q >= aTolerance && q < 1.0)
                 return CSphKernel<Real>::m_C * (3.0 * q * (1 - 0.75 * q)) / q * r;
-            else            
+            else
                 return CSphKernel<Real>::m_C * 0.75 * (2 - q) * (2 - q) / q * r;
 
         }
@@ -109,9 +109,9 @@ namespace ENigMA
                 CSphKernel<Real>::m_C = 10.0 / (7.0 * CSphKernel<Real>::m_pi * h * h);
             else if (CSphKernel<Real>::m_dim == 3)
                 CSphKernel<Real>::m_C = 1.0 / (CSphKernel<Real>::m_pi * h * h * h);
-    
+
             Real w, dw;
-            
+
             if (q >= 0 && q < 1.0)
             {
                 w = 1.0 - 1.5 * q * q * (1.0 - 0.5 * q);
@@ -124,7 +124,7 @@ namespace ENigMA
             }
 
             return CSphKernel<Real>::m_C * h * (dw * q + w * CSphKernel<Real>::m_dim);
-            
+
         }
 
     }

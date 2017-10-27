@@ -32,7 +32,7 @@ namespace ENigMA
 
             m_pi = std::acos(-1.0);
             this->setDimension(1);
-            
+
         }
 
         template <typename Real>
