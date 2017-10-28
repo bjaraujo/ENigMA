@@ -49,7 +49,7 @@ Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Wil
 Core:
 - Eigen: http://eigen.tuxfamily.org
 - Exprtk: https://github.com/ArashPartow/exprtk or dependencies folder
-- R-tree: https://github.com/nushoin/RTree (slightly modified) or dependencies folder
+- RTree: https://github.com/nushoin/RTree (slightly modified) or dependencies folder
 - ViennaCL (optional): http://viennacl.sourceforge.net
 
 Tests:
