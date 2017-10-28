@@ -68,5 +68,5 @@ Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENN
 ### Usage ###
 
 - Check the tests and examples folders,
-- Check [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
+- Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
 - Run demo (releases).
