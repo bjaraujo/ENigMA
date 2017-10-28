@@ -70,3 +70,21 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 - Check the tests and examples folders,
 - Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
 - Run demo (releases).
+
+### Quick Start ###
+
+- git clone https://github.com/bjaraujo/ENigMA.git
+- cd ENigMA
+- cmake-gui&
+- setup source/build directory
+- download Eigen and GTest
+- set paths to Eigen, GTest, Exprtk  (dependancies folder), RTree (dependancies folder)
+- configure/generate
+- make
+
+
+
+
+
+
+
