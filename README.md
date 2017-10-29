@@ -78,7 +78,7 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 - cmake-gui&
 - setup source/build directory
 - download Eigen and GTest
-- set paths to Eigen, GTest, Exprtk  (dependancies folder), RTree (dependancies folder)
+- set paths to Eigen, GTest, Exprtk  (dependencies folder), RTree (dependencies folder)
 - configure/generate
 - make
 
