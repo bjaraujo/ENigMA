@@ -470,6 +470,17 @@ namespace ENigMA
         bool CStlUtils<Real>::calculateStatistics()
         {
 
+            // Initialize the max and min values the first time through
+            if (m_stlFile.nbFacets() > 0)
+            {
+                Integer aFacetId = m_stlFile.facetId(0);
+
+                CStlFacet<Real> aFacet = m_stlFile.facet(aFacetId);
+
+                m_stlFile.stats.max = aFacet.vertex(0);
+                m_stlFile.stats.min = aFacet.vertex(0);
+            }
+
             for (Integer i = 0; i < m_stlFile.nbFacets(); ++i)
             {
 
@@ -479,13 +490,6 @@ namespace ENigMA
 
                 // while we are going through all of the facets, let's find the
                 // maximum and minimum values for x, y, and z
-
-                // Initialize the max and min values the first time through
-                if (i == 0)
-                {
-                    m_stlFile.stats.max = aFacet.vertex(0);
-                    m_stlFile.stats.min = aFacet.vertex(0);
-                }
 
                 // Now find the max and min values
                 for (Integer j = 0; j < 3; ++j)

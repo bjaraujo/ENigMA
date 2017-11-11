@@ -115,7 +115,7 @@ namespace ENigMA
                             }
 
                         }
-                        else if (ii > 0 && ii < aField.mesh().nbNodes() - 1)
+                        else if (ii < aField.mesh().nbNodes() - 1)
                         {
 
                             Integer im, ip;
@@ -199,7 +199,7 @@ namespace ENigMA
                                 aSystem.vectorB[ii] += -(aField.u(ip) - aField.uFixed[ii]) / dx;
 
                         }
-                        else if (ii > 0 && ii < aField.mesh().nbNodes() - 1)
+                        else if (ii < aField.mesh().nbNodes() - 1)
                         {
 
                             Integer im, ip;
