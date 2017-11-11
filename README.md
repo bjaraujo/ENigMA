@@ -42,13 +42,14 @@ ENigMA has the following namespaces:
 - **post**: post-processing
 - **stl**: STL file processing
 
-Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+.
+Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Will be added to ENigMA source code base when this project reaches 100 stars. 
 
 ### Dependencies ###
 
 Core:
 - Eigen: http://eigen.tuxfamily.org
 - Exprtk: https://github.com/ArashPartow/exprtk or dependencies folder
+- RTree: https://github.com/nushoin/RTree (slightly modified) or dependencies folder
 - ViennaCL (optional): http://viennacl.sourceforge.net
 
 Tests:
@@ -62,10 +63,28 @@ Examples:
 
 ### Install ###
 
-Configure correct environment variables (GTEST_DIR, EXPRTK_DIR, EIGEN_DIR, VIENNACL_DIR, etc.) and run [CMake](https://cmake.org).
+Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR, etc.) and run [CMake](https://cmake.org).
 
 ### Usage ###
 
 - Check the tests and examples folders,
-- Check [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
+- Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
 - Run demo (releases).
+
+### Quick Start ###
+
+- git clone https://github.com/bjaraujo/ENigMA.git
+- cd ENigMA
+- cmake-gui&
+- setup source/build directory
+- download Eigen and GTest
+- set paths to Eigen, GTest, Exprtk  (dependencies folder), RTree (dependencies folder)
+- configure/generate
+- make
+
+
+
+
+
+
+
