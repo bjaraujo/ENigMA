@@ -65,14 +65,6 @@ Examples:
 
 Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR, etc.) and run [CMake](https://cmake.org).
 
-### Usage ###
-
-- Check the tests and examples folders,
-- Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
-- Run demo (releases).
-
-### Quick Start ###
-
 - git clone https://github.com/bjaraujo/ENigMA.git
 - cd ENigMA
 - cmake-gui&
@@ -81,6 +73,21 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 - set paths to Eigen, GTest, Exprtk  (dependencies folder), RTree (dependencies folder)
 - configure/generate
 - make
+
+### Usage ###
+
+- Check the tests and examples folders,
+- Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
+- Run demo (releases).
+
+### Quick Start ###
+
+- Install python 2.7 64bit (if you don't have already), 
+- Download the latest release (python wrapper),
+- Create file named "Example1.py"
+- Go to wiki and copy example "Creating a mesh using python"
+- Run command "python Example1.py"
+
 
 
 
