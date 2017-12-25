@@ -1,8 +1,8 @@
 
 project(ENigMA)
 
-find_package(PythonLibs 2.7 REQUIRED)
-find_package(PythonInterp 2.7 REQUIRED)
+find_package(PythonLibs 3.0 REQUIRED)
+find_package(PythonInterp 3.0 REQUIRED)
 
 include_directories(
     ../../../src/common
