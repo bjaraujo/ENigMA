@@ -24,7 +24,7 @@ intBuildNumber = 0
 strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intReleaseNumber) + '.' + str(intBuildNumber)
 
 # Increment version
-incVersionInput = raw_input('Increment version number [Y/n]?')
+incVersionInput = input('Increment version number [Y/n]?')
 
 incVersion = True 
 if incVersionInput == 'n':
@@ -62,9 +62,9 @@ for strLine in strLines:
 fo.close()
 
 # Build
-print '------------ Building release ------------'
-print 'version: ' + strNewVersion
-print 'build: ' + build
+print('------------ Building release ------------')
+print('version: ' + strNewVersion)
+print('build: ' + build)
 
 os.system("pause")
 os.system('"C:\Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe" build/' + build + '/wrappers/swig/python/_ENigMA.vcxproj /p:Configuration=' + configuration + ' /t:Rebuild')
