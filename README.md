@@ -88,7 +88,21 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 - Go to wiki and copy example "Creating a mesh using python"
 - Run command "python Example1.py"
 
+### Examples ###
 
+#### A cylinder
+
+
+```python
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
+
+import ENigMAocc
+        
+cylinder = BRepPrimAPI_MakeCylinder(3.0, 10.0).Shape() 
+
+mesh = ENigMAocc.meshShape(cylinder, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_01.msh")
+```
 
 
 
