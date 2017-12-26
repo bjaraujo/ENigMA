@@ -90,7 +90,15 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 ### Examples ###
 
-These examples use pythonocc and ENigMA python wrapper. 
+These examples use pythonocc and the ENigMA python wrapper. 
+
+Download miniconda (python3.6 64bit): 
+- https://conda.io/miniconda.html
+
+Install pythonocc: 
+```bash
+conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
+```
 
 #### A cylinder ####
 
@@ -145,28 +153,113 @@ ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
 
 #### A cut-out shape ####
 
-![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04.png)
+![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04a.png)
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeSphere
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
 
 import ENigMAocc
         
 box = BRepPrimAPI_MakeBox(8.0, 8.0, 8.0).Shape()
-sphere = BRepPrimAPI_MakeSphere(5).Shape() 
+cylinder = BRepPrimAPI_MakeCylinder(3.0, 6.0).Shape() 
 
 move = gp_Trsf()
 move.SetTranslation(gp_Vec(-4.0, -4.0, -4.0))
-box = BRepBuilderAPI_Transform(box, move, True).Shape()
+box = BRepBuilderAPI_Transform(box, move, False).Shape()
 
-shape = BRepAlgoAPI_Cut(box, sphere).Shape()
+shape = BRepAlgoAPI_Cut(box, cylinder).Shape()
 
 mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
-ENigMAocc.saveMeshFile(mesh, "occ_04.msh")
+ENigMAocc.saveMeshFile(mesh, "occ_04a.msh")
 ```
 
+#### A fused shape ####
 
+![fused](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04b.png)
+```python
+from OCC.gp import gp_Vec, gp_Trsf
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Fuse
 
+import ENigMAocc
+        
+box = BRepPrimAPI_MakeBox(8.0, 8.0, 8.0).Shape()
+cylinder = BRepPrimAPI_MakeCylinder(3.0, 6.0).Shape() 
 
+move = gp_Trsf()
+move.SetTranslation(gp_Vec(-4.0, -4.0, -4.0))
+box = BRepBuilderAPI_Transform(box, move, False).Shape()
+
+shape = BRepAlgoAPI_Fuse(box, cylinder).Shape()
+
+mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
+```
+
+#### More cut-outs ####
+
+![mcutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_05.png)
+```python
+from OCC.gp import gp_Vec, gp_Trsf
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
+
+import ENigMAocc
+        
+box = BRepPrimAPI_MakeBox(100.0, 50.0, 4.0).Shape() 
+cylinder1 = BRepPrimAPI_MakeCylinder(3.5, 10.0).Shape() 
+
+move = gp_Trsf()
+
+cut = box
+
+for i in range(0, 9):
+    for j in range(0, 4):
+        move.SetTranslation(gp_Vec(i*10 + 10, j*10 + 10, 0.0))
+        cylinder_copy = BRepBuilderAPI_Transform(cylinder1, move, True).Shape()
+        cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+    
+cylinder2 = BRepPrimAPI_MakeCylinder(6.0, 10.0).Shape()  
+
+move.SetTranslation(gp_Vec(0, 0, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+
+move.SetTranslation(gp_Vec(100, 0, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+
+move.SetTranslation(gp_Vec(100, 50, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+
+move.SetTranslation(gp_Vec(0, 50, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+shape = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+        
+mesh = ENigMAocc.meshShape(shape, 2.0, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_05.msh")
+```
+
+#### A STEP file ####
+
+![step](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_06.png)
+```python
+from OCC.STEPControl import STEPControl_Reader
+
+import ENigMAocc
+        
+step_reader = STEPControl_Reader()
+step_reader.ReadFile("lego.step")
+
+step_reader.TransferRoot(1)
+shape = step_reader.Shape(1)
+    
+mesh = ENigMAocc.meshShape(shape, 1.0, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_06.msh")
+```
