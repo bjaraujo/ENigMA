@@ -4,6 +4,7 @@ language:
   - cpp
 
 script:
+  - cd trunk
   - mkdir build
   - cd build
   - cmake ..
