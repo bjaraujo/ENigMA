@@ -8,13 +8,11 @@ before_install:
  - sudo wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
  - sudo tar -xzvf 3.3.4.tar.gz
  - sudo tar -xzvf release-1.8.0.tar.gz
- - sudo mv 3.3.4 eigen-3.3.4
- - sudo mv release-1.8.0 gtest-1.8.0
 
 script:
   - mkdir build
   - cd build
-  - cmake ../trunk -DGTest_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/gtest-1.8.0" -DEigen3_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/eigen-3.3.4" -DExprtk_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/trunk/dependencies/exprtk" -DRTree_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/trunk/dependencies/RTree" 
+  - cmake ../trunk -DGTest_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/googletest-release-1.8.0" -DEigen3_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/eigen-eigen-5a0156e40feb" -DExprtk_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/trunk/dependencies/exprtk" -DRTree_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/trunk/dependencies/RTree" 
   - make
   - cd tests
   - ./UnitTests
