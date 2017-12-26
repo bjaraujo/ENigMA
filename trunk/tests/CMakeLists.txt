@@ -88,7 +88,8 @@ set(TEST_STL_SOURCES
 TestStlUtils.cpp
 )
 
-add_subdirectory(${GTest_DIR} GTest)
+find_package (gtest REQUIRED)
+#add_subdirectory(${GTest_DIR} GTest)
 enable_testing()
 
 source_group("Source Files\\geo" FILES ${TEST_GEOMETRY_SOURCES})
