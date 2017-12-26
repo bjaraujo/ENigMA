@@ -92,7 +92,7 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 #### A cylinder
 
-![Cylinder](https://raw.githubusercontent.com/billyaraujo/ENigMA/master/images/occ_01.png) 
+![cylinder](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_01.png) 
 ```python
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
 
