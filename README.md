@@ -90,7 +90,9 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 ### Examples ###
 
-#### A cylinder
+These examples use pythonocc and ENigMA python wrapper. 
+
+#### A cylinder ####
 
 ![cylinder](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_01.png)
 ```python
@@ -103,6 +105,44 @@ cylinder = BRepPrimAPI_MakeCylinder(3.0, 10.0).Shape()
 mesh = ENigMAocc.meshShape(cylinder, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_01.msh")
 ```
+
+#### A torus ####
+
+![torus](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_02.png)
+```python
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeTorus
+
+import ENigMAocc
+    
+sphere = BRepPrimAPI_MakeTorus(4.0, 1.5).Shape() 
+
+mesh = ENigMAocc.meshShape(sphere, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
+```
+
+#### A partial sphere ####
+
+![sphere](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_03.png)
+```python
+from OCC.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
+
+import ENigMAocc
+        
+sphere1 = BRepPrimAPI_MakeSphere(3.0).Shape() 
+sphere2 = BRepPrimAPI_MakeSphere(6.0).Shape() 
+
+move = gp_Trsf()
+move.SetTranslation(gp_Vec(4.0, 0.0, 0.0))
+sphere3 = BRepBuilderAPI_Transform(sphere2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(sphere1, sphere3).Shape()
+
+mesh = ENigMAocc.meshShape(cut, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
+```
+
 
 
 
