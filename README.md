@@ -82,7 +82,7 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 ### Quick Start ###
 
-- Install python 2.7 64bit (if you don't have already), 
+- Install python 3 64bit (if you don't have already), 
 - Download the latest release (python wrapper),
 - Create file named "Example1.py"
 - Go to wiki and copy example "Creating a mesh using python"
