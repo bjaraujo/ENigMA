@@ -209,7 +209,8 @@ TEST_F(CTestSphConvex, gradient2)
 
 }
 
-TEST_F(DISABLED_CTestSphConvex, laplacian)
+/*
+TEST_F(CTestSphConvex, laplacian)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -285,3 +286,4 @@ TEST_F(DISABLED_CTestSphConvex, laplacian)
     EXPECT_NEAR(1.0, lap, 0.5);
 
 }
+*/

@@ -34,7 +34,8 @@ protected:
 
 };
 
-TEST_F(DISABLED_CTestSphSpiky, gradient1)
+/*
+TEST_F(CTestSphSpiky, gradient1)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -102,7 +103,7 @@ TEST_F(DISABLED_CTestSphSpiky, gradient1)
 
 }
 
-TEST_F(DISABLED_CTestSphSpiky, gradient2)
+TEST_F(CTestSphSpiky, gradient2)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -209,7 +210,7 @@ TEST_F(DISABLED_CTestSphSpiky, gradient2)
 
 }
 
-TEST_F(DISABLED_CTestSphSpiky, laplacian)
+TEST_F(CTestSphSpiky, laplacian)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -285,3 +286,5 @@ TEST_F(DISABLED_CTestSphSpiky, laplacian)
     EXPECT_NEAR(1.0, lap, 0.5);
 
 }
+*/
+
