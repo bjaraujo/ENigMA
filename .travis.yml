@@ -5,9 +5,8 @@ language:
 
 script:
   - mkdir build
-  - mkdir build/gcc-x86
-  - cd build/gcc-x86
-  - cmake ../..
+  - cd build
+  - cmake ..
   - make
   - cd tests
   - ./UnitTests
