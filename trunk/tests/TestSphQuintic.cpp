@@ -34,7 +34,7 @@ protected:
 
 };
 
-TEST_F(CTestSphQuintic, gradient1)
+TEST_F(DISABLED_CTestSphQuintic, gradient1)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -209,7 +209,7 @@ TEST_F(CTestSphQuintic, gradient2)
 
 }
 
-TEST_F(CTestSphQuintic, laplacian)
+TEST_F(DISABLED_CTestSphQuintic, laplacian)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);

@@ -34,7 +34,7 @@ protected:
 
 };
 
-TEST_F(CTestSphSpiky, gradient1)
+TEST_F(DISABLED_CTestSphSpiky, gradient1)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -102,7 +102,7 @@ TEST_F(CTestSphSpiky, gradient1)
 
 }
 
-TEST_F(CTestSphSpiky, gradient2)
+TEST_F(DISABLED_CTestSphSpiky, gradient2)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
@@ -209,7 +209,7 @@ TEST_F(CTestSphSpiky, gradient2)
 
 }
 
-TEST_F(CTestSphSpiky, laplacian)
+TEST_F(DISABLED_CTestSphSpiky, laplacian)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);

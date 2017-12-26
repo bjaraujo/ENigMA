@@ -209,7 +209,7 @@ TEST_F(CTestSphConvex, gradient2)
 
 }
 
-TEST_F(CTestSphConvex, laplacian)
+TEST_F(DISABLED_CTestSphConvex, laplacian)
 {
 
     CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
