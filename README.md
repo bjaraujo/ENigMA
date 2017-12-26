@@ -191,6 +191,51 @@ mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
 ```
 
+#### More cut-outs ####
 
+![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_05.png)
+```python
+from OCC.gp import gp_Vec, gp_Trsf
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
+
+import ENigMAocc
+        
+box = BRepPrimAPI_MakeBox(100.0, 50.0, 4.0).Shape() 
+cylinder1 = BRepPrimAPI_MakeCylinder(3.5, 10.0).Shape() 
+
+move = gp_Trsf()
+
+cut = box
+
+for i in range(0, 9):
+    for j in range(0, 4):
+        move.SetTranslation(gp_Vec(i*10 + 10, j*10 + 10, 0.0))
+        cylinder_copy = BRepBuilderAPI_Transform(cylinder1, move, True).Shape()
+        cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+    
+cylinder2 = BRepPrimAPI_MakeCylinder(6.0, 10.0).Shape()  
+
+move.SetTranslation(gp_Vec(0, 0, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+
+move.SetTranslation(gp_Vec(100, 0, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+
+move.SetTranslation(gp_Vec(100, 50, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+cut = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+
+move.SetTranslation(gp_Vec(0, 50, 0.0))
+cylinder_copy = BRepBuilderAPI_Transform(cylinder2, move, True).Shape()
+shape = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
+        
+mesh = ENigMAocc.meshShape(shape, 2.0, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_05.msh")
+```
 
 
