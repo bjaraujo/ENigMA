@@ -65,14 +65,6 @@ Examples:
 
 Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR, etc.) and run [CMake](https://cmake.org).
 
-### Usage ###
-
-- Check the tests and examples folders,
-- Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
-- Run demo (releases).
-
-### Quick Start ###
-
 - git clone https://github.com/bjaraujo/ENigMA.git
 - cd ENigMA
 - cmake-gui&
@@ -82,6 +74,35 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 - configure/generate
 - make
 
+### Usage ###
+
+- Check the tests and examples folders,
+- Visit the [Wiki](https://github.com/bjaraujo/ENigMA/wiki),
+- Run demo (releases).
+
+### Quick Start ###
+
+- Install python 3 64bit (if you don't have already), 
+- Download the latest release (python wrapper),
+- Create file named "Example1.py"
+- Go to wiki and copy example "Creating a mesh using python"
+- Run command "python Example1.py"
+
+### Examples ###
+
+#### A cylinder
+
+
+```python
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
+
+import ENigMAocc
+        
+cylinder = BRepPrimAPI_MakeCylinder(3.0, 10.0).Shape() 
+
+mesh = ENigMAocc.meshShape(cylinder, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_01.msh")
+```
 
 
 
