@@ -145,26 +145,50 @@ ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
 
 #### A cut-out shape ####
 
-![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04.png)
+![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04a.png)
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeSphere
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
 
 import ENigMAocc
         
 box = BRepPrimAPI_MakeBox(8.0, 8.0, 8.0).Shape()
-sphere = BRepPrimAPI_MakeSphere(5).Shape() 
+cylinder = BRepPrimAPI_MakeCylinder(3.0, 6.0).Shape() 
 
 move = gp_Trsf()
 move.SetTranslation(gp_Vec(-4.0, -4.0, -4.0))
-box = BRepBuilderAPI_Transform(box, move, True).Shape()
+box = BRepBuilderAPI_Transform(box, move, False).Shape()
 
-shape = BRepAlgoAPI_Cut(box, sphere).Shape()
+shape = BRepAlgoAPI_Cut(box, cylinder).Shape()
 
 mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
-ENigMAocc.saveMeshFile(mesh, "occ_04.msh")
+ENigMAocc.saveMeshFile(mesh, "occ_04a.msh")
+```
+
+#### A fused shape ####
+
+![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04b.png)
+```python
+from OCC.gp import gp_Vec, gp_Trsf
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Fuse
+
+import ENigMAocc
+        
+box = BRepPrimAPI_MakeBox(8.0, 8.0, 8.0).Shape()
+cylinder = BRepPrimAPI_MakeCylinder(3.0, 6.0).Shape() 
+
+move = gp_Trsf()
+move.SetTranslation(gp_Vec(-4.0, -4.0, -4.0))
+box = BRepBuilderAPI_Transform(box, move, False).Shape()
+
+shape = BRepAlgoAPI_Fuse(box, cylinder).Shape()
+
+mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
 ```
 
 
