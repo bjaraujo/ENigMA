@@ -90,7 +90,15 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 ### Examples ###
 
-These examples use pythonocc and ENigMA python wrapper. 
+These examples use pythonocc and the ENigMA python wrapper. 
+
+Download miniconda (python3.6 64bit): 
+- https://conda.io/miniconda.html
+
+Install pythonocc: 
+conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
+
+
 
 #### A cylinder ####
 
