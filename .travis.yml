@@ -1,0 +1,15 @@
+sudo: false
+
+language:
+  - cpp
+
+script:
+  - mkdir build
+  - mkdir build/gcc-x86
+  - cd build/gcc-x86
+  - cmake ../..
+  - make
+  - ./UnitTests
+
+notifications:
+  email: false
