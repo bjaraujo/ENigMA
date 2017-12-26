@@ -99,13 +99,21 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 These examples show the mesh generation capability of the ENigMA library. 
 The library pythonocc is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. 
 
-Download miniconda (python3.6 64bit): 
+To reproduce these examples:
+
+1. Download miniconda (python3.6 64bit): 
 - https://conda.io/miniconda.html
 
-Install pythonocc: 
+2. Install pythonocc: 
 ```bash
 conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
 ```
+
+3. Download ENigMA 0.1.2:
+- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip
+
+4. Download the examples:
+- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip
 
 ##### A Cylinder #####
 
