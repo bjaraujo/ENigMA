@@ -76,7 +76,7 @@ strNewFolder = 'releases/' + build
 if not os.path.isdir(strNewFolder):
 	os.mkdir(strNewFolder)
 
-strNewFolder = 'releases/' + build + '/ENigMA_' + strNewVersion
+strNewFolder = 'releases/' + build + '/ENigMA_python3_64bit_' + strNewVersion
 if not os.path.isdir(strNewFolder):
 	os.mkdir(strNewFolder)
 
