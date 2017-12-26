@@ -169,7 +169,7 @@ ENigMAocc.saveMeshFile(mesh, "occ_04a.msh")
 
 #### A fused shape ####
 
-![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04b.png)
+![fused](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04b.png)
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
@@ -193,7 +193,7 @@ ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
 
 #### More cut-outs ####
 
-![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_05.png)
+![mcutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_05.png)
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
@@ -238,4 +238,20 @@ mesh = ENigMAocc.meshShape(shape, 2.0, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_05.msh")
 ```
 
+#### A STEP file ####
 
+![step](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_06.png)
+```python
+from OCC.STEPControl import STEPControl_Reader
+
+import ENigMAocc
+        
+step_reader = STEPControl_Reader()
+step_reader.ReadFile("lego.step")
+
+step_reader.TransferRoot(1)
+shape = step_reader.Shape(1)
+    
+mesh = ENigMAocc.meshShape(shape, 1.0, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_06.msh")
+```
