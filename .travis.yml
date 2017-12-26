@@ -9,6 +9,7 @@ script:
   - cd build/gcc-x86
   - cmake ../..
   - make
+  - cd tests
   - ./UnitTests
 
 notifications:
