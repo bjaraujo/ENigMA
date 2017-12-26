@@ -96,9 +96,9 @@ Download miniconda (python3.6 64bit):
 - https://conda.io/miniconda.html
 
 Install pythonocc: 
+```bash
 conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
-
-
+```
 
 #### A cylinder ####
 
