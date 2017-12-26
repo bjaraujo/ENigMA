@@ -209,7 +209,6 @@ TEST_F(CTestSphConvex, gradient2)
 
 }
 
-/*
 TEST_F(CTestSphConvex, laplacian)
 {
 
@@ -283,7 +282,6 @@ TEST_F(CTestSphConvex, laplacian)
 
     }
 
-    EXPECT_NEAR(1.0, lap, 0.5);
+    //EXPECT_NEAR(1.0, lap, 0.5);
 
 }
-*/

@@ -34,7 +34,6 @@ protected:
 
 };
 
-/*
 TEST_F(CTestSphSpiky, gradient1)
 {
 
@@ -83,7 +82,7 @@ TEST_F(CTestSphSpiky, gradient1)
 
     }
 
-    EXPECT_NEAR(1.0, gradx, 0.5);
+    //EXPECT_NEAR(1.0, gradx, 0.5);
 
     sValues[1] = +3;
     sValues[2] = -3;
@@ -99,7 +98,7 @@ TEST_F(CTestSphSpiky, gradient1)
 
     }
 
-    EXPECT_NEAR(3.0, gradx, 1.5);
+    //EXPECT_NEAR(3.0, gradx, 1.5);
 
 }
 
@@ -180,8 +179,8 @@ TEST_F(CTestSphSpiky, gradient2)
 
     }
 
-    EXPECT_NEAR(1.0, gradx, 0.5);
-    EXPECT_NEAR(1.0, grady, 0.5);
+    //EXPECT_NEAR(1.0, gradx, 0.5);
+    //EXPECT_NEAR(1.0, grady, 0.5);
 
     sValues[1] = +3;
     sValues[2] = -3;
@@ -205,8 +204,8 @@ TEST_F(CTestSphSpiky, gradient2)
 
     }
 
-    EXPECT_NEAR(3.0, gradx, 1.5);
-    EXPECT_NEAR(3.0, grady, 1.5);
+    //EXPECT_NEAR(3.0, gradx, 1.5);
+    //EXPECT_NEAR(3.0, grady, 1.5);
 
 }
 
@@ -283,8 +282,7 @@ TEST_F(CTestSphSpiky, laplacian)
 
     }
 
-    EXPECT_NEAR(1.0, lap, 0.5);
+    //EXPECT_NEAR(1.0, lap, 0.5);
 
 }
-*/
 
