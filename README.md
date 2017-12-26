@@ -120,11 +120,10 @@ mesh = ENigMAocc.meshShape(sphere, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
 ```
 
-#### A partial sphere ####
+#### A cut-out sphere ####
 
 ![sphere](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_03.png)
 ```python
-from OCC.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
@@ -136,15 +135,37 @@ sphere2 = BRepPrimAPI_MakeSphere(6.0).Shape()
 
 move = gp_Trsf()
 move.SetTranslation(gp_Vec(4.0, 0.0, 0.0))
-sphere3 = BRepBuilderAPI_Transform(sphere2, move, True).Shape()
-cut = BRepAlgoAPI_Cut(sphere1, sphere3).Shape()
+sphere2 = BRepBuilderAPI_Transform(sphere2, move, False).Shape()
 
-mesh = ENigMAocc.meshShape(cut, 0.5, 1E-3)
+shape = BRepAlgoAPI_Cut(sphere1, sphere2).Shape()
+
+mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
 ```
 
+#### A cut-out shape ####
 
+![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04.png)
+```python
+from OCC.gp import gp_Vec, gp_Trsf
+from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeSphere
+from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
 
+import ENigMAocc
+        
+box = BRepPrimAPI_MakeBox(8.0, 8.0, 8.0).Shape()
+sphere = BRepPrimAPI_MakeSphere(5).Shape() 
+
+move = gp_Trsf()
+move.SetTranslation(gp_Vec(-4.0, -4.0, -4.0))
+box = BRepBuilderAPI_Transform(box, move, True).Shape()
+
+shape = BRepAlgoAPI_Cut(box, sphere).Shape()
+
+mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
+ENigMAocc.saveMeshFile(mesh, "occ_04.msh")
+```
 
 
 
