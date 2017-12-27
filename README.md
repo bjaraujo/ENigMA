@@ -1,5 +1,5 @@
+[![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/bjaraujo/ENigMA.svg?branch=master)](https://travis-ci.org/bjaraujo/ENigMA/build)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
 # ENigMA - Extended Numerical Multiphysics Analysis #
@@ -94,17 +94,28 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 ### Examples ###
 
-These examples use pythonocc and the ENigMA python wrapper. 
+#### Mesh Generation ####
 
-Download miniconda (python3.6 64bit): 
+These examples show the mesh generation capability of the ENigMA library. 
+The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. 
+
+To reproduce these examples:
+
+1. Download miniconda (python3.6 64bit): 
 - https://conda.io/miniconda.html
 
-Install pythonocc: 
+2. Install pythonocc: 
 ```bash
 conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
 ```
 
-#### A cylinder ####
+3. Download ENigMA 0.1.2:
+- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip
+
+4. Download the examples:
+- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip
+
+##### A Cylinder #####
 
 ![cylinder](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_01.png)
 ```python
@@ -118,7 +129,7 @@ mesh = ENigMAocc.meshShape(cylinder, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_01.msh")
 ```
 
-#### A torus ####
+##### A Torus #####
 
 ![torus](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_02.png)
 ```python
@@ -132,7 +143,7 @@ mesh = ENigMAocc.meshShape(sphere, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
 ```
 
-#### A cut-out sphere ####
+##### A Cut-out Sphere #####
 
 ![sphere](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_03.png)
 ```python
@@ -155,7 +166,7 @@ mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
 ```
 
-#### A cut-out shape ####
+##### A Cut-out Shape #####
 
 ![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04a.png)
 ```python
@@ -179,7 +190,7 @@ mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_04a.msh")
 ```
 
-#### A fused shape ####
+##### A Fused Shape #####
 
 ![fused](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04b.png)
 ```python
@@ -203,7 +214,7 @@ mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
 ```
 
-#### More cut-outs ####
+##### More Cut-outs #####
 
 ![mcutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_05.png)
 ```python
@@ -250,7 +261,7 @@ mesh = ENigMAocc.meshShape(shape, 2.0, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_05.msh")
 ```
 
-#### A STEP file ####
+##### A STEP File #####
 
 ![step](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_06.png)
 ```python
