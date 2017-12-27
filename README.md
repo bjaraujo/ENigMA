@@ -97,7 +97,7 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 #### Mesh Generation ####
 
 These examples show the mesh generation capability of the ENigMA library. 
-The library pythonocc is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. 
+The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. 
 
 To reproduce these examples:
 
