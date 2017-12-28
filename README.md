@@ -160,6 +160,7 @@ ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
 
 ![sphere](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_03.png)
 ```python
+from OCC.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
