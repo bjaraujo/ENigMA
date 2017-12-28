@@ -55,9 +55,9 @@ Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Wil
 ### Capabilities ###
 
 - Mesh generation (2D/3D), 
-- Structural Mechanics (linear elasticity),
+- Structural mechanics (linear elasticity),
 - Electro-magnetics (Laplace equation),
-- Fluid Flow and Heat Transfer (Navier-Stokes & Laplace equation),
+- Fluid flow and heat transfer (Navier-Stokes & Laplace equation),
 - Finance (Black-Scholes equation).
 
 ### Dependencies ###
