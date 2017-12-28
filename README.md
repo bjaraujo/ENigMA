@@ -50,16 +50,19 @@ Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Wil
 
 ### Dependencies ###
 
-Core:
+#### Core ####
+
 - Eigen: http://eigen.tuxfamily.org
 - Exprtk: https://github.com/ArashPartow/exprtk or dependencies folder
 - RTree: https://github.com/nushoin/RTree (slightly modified) or dependencies folder
 - ViennaCL (optional): http://viennacl.sourceforge.net
 
-Tests:
+#### Tests ####
+
 - Gtest (optional): https://github.com/google/googletest
 
-Examples:
+#### Examples ####
+
 - Qt (optional): https://www.qt.io
 - VTK (optional): http://www.vtk.org
 - OpenGL/GLUT (optional): http://freeglut.sourceforge.net
