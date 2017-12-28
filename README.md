@@ -28,6 +28,10 @@ The argument passed to the CPdeEquation accepts an object of type CSleSystem whi
 aPdeEquation.solve(u);
 ```
 
+### Repository ###
+
+https://github.com/bjaraujo/ENigMA
+
 ### Structure ###
 
 ENigMA has the following namespaces:
