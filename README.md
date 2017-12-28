@@ -108,19 +108,16 @@ The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build t
 
 To reproduce these examples:
 
-1. Download miniconda (python3.6 64bit): 
-- https://conda.io/miniconda.html
+1. Download miniconda (python3.6 64bit): https://conda.io/miniconda.html
 
 2. Install pythonocc: 
 ```bash
 conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
 ```
 
-3. Download ENigMA 0.1.2:
-- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip
+3. Download ENigMA 0.1.2: https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip
 
-4. Download the examples:
-- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip
+4. Download the examples: https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip
 
 ##### A Cylinder #####
 
