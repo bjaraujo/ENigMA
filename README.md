@@ -52,6 +52,14 @@ ENigMA has the following namespaces:
 
 Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Will be added to ENigMA source code base when this project reaches 100 stars. 
 
+### Capabilities ###
+
+- Mesh generation (2D/3D), 
+- Structural Mechanics (linear elasticity),
+- Electro-magnetics (Laplace equation),
+- Fluid Flow and Heat Transfer (Navier-Stokes & Laplace equation),
+- Finance (Black-Scholes equation).
+
 ### Dependencies ###
 
 #### Core ####
