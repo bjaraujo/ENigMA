@@ -28,6 +28,10 @@ The argument passed to the CPdeEquation accepts an object of type CSleSystem whi
 aPdeEquation.solve(u);
 ```
 
+### Repository ###
+
+https://github.com/bjaraujo/ENigMA
+
 ### Structure ###
 
 ENigMA has the following namespaces:
@@ -48,21 +52,33 @@ ENigMA has the following namespaces:
 
 Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Will be added to ENigMA source code base when this project reaches 100 stars. 
 
+### Capabilities ###
+
+- Mesh generation (2D/3D), 
+- Structural mechanics (linear elasticity),
+- Electro-magnetics (Laplace equation),
+- Fluid flow and heat transfer (Navier-Stokes & Laplace equation),
+- Finance (Black-Scholes equation).
+
 ### Dependencies ###
 
-Core:
+#### Core ####
+
 - Eigen: http://eigen.tuxfamily.org
 - Exprtk: https://github.com/ArashPartow/exprtk or dependencies folder
 - RTree: https://github.com/nushoin/RTree (slightly modified) or dependencies folder
 - ViennaCL (optional): http://viennacl.sourceforge.net
 
-Tests:
+#### Tests ####
+
 - Gtest (optional): https://github.com/google/googletest
 
-Examples:
+#### Examples ####
+
 - Qt (optional): https://www.qt.io
 - VTK (optional): http://www.vtk.org
 - OpenGL/GLUT (optional): http://freeglut.sourceforge.net
+- OpenCASCADE (optional): https://www.opencascade.com/
 - Gmsh (optional): http://gmsh.info/
 
 ### Install ###
@@ -97,23 +113,20 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 #### Mesh Generation ####
 
 These examples show the mesh generation capability of the ENigMA library. 
-The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. 
+The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. These examples use [Gmsh](http://gmsh.info/) for post-processing.
 
 To reproduce these examples:
 
-1. Download miniconda (python3.6 64bit): 
-- https://conda.io/miniconda.html
+1. Download miniconda (python3.6 64bit): https://conda.io/miniconda.html
 
 2. Install pythonocc: 
 ```bash
 conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
 ```
 
-3. Download ENigMA 0.1.2:
-- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip
+3. Download ENigMA 0.1.2: [ENigMA_python3_64bit_0.1.2.0.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip)
 
-4. Download the examples:
-- https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip
+4. Download the examples: [ENigMA_python_examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip)
 
 ##### A Cylinder #####
 
@@ -147,6 +160,7 @@ ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
 
 ![sphere](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_03.png)
 ```python
+from OCC.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
 from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
 from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
