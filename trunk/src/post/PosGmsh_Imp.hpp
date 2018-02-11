@@ -304,6 +304,8 @@ namespace ENigMA
 
                             if (aField.nbDofs() == 1)
                                 fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i) << std::endl;
+                            else if (aField.nbDofs() == 2)
+                                fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i * 2 + 0) << " " << aField.u(i * 2 + 1) << std::endl;
                             else if (aField.nbDofs() == 3)
                                 fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i * 3 + 0) << " " << aField.u(i * 3 + 1) << " " << aField.u(i * 3 + 2) << std::endl;
 
@@ -336,6 +338,8 @@ namespace ENigMA
 
                             if (aField.nbDofs() == 1)
                                 fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i) << std::endl;
+                            else if (aField.nbDofs() == 2)
+                                fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i * 2 + 0) << " " << aField.u(i * 2 + 1) << std::endl;
                             else if (aField.nbDofs() == 3)
                                 fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i * 3 + 0) << " " << aField.u(i * 3 + 1) << " " << aField.u(i * 3 + 2) << std::endl;
 

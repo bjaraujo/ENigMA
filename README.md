@@ -110,8 +110,6 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 ### Examples ###
 
-#### Mesh Generation ####
-
 These examples show the mesh generation capability of the ENigMA library. 
 The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build the CAD geometries and the ENigMA python wrapper to perform surface mesh generation. These examples use [Gmsh](http://gmsh.info/) for post-processing.
 
@@ -127,6 +125,8 @@ conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.
 3. Download ENigMA 0.1.2: [ENigMA_python3_64bit_0.1.2.0.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip)
 
 4. Download the examples: [ENigMA_python_examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip)
+
+#### Mesh Generation ####
 
 ##### A Cylinder #####
 
@@ -491,3 +491,106 @@ shape = aRes
 
 mesh = ENigMAocc.meshShape(shape, 1.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
+```
+
+#### Structural Analysis ####
+
+##### A Cantilever #####
+
+![cantilever](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_01.png)
+```python
+import math
+import ENigMA
+
+edgeMesh = ENigMA.CMshMeshDouble()
+
+node1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
+node2 = ENigMA.CMshNodeDouble(1.0, 0.0, 0.0)
+node3 = ENigMA.CMshNodeDouble(1.0, 0.1, 0.0)
+node4 = ENigMA.CMshNodeDouble(0.0, 0.1, 0.0)
+
+edgeMesh.addNode(1, node1)
+edgeMesh.addNode(2, node2)
+edgeMesh.addNode(3, node3)
+edgeMesh.addNode(4, node4)
+
+element1 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element1.addNodeId(1)
+element1.addNodeId(2)
+
+element2 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element2.addNodeId(2)
+element2.addNodeId(3)
+
+element3 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element3.addNodeId(3)
+element3.addNodeId(4)
+
+element4 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element4.addNodeId(4)
+element4.addNodeId(1)
+
+edgeMesh.addElement(1, element1)
+edgeMesh.addElement(2, element2)
+edgeMesh.addElement(3, element3)
+edgeMesh.addElement(4, element4)
+
+triangleMesher = ENigMA.CMshTriangleMesherDouble()
+
+meshSize = 0.01
+
+edgeMesh.generateFaces(1E-3)
+triangleMesher.remesh(edgeMesh, meshSize);
+triangleMesher.generate(edgeMesh, 9999, meshSize, 0.1, 1E-6)
+
+triangleMesher.flipEdges()
+triangleMesher.relaxNodes()
+
+surfaceMesh = triangleMesher.mesh()
+
+for i in range(0, surfaceMesh.nbElements()):
+    elementId = surfaceMesh.elementId(i)
+    surfaceMesh.element(elementId).setThickness(1.0);
+
+# Material
+material = ENigMA.CMatMaterialDouble()
+
+material.addProperty(ENigMA.PT_ELASTIC_MODULUS, 30E+6)
+material.addProperty(ENigMA.PT_POISSON_COEFFICIENT, 0.3)
+
+# Stress field
+u = ENigMA.CPdeFieldDouble()
+
+u.setMesh(surfaceMesh)
+u.setMaterial(material)
+u.setSimulationType(ENigMA.ST_STRUCTURAL)
+u.setDiscretMethod(ENigMA.DM_FEM)
+u.setDiscretOrder(ENigMA.DO_LINEAR)
+u.setDiscretLocation(ENigMA.DL_NODE)
+u.setNbDofs(2)
+
+for i in range(0, surfaceMesh.nbNodes()):
+    nodeId = surfaceMesh.nodeId(i)
+    node = surfaceMesh.node(nodeId)
+    
+    if (math.fabs(node.x() - 0.0) < 1E-6):
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0, 0.0);
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1, 0.0);
+        
+    if (math.fabs(node.x() - 1.0) < 1E-6 and math.fabs(node.y() - 0.1) < 1E-6):
+        u.setSource(surfaceMesh.nodeIndex(nodeId), 1, -1000.0);
+
+pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
+
+pdeEquation.setSources(u);
+
+pdeEquation.setElimination(u)
+
+pdeEquation.solve(u)
+
+posGmsh = ENigMA.CPosGmshDouble()
+posGmsh.save(u, "fem_01.msh", "tris");
+```
+
+
+
