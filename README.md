@@ -304,8 +304,6 @@ from OCC.gp import gp_Pnt, gp_OX, gp_Vec, gp_Trsf, gp_DZ, gp_Ax2, gp_Ax3, gp_Pnt
 from OCC.GC import GC_MakeArcOfCircle, GC_MakeSegment
 from OCC.GCE2d import GCE2d_MakeSegment
 from OCC.Geom import Geom_Plane, Geom_Curve, Geom_CylindricalSurface, Handle_Geom_Plane, Handle_Geom_Surface
-from OCC.GeomAbs import GeomAbs_Circle
-from OCC.GeomLProp import GeomLProp_CLProps
 from OCC.Geom2d import Geom2d_Ellipse, Geom2d_TrimmedCurve, Handle_Geom2d_Ellipse, Handle_Geom2d_Curve
 from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire, BRepBuilderAPI_MakeFace, BRepBuilderAPI_Transform
 from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeCylinder, BRepPrimAPI_MakeBox
@@ -321,11 +319,6 @@ from OCC.TopTools import TopTools_ListOfShape
 from OCC.TopExp import TopExp_Explorer
 from OCC.TopoDS import topods, TopoDS_Compound, topods_Face, topods_Wire, topods_Edge
 from OCC.TopAbs import TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_REVERSED
-from OCC import BRepTools
-from OCC.TColgp import TColgp_Array1OfPnt
-from OCC.Poly import Poly_Array1OfTriangle, Poly_Triangle, Poly_Triangulation
-from OCC.Precision import precision_Confusion
-from OCC.GProp import GProp_GProps
 
 import ENigMAocc
 
