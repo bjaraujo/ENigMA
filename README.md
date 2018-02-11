@@ -78,8 +78,8 @@ Note: the constrained advancing-front tetrahedral mesher is part of ENigMA+. Wil
 - Qt (optional): https://www.qt.io
 - VTK (optional): http://www.vtk.org
 - OpenGL/GLUT (optional): http://freeglut.sourceforge.net
-- OpenCASCADE (optional): https://www.opencascade.com/
-- Gmsh (optional): http://gmsh.info/
+- OpenCASCADE (optional): https://www.opencascade.com
+- Gmsh (optional): http://gmsh.info
 
 ### Install ###
 
