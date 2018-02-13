@@ -497,15 +497,24 @@ ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
 
 ![cantilever](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_01.png)
 ```python
+
 import math
 import ENigMA
+
+b = 0.05
+h = 0.05
+
+F = -1000.0
+L = 1.0
+E = 30E+9
+I = b * h * h * h / 12
 
 edgeMesh = ENigMA.CMshMeshDouble()
 
 node1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
-node2 = ENigMA.CMshNodeDouble(1.0, 0.0, 0.0)
-node3 = ENigMA.CMshNodeDouble(1.0, 0.1, 0.0)
-node4 = ENigMA.CMshNodeDouble(0.0, 0.1, 0.0)
+node2 = ENigMA.CMshNodeDouble(L, 0.0, 0.0)
+node3 = ENigMA.CMshNodeDouble(L, h, 0.0)
+node4 = ENigMA.CMshNodeDouble(0.0, h, 0.0)
 
 edgeMesh.addNode(1, node1)
 edgeMesh.addNode(2, node2)
@@ -548,12 +557,12 @@ surfaceMesh = triangleMesher.mesh()
 
 for i in range(0, surfaceMesh.nbElements()):
     elementId = surfaceMesh.elementId(i)
-    surfaceMesh.element(elementId).setThickness(1.0);
+    surfaceMesh.element(elementId).setThickness(b);
 
 # Material
 material = ENigMA.CMatMaterialDouble()
 
-material.addProperty(ENigMA.PT_ELASTIC_MODULUS, 30E+6)
+material.addProperty(ENigMA.PT_ELASTIC_MODULUS, E)
 material.addProperty(ENigMA.PT_POISSON_COEFFICIENT, 0.3)
 
 # Stress field
@@ -567,6 +576,8 @@ u.setDiscretOrder(ENigMA.DO_LINEAR)
 u.setDiscretLocation(ENigMA.DL_NODE)
 u.setNbDofs(2)
 
+index = 0;
+
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
     node = surfaceMesh.node(nodeId)
@@ -575,8 +586,9 @@ for i in range(0, surfaceMesh.nbNodes()):
         u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0, 0.0);
         u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1, 0.0);
         
-    if (math.fabs(node.x() - 1.0) < 1E-6 and math.fabs(node.y() - 0.1) < 1E-6):
-        u.setSource(surfaceMesh.nodeIndex(nodeId), 1, -1000.0);
+    if (math.fabs(node.x() - L) < 1E-6 and math.fabs(node.y() - h) < 1E-6):
+        index = i;
+        u.setSource(surfaceMesh.nodeIndex(nodeId), 1, F);
 
 pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
 
@@ -588,6 +600,13 @@ pdeEquation.solve(u)
 
 posGmsh = ENigMA.CPosGmshDouble()
 posGmsh.save(u, "fem_01.msh", "tris");
+
+print('Max deflection (calculated) = ' + str(u.value(index * 2 - 1)))
+
+# Theoretical displacement
+deflection = (F * L * L * L) / (3 * E * I)
+
+print('Max deflection (theoretical) = ' + str(deflection))
 ```
 
 
