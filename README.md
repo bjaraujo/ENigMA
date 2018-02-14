@@ -129,6 +129,9 @@ conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.
 ##### A Cylinder #####
 
 ![cylinder](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_01.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
 
@@ -139,10 +142,15 @@ cylinder = BRepPrimAPI_MakeCylinder(3.0, 10.0).Shape()
 mesh = ENigMAocc.meshShape(cylinder, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_01.msh")
 ```
+</p>
+</details>
 
 ##### A Torus #####
 
 ![torus](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_02.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeTorus
 
@@ -153,10 +161,15 @@ sphere = BRepPrimAPI_MakeTorus(4.0, 1.5).Shape()
 mesh = ENigMAocc.meshShape(sphere, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
 ```
+</p>
+</details>
 
 ##### A Cut-out Sphere #####
 
 ![sphere](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_03.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
@@ -177,10 +190,15 @@ shape = BRepAlgoAPI_Cut(sphere1, sphere2).Shape()
 mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
 ```
+</p>
+</details>
 
 ##### A Cut-out Shape #####
 
 ![cutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04a.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
@@ -201,10 +219,15 @@ shape = BRepAlgoAPI_Cut(box, cylinder).Shape()
 mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_04a.msh")
 ```
+</p>
+</details>
 
 ##### A Fused Shape #####
 
 ![fused](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_04b.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
@@ -225,10 +248,15 @@ shape = BRepAlgoAPI_Fuse(box, cylinder).Shape()
 mesh = ENigMAocc.meshShape(shape, 0.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
 ```
+</p>
+</details>
 
 ##### More Cut-outs #####
 
 ![mcutout](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_05.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.gp import gp_Vec, gp_Trsf
 from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
@@ -272,10 +300,15 @@ shape = BRepAlgoAPI_Cut(cut, cylinder_copy).Shape()
 mesh = ENigMAocc.meshShape(shape, 2.0, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_05.msh")
 ```
+</p>
+</details>
 
 ##### A STEP File #####
 
 ![step](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_06.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 from OCC.STEPControl import STEPControl_Reader
 
@@ -290,10 +323,15 @@ shape = step_reader.Shape(1)
 mesh = ENigMAocc.meshShape(shape, 1.0, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_06.msh")
 ```
+</p>
+</details>
 
 ##### The OCC Bottle #####
 
 ![occbottle](https://github.com/bjaraujo/ENigMA/blob/master/images/occ_07.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 
 import math
@@ -490,12 +528,17 @@ shape = aRes
 mesh = ENigMAocc.meshShape(shape, 1.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
 ```
+</p>
+</details>
 
 #### Structural Analysis ####
 
 ##### A Cantilever #####
 
 ![cantilever](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_01.png)
+
+<details><summary>Code</summary>
+<p>
 ```python
 
 import math
@@ -608,6 +651,8 @@ deflection = (F * L * L * L) / (3 * E * I)
 
 print('Max deflection (theoretical) = ' + str(deflection))
 ```
+</p>
+</details>
 
 
 
