@@ -672,5 +672,76 @@ print('Max deflection (theoretical) = ' + str(deflection))
 </p>
 </details>
 
+#### Thermal Analysis ####
 
+##### A Plate #####
 
+![plate](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_02.png)
+
+<details><summary>Code</summary>
+<p>
+
+```python
+import math
+import ENigMA
+
+vertex1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
+vertex2 = ENigMA.CMshNodeDouble(1.0, 0.0, 0.0)
+vertex3 = ENigMA.CMshNodeDouble(1.0, 1.0, 0.0)
+vertex4 = ENigMA.CMshNodeDouble(0.0, 1.0, 0.0)
+
+quadrilateral = ENigMA.CGeoQuadrilateralDouble()
+
+quadrilateral.addVertex(vertex1)
+quadrilateral.addVertex(vertex2)
+quadrilateral.addVertex(vertex3)
+quadrilateral.addVertex(vertex4)
+
+basicMesher = ENigMA.CMshBasicMesherDouble()
+
+basicMesher.generate(quadrilateral, 16, 16, True);
+
+surfaceMesh = basicMesher.mesh();
+
+# Temperature field
+u = ENigMA.CPdeFieldDouble()
+
+u.setMesh(surfaceMesh)
+u.setSimulationType(ENigMA.ST_THERMAL)
+u.setDiscretMethod(ENigMA.DM_FEM)
+u.setDiscretOrder(ENigMA.DO_LINEAR)
+u.setDiscretLocation(ENigMA.DL_NODE)
+u.setNbDofs(1)
+
+index = 0;
+
+for i in range(0, surfaceMesh.nbNodes()):
+    nodeId = surfaceMesh.nodeId(i)
+    node = surfaceMesh.node(nodeId)
+    
+    if (math.fabs(node.x() - 0.0) < 1E-6):
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0);
+
+    if (math.fabs(node.x() - 1.0) < 1E-6):
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0);
+
+    if (math.fabs(node.y() - 0.0) < 1E-6):
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0);
+        
+    if (math.fabs(node.y() - 1.0) < 1E-6):
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1.0);
+
+pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
+
+pdeEquation.setSources(u);
+
+pdeEquation.setElimination(u)
+
+pdeEquation.solve(u)
+
+posGmsh = ENigMA.CPosGmshDouble()
+posGmsh.save(u, "fem_02.msh", "tris");
+```
+
+</p>
+</details>
