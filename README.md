@@ -612,7 +612,7 @@ triangleMesher = ENigMA.CMshTriangleMesherDouble()
 meshSize = 0.01
 
 edgeMesh.generateFaces(1E-3)
-triangleMesher.remesh(edgeMesh, meshSize);
+triangleMesher.remesh(edgeMesh, meshSize)
 triangleMesher.generate(edgeMesh, 9999, meshSize, 0.1, 1E-6)
 
 triangleMesher.flipEdges()
@@ -622,7 +622,7 @@ surfaceMesh = triangleMesher.mesh()
 
 for i in range(0, surfaceMesh.nbElements()):
     elementId = surfaceMesh.elementId(i)
-    surfaceMesh.element(elementId).setThickness(b);
+    surfaceMesh.element(elementId).setThickness(b)
 
 # Material
 material = ENigMA.CMatMaterialDouble()
@@ -641,30 +641,30 @@ u.setDiscretOrder(ENigMA.DO_LINEAR)
 u.setDiscretLocation(ENigMA.DL_NODE)
 u.setNbDofs(2)
 
-index = 0;
+index = 0
 
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
     node = surfaceMesh.node(nodeId)
     
     if (math.fabs(node.x() - 0.0) < 1E-6):
-        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0, 0.0);
-        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1, 0.0);
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0, 0.0)
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1, 0.0)
         
     if (math.fabs(node.x() - L) < 1E-6 and math.fabs(node.y() - h) < 1E-6):
-        index = i;
-        u.setSource(surfaceMesh.nodeIndex(nodeId), 1, F);
+        index = i
+        u.setSource(surfaceMesh.nodeIndex(nodeId), 1, F)
 
 pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
 
-pdeEquation.setSources(u);
+pdeEquation.setSources(u)
 
 pdeEquation.setElimination(u)
 
 pdeEquation.solve(u)
 
 posGmsh = ENigMA.CPosGmshDouble()
-posGmsh.save(u, "fem_01.msh", "tris");
+posGmsh.save(u, "fem_01.msh", "tris")
 
 print('Max deflection (calculated) = ' + str(u.value(index * 2 - 1)))
 
@@ -709,9 +709,9 @@ quadrilateral.addVertex(vertex4)
 
 basicMesher = ENigMA.CMshBasicMesherDouble()
 
-basicMesher.generate(quadrilateral, 16, 16, True);
+basicMesher.generate(quadrilateral, 16, 16, True)
 
-surfaceMesh = basicMesher.mesh();
+surfaceMesh = basicMesher.mesh()
 
 # Temperature field
 u = ENigMA.CPdeFieldDouble()
@@ -723,34 +723,34 @@ u.setDiscretOrder(ENigMA.DO_LINEAR)
 u.setDiscretLocation(ENigMA.DL_NODE)
 u.setNbDofs(1)
 
-index = 0;
+index = 0
 
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
     node = surfaceMesh.node(nodeId)
     
     if (math.fabs(node.x() - 0.0) < 1E-6):
-        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0);
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
 
     if (math.fabs(node.x() - 1.0) < 1E-6):
-        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0);
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
 
     if (math.fabs(node.y() - 0.0) < 1E-6):
-        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0);
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
         
     if (math.fabs(node.y() - 1.0) < 1E-6):
-        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1.0);
+        u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1.0)
 
 pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
 
-pdeEquation.setSources(u);
+pdeEquation.setSources(u)
 
 pdeEquation.setElimination(u)
 
 pdeEquation.solve(u)
 
 posGmsh = ENigMA.CPosGmshDouble()
-posGmsh.save(u, "fem_02.msh", "tris");
+posGmsh.save(u, "fem_02.msh", "tris")
 ```
 
 </p>
