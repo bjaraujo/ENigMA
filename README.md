@@ -681,6 +681,11 @@ print('Max deflection (theoretical) = ' + str(deflection))
 
 ##### A Plate #####
 
+```
+Temperature at point (0.5, 0.5) (calculated) = 0.24576537992294997
+Temperature at point (0.5, 0.5) (theoretical) = 0.25
+```
+
 ![plate](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_02.png)
 
 <details><summary>Code</summary>
