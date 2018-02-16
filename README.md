@@ -551,6 +551,9 @@ ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
 
 ##### A Cantilever #####
 
+Max deflection (calculated) = -0.02016744022581042
+Max deflection (theoretical) = -0.021333333333333326
+
 ![cantilever](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_01.png)
 
 <details><summary>Code</summary>
