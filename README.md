@@ -551,6 +551,8 @@ ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
 
 ##### A Cantilever #####
 
+A cantilever beam fixed at x=0 with an applied force of 1000 at x=1.
+
 ```
 Max deflection (calculated) = -0.02016744022581042
 Max deflection (theoretical) = -0.021333333333333326
@@ -680,6 +682,8 @@ print('Max deflection (theoretical) = ' + str(deflection))
 #### Thermal Analysis ####
 
 ##### A Plate #####
+
+Two-dimensional steady=state thermal analysis in a rectangular plate heated at the top (T = 1), other sides kept at 0.
 
 ```
 Temperature at point (0.5, 0.5) (calculated) = 0.24576537992294997
