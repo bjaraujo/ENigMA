@@ -554,7 +554,7 @@ ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
 A cantilever beam fixed at x=0 with an applied force of 1000 at x=1.
 
 ```
-Max deflection (calculated) = -0.020169846881094116
+Max deflection (calculated)  = -0.021174580524850536
 Max deflection (theoretical) = -0.021333333333333326
 ```
 
@@ -575,51 +575,23 @@ L = 1.0
 E = 30E+9
 I = b * h * h * h / 12
 
-edgeMesh = ENigMA.CMshMeshDouble()
+vertex1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
+vertex2 = ENigMA.CMshNodeDouble(L, 0.0, 0.0)
+vertex3 = ENigMA.CMshNodeDouble(L, h, 0.0)
+vertex4 = ENigMA.CMshNodeDouble(0.0, h, 0.0)
 
-node1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
-node2 = ENigMA.CMshNodeDouble(L, 0.0, 0.0)
-node3 = ENigMA.CMshNodeDouble(L, h, 0.0)
-node4 = ENigMA.CMshNodeDouble(0.0, h, 0.0)
+quadrilateral = ENigMA.CGeoQuadrilateralDouble()
 
-edgeMesh.addNode(1, node1)
-edgeMesh.addNode(2, node2)
-edgeMesh.addNode(3, node3)
-edgeMesh.addNode(4, node4)
+quadrilateral.addVertex(vertex1)
+quadrilateral.addVertex(vertex2)
+quadrilateral.addVertex(vertex3)
+quadrilateral.addVertex(vertex4)
 
-element1 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
-element1.addNodeId(1)
-element1.addNodeId(2)
+basicMesher = ENigMA.CMshBasicMesherDouble()
 
-element2 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
-element2.addNodeId(2)
-element2.addNodeId(3)
+basicMesher.generate(quadrilateral, 400, 20, True);
 
-element3 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
-element3.addNodeId(3)
-element3.addNodeId(4)
-
-element4 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
-element4.addNodeId(4)
-element4.addNodeId(1)
-
-edgeMesh.addElement(1, element1)
-edgeMesh.addElement(2, element2)
-edgeMesh.addElement(3, element3)
-edgeMesh.addElement(4, element4)
-
-triangleMesher = ENigMA.CMshTriangleMesherDouble()
-
-meshSize = 0.01
-
-edgeMesh.generateFaces(1E-3)
-triangleMesher.remesh(edgeMesh, meshSize);
-triangleMesher.generate(edgeMesh, 9999, meshSize, 0.1, 1E-6)
-
-triangleMesher.flipEdges()
-triangleMesher.relaxNodes()
-
-surfaceMesh = triangleMesher.mesh()
+surfaceMesh = basicMesher.mesh();
 
 for i in range(0, surfaceMesh.nbElements()):
     elementId = surfaceMesh.elementId(i)
@@ -670,7 +642,7 @@ posGmsh.save(u, "fem_01.msh", "tris")
 # Theoretical displacement
 deflection = (F * L * L * L) / (3 * E * I)
 
-print('Max deflection (calculated) = ' + str(u.value(index * 2 + 1)))
+print('Max deflection (calculated)  = ' + str(u.value(index * 2 + 1)))
 print('Max deflection (theoretical) = ' + str(deflection))
 ```
 
@@ -684,7 +656,7 @@ print('Max deflection (theoretical) = ' + str(deflection))
 Two-dimensional steady=state thermal analysis in a rectangular plate heated at the top (T = 1), other sides kept at 0.
 
 ```
-Temperature at point (0.5, 0.5) (calculated) = 0.25
+Temperature at point (0.5, 0.5) (calculated)  = 0.25
 Temperature at point (0.5, 0.5) (theoretical) = 0.25
 ```
 
@@ -766,7 +738,7 @@ anaTemperature = ENigMA.CAnaTemperatureDouble()
 ut = anaTemperature.steadyStateHeatConduction2D(0.5, 0.5)
 
 print('Temperature at point (0.5, 0.5) (theoretical) = ' + str(ut))
-print('Temperature at point (0.5, 0.5) (calculated) = ' + str(u.value(index)))
+print('Temperature at point (0.5, 0.5) (calculated)  = ' + str(u.value(index)))
 ```
 
 </p>
