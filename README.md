@@ -653,7 +653,7 @@ print('Max deflection (theoretical) = ' + str(deflection))
 
 ##### A Plate #####
 
-Two-dimensional steady=state thermal analysis in a rectangular plate heated at the top (T = 1), other sides kept at 0.
+Two-dimensional steady-state thermal analysis in a rectangular plate heated at the top (T = 1), other sides kept at 0.
 
 ```
 Temperature at point (0.5, 0.5) (calculated)  = 0.25
