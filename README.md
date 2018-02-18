@@ -752,6 +752,120 @@ print('Temperature at point (0.5, 0.5) (calculated)  = ' + str(u.value(index)))
 
 #### Flow Analysis ####
 
-TODO
+Lid-driven cavity (Re = 1000).
+
+![liddriven](https://github.com/bjaraujo/ENigMA/blob/master/images/fvm_01.png)
+
+<details><summary>Code</summary>
+<p>
+
+```python
+import math
+import ENigMA
+
+vertex1 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, -0.1)
+vertex2 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, -0.1)
+vertex3 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, -0.1)
+vertex4 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, -0.1)
+vertex5 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, +0.1)
+vertex6 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, +0.1)
+vertex7 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, +0.1)
+vertex8 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, +0.1)
+
+hexahedron = ENigMA.CGeoHexahedronDouble()
+
+hexahedron.addVertex(vertex1)
+hexahedron.addVertex(vertex2)
+hexahedron.addVertex(vertex3)
+hexahedron.addVertex(vertex4)
+hexahedron.addVertex(vertex5)
+hexahedron.addVertex(vertex6)
+hexahedron.addVertex(vertex7)
+hexahedron.addVertex(vertex8)
+
+mesher = ENigMA.CMshBasicMesherDouble()
+mesher.generate(hexahedron, 40, 40, 1, False)
+mesher.mesh().generateFaces(1E-3)
+mesher.mesh().calculateFaceCentroid()
+mesher.mesh().calculateElementCentroid()
+
+volumeMesh = mesher.mesh()
+fvmMesh = ENigMA.CFvmMeshDouble(volumeMesh)
+
+U = 1.0    # lid velocity
+mu = 0.001 # dynamic viscosity
+rho = 1.0  # density
+
+nu = mu / rho # kinematic viscosity 
+
+pisoSolver = ENigMA.CFvmPisoSolverDouble(fvmMesh)
+
+pisoSolver.setGravity(0.0, 0.0, 0.0)
+pisoSolver.setMaterialProperties(rho, mu)
+
+faceIds = ENigMA.StdVectorInt()
+
+faceIds.clear()
+for i in range(0, fvmMesh.nbFaces()):
+
+    faceId = fvmMesh.faceId(i)
+    face = fvmMesh.face(faceId)
+    face.calculateCentroid()
+
+    if (face.centroid().x() == 0.0 or
+        face.centroid().x() == 1.0 or
+        face.centroid().y() == 0.0 or
+        face.centroid().y() == 1.0):
+        faceIds.push_back(faceId)
+
+pisoSolver.setBoundaryVelocity(faceIds, ENigMA.BT_WALL_NO_SLIP, 0.0, 0.0, 0.0)
+pisoSolver.setBoundaryPressure(faceIds, ENigMA.BT_WALL_NO_SLIP, 0.0)
+
+faceIds.clear()
+for i in range(0, fvmMesh.nbFaces()):
+
+    faceId = fvmMesh.faceId(i)
+    face = fvmMesh.face(faceId)
+    face.calculateCentroid()
+
+    if (face.centroid().y() == 1.0):
+        faceIds.push_back(faceId)
+
+pisoSolver.setBoundaryVelocity(faceIds, ENigMA.BT_WALL_NO_SLIP, U, 0.0, 0.0)
+
+# Courant < 1
+dt = U / 40			
+
+iter = 100
+
+# Flow in a rectangle
+for ii in range(0, iter):
+    print('Iter = ' + str(ii + 1) + ' of ' + str(iter))
+    pisoSolver.iterate(dt)
+
+u = ENigMA.CPdeFieldDouble()
+u.setMesh(volumeMesh)
+u.setSimulationType(ENigMA.ST_FLOW)
+u.setDiscretMethod(ENigMA.DM_FVM)
+u.setDiscretOrder(ENigMA.DO_LINEAR)
+u.setDiscretLocation(ENigMA.DL_ELEMENT_CENTER)
+u.setNbDofs(2)
+u.setSize(fvmMesh.nbControlVolumes() * 2)
+   
+for i in range(0, fvmMesh.nbControlVolumes()):
+
+    controlVolumeId = fvmMesh.controlVolumeId(i)
+
+    u.setValue(i * 2 + 0, pisoSolver.u(controlVolumeId))
+    u.setValue(i * 2 + 1, pisoSolver.v(controlVolumeId))
+
+posGmsh = ENigMA.CPosGmshDouble()
+posGmsh.save(u, "fem_03.msh", "tris")
+```
+
+</p>
+</details>
+
+
 
 

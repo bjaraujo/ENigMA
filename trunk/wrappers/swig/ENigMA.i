@@ -14,6 +14,11 @@
 // Use C99 int support
 %include <stdint.i>
 
+%{
+#include "Eigen/Dense"
+#include "Eigen/Sparse"
+%}
+
 // Use exceptions
 %include "exception.i"
 
@@ -169,6 +174,16 @@ namespace std
 %template(StdVectorCMshFaceDouble) std::vector<ENigMA::mesh::CMshFace<double> >;
 
 %include "CmnTypes.hpp"
+
+/*
+Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const Eigen::SparseMatrix<double>& left, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
+    return left * right;
+}
+
+Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const double c, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
+    return c * right;
+}
+*/
 
 // Coordinate
 %include "GeoCoordinate.hpp"
@@ -611,14 +626,6 @@ namespace std
 
     ENigMA::sle::CSleSystem<double> operator*(const Eigen::Matrix<double, Eigen::Dynamic, 1>& left, const CSleSystem<double>& right) {
         return left * right;
-    }
-
-    Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const Eigen::SparseMatrix<double>& left, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
-        return left * right;
-    }
-
-    Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const double c, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
-        return c * right;
     }
 
     ENigMA::sle::CSleSystem<double>& setRhs(const double right) {
