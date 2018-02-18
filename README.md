@@ -628,7 +628,10 @@ for i in range(0, surfaceMesh.nbNodes()):
         index = i;
         u.setSource(surfaceMesh.nodeIndex(nodeId), 1, F)
 
-pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
+sleSystem = ENigMA.laplacian(u)
+sleSystem.setRhs(0)
+        
+pdeEquation = ENigMA.CPdeEquationDouble(sleSystem)
 
 pdeEquation.setSources(u);
 
@@ -715,7 +718,10 @@ for i in range(0, surfaceMesh.nbNodes()):
     if (math.fabs(node.y() - 1.0) < 1E-6):
         u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1.0)
 
-pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(u))
+sleSystem = ENigMA.laplacian(u)
+sleSystem.setRhs(0)
+        
+pdeEquation = ENigMA.CPdeEquationDouble(sleSystem)
 
 pdeEquation.setSources(u);
 

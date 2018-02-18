@@ -69,11 +69,26 @@
 %apply double *OUTPUT {double& dmax}; 
 %apply double *OUTPUT {double& q}; 
 
-#if !defined(SWIGLUA) && !defined(SWIGR)
+#if !defined(SWIGLUA) && !defined(SWIGR) && !defined(SWIGPYTHON)
+%rename(Equal) operator =;
+%rename(PlusEqual) operator +=;
+%rename(MinusEqual) operator -=;
+%rename(MultiplyEqual) operator *=;
+%rename(DivideEqual) operator /=;
 %rename(Plus) operator +;
 %rename(Minus) operator -;
 %rename(Multiply) operator *;
 %rename(Divide) operator /;
+%rename(IndexIntoConst) operator[](unsigned idx) const;
+%rename(IndexInto) operator[](unsigned idx);
+%rename(Functor) operator ();
+#endif
+
+#if SWIGPYTHON
+%rename(__add__) operator +;
+%rename(__sub__) operator -;
+%rename(__mul__) operator *;
+%rename(__div__) operator /;
 #endif
 
 namespace std
@@ -562,10 +577,6 @@ namespace std
 // System of Linear Equations
 %include "SleSystem.hpp"
 
-%ignore ENigMA::sle::CSleSystem<double>::matrixA;
-%ignore ENigMA::sle::CSleSystem<double>::vectorB;
-%ignore ENigMA::sle::CSleSystem<double>::solve();
-
 %template(CSleSystemDouble) ENigMA::sle::CSleSystem<double>;
 
 %extend ENigMA::sle::CSleSystem<double> {
@@ -598,6 +609,26 @@ namespace std
         return c * right;
     }
 
+    ENigMA::sle::CSleSystem<double> operator*(const Eigen::Matrix<double, Eigen::Dynamic, 1>& left, const CSleSystem<double>& right) {
+        return left * right;
+    }
+
+    Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const Eigen::SparseMatrix<double>& left, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
+        return left * right;
+    }
+
+    Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const double c, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
+        return c * right;
+    }
+
+    ENigMA::sle::CSleSystem<double>& setRhs(const double right) {
+        return (*$self) = right;
+    }
+    
+    ENigMA::sle::CSleSystem<double>& setRhs(Eigen::Matrix<double, Eigen::Dynamic, 1> right) {
+        return (*$self) = right;
+    }
+
 }
 
 // Analytical function
@@ -618,7 +649,6 @@ namespace std
 // PDE Field
 %include "PdeField.hpp"
 
-%ignore ENigMA::pde::CPdeField<double>::u;
 %ignore ENigMA::pde::CPdeField<double>::uFixed;
 %ignore ENigMA::pde::CPdeField<double>::uSource;
 
@@ -632,6 +662,7 @@ namespace std
 %template(ddt) ENigMA::pde::ddt<double>;
 %template(laplacian) ENigMA::pde::laplacian<double>;
 %template(divergence) ENigMA::pde::divergence<double>;
+%template(gradient) ENigMA::pde::gradient<double>;
 
 // Boundary condition
 %include "PdeBoundaryCondition.hpp"

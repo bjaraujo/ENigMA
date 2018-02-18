@@ -320,11 +320,11 @@ void FemFlow::solve1()
         //std::cout << "Time = " << dt * (i + 1) << std::endl;
 
         // Velocity calculation
-        CPdeEquation<double> aPdeEquationU(1.0 / dt * ddt<double>(u) -nu * laplacian<double>(u) +divergence<double>(u, v, dt) = 0);
+        CPdeEquation<double> aPdeEquationU(1.0 / dt * ddt<double>(u) -nu * laplacian<double>(u) + divergence<double>(u, v, dt) = 0);
         aPdeEquationU.setElimination(u);
         aPdeEquationU.solve(u);
 
-        CPdeEquation<double> aPdeEquationV(1.0 / dt * ddt<double>(v) -nu * laplacian<double>(v) +divergence<double>(u, v, dt) = 0);
+        CPdeEquation<double> aPdeEquationV(1.0 / dt * ddt<double>(v) -nu * laplacian<double>(v) + divergence<double>(u, v, dt) = 0);
         aPdeEquationV.setElimination(v);
         aPdeEquationV.solve(v);
 
