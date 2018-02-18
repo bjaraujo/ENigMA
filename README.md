@@ -860,7 +860,7 @@ for i in range(0, fvmMesh.nbControlVolumes()):
     u.setValue(i * 2 + 1, pisoSolver.v(controlVolumeId))
 
 posGmsh = ENigMA.CPosGmshDouble()
-posGmsh.save(u, "fem_03.msh", "tris")
+posGmsh.save(u, "fvm_01.msh", "tris")
 ```
 
 </p>
