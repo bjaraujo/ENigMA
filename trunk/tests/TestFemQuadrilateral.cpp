@@ -47,9 +47,9 @@ TEST_F(CTestFemQuadrilateral, update) {
 
     aQuadrilateral.calculateArea();
 
-    aQuadrilateral.transient() = true;
+    aQuadrilateral.setTransient(true);
 
-    aQuadrilateral.dt() = 0.1;
+    aQuadrilateral.setDt(0.1);
 
     aQuadrilateral.update();
 

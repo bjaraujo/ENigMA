@@ -34,7 +34,15 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real& CFemElement<Real>::dt()
+        void CFemElement<Real>::setDt(const Real aValue)
+        {
+
+            m_dt = aValue;
+
+        }
+
+        template <typename Real>
+        Real CFemElement<Real>::dt() const
         {
         
             return m_dt;
@@ -42,7 +50,15 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real& CFemElement<Real>::diffusionCoefficient()
+        void CFemElement<Real>::setDiffusionCoefficient(const Real aValue)
+        {
+
+            m_diffusionCoefficient = aValue;
+
+        }
+
+        template <typename Real>
+        Real CFemElement<Real>::diffusionCoefficient() const
         {
         
             return m_diffusionCoefficient;
@@ -50,7 +66,15 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real& CFemElement<Real>::convectionCoefficient()
+        void CFemElement<Real>::setConvectionCoefficient(const Real aValue)
+        {
+
+            m_convectionCoefficient = aValue;
+
+        }
+
+        template <typename Real>
+        Real CFemElement<Real>::convectionCoefficient() const
         {
         
             return m_convectionCoefficient;
@@ -58,13 +82,21 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool& CFemElement<Real>::transient()
+        void CFemElement<Real>::setTransient(const bool aValue)
+        {
+
+            m_transient = aValue;
+
+        }
+
+        template <typename Real>
+        bool CFemElement<Real>::transient() const
         {
         
             return m_transient;
             
         }
 
-    }        
+    }
 }
 

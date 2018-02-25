@@ -60,8 +60,6 @@ namespace ENigMA
             void setDiffusionTerm();
             void setConvectiveTerm();
 
-            void setGuassPoints();
-
         public:
 
             CFemTriangle();

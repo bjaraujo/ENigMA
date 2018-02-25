@@ -55,9 +55,9 @@ TEST_F(CTestFemHexahedron, update) {
 
     aHexahedron.calculateVolume();
 
-    aHexahedron.transient() = true;
+    aHexahedron.setTransient(true);
 
-    aHexahedron.dt() = 0.1;
+    aHexahedron.setDt(0.1);
 
     aHexahedron.update();
 

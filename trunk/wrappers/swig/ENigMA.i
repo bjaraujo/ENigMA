@@ -175,16 +175,6 @@ namespace std
 
 %include "CmnTypes.hpp"
 
-/*
-Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const Eigen::SparseMatrix<double>& left, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
-    return left * right;
-}
-
-Eigen::Matrix<double, Eigen::Dynamic, 1> operator*(const double c, const Eigen::Matrix<double, Eigen::Dynamic, 1>& right) {
-    return c * right;
-}
-*/
-
 // Coordinate
 %include "GeoCoordinate.hpp"
 

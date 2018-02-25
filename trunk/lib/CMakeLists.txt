@@ -1,5 +1,5 @@
 
-project(ENigMALib)
+project(ENigMALib CXX)
 
 set(GEOMETRY_HEADERS
 ../src/geometry/GeoCentroid.hpp
@@ -183,12 +183,18 @@ set(FVM_HEADERS
 ../src/fvm/FvmMesh_Imp.hpp
 ../src/fvm/FvmMeshSearch.hpp
 ../src/fvm/FvmMeshSearch_Imp.hpp
-../src/fvm/FvmPisoSolver.hpp
-../src/fvm/FvmPisoSolver_Imp.hpp
-../src/fvm/FvmTemperatureSolver.hpp
-../src/fvm/FvmTemperatureSolver_Imp.hpp
-../src/fvm/FvmVofSolver.hpp
-../src/fvm/FvmVofSolver_Imp.hpp
+)
+
+set(FVM_THERMAL_HEADERS
+../src/fvm/thermal/FvmTemperatureSolver.hpp
+../src/fvm/thermal/FvmTemperatureSolver_Imp.hpp
+)
+
+set(FVM_FLOW_HEADERS
+../src/fvm/flow/FvmPisoSolver.hpp
+../src/fvm/flow/FvmPisoSolver_Imp.hpp
+../src/fvm/flow/FvmVofSolver.hpp
+../src/fvm/flow/FvmVofSolver_Imp.hpp
 )
 
 set(SPH_HEADERS
@@ -322,6 +328,8 @@ source_group("Header Files\\fem\\thermal" FILES ${FEM_THERMAL_HEADERS})
 source_group("Header Files\\fem\\structural" FILES ${FEM_STRUCTURAL_HEADERS})
 source_group("Header Files\\fem\\flow" FILES ${FEM_FLOW_HEADERS})
 source_group("Header Files\\fvm" FILES ${FVM_HEADERS})
+source_group("Header Files\\fvm\\thermal" FILES ${FVM_THERMAL_HEADERS})
+source_group("Header Files\\fvm\\flow" FILES ${FVM_FLOW_HEADERS})
 source_group("Header Files\\sph" FILES ${SPH_HEADERS})
 source_group("Header Files\\sle" FILES ${SLE_HEADERS})
 source_group("Header Files\\pde" FILES ${PDE_HEADERS})

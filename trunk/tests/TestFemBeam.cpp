@@ -43,9 +43,9 @@ TEST_F(CTestFemBeam, update) {
 
     aBeam.calculateLength();
 
-    aBeam.transient() = true;
+    aBeam.setTransient(true);
 
-    aBeam.dt() = 0.1;
+    aBeam.setDt(0.1);
 
     aBeam.update();
 

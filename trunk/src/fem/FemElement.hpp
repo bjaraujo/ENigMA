@@ -43,11 +43,17 @@ namespace ENigMA
             Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> gradient;
             Eigen::Matrix<Real, Eigen::Dynamic, 1> source;
 
-            Real& dt();
-            Real& diffusionCoefficient();
-            Real& convectionCoefficient();
+            void setDt(const Real aValue);
+            Real dt() const;
 
-            bool& transient();
+            void setDiffusionCoefficient(const Real aValue);
+            Real diffusionCoefficient() const;
+
+            void setConvectionCoefficient(const Real aValue);
+            Real convectionCoefficient() const;
+
+            void setTransient(const bool aValue);
+            bool transient() const;
 
             virtual void rebuild() = 0;
             virtual void update() = 0;

@@ -67,10 +67,10 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
 
-                            aTriangle.thickness() = anElement.thickness();
+                            aTriangle.setThickness(anElement.thickness());
 
-                            aTriangle.elasticModulus() = aMaterial.propertyValue(ENigMA::material::PT_ELASTIC_MODULUS);
-                            aTriangle.coeffPoisson() = aMaterial.propertyValue(ENigMA::material::PT_POISSON_COEFFICIENT);
+                            aTriangle.setElasticModulus(aMaterial.propertyValue(ENigMA::material::PT_ELASTIC_MODULUS));
+                            aTriangle.setCoeffPoisson(aMaterial.propertyValue(ENigMA::material::PT_POISSON_COEFFICIENT));
 
                             for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
                             {
@@ -82,7 +82,7 @@ namespace ENigMA
 
                             aTriangle.calculateArea();
 
-                            aTriangle.transient() = false;
+                            aTriangle.setTransient(false);
 
                             aTriangle.update();
 
@@ -120,8 +120,8 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
 
-                            aTetrahedron.elasticModulus() = aMaterial.propertyValue(ENigMA::material::PT_ELASTIC_MODULUS);
-                            aTetrahedron.coeffPoisson() = aMaterial.propertyValue(ENigMA::material::PT_POISSON_COEFFICIENT);
+                            aTetrahedron.setElasticModulus(aMaterial.propertyValue(ENigMA::material::PT_ELASTIC_MODULUS));
+                            aTetrahedron.setCoeffPoisson(aMaterial.propertyValue(ENigMA::material::PT_POISSON_COEFFICIENT));
 
                             for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
                             {
@@ -133,7 +133,7 @@ namespace ENigMA
 
                             aTetrahedron.calculateVolume();
 
-                            aTetrahedron.transient() = false;
+                            aTetrahedron.setTransient(false);
 
                             aTetrahedron.update();
 

@@ -192,10 +192,16 @@ fvm/FvmMesh.hpp
 fvm/FvmMesh_Imp.hpp
 fvm/FvmMeshSearch.hpp
 fvm/FvmMeshSearch_Imp.hpp
-fvm/FvmPisoSolver.hpp
-fvm/FvmPisoSolver_Imp.hpp
+)
+
+set(FVM_THERMAL_HEADERS
 fvm/FvmTemperatureSolver.hpp
 fvm/FvmTemperatureSolver_Imp.hpp
+)
+
+set(FVM_FLOW_HEADERS
+fvm/FvmPisoSolver.hpp
+fvm/FvmPisoSolver_Imp.hpp
 fvm/FvmVofSolver.hpp
 fvm/FvmVofSolver_Imp.hpp
 )
@@ -338,6 +344,8 @@ source_group("Header Files\\fem\\thermal" FILES ${FEM_THERMAL_HEADERS})
 source_group("Header Files\\fem\\structural" FILES ${FEM_STRUCTURAL_HEADERS})
 source_group("Header Files\\fem\\flow" FILES ${FEM_FLOW_HEADERS})
 source_group("Header Files\\fvm" FILES ${FVM_HEADERS})
+source_group("Header Files\\fvm\\thermal" FILES ${FVM_THERMAL_HEADERS})
+source_group("Header Files\\fvm\\flow" FILES ${FVM_FLOW_HEADERS})
 source_group("Header Files\\lbm" FILES ${LBM_HEADERS})
 source_group("Header Files\\sph" FILES ${SPH_HEADERS})
 source_group("Header Files\\sle" FILES ${SLE_HEADERS})
@@ -359,13 +367,3 @@ source_group("Header Files\\pde\\fvm\\thermal" FILES ${PDE_FVM_THERMAL_HEADERS})
 source_group("Header Files\\analytical" FILES ${ANA_HEADERS})
 source_group("Header Files\\post" FILES ${POS_HEADERS})
 source_group("Header Files\\stl" FILES ${STL_HEADERS})
-
-
-
-
-
-
-
-
-
-

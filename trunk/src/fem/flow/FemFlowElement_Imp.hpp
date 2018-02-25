@@ -34,7 +34,15 @@ namespace ENigMA
             }
             
             template <typename Real>
-            Real& CFemFlowElement<Real>::density()
+            void CFemFlowElement<Real>::setDensity(const Real aValue)
+            {
+
+                m_density = aValue;
+
+            }
+
+            template <typename Real>
+            Real CFemFlowElement<Real>::density() const
             {
             
                 return m_density;
@@ -42,7 +50,15 @@ namespace ENigMA
             }
 
             template <typename Real>
-            Real& CFemFlowElement<Real>::viscosity()
+            void CFemFlowElement<Real>::setViscosity(const Real aValue)
+            {
+
+                m_viscosity = aValue;
+
+            }
+
+            template <typename Real>
+            Real CFemFlowElement<Real>::viscosity() const
             {
             
                 return m_viscosity;

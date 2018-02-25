@@ -61,7 +61,7 @@ namespace ENigMA
 
                             aBeam.calculateLength();
 
-                            aBeam.transient() = true;
+                            aBeam.setTransient(true);
 
                             aBeam.update();
 
@@ -95,7 +95,7 @@ namespace ENigMA
 
                             aTriangle.calculateArea();
 
-                            aTriangle.transient() = true;
+                            aTriangle.setTransient(true);
 
                             aTriangle.update();
 
@@ -129,7 +129,7 @@ namespace ENigMA
 
                             aQuadrilateral.calculateArea();
 
-                            aQuadrilateral.transient() = true;
+                            aQuadrilateral.setTransient(true);
 
                             aQuadrilateral.update();
 
@@ -163,7 +163,7 @@ namespace ENigMA
 
                             aTetrahedron.calculateVolume();
 
-                            aTetrahedron.transient() = true;
+                            aTetrahedron.setTransient(true);
 
                             aTetrahedron.update();
 
@@ -197,7 +197,7 @@ namespace ENigMA
 
                             aHexahedron.calculateVolume();
 
-                            aHexahedron.transient() = true;
+                            aHexahedron.setTransient(true);
 
                             aHexahedron.update();
 
@@ -259,7 +259,7 @@ namespace ENigMA
 
                             aBeam.calculateLength();
 
-                            aBeam.transient() = false;
+                            aBeam.setTransient(false);
 
                             aBeam.update();
 
@@ -300,7 +300,7 @@ namespace ENigMA
 
                             aTriangle.calculateArea();
 
-                            aTriangle.transient() = false;
+                            aTriangle.setTransient(false);
 
                             aTriangle.update();
 
@@ -341,7 +341,7 @@ namespace ENigMA
 
                             aQuadrilateral.calculateArea();
 
-                            aQuadrilateral.transient() = false;
+                            aQuadrilateral.setTransient(false);
 
                             aQuadrilateral.update();
 
@@ -382,7 +382,7 @@ namespace ENigMA
 
                             aTetrahedron.calculateVolume();
 
-                            aTetrahedron.transient() = false;
+                            aTetrahedron.setTransient(false);
 
                             aTetrahedron.update();
 
@@ -424,7 +424,7 @@ namespace ENigMA
 
                             aTriangularPrism.calculateVolume();
 
-                            aTriangularPrism.transient() = false;
+                            aTriangularPrism.setTransient(false);
 
                             aTriangularPrism.update();
 
@@ -466,7 +466,7 @@ namespace ENigMA
 
                             aHexahedron.calculateVolume();
 
-                            aHexahedron.transient() = false;
+                            aHexahedron.setTransient(false);
 
                             aHexahedron.update();
 
@@ -533,7 +533,7 @@ namespace ENigMA
 
                             aBeam.calculateLength();
 
-                            aBeam.transient() = false;
+                            aBeam.setTransient(false);
 
                             aBeam.update();
 
@@ -621,7 +621,7 @@ namespace ENigMA
 
                             aBeam.calculateLength();
 
-                            aBeam.transient() = false;
+                            aBeam.setTransient(false);
 
                             aBeam.update();
 
@@ -648,7 +648,7 @@ namespace ENigMA
 
                             aTriangle.calculateArea();
 
-                            aTriangle.transient() = false;
+                            aTriangle.setTransient(false);
 
                             aTriangle.update();
 
@@ -675,7 +675,7 @@ namespace ENigMA
 
                             aQuadrilateral.calculateArea();
 
-                            aQuadrilateral.transient() = false;
+                            aQuadrilateral.setTransient(false);
 
                             aQuadrilateral.update();
 
@@ -702,7 +702,7 @@ namespace ENigMA
 
                             aTetrahedron.calculateVolume();
 
-                            aTetrahedron.transient() = false;
+                            aTetrahedron.setTransient(false);
 
                             aTetrahedron.update();
 
@@ -729,7 +729,7 @@ namespace ENigMA
 
                             aHexahedron.calculateVolume();
 
-                            aHexahedron.transient() = false;
+                            aHexahedron.setTransient(false);
 
                             aHexahedron.update();
 

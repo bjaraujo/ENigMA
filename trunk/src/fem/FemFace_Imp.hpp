@@ -28,13 +28,20 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real& CFemFace<Real>::thickness()
+        void CFemFace<Real>::setThickness(const Real aValue)
+        {
+
+            m_thickness = aValue;
+
+        }
+
+        template <typename Real>
+        Real CFemFace<Real>::thickness() const
         {
         
             return m_thickness;
             
         }
-        
-    }        
+    }
 }
 

@@ -28,7 +28,8 @@ namespace ENigMA
             CFemFace();
             ~CFemFace();
 
-            Real& thickness();
+            void setThickness(const Real aValue);
+            Real thickness() const;
 
             virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
             virtual void setSourceOnEdge(const Integer anEdgeIndex, const Real aValue) = 0;

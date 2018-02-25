@@ -45,9 +45,9 @@ TEST_F(CTestFemTriangle, update) {
 
     aTriangle.calculateArea();
 
-    aTriangle.transient() = true;
+    aTriangle.setTransient(true);
 
-    aTriangle.dt() = 0.1;
+    aTriangle.setDt(0.1);
 
     aTriangle.update();
 

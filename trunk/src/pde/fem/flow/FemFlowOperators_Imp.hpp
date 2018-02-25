@@ -165,10 +165,10 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
 
-                            aTriangle.thickness() = anElement.thickness();
+                            aTriangle.setThickness(anElement.thickness());
 
-                            aTriangle.density() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
-                            aTriangle.viscosity() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
+                            aTriangle.setDensity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
+                            aTriangle.setViscosity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
 
                             for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
                             {
@@ -216,8 +216,8 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
 
-                            aTetrahedron.density() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
-                            aTetrahedron.viscosity() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
+                            aTetrahedron.setDensity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
+                            aTetrahedron.setViscosity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
 
                             for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
                             {
@@ -365,11 +365,12 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField1.material();
 
-                            aTriangle.thickness() = anElement.thickness();
+                            aTriangle.setThickness(anElement.thickness());
 
-                            aTriangle.dt() = dt;
-                            aTriangle.density() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
-                            aTriangle.viscosity() = aMaterial.propertyValue(ENigMA::material::PT_VISCOSITY);
+                            aTriangle.setDt(dt);
+
+                            aTriangle.setDensity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
+                            aTriangle.setViscosity(aMaterial.propertyValue(ENigMA::material::PT_VISCOSITY));
 
                             double ue[3], ve[3];
 
@@ -486,9 +487,10 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField1.material();
 
-                            aTetrahedron.dt() = dt;
-                            aTetrahedron.density() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
-                            aTetrahedron.viscosity() = aMaterial.propertyValue(ENigMA::material::PT_VISCOSITY);
+                            aTetrahedron.setDt(dt);
+
+                            aTetrahedron.setDensity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
+                            aTetrahedron.setViscosity(aMaterial.propertyValue(ENigMA::material::PT_VISCOSITY));
 
                             double ue[4], ve[4], we[4];
 
@@ -586,10 +588,10 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
 
-                            aTriangle.thickness() = anElement.thickness();
+                            aTriangle.setThickness(anElement.thickness());
 
-                            aTriangle.density() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
-                            aTriangle.viscosity() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
+                            aTriangle.setDensity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
+                            aTriangle.setViscosity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
 
                             for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
                             {
@@ -637,8 +639,8 @@ namespace ENigMA
 
                             ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
 
-                            aTetrahedron.density() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
-                            aTetrahedron.viscosity() = aMaterial.propertyValue(ENigMA::material::PT_DENSITY);
+                            aTetrahedron.setDensity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
+                            aTetrahedron.setViscosity(aMaterial.propertyValue(ENigMA::material::PT_DENSITY));
 
                             for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
                             {

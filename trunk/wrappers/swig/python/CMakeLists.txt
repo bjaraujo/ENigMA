@@ -13,7 +13,12 @@ include_directories(
     ../../../src/integration
     ../../../src/fdm
     ../../../src/fem
+    ../../../src/fem/flow
+    ../../../src/fem/structural
+    ../../../src/fem/thermal
     ../../../src/fvm
+    ../../../src/fvm/flow
+    ../../../src/fvm/thermal
     ../../../src/sph
     ../../../src/lbm
     ../../../src/material

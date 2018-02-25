@@ -49,9 +49,9 @@ TEST_F(CTestFemTetrahedron, update) {
 
     EXPECT_NEAR(1.0 / 6.0, aTetrahedron.volume(), 1E-6);
 
-    aTetrahedron.transient() = true;
+    aTetrahedron.setTransient(true);
 
-    aTetrahedron.dt() = 0.1;
+    aTetrahedron.setDt(0.1);
 
     aTetrahedron.update();
 

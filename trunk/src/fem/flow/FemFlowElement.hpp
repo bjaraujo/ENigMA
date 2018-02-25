@@ -31,8 +31,11 @@ namespace ENigMA
                 CFemFlowElement();
                 ~CFemFlowElement();
 
-                Real& density();
-                Real& viscosity();
+                void setDensity(const Real aValue);
+                Real density() const;
+
+                void setViscosity(const Real aValue);
+                Real viscosity() const;
 
             };
 

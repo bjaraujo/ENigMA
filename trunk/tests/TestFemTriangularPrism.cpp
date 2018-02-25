@@ -51,9 +51,9 @@ TEST_F(CTestFemTriangularPrism, update) {
 
     aTriangularPrism.calculateVolume();
 
-    aTriangularPrism.transient() = true;
+    aTriangularPrism.setTransient(true);
 
-    aTriangularPrism.dt() = 0.1;
+    aTriangularPrism.setDt(0.1);
 
     aTriangularPrism.update();
 

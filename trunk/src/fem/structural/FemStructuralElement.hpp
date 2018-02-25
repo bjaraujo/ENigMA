@@ -31,8 +31,11 @@ namespace ENigMA
                 CFemStructuralElement();
                 ~CFemStructuralElement();
 
-                Real& coeffPoisson();
-                Real& elasticModulus();
+                void setCoeffPoisson(const Real aValue);
+                Real coeffPoisson() const;
+
+                void setElasticModulus(const Real aValue);
+                Real elasticModulus() const;
 
             };
 

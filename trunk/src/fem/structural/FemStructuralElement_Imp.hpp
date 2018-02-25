@@ -34,7 +34,15 @@ namespace ENigMA
             }
             
             template <typename Real>
-            Real& CFemStructuralElement<Real>::coeffPoisson()
+            void CFemStructuralElement<Real>::setCoeffPoisson(const Real aValue)
+            {
+
+                m_coeffPoisson = aValue;
+
+            }
+
+            template <typename Real>
+            Real CFemStructuralElement<Real>::coeffPoisson() const
             {
             
                 return m_coeffPoisson;
@@ -42,7 +50,15 @@ namespace ENigMA
             }
 
             template <typename Real>
-            Real& CFemStructuralElement<Real>::elasticModulus()
+            void CFemStructuralElement<Real>::setElasticModulus(const Real aValue)
+            {
+
+                m_elasticModulus = aValue;
+
+            }
+
+            template <typename Real>
+            Real CFemStructuralElement<Real>::elasticModulus() const
             {
             
                 return m_elasticModulus;
