@@ -22,7 +22,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        class CFemCBSSolver
+        class CFemCbsSolver
         {
         protected:
 
@@ -41,17 +41,21 @@ namespace ENigMA
             
         public:
 
-            CFemCBSSolver();
-            ~CFemCBSSolver();
+            CFemCbsSolver(CMesh<Real>& aMesh);
+            ~CFemCbsSolver();
 
+            void setGravity(const Real gx, const Real gy, const Real gz);
+            
+            virtual void setMaterialProperties(const Real aDensity, const Real aViscosity);
+            
             virtual void setTimeInterval(const Real dt);
             
             virtual void iterate(const Real dt, const bool bInit = false);
 
-            Real u(const Integer aNodeId);
-            Real v(const Integer aNodeId);
-            Real w(const Integer aNodeId);
-            Real p(const Integer aNodeId);
+            Real u(const Integer aNodeIndex);
+            Real v(const Integer aNodeIndex);
+            Real w(const Integer aNodeIndex);
+            Real p(const Integer aNodeIndex);
 
         };
 

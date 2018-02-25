@@ -18,23 +18,70 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CFemCBSSolver<Real>::CFemCBSSolver()
+        CFemCbsSolver<Real>::CFemCbsSolver(CMesh<Real>& aMesh)
         {
 
             m_G1 = gradient<Real>(u, CP_X).matrixA;
             m_G2 = gradient<Real>(v, CP_Y).matrixA;
             m_G3 = gradient<Real>(w, CP_Z).matrixA;
 
+            m_u.setMesh(aMesh);
+            m_u.setDiscretMethod(DM_FEM);
+            m_u.setDiscretOrder(DO_LINEAR);
+            m_u.setDiscretLocation(DL_NODE);
+            m_u.setSimulationType(ST_FLOW);
+            m_u.setNbDofs(1);
+
+            m_v.setMesh(aMesh);
+            m_v.setDiscretMethod(DM_FEM);
+            m_v.setDiscretOrder(DO_LINEAR);
+            m_v.setDiscretLocation(DL_NODE);
+            m_v.setSimulationType(ST_FLOW);
+            m_v.setNbDofs(1);
+
+            m_w.setMesh(aMesh);
+            m_w.setDiscretMethod(DM_FEM);
+            m_w.setDiscretOrder(DO_LINEAR);
+            m_w.setDiscretLocation(DL_NODE);
+            m_w.setSimulationType(ST_FLOW);
+            m_w.setNbDofs(1);
+            
+            m_p.setMesh(aMesh);
+            m_p.setDiscretMethod(DM_FEM);
+            m_p.setDiscretOrder(DO_LINEAR);
+            m_p.setDiscretLocation(DL_NODE);
+            m_p.setSimulationType(ST_FLOW);
+            m_p.setNbDofs(1);
+            
         }
 
         template <typename Real>
-        CFemCBSSolver<Real>::~CFemCBSSolver()
+        CFemCbsSolver<Real>::~CFemCbsSolver()
         {
 
         }
 
         template <typename Real>
-        void CFemCBSSolver<Real>::setTimeInterval(const Real dt)
+        void CFemCbsSolver<Real>::setGravity(const Real gx, const Real gy, const Real gz)
+        {
+
+            m_gx = gx;
+            m_gy = gy;
+            m_gz = gz;
+                    
+        }
+            
+        template <typename Real>
+        void CFemCbsSolver<Real>::setMaterialProperties(const Real aDensity, const Real aViscosity)
+        {
+
+            m_dens = aDensity;
+            m_visc = aViscosity;
+            
+        }
+            
+        template <typename Real>
+        void CFemCbsSolver<Real>::setTimeInterval(const Real dt)
         {
 
             m_dt = dt;
@@ -42,27 +89,27 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFemCBSSolver<Real>::calculateVelocityField()
+        void CFemCbsSolver<Real>::calculateVelocityField()
         {
 
             Real nu = m_visc / m_dens;
 
-            CPdeEquation<Real> aPdeEquationU(1.0 / m_dt * ddt<Real>(m_u) - nu * laplacian<Real>(m_u) + divergence<Real>(m_u, m_v, m_w, m_dt) = 0);
+            CPdeEquation<Real> aPdeEquationU(1.0 / m_dt * ddt<Real>(m_u) - nu * laplacian<Real>(m_u) + divergence<Real>(m_u, m_v, m_w, m_dt) = m_gx);
             aPdeEquationU.setElimination(m_u);
             aPdeEquationU.solve(m_u);
 
-            CPdeEquation<Real> aPdeEquationV(1.0 / m_dt * ddt<Real>(m_v) - nu * laplacian<Real>(m_v) + divergence<Real>(m_u, m_v, m_w, m_dt) = 0);
+            CPdeEquation<Real> aPdeEquationV(1.0 / m_dt * ddt<Real>(m_v) - nu * laplacian<Real>(m_v) + divergence<Real>(m_u, m_v, m_w, m_dt) = m_gy);
             aPdeEquationV.setElimination(m_v);
             aPdeEquationV.solve(m_v);
 
-            CPdeEquation<Real> aPdeEquationW(1.0 / m_dt * ddt<Real>(m_w) - nu * laplacian<Real>(m_w) + divergence<Real>(m_u, m_v, m_w, m_dt) = 0);
+            CPdeEquation<Real> aPdeEquationW(1.0 / m_dt * ddt<Real>(m_w) - nu * laplacian<Real>(m_w) + divergence<Real>(m_u, m_v, m_w, m_dt) = m_gz);
             aPdeEquationW.setElimination(m_w);
             aPdeEquationW.solve(m_w);
 
         }
 
         template <typename Real>
-        void CFemCBSSolver<Real>::calculatePressureField()
+        void CFemCbsSolver<Real>::calculatePressureField()
         {
 
             // Pressure calculation
@@ -73,7 +120,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFemCBSSolver<Real>::correctVelocityField()
+        void CFemCbsSolver<Real>::correctVelocityField()
         {
 
             CPdeEquation<Real> aPdeEquationUCor(ddt<Real>(m_u) = -m_dt / m_dens * m_G1 * m_p.u);
@@ -91,7 +138,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFemCBSSolver<Real>::iterate(const Real dt, const bool bInit)
+        void CFemCbsSolver<Real>::iterate(const Real dt, const bool bInit)
         {
 
             this->setTimeInterval(dt);
@@ -104,34 +151,34 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real CFemCBSSolver<Real>::u(const Integer aControlVolumeId)
+        Real CFemCbsSolver<Real>::u(const Integer aNodeId)
         {
 
-            return m_u[aControlVolumeId];
+            return m_u.value(aControlVolumeId);
 
         }
 
         template <typename Real>
-        Real CFemCBSSolver<Real>::v(const Integer aControlVolumeId)
+        Real CFemCbsSolver<Real>::v(const Integer aNodeIndex)
         {
 
-            return m_v[aControlVolumeId];
+            return m_v.value(aNodeIndex);
 
         }
 
         template <typename Real>
-        Real CFemCBSSolver<Real>::w(const Integer aControlVolumeId)
+        Real CFemCbsSolver<Real>::w(const Integer aNodeIndex)
         {
 
-            return m_w[aControlVolumeId];
+            return m_w.value(aNodeIndex);
 
         }
 
         template <typename Real>
-        Real CFemCBSSolver<Real>::p(const Integer aControlVolumeId)
+        Real CFemCbsSolver<Real>::p(const Integer aNodeIndex)
         {
 
-            return m_p[aControlVolumeId];
+            return m_p.value(aNodeIndex);
 
         }
 
