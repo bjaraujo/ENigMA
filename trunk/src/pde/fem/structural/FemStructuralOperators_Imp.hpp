@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../src/fem/structural/FemConstantStrainTriangle.hpp"
-#include "../../src/fem/structural/FemConstantStrainTetrahedron.hpp"
+#include "structural/FemConstantStrainTriangle.hpp"
+#include "structural/FemConstantStrainTetrahedron.hpp"
 
 using namespace ENigMA::fem;
 using namespace ENigMA::fem::structural;

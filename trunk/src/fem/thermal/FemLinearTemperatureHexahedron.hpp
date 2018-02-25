@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../src/fem/FemHexahedron.hpp"
+#include "FemHexahedron.hpp"
 #include "FemThermalElement.hpp"
 
 namespace ENigMA

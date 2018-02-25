@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../../src/bem/BemTriangle.hpp"
+#include "BemTriangle.hpp"
+#include "BemThermalOperators_Imp.hpp"
 
 using namespace ENigMA::bem;
-
-#include "thermal/BemThermalOperators_Imp.hpp"
 
 namespace ENigMA
 {

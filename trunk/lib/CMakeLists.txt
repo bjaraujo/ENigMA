@@ -368,6 +368,17 @@ include_directories(
     ../src/material
     ../src/mesh
     ../src/pde
+    ../src/pde/bem
+    ../src/pde/bem/thermal
+    ../src/pde/fdm/generic
+    ../src/pde/fdm/thermal
+    ../src/pde/fem/flow
+    ../src/pde/fem/generic
+    ../src/pde/fem/structural
+    ../src/pde/fem/thermal
+    ../src/pde/fvm/flow
+    ../src/pde/fvm/generic
+    ../src/pde/fvm/thermal
     ../src/post
     ../src/sle
     ../src/stl

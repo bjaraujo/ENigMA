@@ -9,17 +9,17 @@
 
 #pragma once
 
-#include "../../src/fem/FemBeam.hpp"
-#include "../../src/fem/FemTriangle.hpp"
-#include "../../src/fem/FemQuadrilateral.hpp"
-#include "../../src/fem/FemTetrahedron.hpp"
-#include "../../src/fem/FemTriangularPrism.hpp"
-#include "../../src/fem/FemHexahedron.hpp"
+#include "FemBeam.hpp"
+#include "FemTriangle.hpp"
+#include "FemQuadrilateral.hpp"
+#include "FemTetrahedron.hpp"
+#include "FemTriangularPrism.hpp"
+#include "FemHexahedron.hpp"
 
 using namespace ENigMA::fem;
 
 #include "generic/FemGenericOperators_Imp.hpp"
-#include "thermal/FemThermalOperators_Imp.hpp"
+#include "FemThermalOperators_Imp.hpp"
 #include "structural/FemStructuralOperators_Imp.hpp"
 #include "flow/FemFlowOperators_Imp.hpp"
 
@@ -44,7 +44,7 @@ namespace ENigMA
                     structural::ddt(aSystem, aField);
                 else if (aField.simulationType() == ST_FLOW)
                     flow::ddt(aSystem, aField);
-                        
+
             }
 
             template <typename Real>
@@ -72,7 +72,7 @@ namespace ENigMA
                     thermal::divergence(aSystem, aField);
                 else if (aField.simulationType() == ST_STRUCTURAL)
                     structural::divergence(aSystem, aField);
-    
+
             }
 
             template <typename Real>
@@ -81,7 +81,7 @@ namespace ENigMA
 
                 if (aField1.simulationType() == ST_FLOW)
                     flow::divergence(aSystem, aField1, aField2, dt);
-    
+
             }
 
             template <typename Real>
@@ -90,7 +90,7 @@ namespace ENigMA
 
                 if (aField1.simulationType() == ST_FLOW)
                     flow::divergence(aSystem, aField1, aField2, aField3, dt);
-    
+
             }
 
             template <typename Real>
@@ -99,7 +99,7 @@ namespace ENigMA
 
                 if (aField.simulationType() == ST_FLOW)
                     flow::gradient(aSystem, aField, aComponent);
-    
+
             }
 
             template <typename Real>
@@ -114,7 +114,7 @@ namespace ENigMA
                     structural::source(aVectorB, aField, aSource);
                 else if (aField.simulationType() == ST_FLOW)
                     flow::source(aVectorB, aField, aSource);
-            
+
             }
 
         }

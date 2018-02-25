@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "../../src/fem/FemBeam.hpp"
-#include "../../src/fem/FemTriangle.hpp"
-#include "../../src/fem/FemQuadrilateral.hpp"
-#include "../../src/fem/FemTetrahedron.hpp"
-#include "../../src/fem/FemTriangularPrism.hpp"
-#include "../../src/fem/FemHexahedron.hpp"
+#include "FemBeam.hpp"
+#include "FemTriangle.hpp"
+#include "FemQuadrilateral.hpp"
+#include "FemTetrahedron.hpp"
+#include "FemTriangularPrism.hpp"
+#include "FemHexahedron.hpp"
 
 using namespace ENigMA::fem;
 

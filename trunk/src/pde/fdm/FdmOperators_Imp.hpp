@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "../../src/fdm/FdmGrid.hpp"
+#include "FdmGrid.hpp"
 
 using namespace ENigMA::fdm;
 
 #include "generic/FdmGenericOperators_Imp.hpp"
-#include "thermal/FdmThermalOperators_Imp.hpp"
+#include "FdmThermalOperators_Imp.hpp"
 
 namespace ENigMA
 {

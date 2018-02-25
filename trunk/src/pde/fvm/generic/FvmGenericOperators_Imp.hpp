@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../src/fvm/FvmControlVolume.hpp"
+#include "FvmControlVolume.hpp"
 
 using namespace ENigMA::fvm;
 
