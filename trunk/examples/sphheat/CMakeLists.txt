@@ -12,18 +12,20 @@ ${Eigen3_DIR}
 ${ViennaCL_DIR}
 ${RTree_DIR}
 ${Exprtk_DIR}
-../../src/common
-../../src/geometry
-../../src/integration
-../../src/mesh
-../../src/material
-../../src/sph
-../../src/bem
-../../src/fdm
-../../src/sle
-../../src/pde
-../../src/post
-../../src/analytical
+  ../../src/common
+  ../../src/geometry
+  ../../src/integration
+  ../../src/mesh
+  ../../src/material
+  ../../src/sph
+  ../../src/bem
+  ../../src/fdm
+  ../../src/fem
+  ../../src/fvm
+  ../../src/sle
+  ../../src/pde
+  ../../src/post
+  ../../src/analytical
 )
 
 add_executable(SphHeat ${SPHHEAT_SOURCES})

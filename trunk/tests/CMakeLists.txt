@@ -51,6 +51,7 @@ TestFemQuadrilateral.cpp
 TestFemTetrahedron.cpp
 TestFemTriangularPrism.cpp
 TestFemHexahedron.cpp
+#TestFemCbs.cpp
 )
 
 set(TEST_FVM_SOURCES
@@ -116,26 +117,11 @@ ${GTest_DIR}/include
 ../src/bem
 ../src/fdm
 ../src/fem
-../src/fem/flow
-../src/fem/structural
-../src/fem/thermal
 ../src/fvm
-../src/fvm/flow
-../src/fvm/thermal
+../src/fvm
 ../src/sph
 ../src/sle
 ../src/pde
-../src/pde/bem
-../src/pde/bem/thermal
-../src/pde/fdm/generic
-../src/pde/fdm/thermal
-../src/pde/fem/flow
-../src/pde/fem/generic
-../src/pde/fem/structural
-../src/pde/fem/thermal
-../src/pde/fvm/flow
-../src/pde/fvm/generic
-../src/pde/fvm/thermal
 ../src/analytical
 ../src/post
 ../src/stl

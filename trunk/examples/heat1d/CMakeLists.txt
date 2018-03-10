@@ -29,13 +29,12 @@ include_directories(
   ../../src/material
   ../../src/bem
   ../../src/fdm
+  ../../src/fem
+  ../../src/fvm
   ../../src/sle
   ../../src/lbm
   ../../src/sph
   ../../src/pde
-  ../../src/pde/fdm
-  ../../src/pde/fem
-  ../../src/pde/fvm
   ../../src/post
   ../../src/analytical
 )

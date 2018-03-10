@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "FemLinearTemperatureBeam.hpp"
-#include "FemLinearTemperatureTriangle.hpp"
-#include "FemLinearTemperatureQuadrilateral.hpp"
-#include "FemLinearTemperatureTetrahedron.hpp"
-#include "FemLinearTemperatureTriangularPrism.hpp"
-#include "FemLinearTemperatureHexahedron.hpp"
+#include "thermal/FemLinearTemperatureBeam.hpp"
+#include "thermal/FemLinearTemperatureTriangle.hpp"
+#include "thermal/FemLinearTemperatureQuadrilateral.hpp"
+#include "thermal/FemLinearTemperatureTetrahedron.hpp"
+#include "thermal/FemLinearTemperatureTriangularPrism.hpp"
+#include "thermal/FemLinearTemperatureHexahedron.hpp"
 
 using namespace ENigMA::fem;
 using namespace ENigMA::fem::thermal;

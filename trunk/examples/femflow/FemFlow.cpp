@@ -53,7 +53,6 @@
 #include <vtkCamera.h>
 
 #include "FemTriangle.hpp"
-#include "FemFlowTriangle.hpp"
 #include "MshBasicMesher.hpp"
 #include "MshTriangleMesher.hpp"
 #include "SleSystem.hpp"

@@ -5,31 +5,33 @@ find_package(CSharp REQUIRED)
 include(${CSHARP_USE_FILE})
 
 include_directories(
-    ../../../src/common
-    ../../../src/analytical
-    ../../../src/bem
-    ../../../src/csg
-    ../../../src/geometry
-    ../../../src/integration
-    ../../../src/fdm
-    ../../../src/fem
-    ../../../src/fvm
-    ../../../src/sph
-    ../../../src/lbm
-    ../../../src/material
-    ../../../src/mesh
-    ../../../src/pde
-    ../../../src/post
-    ../../../src/sle
-    ../../../src/stl
-    ${Eigen3_DIR}
-    ${Eigen3_DIR}/Eigen
-    ${ViennaCL_DIR}
-    ${RTree_DIR}
-    ${Exprtk_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+  ${Eigen3_DIR}
+  ${Eigen3_DIR}/Eigen
+  ${ViennaCL_DIR}
+  ${RTree_DIR}
+  ${Exprtk_DIR}
+  ../../../src/common
+  ../../../src/analytical
+  ../../../src/bem
+  ../../../src/csg
+  ../../../src/geometry
+  ../../../src/integration
+  ../../../src/fdm
+  ../../../src/fem
+  ../../../src/fvm
+  ../../../src/fvm/flow
+  ../../../src/fvm/thermal
+  ../../../src/sph
+  ../../../src/lbm
+  ../../../src/material
+  ../../../src/mesh
+  ../../../src/pde
+  ../../../src/post
+  ../../../src/sle
+  ../../../src/stl
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${PYTHON_INCLUDE_PATH}
 )
 
 set(ENGIMA_INTERFACE

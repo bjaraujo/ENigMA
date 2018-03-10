@@ -12,18 +12,20 @@ ${Eigen3_DIR}
 ${ViennaCL_DIR}
 ${RTree_DIR}
 ${Exprtk_DIR}
-../../src/common
-../../src/geometry
-../../src/integration
-../../src/mesh
-../../src/material
-../../src/bem
-../../src/fem
-../../src/sle
-../../src/pde
-../../src/analytical
-../../src/material
-../../src/post
+  ../../src/common
+  ../../src/geometry
+  ../../src/integration
+  ../../src/mesh
+  ../../src/material
+  ../../src/bem
+  ../../src/fdm
+  ../../src/fem
+  ../../src/fvm
+  ../../src/sle
+  ../../src/pde
+  ../../src/analytical
+  ../../src/material
+  ../../src/post
 )
 
 add_executable(FemIntro ${FEMINTRO_SOURCES})

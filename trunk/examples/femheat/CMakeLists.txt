@@ -17,7 +17,9 @@ ${Exprtk_DIR}
 ../../src/integration
 ../../src/mesh
 ../../src/material
+../../src/fdm
 ../../src/fem
+../../src/fvm
 ../../src/bem
 ../../src/sle
 ../../src/pde

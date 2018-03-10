@@ -14,7 +14,7 @@
 using namespace ENigMA::fdm;
 
 #include "generic/FdmGenericOperators_Imp.hpp"
-#include "FdmThermalOperators_Imp.hpp"
+#include "thermal/FdmThermalOperators_Imp.hpp"
 
 namespace ENigMA
 {

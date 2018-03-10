@@ -26,21 +26,24 @@ include_directories(
   ${Qt5Core_INCLUDE_DIRS}
   ${Qt5Gui_INCLUDE_DIRS}
   ${Qt5Widgets_INCLUDE_DIRS}
-    ${Eigen3_DIR}
-    ${ViennaCL_DIR}
-    ${RTree_DIR}
-    ${Exprtk_DIR}
-    ../../src/common
-    ../../src/geometry
-    ../../src/integration
-    ../../src/mesh
-    ../../src/material
-    ../../src/bem
-    ../../src/fvm
-    ../../src/sle
-    ../../src/pde
-    ../../src/post
-    ../../src/analytical
+  ${Eigen3_DIR}
+  ${ViennaCL_DIR}
+  ${RTree_DIR}
+  ${Exprtk_DIR}
+  ../../src/common
+  ../../src/geometry
+  ../../src/integration
+  ../../src/mesh
+  ../../src/material
+  ../../src/bem
+  ../../src/fem
+  ../../src/fdm
+  ../../src/fvm
+  ../../src/fvm/flow
+  ../../src/sle
+  ../../src/pde
+  ../../src/post
+  ../../src/analytical
 )
 
 # Set your files and resources here  

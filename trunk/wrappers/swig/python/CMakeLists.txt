@@ -5,47 +5,33 @@ find_package(PythonLibs 3.0 REQUIRED)
 find_package(PythonInterp 3.0 REQUIRED)
 
 include_directories(
-    ../../../src/common
-    ../../../src/analytical
-    ../../../src/bem
-    ../../../src/csg
-    ../../../src/geometry
-    ../../../src/integration
-    ../../../src/fdm
-    ../../../src/fem
-    ../../../src/fem/flow
-    ../../../src/fem/structural
-    ../../../src/fem/thermal
-    ../../../src/fvm
-    ../../../src/fvm/flow
-    ../../../src/fvm/thermal
-    ../../../src/sph
-    ../../../src/lbm
-    ../../../src/material
-    ../../../src/mesh
-    ../../../src/pde
-    ../../../src/pde/bem
-    ../../../src/pde/bem/thermal
-    ../../../src/pde/fdm/generic
-    ../../../src/pde/fdm/thermal
-    ../../../src/pde/fem/flow
-    ../../../src/pde/fem/generic
-    ../../../src/pde/fem/structural
-    ../../../src/pde/fem/thermal
-    ../../../src/pde/fvm/flow
-    ../../../src/pde/fvm/generic
-    ../../../src/pde/fvm/thermal
-    ../../../src/post
-    ../../../src/sle
-    ../../../src/stl
-    ${Eigen3_DIR}
-    ${Eigen3_DIR}/Eigen
-    ${ViennaCL_DIR}
-    ${RTree_DIR}
-    ${Exprtk_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+  ${Eigen3_DIR}
+  ${Eigen3_DIR}/Eigen
+  ${ViennaCL_DIR}
+  ${RTree_DIR}
+  ${Exprtk_DIR}
+  ../../../src/common
+  ../../../src/analytical
+  ../../../src/bem
+  ../../../src/csg
+  ../../../src/geometry
+  ../../../src/integration
+  ../../../src/fdm
+  ../../../src/fem
+  ../../../src/fvm
+  ../../../src/fvm/flow
+  ../../../src/fvm/thermal
+  ../../../src/sph
+  ../../../src/lbm
+  ../../../src/material
+  ../../../src/mesh
+  ../../../src/pde
+  ../../../src/post
+  ../../../src/sle
+  ../../../src/stl
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${PYTHON_INCLUDE_PATH}
 )
 
 set(ENGIMA_INTERFACE

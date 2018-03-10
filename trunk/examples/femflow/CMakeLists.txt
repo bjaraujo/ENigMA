@@ -36,8 +36,8 @@ include_directories(
   ../../src/mesh
   ../../src/material
   ../../src/bem
+  ../../src/fdm
   ../../src/fem
-  ../../src/fem/flow
   ../../src/fvm
   ../../src/sle
   ../../src/pde

@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "FemFlowTriangle.hpp"
-#include "FemFlowTetrahedron.hpp"
+#include "flow/FemFlowTriangle.hpp"
+#include "flow/FemFlowTetrahedron.hpp"
 
 using namespace ENigMA::fem;
 using namespace ENigMA::fem::flow;

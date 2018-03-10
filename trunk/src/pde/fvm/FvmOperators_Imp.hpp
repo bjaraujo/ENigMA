@@ -10,9 +10,10 @@
 #pragma once
 
 #include "FvmControlVolume.hpp"
-#include "FvmGenericOperators_Imp.hpp"
-#include "FvmThermalOperators_Imp.hpp"
-#include "FvmFlowOperators_Imp.hpp"
+
+#include "generic/FvmGenericOperators_Imp.hpp"
+#include "thermal/FvmThermalOperators_Imp.hpp"
+#include "flow/FvmFlowOperators_Imp.hpp"
 
 using namespace ENigMA::fvm;
 

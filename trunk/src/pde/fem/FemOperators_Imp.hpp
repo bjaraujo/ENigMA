@@ -19,7 +19,7 @@
 using namespace ENigMA::fem;
 
 #include "generic/FemGenericOperators_Imp.hpp"
-#include "FemThermalOperators_Imp.hpp"
+#include "thermal/FemThermalOperators_Imp.hpp"
 #include "structural/FemStructuralOperators_Imp.hpp"
 #include "flow/FemFlowOperators_Imp.hpp"
 

@@ -36,7 +36,10 @@ include_directories(
   ../../src/mesh
   ../../src/material
   ../../src/bem
+  ../../src/fem
+  ../../src/fdm
   ../../src/fvm
+  ../../src/fvm/flow
   ../../src/sle
   ../../src/pde
   ../../src/post

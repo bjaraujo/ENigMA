@@ -18,11 +18,17 @@
 namespace ENigMA
 {
 
-    namespace fvm
+    namespace fem
     {
 
-        template <typename Real>
+        template <typename Real, Integer Dof>
         class CFemCbsSolver
+        {
+        };
+    
+        // Two-dimensional    
+        template <typename Real>
+        class CFemCbsSolver<Real, 2>
         {
         protected:
 
@@ -31,9 +37,10 @@ namespace ENigMA
             Real m_dens;
             Real m_visc;
             
-            CPdeField<Real> m_u, m_v, m_w, m_p;
+            CPdeField<Real> m_u, m_v;
+            CPdeField<Real> m_p;
             
-            SparseMatrix<Real> m_G1, m_G2, m_G3;
+            SparseMatrix<Real> m_G1, m_G2;
             
             virtual void calculateVelocityField();
             virtual void calculatePressureField();
@@ -44,7 +51,7 @@ namespace ENigMA
             CFemCbsSolver(CMesh<Real>& aMesh);
             ~CFemCbsSolver();
 
-            void setGravity(const Real gx, const Real gy, const Real gz);
+            virtual void setGravity(const Real gx, const Real gy);
             
             virtual void setMaterialProperties(const Real aDensity, const Real aViscosity);
             
@@ -54,8 +61,33 @@ namespace ENigMA
 
             Real u(const Integer aNodeIndex);
             Real v(const Integer aNodeIndex);
-            Real w(const Integer aNodeIndex);
+
             Real p(const Integer aNodeIndex);
+
+        };
+    
+        // Three-dimensional    
+        template <typename Real>
+        class CFemCbsSolver<Real, 3> : public CFemCbsSolver<Real, 2>
+        {
+        protected:
+
+            CPdeField<Real> m_w;
+            
+            SparseMatrix<Real> m_G3;
+            
+            virtual void calculateVelocityField() override;
+            virtual void calculatePressureField() override;
+            virtual void correctVelocityField() override;
+            
+        public:
+
+            CFemCbsSolver(CMesh<Real>& aMesh);
+            ~CFemCbsSolver();
+
+            void setGravity(const Real gx, const Real gy, const Real gz);
+            
+            Real w(const Integer aNodeIndex);
 
         };
 
