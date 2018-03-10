@@ -104,27 +104,29 @@ source_group("Source Files\\post" FILES ${TEST_POS_SOURCES})
 source_group("Source Files\\stl" FILES ${TEST_STL_SOURCES})
 
 include_directories(
-${Eigen3_DIR}
-${ViennaCL_DIR}
-${RTree_DIR}
-${Exprtk_DIR}
-${GTest_DIR}/include
-../src/common
-../src/geometry
-../src/mesh
-../src/material
-../src/integration
-../src/bem
-../src/fdm
-../src/fem
-../src/fvm
-../src/fvm
-../src/sph
-../src/sle
-../src/pde
-../src/analytical
-../src/post
-../src/stl
+  ${Eigen3_DIR}
+  ${ViennaCL_DIR}
+  ${RTree_DIR}
+  ${Exprtk_DIR}
+  ${GTest_DIR}/include
+  ../src/common
+  ../src/geometry
+  ../src/mesh
+  ../src/material
+  ../src/integration
+  ../src/bem
+  ../src/fdm
+  ../src/fem
+  ../src/fem/flow
+  ../src/fvm
+  ../src/fvm/flow
+  ../src/fvm/thermal
+  ../src/sph
+  ../src/sle
+  ../src/pde
+  ../src/analytical
+  ../src/post
+  ../src/stl
 )
 
 add_executable(UnitTests ${TEST_GEOMETRY_SOURCES} ${TEST_MESH_SOURCES} ${TEST_BEM_SOURCES} ${TEST_FEM_SOURCES} ${TEST_CVFEM_SOURCES} ${TEST_FVM_SOURCES} ${TEST_SPH_SOURCES} ${TEST_PDE_SOURCES} ${TEST_ANA_SOURCES} ${TEST_POS_SOURCES} ${TEST_STL_SOURCES})

@@ -13,7 +13,11 @@
 #include <vector>
 
 #include "GeoHashGrid.hpp"
+#include "MshMesh.hpp"
 #include "PdeField.hpp"
+
+using namespace ENigMA::mesh;
+using namespace ENigMA::pde;
 
 namespace ENigMA
 {
@@ -48,7 +52,7 @@ namespace ENigMA
             
         public:
 
-            CFemCbsSolver(CMesh<Real>& aMesh);
+            explicit CFemCbsSolver(CMshMesh<Real>& aMesh);
             ~CFemCbsSolver();
 
             virtual void setGravity(const Real gx, const Real gy);
@@ -82,7 +86,7 @@ namespace ENigMA
             
         public:
 
-            CFemCbsSolver(CMesh<Real>& aMesh);
+            explicit CFemCbsSolver(CMesh<Real>& aMesh);
             ~CFemCbsSolver();
 
             void setGravity(const Real gx, const Real gy, const Real gz);

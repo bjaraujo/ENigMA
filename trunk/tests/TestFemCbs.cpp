@@ -33,7 +33,7 @@ protected:
 
 };
 
-TEST_F(CCTestFemCbs, hydroPressure) {
+TEST_F(CTestFemCbs, hydroPressure) {
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);

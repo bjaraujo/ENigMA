@@ -189,15 +189,6 @@ namespace ENigMA
             m_gz = gz;
                     
         }
-            
-        template <typename Real>
-        void CFemCbsSolver<Real, 3>::setMaterialProperties(const Real aDensity, const Real aViscosity)
-        {
-
-            m_dens = aDensity;
-            m_visc = aViscosity;
-            
-        }
 
         template <typename Real>
         void CFemCbsSolver<Real, 3>::calculateVelocityField()
