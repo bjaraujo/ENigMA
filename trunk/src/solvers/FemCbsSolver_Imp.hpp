@@ -11,6 +11,8 @@
 
 #include <Eigen/Sparse>
 
+#include "PdeEquation.hpp"
+
 namespace ENigMA
 {
 
@@ -18,11 +20,11 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CFemCbsSolver<Real, 2>::CFemCbsSolver(CMesh<Real>& aMesh)
+        CFemCbsSolver<Real, 2>::CFemCbsSolver(CMshMesh<Real>& aMesh)
         {
 
-            m_G1 = gradient<Real>(u, CP_X).matrixA;
-            m_G2 = gradient<Real>(v, CP_Y).matrixA;
+            m_G1 = gradient<Real>(m_u, CP_X).matrixA;
+            m_G2 = gradient<Real>(m_v, CP_Y).matrixA;
 
             m_u.setMesh(aMesh);
             m_u.setDiscretMethod(DM_FEM);
@@ -160,10 +162,10 @@ namespace ENigMA
 
         // Three-dimensional
         template <typename Real>
-        CFemCbsSolver<Real, 3>::CFemCbsSolver(CMesh<Real>& aMesh) : CFemCbsSolver<Real, 2>(aMesh)
+        CFemCbsSolver<Real, 3>::CFemCbsSolver(CMshMesh<Real>& aMesh) : CFemCbsSolver<Real, 2>(aMesh)
         {
 
-            m_G3 = gradient<Real>(w, CP_Z).matrixA;
+            m_G3 = gradient<Real>(m_w, CP_Z).matrixA;
 
             m_w.setMesh(aMesh);
             m_w.setDiscretMethod(DM_FEM);

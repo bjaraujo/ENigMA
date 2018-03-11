@@ -199,20 +199,6 @@ fvm/FvmTemperatureSolver.hpp
 fvm/FvmTemperatureSolver_Imp.hpp
 )
 
-set(FVM_FLOW_HEADERS
-fvm/FvmPisoSolver.hpp
-fvm/FvmPisoSolver_Imp.hpp
-fvm/FvmVofSolver.hpp
-fvm/FvmVofSolver_Imp.hpp
-)
-
-set(LBM_HEADERS
-lbm/LbmLattice.hpp
-lbm/LbmLattice_Imp.hpp
-lbm/LbmLidDrivenSolver.hpp
-lbm/LbmLidDrivenSolver_Imp.hpp
-)
-
 set(SPH_HEADERS
 sph/SphKernel.hpp
 sph/SphKernel_Imp.hpp
@@ -334,6 +320,19 @@ stl/StlFile.hpp
 stl/StlFile_Imp.hpp
 )
 
+set(SOL_HEADERS
+solvers/FemCBSSolver.hpp
+solvers/FemCBSSolver_Imp.hpp
+solvers/FvmPisoSolver.hpp
+solvers/FvmPisoSolver_Imp.hpp
+solvers/FvmVofSolver.hpp
+solvers/FvmVofSolver_Imp.hpp
+solvers/FvmTemperatureSolver.hpp
+solvers/FvmTemperatureSolver_Imp.hpp
+solvers/LbmLidDrivenSolver.hpp
+solvers/LbmLidDrivenSolver_Imp.hpp
+)
+
 source_group("Header Files\\geometry" FILES ${GEOMETRY_HEADERS})
 source_group("Header Files\\mesh" FILES ${MESH_HEADERS})
 source_group("Header Files\\material" FILES ${MAT_HEADERS})
@@ -346,7 +345,6 @@ source_group("Header Files\\fem\\flow" FILES ${FEM_FLOW_HEADERS})
 source_group("Header Files\\fvm" FILES ${FVM_HEADERS})
 source_group("Header Files\\fvm\\thermal" FILES ${FVM_THERMAL_HEADERS})
 source_group("Header Files\\fvm\\flow" FILES ${FVM_FLOW_HEADERS})
-source_group("Header Files\\lbm" FILES ${LBM_HEADERS})
 source_group("Header Files\\sph" FILES ${SPH_HEADERS})
 source_group("Header Files\\sle" FILES ${SLE_HEADERS})
 source_group("Header Files\\pde" FILES ${PDE_HEADERS})

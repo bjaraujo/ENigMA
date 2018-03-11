@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
+#include <Eigen/Sparse>
 
 #include "GeoHashGrid.hpp"
 #include "MshMesh.hpp"
@@ -41,10 +40,12 @@ namespace ENigMA
             Real m_dens;
             Real m_visc;
             
+            Real m_gx, m_gy;
+
             CPdeField<Real> m_u, m_v;
             CPdeField<Real> m_p;
             
-            SparseMatrix<Real> m_G1, m_G2;
+            Eigen::SparseMatrix<Real> m_G1, m_G2;
             
             virtual void calculateVelocityField();
             virtual void calculatePressureField();
@@ -76,9 +77,11 @@ namespace ENigMA
         {
         protected:
 
+            Real m_gz;
+
             CPdeField<Real> m_w;
             
-            SparseMatrix<Real> m_G3;
+            Eigen::SparseMatrix<Real> m_G3;
             
             virtual void calculateVelocityField() override;
             virtual void calculatePressureField() override;
@@ -86,7 +89,7 @@ namespace ENigMA
             
         public:
 
-            explicit CFemCbsSolver(CMesh<Real>& aMesh);
+            explicit CFemCbsSolver(CMshMesh<Real>& aMesh);
             ~CFemCbsSolver();
 
             void setGravity(const Real gx, const Real gy, const Real gz);

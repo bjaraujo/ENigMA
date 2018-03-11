@@ -185,18 +185,6 @@ set(FVM_HEADERS
 ../src/fvm/FvmMeshSearch_Imp.hpp
 )
 
-set(FVM_THERMAL_HEADERS
-../src/fvm/thermal/FvmTemperatureSolver.hpp
-../src/fvm/thermal/FvmTemperatureSolver_Imp.hpp
-)
-
-set(FVM_FLOW_HEADERS
-../src/fvm/flow/FvmPisoSolver.hpp
-../src/fvm/flow/FvmPisoSolver_Imp.hpp
-../src/fvm/flow/FvmVofSolver.hpp
-../src/fvm/flow/FvmVofSolver_Imp.hpp
-)
-
 set(SPH_HEADERS
 ../src/sph/SphKernel.hpp
 ../src/sph/SphKernel_Imp.hpp
@@ -316,6 +304,19 @@ set(STL_HEADERS
 ../src/stl/StlUtils_Imp.hpp
 ../src/stl/StlFile.hpp
 ../src/stl/StlFile_Imp.hpp
+)
+
+set(SOL_HEADERS
+../src/solvers/FemCBSSolver.hpp
+../src/solvers/FemCBSSolver_Imp.hpp
+../src/solvers/FvmPisoSolver.hpp
+../src/solvers/FvmPisoSolver_Imp.hpp
+../src/solvers/FvmVofSolver.hpp
+../src/solvers/FvmVofSolver_Imp.hpp
+../src/solvers/FvmTemperatureSolver.hpp
+../src/solvers/FvmTemperatureSolver_Imp.hpp
+../src/solvers/LbmLidDrivenSolver.hpp
+../src/solvers/LbmLidDrivenSolver_Imp.hpp
 )
 
 source_group("Header Files\\geometry" FILES ${GEOMETRY_HEADERS})

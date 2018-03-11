@@ -119,11 +119,10 @@ include_directories(
   ../src/fem
   ../src/fem/flow
   ../src/fvm
-  ../src/fvm/flow
-  ../src/fvm/thermal
   ../src/sph
   ../src/sle
   ../src/pde
+  ../src/solvers
   ../src/analytical
   ../src/post
   ../src/stl
