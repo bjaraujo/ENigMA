@@ -23,8 +23,7 @@ namespace ENigMA
         CFemCbsSolver<Real, 2>::CFemCbsSolver(CMshMesh<Real>& aMesh)
         {
 
-            m_G1 = gradient<Real>(m_u, CP_X).matrixA;
-            m_G2 = gradient<Real>(m_v, CP_Y).matrixA;
+            m_mesh = aMesh;
 
             m_u.setMesh(aMesh);
             m_u.setDiscretMethod(DM_FEM);
@@ -32,6 +31,7 @@ namespace ENigMA
             m_u.setDiscretLocation(DL_NODE);
             m_u.setSimulationType(ST_FLOW);
             m_u.setNbDofs(1);
+            m_u.u.resize(aMesh.nbNodes());
 
             m_v.setMesh(aMesh);
             m_v.setDiscretMethod(DM_FEM);
@@ -39,14 +39,19 @@ namespace ENigMA
             m_v.setDiscretLocation(DL_NODE);
             m_v.setSimulationType(ST_FLOW);
             m_v.setNbDofs(1);
-            
+            m_v.u.resize(aMesh.nbNodes());
+
             m_p.setMesh(aMesh);
             m_p.setDiscretMethod(DM_FEM);
             m_p.setDiscretOrder(DO_LINEAR);
             m_p.setDiscretLocation(DL_NODE);
             m_p.setSimulationType(ST_FLOW);
             m_p.setNbDofs(1);
-            
+            m_p.u.resize(aMesh.nbNodes());
+
+            m_G1 = gradient<Real>(m_u, CP_X).matrixA;
+            m_G2 = gradient<Real>(m_v, CP_Y).matrixA;
+
         }
 
         template <typename Real>
@@ -80,7 +85,7 @@ namespace ENigMA
             m_dt = dt;
 
         }
-
+        
         template <typename Real>
         void CFemCbsSolver<Real, 2>::calculateVelocityField()
         {
@@ -137,26 +142,26 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real CFemCbsSolver<Real, 2>::u(const Integer aNodeId)
+        CPdeField<Real>& CFemCbsSolver<Real, 2>::u()
         {
 
-            return m_u.value(aControlVolumeId);
+            return m_u;
 
         }
 
         template <typename Real>
-        Real CFemCbsSolver<Real, 2>::v(const Integer aNodeIndex)
+        CPdeField<Real>& CFemCbsSolver<Real, 2>::v()
         {
 
-            return m_v.value(aNodeIndex);
+            return m_v;
 
         }
 
         template <typename Real>
-        Real CFemCbsSolver<Real, 2>::p(const Integer aNodeIndex)
+        CPdeField<Real>& CFemCbsSolver<Real, 2>::p()
         {
 
-            return m_p.value(aNodeIndex);
+            return m_p;
 
         }
 
@@ -165,15 +170,16 @@ namespace ENigMA
         CFemCbsSolver<Real, 3>::CFemCbsSolver(CMshMesh<Real>& aMesh) : CFemCbsSolver<Real, 2>(aMesh)
         {
 
-            m_G3 = gradient<Real>(m_w, CP_Z).matrixA;
-
             m_w.setMesh(aMesh);
             m_w.setDiscretMethod(DM_FEM);
             m_w.setDiscretOrder(DO_LINEAR);
             m_w.setDiscretLocation(DL_NODE);
             m_w.setSimulationType(ST_FLOW);
             m_w.setNbDofs(1);
-                        
+            m_w.u.resize(aMesh.nbNodes());
+
+            m_G3 = gradient<Real>(m_w, CP_Z).matrixA;
+
         }
 
         template <typename Real>
@@ -186,8 +192,8 @@ namespace ENigMA
         void CFemCbsSolver<Real, 3>::setGravity(const Real gx, const Real gy, const Real gz)
         {
 
-            CFemCbsSolver<Real, 2>::setGravity(gx, gy);
-        
+            m_gx = gx;
+            m_gy = gx;
             m_gz = gz;
                     
         }
@@ -238,10 +244,10 @@ namespace ENigMA
         }
 
         template <typename Real>
-        Real CFemCbsSolver<Real, 3>::w(const Integer aNodeIndex)
+        CPdeField<Real>& CFemCbsSolver<Real, 3>::w()
         {
 
-            return m_w.value(aNodeIndex);
+            return m_w;
 
         }
 

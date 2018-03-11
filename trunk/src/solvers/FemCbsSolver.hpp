@@ -35,6 +35,8 @@ namespace ENigMA
         {
         protected:
 
+            CMshMesh<Real> m_mesh;
+
             Real m_dt;
 
             Real m_dens;
@@ -64,10 +66,10 @@ namespace ENigMA
             
             virtual void iterate(const Real dt, const bool bInit = false);
 
-            Real u(const Integer aNodeIndex);
-            Real v(const Integer aNodeIndex);
+            CPdeField<Real>& u();
+            CPdeField<Real>& v();
 
-            Real p(const Integer aNodeIndex);
+            CPdeField<Real>& p();
 
         };
     
@@ -82,7 +84,7 @@ namespace ENigMA
             CPdeField<Real> m_w;
             
             Eigen::SparseMatrix<Real> m_G3;
-            
+
             virtual void calculateVelocityField() override;
             virtual void calculatePressureField() override;
             virtual void correctVelocityField() override;
@@ -92,9 +94,10 @@ namespace ENigMA
             explicit CFemCbsSolver(CMshMesh<Real>& aMesh);
             ~CFemCbsSolver();
 
+            void setGravity(const Real gx, const Real gy) = delete;
             void setGravity(const Real gx, const Real gy, const Real gz);
-            
-            Real w(const Integer aNodeIndex);
+
+            CPdeField<Real>& w();
 
         };
 

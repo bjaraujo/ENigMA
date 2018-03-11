@@ -16,7 +16,7 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CMshElement<Real>::CMshElement() : m_elementType(ET_NONE)
+        CMshElement<Real>::CMshElement() : m_elementType(ET_NONE), m_thickness(1.0)
         {
 
         }

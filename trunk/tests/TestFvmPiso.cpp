@@ -108,20 +108,15 @@ TEST_F(CTestFvmPiso, hydroPressure) {
     
     for (Integer i = 0; i < nIter; ++i)
     {
-
         aPisoSolver.iterate(dt);
- 
-    }    
+    }
 
     decimal p = 0.0;
     
     for (Integer i = 0; i < aFvmMesh.nbControlVolumes(); ++i)
     {
-
         unsigned int aControlVolumeId = aFvmMesh.controlVolumeId(i);
-
         p = std::max(p, aPisoSolver.p(aControlVolumeId));
-
     }
      
     EXPECT_NEAR(rho*fabs(g), p, 200);

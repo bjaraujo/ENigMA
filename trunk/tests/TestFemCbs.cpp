@@ -49,7 +49,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     CMshBasicMesher<decimal> aBasicMesher;
 
-    aBasicMesher.generate(aQuadrilateral, 60, 60, true);
+    aBasicMesher.generate(aQuadrilateral, 20, 20, true);
     CMshMesh<decimal> aMesh = aBasicMesher.mesh();
     
     CFemCbsSolver<decimal, 2> aCbsSolver(aMesh);
@@ -62,10 +62,43 @@ TEST_F(CTestFemCbs, hydroPressure) {
  
     aCbsSolver.setMaterialProperties(rho, mu);
 
-    
-     
-     
-    //EXPECT_NEAR(rho*fabs(g), p, 200);
+    for (Integer i = 0; i < aMesh.nbNodes(); ++i)
+    {
+
+        Integer aNodeId = aMesh.nodeId(i);
+        CMshNode<decimal> aNode = aMesh.node(aNodeId);
+
+        if ((aNode.y() - 0.0) < 1E-3)
+        {
+            aCbsSolver.v().setFixedValue(i, 0.0);
+        }
+
+        if ((aNode.x() - 0.0) < 1E-3 ||
+            (aNode.x() - 1.0) < 1E-3)
+        {
+            aCbsSolver.u().setFixedValue(i, 0.0);
+        }
+
+    }
+
+    decimal dt = 1E-3;
+    Integer nIter = 1;
+
+    for (Integer i = 0; i < nIter; ++i)
+    {
+        aCbsSolver.iterate(dt);
+    }
+
+    decimal p = 0.0;
+
+    for (Integer i = 0; i < aMesh.nbNodes(); ++i)
+    {
+        p = std::max(p, aCbsSolver.p().value(i));
+    }
+
+    std::cout << p << std::endl;
+
+    EXPECT_NEAR(rho*fabs(g), p, 200);
 
 }
 
