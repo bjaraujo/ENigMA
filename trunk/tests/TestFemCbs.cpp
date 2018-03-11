@@ -73,9 +73,12 @@ TEST_F(CTestFemCbs, hydroPressure) {
         CMshNode<decimal> aNode = aMesh.node(aNodeId);
 
         if (fabs(aNode.x() - 0.0) < 1E-3 ||
-            fabs(aNode.x() - 1.0) < 1E-3 ||
-            fabs(aNode.y() - 0.0) < 1E-3 ||
-            fabs(aNode.y() - 1.0) < 1E-3)
+            fabs(aNode.x() - 1.0) < 1E-3)
+        {
+            aCbsSolver.u().setFixedValue(i, 0.0);
+        }
+
+        if (fabs(aNode.y() - 0.0) < 1E-3)
         {
             aCbsSolver.u().setFixedValue(i, 0.0);
             aCbsSolver.v().setFixedValue(i, 0.0);
@@ -83,6 +86,8 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
         if (fabs(aNode.y() - 1.0) < 1E-3)
         {
+            aCbsSolver.u().setFixedValue(i, 0.0);
+            aCbsSolver.v().setFixedValue(i, 0.0);
             aCbsSolver.p().setFixedValue(i, 0.0);
         }
 
@@ -94,7 +99,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
     }
 
     decimal dt = 1E-3;
-    Integer nIter = 1;
+    Integer nIter = 2;
 
     for (Integer i = 0; i < nIter; ++i)
     {
@@ -105,17 +110,10 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     for (Integer i = 0; i < aMesh.nbNodes(); ++i)
     {
-        std::cout << aCbsSolver.p().value(i) << std::endl;
-
         p = std::max(p, aCbsSolver.p().value(i));
     }
 
-    CPosGmsh<decimal> aPosGmsh;
-    aPosGmsh.save(aCbsSolver.u(), "u.msh", "lid");
-    aPosGmsh.save(aCbsSolver.v(), "v.msh", "lid");
-    aPosGmsh.save(aCbsSolver.p(), "p.msh", "lid");
-
-    EXPECT_NEAR(rho*fabs(g), p, 200);
+    EXPECT_NEAR(rho*fabs(g), p, 1000);
 
 }
 

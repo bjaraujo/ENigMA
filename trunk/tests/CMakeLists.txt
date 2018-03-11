@@ -51,7 +51,7 @@ TestFemQuadrilateral.cpp
 TestFemTetrahedron.cpp
 TestFemTriangularPrism.cpp
 TestFemHexahedron.cpp
-#TestFemCbs.cpp
+TestFemCbs.cpp
 )
 
 set(TEST_FVM_SOURCES

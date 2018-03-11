@@ -107,7 +107,7 @@ namespace ENigMA
         {
 
             // Pressure calculation
-            CPdeEquation<Real> aPdeEquationP(laplacian<Real>(m_p) = m_dens / m_dt * (m_G1 * m_u.u + m_G2 * m_v.u));
+            CPdeEquation<Real> aPdeEquationP(laplacian<Real>(m_p) = 1.0 / m_dt * (m_G1 * m_u.u + m_G2 * m_v.u));
             aPdeEquationP.setElimination(m_p);
             aPdeEquationP.solve(m_p);
 
@@ -223,7 +223,7 @@ namespace ENigMA
         {
 
             // Pressure calculation
-            CPdeEquation<Real> aPdeEquationP(laplacian<Real>(m_p) = m_dens / m_dt * (m_G1 * m_u.u + m_G2 * m_v.u + m_G3 * m_w.u));
+            CPdeEquation<Real> aPdeEquationP(laplacian<Real>(m_p) = 1.0 / m_dt * (m_G1 * m_u.u + m_G2 * m_v.u + m_G3 * m_w.u));
             aPdeEquationP.setElimination(m_p);
             aPdeEquationP.solve(m_p);
 
