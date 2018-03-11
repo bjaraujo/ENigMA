@@ -26,6 +26,7 @@ include_directories(
   ../../../src/material
   ../../../src/mesh
   ../../../src/pde
+  ../../../src/solvers
   ../../../src/post
   ../../../src/sle
   ../../../src/stl

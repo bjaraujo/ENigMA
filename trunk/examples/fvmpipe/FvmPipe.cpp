@@ -338,14 +338,14 @@ void FvmPipe::solve()
         std::cout << "pmax = " << std::fixed << p_max << std::endl;
 
         double Ui_max = std::numeric_limits<double>::min();        
-        for (Integer i = 0; i < sInletFaceIds.size(); i++)
+        for (Integer i = 0; i < static_cast<Integer>(sInletFaceIds.size()); i++)
         {
             Ui_max = std::max(Ui_max, aPisoSolver.wf(sInletFaceIds[i]));
         }
         std::cout << "Inlet Umax = " << std::fixed << Ui_max << std::endl;
 
         double Uo_max = std::numeric_limits<double>::min();
-        for (Integer i = 0; i < sOutletFaceIds.size(); i++)
+        for (Integer i = 0; i < static_cast<Integer>(sOutletFaceIds.size()); i++)
         {
             Uo_max = std::max(Uo_max, aPisoSolver.wf(sOutletFaceIds[i]));
         }

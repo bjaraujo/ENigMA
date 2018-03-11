@@ -43,6 +43,7 @@ include_directories(
   ../../src/fvm/thermal
   ../../src/sle
   ../../src/pde
+  ../../src/solvers
   ../../src/post
   ../../src/analytical
 )

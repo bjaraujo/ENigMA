@@ -17,8 +17,12 @@
 #include "MshBasicMesher.hpp"
 #include "FemCbsSolver.hpp"
 
+#include "PosGmsh.hpp"
+
 using namespace ENigMA::fem;
 using namespace ENigMA::mesh;
+
+using namespace ENigMA::post;
 
 class CTestFemCbs : public ::testing::Test {
 protected:
@@ -49,7 +53,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     CMshBasicMesher<decimal> aBasicMesher;
 
-    aBasicMesher.generate(aQuadrilateral, 20, 20, true);
+    aBasicMesher.generate(aQuadrilateral, 10, 40, true);
     CMshMesh<decimal> aMesh = aBasicMesher.mesh();
     
     CFemCbsSolver<decimal, 2> aCbsSolver(aMesh);
@@ -68,16 +72,24 @@ TEST_F(CTestFemCbs, hydroPressure) {
         Integer aNodeId = aMesh.nodeId(i);
         CMshNode<decimal> aNode = aMesh.node(aNodeId);
 
-        if ((aNode.y() - 0.0) < 1E-3)
+        if (fabs(aNode.x() - 0.0) < 1E-3 ||
+            fabs(aNode.x() - 1.0) < 1E-3 ||
+            fabs(aNode.y() - 0.0) < 1E-3 ||
+            fabs(aNode.y() - 1.0) < 1E-3)
         {
+            aCbsSolver.u().setFixedValue(i, 0.0);
             aCbsSolver.v().setFixedValue(i, 0.0);
         }
 
-        if ((aNode.x() - 0.0) < 1E-3 ||
-            (aNode.x() - 1.0) < 1E-3)
+        if (fabs(aNode.y() - 1.0) < 1E-3)
         {
-            aCbsSolver.u().setFixedValue(i, 0.0);
+            aCbsSolver.p().setFixedValue(i, 0.0);
         }
+
+        aCbsSolver.u().setValue(i, 0.0);
+        aCbsSolver.v().setValue(i, 0.0);
+
+        aCbsSolver.p().setValue(i, 0.0);
 
     }
 
@@ -93,10 +105,15 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     for (Integer i = 0; i < aMesh.nbNodes(); ++i)
     {
+        std::cout << aCbsSolver.p().value(i) << std::endl;
+
         p = std::max(p, aCbsSolver.p().value(i));
     }
 
-    std::cout << p << std::endl;
+    CPosGmsh<decimal> aPosGmsh;
+    aPosGmsh.save(aCbsSolver.u(), "u.msh", "lid");
+    aPosGmsh.save(aCbsSolver.v(), "v.msh", "lid");
+    aPosGmsh.save(aCbsSolver.p(), "p.msh", "lid");
 
     EXPECT_NEAR(rho*fabs(g), p, 200);
 

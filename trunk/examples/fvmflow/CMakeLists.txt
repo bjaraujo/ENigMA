@@ -42,6 +42,7 @@ include_directories(
   ../../src/fvm/flow
   ../../src/sle
   ../../src/pde
+  ../../src/solvers
   ../../src/post
   ../../src/analytical
 )

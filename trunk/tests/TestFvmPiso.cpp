@@ -90,10 +90,10 @@ TEST_F(CTestFvmPiso, hydroPressure) {
 
         aFace.calculateCentroid();
 
-        if (aFace.centroid().x() == 0.0 ||
-            aFace.centroid().x() == 1.0 ||
-            aFace.centroid().y() == 0.0 ||
-            aFace.centroid().y() == 1.0)
+        if ((aFace.centroid().x() - 0.0) < 1E-3 ||
+            (aFace.centroid().x() - 1.0) < 1E-3 ||
+            (aFace.centroid().y() - 0.0) < 1E-3 ||
+            (aFace.centroid().y() - 1.0) < 1E-3)
         {
             sFaceIds.push_back(aFaceId);
         }
