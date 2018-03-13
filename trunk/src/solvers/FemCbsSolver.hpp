@@ -59,11 +59,9 @@ namespace ENigMA
             ~CFemCbsSolver();
 
             virtual void setGravity(const Real gx, const Real gy);
-            
             virtual void setMaterialProperties(const Real aDensity, const Real aViscosity);
-            
             virtual void setTimeInterval(const Real dt);
-            
+
             virtual void iterate(const Real dt, const bool bInit = false);
 
             CPdeField<Real>& u();
@@ -75,15 +73,23 @@ namespace ENigMA
     
         // Three-dimensional    
         template <typename Real>
-        class CFemCbsSolver<Real, 3> : public CFemCbsSolver<Real, 2>
+        class CFemCbsSolver<Real, 3>
         {
         protected:
 
-            Real m_gz;
+            CMshMesh<Real> m_mesh;
 
-            CPdeField<Real> m_w;
+            Real m_dt;
+
+            Real m_dens;
+            Real m_visc;
+
+            Real m_gx, m_gy, m_gz;
+
+            CPdeField<Real> m_u, m_v, m_w;
+            CPdeField<Real> m_p;
             
-            Eigen::SparseMatrix<Real> m_G3;
+            Eigen::SparseMatrix<Real> m_G1, m_G2, m_G3;
 
             virtual void calculateVelocityField() override;
             virtual void calculatePressureField() override;
@@ -94,10 +100,17 @@ namespace ENigMA
             explicit CFemCbsSolver(CMshMesh<Real>& aMesh);
             ~CFemCbsSolver();
 
-            void setGravity(const Real gx, const Real gy) = delete;
-            void setGravity(const Real gx, const Real gy, const Real gz);
+            virtual void setGravity(const Real gx, const Real gy, const Real gz);
+            virtual void setMaterialProperties(const Real aDensity, const Real aViscosity);
+            virtual void setTimeInterval(const Real dt);
 
+            virtual void iterate(const Real dt, const bool bInit = false);
+
+            CPdeField<Real>& u();
+            CPdeField<Real>& v();
             CPdeField<Real>& w();
+
+            CPdeField<Real>& p();
 
         };
 
