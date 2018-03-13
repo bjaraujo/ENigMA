@@ -307,8 +307,8 @@ set(STL_HEADERS
 )
 
 set(SOL_HEADERS
-../src/solvers/FemCBSSolver.hpp
-../src/solvers/FemCBSSolver_Imp.hpp
+../src/solvers/FemCbsSolver.hpp
+../src/solvers/FemCbsSolver_Imp.hpp
 ../src/solvers/FvmPisoSolver.hpp
 ../src/solvers/FvmPisoSolver_Imp.hpp
 ../src/solvers/FvmVofSolver.hpp

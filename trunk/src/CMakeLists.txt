@@ -321,8 +321,8 @@ stl/StlFile_Imp.hpp
 )
 
 set(SOL_HEADERS
-solvers/FemCBSSolver.hpp
-solvers/FemCBSSolver_Imp.hpp
+solvers/FemCbsSolver.hpp
+solvers/FemCbsSolver_Imp.hpp
 solvers/FvmPisoSolver.hpp
 solvers/FvmPisoSolver_Imp.hpp
 solvers/FvmVofSolver.hpp
