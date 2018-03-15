@@ -15,6 +15,7 @@
 #ifdef USE_VIENNACL
 
 #define VIENNACL_HAVE_EIGEN 1
+//#define VIENNACL_WITH_OPENCL 1
 
 #include "viennacl/vector.hpp"
 #include "viennacl/matrix.hpp"

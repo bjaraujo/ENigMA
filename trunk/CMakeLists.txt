@@ -38,11 +38,15 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY AUTOGEN_TARGETS_FOLDER automoc)
 
+if(USE_VIENNACL)
+    add_definitions(-DUSE_VIENNACL)
+endif()
+
 add_subdirectory(lib)
 
-IF (ENIGMA_BUILD_UNIT_TESTS)
-add_subdirectory(tests)
-endif(ENIGMA_BUILD_UNIT_TESTS)
+if(ENIGMA_BUILD_UNIT_TESTS)
+    add_subdirectory(tests)
+endif()
 
 add_subdirectory(wrappers)
 

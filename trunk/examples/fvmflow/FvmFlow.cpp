@@ -280,7 +280,7 @@ void FvmFlow::solve()
     this->m_renderer->AddActor(m_resultsActor);
     this->m_renderer->AddActor(m_scalarBarActor);
 
-    double r0, r;
+    double r0, r = 0.0;
 
     // Flow in a rectangle
     for (Integer ii = 0; ii < nIter; ++ii)
