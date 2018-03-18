@@ -153,8 +153,8 @@ void FvmFlow::solve()
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
     
-    Integer nx = 40;
-    Integer ny = 40;
+    Integer nx = 80;
+    Integer ny = 80;
 
     CMshBasicMesher<double> aBasicMesher;
 
@@ -286,9 +286,8 @@ void FvmFlow::solve()
     for (Integer ii = 0; ii < nIter; ++ii)
     {
 
-        //std::cout << "Iteration = " << (ii + 1) << std::endl;
+        std::cout << "Iteration = " << (ii + 1) << std::endl;
         std::cout << "Time = " << dt * (ii + 1) << std::endl;
-        std::cout << "Interval = " << dt << std::endl;
 
         aPisoSolver.iterate(dt);
 

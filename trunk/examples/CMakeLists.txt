@@ -13,6 +13,7 @@ add_subdirectory(boxvolumesearch)
 endif(ENIGMA_BUILD_CONSOLE_EXAMPLES)
 
 IF (ENIGMA_BUILD_OPENGL_EXAMPLES)
+add_subdirectory(lbmflow)
 add_subdirectory(sphfs)
 add_subdirectory(sphstatic)
 endif(ENIGMA_BUILD_OPENGL_EXAMPLES)
