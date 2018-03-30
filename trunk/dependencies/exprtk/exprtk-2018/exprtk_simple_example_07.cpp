@@ -2,8 +2,8 @@
  **************************************************************
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
- * Simple Example 6                                           *
- * Author:  Arash Partow (1999-2017)                          *
+ * Simple Example 7                                           *
+ * Author: Arash Partow (1999-2018)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -18,30 +18,23 @@
 
 #include <cstdio>
 #include <string>
+
 #include "exprtk.hpp"
 
 
 template <typename T>
-void vector_function()
+void logic()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>     expression_t;
    typedef exprtk::parser<T>             parser_t;
 
-   std::string expression_string =
-                  " for (var i := 0; i < min(x[],y[],z[]); i += 1) "
-                  " {                                              "
-                  "   z[i] := 3sin(x[i]) + 2log(y[i]);             "
-                  " }                                              ";
-
-   T x[] = { T(1.1), T(2.2), T(3.3), T(4.4), T(5.5) };
-   T y[] = { T(1.1), T(2.2), T(3.3), T(4.4), T(5.5) };
-   T z[] = { T(0.0), T(0.0), T(0.0), T(0.0), T(0.0) };
+   std::string expression_string = "not(A and B) or C";
 
    symbol_table_t symbol_table;
-   symbol_table.add_vector("x",x);
-   symbol_table.add_vector("y",y);
-   symbol_table.add_vector("z",z);
+   symbol_table.create_variable("A");
+   symbol_table.create_variable("B");
+   symbol_table.create_variable("C");
 
    expression_t expression;
    expression.register_symbol_table(symbol_table);
@@ -49,11 +42,30 @@ void vector_function()
    parser_t parser;
    parser.compile(expression_string,expression);
 
-   expression.value();
+   printf(" # | A | B | C | %s\n"
+          "---+---+---+---+-%s\n",
+          expression_string.c_str(),
+          std::string(expression_string.size(),'-').c_str());
+
+   for (int i = 0; i < 8; ++i)
+   {
+      symbol_table.get_variable("A")->ref() = T((i & 0x01) ? 1 : 0);
+      symbol_table.get_variable("B")->ref() = T((i & 0x02) ? 1 : 0);
+      symbol_table.get_variable("C")->ref() = T((i & 0x04) ? 1 : 0);
+
+      int result = static_cast<int>(expression.value());
+
+      printf(" %d | %d | %d | %d | %d \n",
+             i,
+             static_cast<int>(symbol_table.get_variable("A")->value()),
+             static_cast<int>(symbol_table.get_variable("B")->value()),
+             static_cast<int>(symbol_table.get_variable("C")->value()),
+             result);
+   }
 }
 
 int main()
 {
-   vector_function<double>();
+   logic<double>();
    return 0;
 }

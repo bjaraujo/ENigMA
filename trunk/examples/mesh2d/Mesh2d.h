@@ -53,9 +53,9 @@ protected:
     protected slots:
 
 private:
-
-    CMshTriangleMesher<double> m_mesher;
-    //CMshQuadrilateralMesher<double> m_mesher;
+    
+    //CMshTriangleMesher<double> m_mesher;
+    CMshQuadrilateralMesher<double> m_mesher;
 
     bool generateMesh(const unsigned int nu, const unsigned int nv);
     void drawMesh();

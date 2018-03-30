@@ -2,8 +2,8 @@
  **************************************************************
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
- * Simple Example 5                                           *
- * Author:  Arash Partow (1999-2017)                          *
+ * Simple Example 6                                           *
+ * Author: Arash Partow (1999-2018)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -18,50 +18,31 @@
 
 #include <cstdio>
 #include <string>
+
 #include "exprtk.hpp"
 
 
 template <typename T>
-struct myfunc : public exprtk::ifunction<T>
-{
-   using exprtk::ifunction<T>::operator();
-
-   myfunc()
-   : exprtk::ifunction<T>(2)
-   { exprtk::disable_has_side_effects(*this); }
-
-   inline T operator()(const T& v1, const T& v2)
-   {
-      return T(1) + (v1 * v2) / T(3);
-   }
-};
-
-template <typename T>
-inline T myotherfunc(T v0, T v1, T v2)
-{
-   return std::abs(v0 - v1) * v2;
-}
-
-template <typename T>
-void custom_function()
+void vector_function()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>     expression_t;
    typedef exprtk::parser<T>             parser_t;
 
    std::string expression_string =
-                  "myfunc(sin(x / pi), otherfunc(3 * y, x / 2, x * y))";
+                  " for (var i := 0; i < min(x[],y[],z[]); i += 1) "
+                  " {                                              "
+                  "   z[i] := 3sin(x[i]) + 2log(y[i]);             "
+                  " }                                              ";
 
-   T x = T(1);
-   T y = T(2);
-   myfunc<T> mf;
+   T x[] = { T(1.1), T(2.2), T(3.3), T(4.4), T(5.5) };
+   T y[] = { T(1.1), T(2.2), T(3.3), T(4.4), T(5.5) };
+   T z[] = { T(0.0), T(0.0), T(0.0), T(0.0), T(0.0) };
 
    symbol_table_t symbol_table;
-   symbol_table.add_variable("x",x);
-   symbol_table.add_variable("y",y);
-   symbol_table.add_function("myfunc",mf);
-   symbol_table.add_function("otherfunc",myotherfunc);
-   symbol_table.add_constants();
+   symbol_table.add_vector("x",x);
+   symbol_table.add_vector("y",y);
+   symbol_table.add_vector("z",z);
 
    expression_t expression;
    expression.register_symbol_table(symbol_table);
@@ -69,12 +50,11 @@ void custom_function()
    parser_t parser;
    parser.compile(expression_string,expression);
 
-   T result = expression.value();
-   printf("Result: %10.5f\n",result);
+   expression.value();
 }
 
 int main()
 {
-   custom_function<double>();
+   vector_function<double>();
    return 0;
 }

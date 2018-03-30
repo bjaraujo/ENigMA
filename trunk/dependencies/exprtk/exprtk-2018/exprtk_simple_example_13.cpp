@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Simple Example 13                                          *
- * Author:  Arash Partow (1999-2017)                          *
+ * Author: Arash Partow (1999-2018)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+
 #include "exprtk.hpp"
 
 

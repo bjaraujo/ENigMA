@@ -84,7 +84,7 @@ arithmetic operations, functions and processes:
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [SECTION 02 - EXAMPLE EXPRESSIONS]
-The  following  is  a  short listing  of  the  types  of  mathematical
+The following is  a short listing  of infix format  based mathematical
 expressions that can be parsed and evaluated using the ExprTk library.
 
   (01) sqrt(1 - (3 / x^2))
@@ -224,7 +224,7 @@ of C++ compilers:
 +----------+---------------------------------------------------------+
 | true     | True state or any value other than zero (typically 1).  |
 +----------+---------------------------------------------------------+
-| false    | False state, value of zero.                             |
+| false    | False state, value of exactly zero.                     |
 +----------+---------------------------------------------------------+
 | and      | Logical AND, True only if x and y are both true.        |
 |          | (eg: x and y)                                           |
@@ -275,7 +275,7 @@ of C++ compilers:
 | clamp    | Clamp x in range between r0 and r1, where r0 < r1.      |
 |          | (eg: clamp(r0,x,r1))                                    |
 +----------+---------------------------------------------------------+
-| equal    | Equality test between x and y using normalized epsilon  |
+| equal    | Equality test between x and y using normalised epsilon  |
 +----------+---------------------------------------------------------+
 | erf      | Error function of x.  (eg: erf(x))                      |
 +----------+---------------------------------------------------------+
@@ -321,7 +321,7 @@ of C++ compilers:
 +----------+---------------------------------------------------------+
 | ncdf     | Normal cumulative distribution function.  (eg: ncdf(x)) |
 +----------+---------------------------------------------------------+
-| nequal   | Not-equal test between x and y using normalized epsilon |
+| nequal   | Not-equal test between x and y using normalised epsilon |
 +----------+---------------------------------------------------------+
 | pow      | x to the power of y.  (eg: pow(x,y) == x ^ y)           |
 +----------+---------------------------------------------------------+
@@ -499,7 +499,7 @@ of C++ compilers:
 |          | eg:                                                     |
 |          | 1. if (x > y) z; else w;                                |
 |          | 2. if (x > y) z; else if (w != u) v;                    |
-|          | 3. if (x < y) {z; w + 1;} else u;                       |
+|          | 3. if (x < y) { z; w + 1; } else u;                     |
 |          | 4. if ((x != y) and (z > w))                            |
 |          |    {                                                    |
 |          |      y := sin(x) / u;                                   |
@@ -651,7 +651,7 @@ expressions. The types are as follows:
 
 (1) Scalar Type
 The scalar type  is a singular  numeric value. The  underlying type is
-that used  to specialize  the ExprTk  components (float,  double, long
+that used  to specialise  the ExprTk  components (float,  double, long
 double, MPFR et al).
 
 
@@ -673,7 +673,7 @@ however can not interact with scalar or vector types.
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [SECTION 10 - COMPONENTS]
-There are three primary components, that are specialized upon a  given
+There are three primary components, that are specialised upon a  given
 numeric type, which make up the core of ExprTk. The components are  as
 follows:
 
@@ -791,13 +791,26 @@ methods:
    4. bool add_vector   (const std::string& name,    vector_type&)
 
 
-The 'vector' type must consist of a contiguous array of scalars  which
-can be one of the following:
+Note: The 'vector' type must  be comprised from a contiguous  array of
+scalars with a size that is  larger than zero. The vector type  itself
+can be any one of the following:
 
    1. std::vector<scalar_t>
    2. scalar_t(&v)[N]
    3. scalar_t* and array size
    4. exprtk::vector_view<scalar_t>
+
+
+When  registering  a variable,  vector,  string or  function  with  an
+instance of a symbol_table, the call to 'add_...' may fail and  return
+a false result due to one or more of the following reasons:
+
+  1. Variable name contains invalid characters or is ill-formed
+  2. Variable name conflicts with a reserved word (eg: 'while')
+  3. Variable name conflicts with a previously registered variable
+  4. A vector of size (length) zero is being registered
+  5. A free function exceeding fifteen parameters is being registered
+  6. The symbol_table instance is in an invalid state
 
 
 (2) Expression
@@ -920,8 +933,8 @@ including  which  control  block each  expression references and their
 associated reference counts.
 
 
-  exprtk::expression e0; // constructed expression, eg: x + 1
-  exprtk::expression e1; // constructed expression, eg: 2z + y
+   exprtk::expression e0; // constructed expression, eg: x + 1
+   exprtk::expression e1; // constructed expression, eg: 2z + y
 
   +-----[ e0 cntrl block]----+     +-----[ e1 cntrl block]-----+
   | 1. Expression Node 'x+1' |     | 1. Expression Node '2z+y' |
@@ -934,7 +947,7 @@ associated reference counts.
     +--------------------+           +--------------------+
 
 
-  e0 = e1; // e0 and e1 are now 2z+y
+   e0 = e1; // e0 and e1 are now 2z+y
 
                +-----[ e1 cntrl block]-----+
                | 1. Expression Node '2z+y' |
@@ -1226,7 +1239,7 @@ In the following example, the  return value of the expression  will be
 within the loop body on its last iteration:
 
    var x := 1;
-   x + for (var i := i; i < 10; i += 1)
+   x + for (var i := x; i < 10; i += 1)
        {
          i / 2;
          i + 1;
@@ -1303,7 +1316,7 @@ lets review the following expression:
 
    var x := 2;      // Statement 1
    var y := x + 2;  // Statement 2
-   x + y            // Statement 3
+   x + y;           // Statement 3
    y := x + 3y;     // Statement 4
    x - y;           // Statement 5
 
@@ -1316,7 +1329,7 @@ side-effects, however the latter, statement 5, is the final  statement
 in the expression and hence will be assumed to have a side-effect.
 
 During compilation when the DCE  optimisation is applied to the  above
-expression, statement 2 will be removed from the expression, as it has
+expression, statement 3 will be removed from the expression, as it has
 no  bearing  on  the  final result  of  expression,  the  rest of  the
 statements will all remain. The optimised form of the expression is as
 follows:
@@ -1332,9 +1345,9 @@ ExprTk support two forms  of conditional branching or  otherwise known
 as  if-statements.  The  first  form,  is  a  simple  function   based
 conditional  statement, that  takes exactly  three input  expressions:
 condition, consequent  and alternative.  The following  is an  example
-expression that utilizes the function based if-statement.
+expression that utilises the function based if-statement.
 
-   x := if (y < z, y + 1, 2* z)
+   x := if (y < z, y + 1, 2 * z)
 
 
 In the  example above,  if the  condition 'y  < z'  is true,  then the
@@ -1345,7 +1358,7 @@ essentially the  simplest form of  an if-then-else statement. A simple
 variation of  the expression  where the  value of  the if-statement is
 used within another statement is as follows:
 
-   x := 3 * if (y < z, y + 1, 2* z) / 2
+   x := 3 * if (y < z, y + 1, 2 * z) / 2
 
 
 The second form of if-statement resembles the standard syntax found in
@@ -1358,7 +1371,7 @@ most imperative languages. There are two variations of the statement:
 (a) If-Statement
 This version  of the  conditional statement  returns the  value of the
 consequent expression when the  condition expression is true,  else it
-will require a quiet NaN value as its result.
+will return a quiet NaN value as its result.
 
    Example 1:
    x := if (y < z) y + 3;
@@ -1401,37 +1414,29 @@ The second variation of  the if-statement is to  allow for the use  of
 Else and If-Else cascading statements. Examples of such statements are
 as follows:
 
-   Example 1:           Example 2:
-   if (x < y)           if (x < y)
-     z := x + 3;        {
-   else                   y := z + x;
-     y := x - z;          z := x + 3;
-                        }
-                        else
-                          y := x - z;
+  Example 1:             Example 2:         Example 3:
+  if (x < y)             if (x < y)         if (x > y + 1)
+    z := x + 3;          {                    y := abs(x - z);
+  else                     y := z + x;      else
+    y := x - z;            z := x + 3;      {
+                         }                    y := z + x;
+                         else                 z := x + 3;
+                           y := x - z;      };
 
-   Example 3:           Example 4:
-   if (x > y + 1)       if (2 * x < max(y,3))
-     y := abs(x - z);   {
-   else                   y := z + x;
-   {                      z := x + 3;
-     y := z + x;        }
-     z := x + 3;        else if (2y - z)
-   };                     y := x - z;
 
-   Example 5:           Example 6:
-   if (x < y)           if (x < y or (x + z) > y)
-     z := x + 3;        {
-   else if (2y != z)      z := x + 3;
-   {                      y := x - z;
-     z := x + 3;        }
-     y := x - z;        else if (abs(2y - z) >= 3)
-   }                       y := x - z;
-   else                 else
-     x * x;             {
-                           z := abs(x * x);
-                           x * y * z;
-                        };
+  Example 4:             Example 5:         Example 6:
+  if (2 * x < max(y,3))  if (x < y)         if (x < y or (x + z) > y)
+  {                        z := x + 3;      {
+    y := z + x;          else if (2y != z)    z := x + 3;
+    z := x + 3;          {                    y := x - z;
+  }                        z := x + 3;      }
+  else if (2y - z)         y := x - z;      else if (abs(2y - z) >= 3)
+    y := x - z;          }                    y := x - z;
+                         else               else
+                           x * x;           {
+                                              z := abs(x * x);
+                                              x * y * z;
+                                            };
 
 
 In  the case  where  there  is no  final else  statement and  the flow
@@ -1451,7 +1456,7 @@ Special functions dramatically decrease  the total evaluation time  of
 expressions which would otherwise  have been written using  the common
 form by reducing the total number  of nodes in the evaluation tree  of
 an  expression  and  by  also  leveraging  the  compiler's  ability to
-correctly optimize such expressions for a given architecture.
+correctly optimise such expressions for a given architecture.
 
           3-Parameter                       4-Parameter
  +-------------+-------------+    +--------------+------------------+
@@ -1532,7 +1537,7 @@ zero. The following are examples of variable definitions:
        var y := 3;
 
    (c) Initialise z to the expression
-       var z := if (max(1,x + y) > 2,w,v);
+       var z := if (max(1, x + y) > 2, w, v);
 
 
 (2) Vector Definition
@@ -1547,7 +1552,7 @@ zero. The following are examples of vector definitions:
        var x[3] := {};
 
    (c) Initialise all values to given expression
-       var x[3] := [123 + 3y + sin(w/z)];
+       var x[3] := [123 + 3y + sin(w / z)];
 
    (d) Initialise the first two values, all other elements to zero
        var x[3] := { 1 + x[2], sin(y[0] / x[]) + 3 };
@@ -1581,25 +1586,28 @@ examples of string variable definitions:
    (a) Initialise to a string
        var x := 'abc';
 
-   (b) Initialise to a string expression
+   (b) Initialise to an empty string
+       var x := '';
+
+   (c) Initialise to a string expression
        var x := 'abc' + '123';
 
-   (c) Initialise to a string range
+   (d) Initialise to a string range
        var x := 'abc123'[2:4];
 
-   (d) Initialise to another string variable
+   (e) Initialise to another string variable
        var x := 'abc';
        var y := x;
 
-   (e) Initialise to another string variable range
+   (f) Initialise to another string variable range
        var x := 'abc123';
        var y := x[2:4];
 
-   (f) Initialise to a string expression
+   (g) Initialise to a string expression
        var x := 'abc';
        var y := x + '123';
 
-   (g) Initialise to a string expression range
+   (h) Initialise to a string expression range
        var x := 'abc';
        var y := (x + '123')[1:3];
 
@@ -1775,7 +1783,7 @@ needs  to  be  'updated' to  either another  vector or  sub-range, the
 vector_view instance  can be  efficiently rebased,  and the expression
 evaluated as normal.
 
-   exprtk::vector_view<T> view = exprtk::make_vector_view(v, v.size());
+   exprtk::vector_view<T> view = exprtk::make_vector_view(v,v.size());
 
    symbol_table_t symbol_table;
    symbol_table.add_vector("v",view);
@@ -1794,7 +1802,7 @@ evaluated as normal.
 
 [SECTION 15 - USER DEFINED FUNCTIONS]
 ExprTk provides a means  whereby custom functions can  be defined  and
-utilized within  expressions.  The   concept  requires  the  user   to
+utilised within  expressions.  The   concept  requires  the  user   to
 provide a reference  to the function  coupled with an  associated name
 that  will be invoked within  expressions. Functions may take numerous
 inputs but will always return a single value of the underlying numeric
@@ -1840,7 +1848,7 @@ function called 'foo':
 (2) ivararg_function
 This interface supports a variable number of scalar arguments as input
 into the function. The function operator interface uses a  std::vector
-specialized upon type T to facilitate parameter passing. The following
+specialised upon type T to facilitate parameter passing. The following
 example defines a vararg function called 'boo':
 
    template <typename T>
@@ -1863,7 +1871,7 @@ example defines a vararg function called 'boo':
 (3) igeneric_function
 This interface supports  a variable number  of arguments and  types as
 input  into  the  function. The  function  operator  interface uses  a
-std::vector  specialized  upon  the  type_store  type  to   facilitate
+std::vector  specialised  upon  the  type_store  type  to   facilitate
 parameter passing.
 
     Scalar <-- function(i_0, i_1, i_2....., i_N)
@@ -2335,6 +2343,42 @@ Note: For  the igeneric_function  type, there  also needs  to be a 'Z'
 parameter sequence  defined in order for the  zero parameter  trait to
 properly take effect otherwise a compilation error will occur.
 
+
+(9) Free Functions
+The ExprTk symbol  table supports the  registration of free  functions
+and lambdas  (anonymous functors)  for use  in expressions.  The basic
+requirements  are similar  to those  found in  ifunction derived  user
+defined  functions. This  includes  support  for free  functions using
+anywhere from zero up to fifteen input parameters of scalar type, with
+a return type that is also scalar. Furthermore such functions will  by
+default be assumed to have side-effects and hence will not participate
+in constant folding optimisations.
+
+In the following  example, a two  input parameter free  function named
+'compute1', and a three  input parameter lambda named  'compute2' will
+be registered with the given symbol_table instance:
+
+
+   double compute1(double v0, double v1)
+   {
+      return 2.0 * v0 + v1 / 3.0;
+   }
+
+   .
+   .
+   .
+
+   typedef exprtk::symbol_table<double> symbol_table_t;
+
+   symbol_table_t symbol_table;
+
+   symbol_table.add_function("compute1", compute1);
+
+   symbol_table.add_function(
+      "compute2",
+      [](double v0, double v1, double v2) -> double
+      { return v0 / v1 + v2; });
+
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [SECTION 16 - EXPRESSION DEPENDENTS]
@@ -2443,7 +2487,7 @@ associated assignments:
    (5) None          x + y + z
 
 
-Note: In expression 4, both variables 'z' and 'w' are denoted as being
+Note: In expression 4, both variables 'w' and 'z' are denoted as being
 assignments even though only one of  them can ever be modified at  the
 time of evaluation. Furthermore the determination of which of the  two
 variables the  modification will  occur upon  can only  be known  with
@@ -2489,7 +2533,7 @@ associated with a given expression instance.
 
 However as an expression can have more than one symbol table  instance
 associated  with  itself,  when  building  more  complex  systems that
-utilize many expressions  where each can  in turn utilize  one or more
+utilise many expressions  where each can  in turn utilise  one or more
 variables  from  a  large set  of  potential  variables, functions  or
 constants, it becomes evident  that grouping variables into  layers of
 symbol_tables will simplify and streamline the overall process.
@@ -2559,7 +2603,7 @@ own instances of those variables. Examples of such variables could be:
    (2) customer_name
 
 
-The  following is  a diagram  depicting the  possible version  of the
+The  following is  a  diagram  depicting the  possible version  of the
 denoted symbol table hierarchies. In the diagram there are two  unique
 expressions, each of  which have a  reference to the  Global constant,
 functions and variables symbol tables and an exclusive reference to  a
@@ -2589,8 +2633,8 @@ local symbol table.
 
 
 Bringing  all of  the above  together, in  the following  example the
-hierarchy  of  symbol  tables  are  instantiated  and  initialised. An
-expression that makes use of various elements of each symbol table  is
+hierarchy  of  symbol  tables  are instantiated  and  initialised. An
+expression that makes use of various elements of each symbol table is
 then compiled and later on evaluated:
 
    typedef exprtk::symbol_table<double> symbol_table_t;
@@ -2722,7 +2766,7 @@ expressions:
 In  this  scenario   one  can  use   the  'dependent_entity_collector'
 component as described in [Section  16] to further determine which  of
 the registered variables were  actually used in the  given expression.
-As  an example  once the  set of  utilized  variables  are known,  any
+As  an example  once the  set of  utilised  variables  are known,  any
 further 'attention'  can be  restricted to  only those  variables when
 evaluating the expression. This can be quite useful when dealing  with
 expressions that can draw from a set of hundreds or even thousands  of
@@ -2841,7 +2885,7 @@ simple user defined USR:
                    T& default_value,
                    std::string& error_message)
       {
-         if (0 != unknown_symbol.find('var_'))
+         if (0 != unknown_symbol.find("var_"))
          {
             error_message = "Invalid symbol: " + unknown_symbol;
             return false;
@@ -2877,12 +2921,83 @@ simple user defined USR:
 
 
 In  the  example  above,  a user  specified  USR  is  defined, and  is
-registered with the parser enabling the USR functionality. The when an
-unknown  symbol is  encountered during  the  compilation  process, the
+registered with the parser  enabling the USR functionality.  Then when
+an unknown symbol is  encountered during the compilation  process, the
 USR's process method will be invoked. The USR in the example will only
 'accept' unknown symbols that have  a prefix of 'var_' as  being valid
 variables,  all other  unknown symbols  will result  in a  compilation
 error being raised.
+
+In the example above  the callback of the  USR that is invoked  during
+the unknown symbol resolution process only allows for scalar variables
+to be defined and resolved -  as that is the simplest and  most common
+form.
+
+There  is  also  an  extended version  of  the  callback  that can  be
+overridden that will allow for  more control and choice over  the type
+of symbol being  resolved. The following  is an example  definition of
+said extended callback:
+
+   template <typename T>
+   struct my_usr : public parser_t::unknown_symbol_resolver
+   {
+     typedef typename parser_t::unknown_symbol_resolver usr_t;
+
+     my_usr()
+     : usr_t(usr_t::e_usrmode_extended)
+     {}
+
+     virtual bool process(const std::string& unknown_symbol,
+                          symbol_table_t&      symbol_table,
+                          std::string&        error_message)
+     {
+        bool result = false;
+
+        if (0 == unknown_symbol.find("var_"))
+        {
+           // Default value of zero
+           result = symbol_table.create_variable(unknown_symbol,0);
+
+           if (!result)
+           {
+              error_message = "Failed to create variable...";
+           }
+        }
+        else if (0 == unknown_symbol.find("str_"))
+        {
+           // Default value of empty string
+           result = symbol_table.create_stringvar(unknown_symbol,"");
+
+           if (!result)
+           {
+              error_message = "Failed to create string variable...";
+           }
+        }
+        else
+           error_message = "Indeterminable symbol type.";
+
+        return result;
+     }
+   };
+
+
+In the  example above,  the USR  callback when  invoked will  pass the
+primary symbol table associated with the expression being parsed.  The
+symbol  resolution  business  logic  can  then  determine  under  what
+conditions  a  symbol will  be  resolved including  its  type (scalar,
+string, vector etc) and default value. When the callback  successfully
+returns  the  symbol  parsing and  resolution  process  will again  be
+executed by the parser. The idea here is that given the primary symbol
+table will now have the previously detected unknown symbol registered,
+it will be correctly resolved  and the general parsing processing  can
+then resume as per normal.
+
+Note: In order to have the USR's extended mode callback be invoked  It
+is  necessary to  pass the  e_usrmode_extended enum  value during  the
+constructor of the user defined USR.
+
+Note: The primary symbol table  for an expression is the  first symbol
+table to be registered with that instance of the expression.
 
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -3356,8 +3471,8 @@ values.
 
    expression.value();
 
-   printf("Result0: %15.5f\n",result0        );
-   printf("Result1: %s\n"    ,result1.c_str());
+   printf("Result0: %15.5f\n", result0        );
+   printf("Result1: %s\n"    , result1.c_str());
 
 
 In the example above, the expression will compute two results. As such
@@ -3365,7 +3480,7 @@ two result variables are defined to hold the values named result0  and
 result1 respectively. The first is of scalar type (double), the second
 is of  string type.  Once the  expression has  been evaluated, the two
 variables will have been updated  with the new result values,  and can
-then be further utilized from within the calling program.
+then be further utilised from within the calling program.
 
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -3595,7 +3710,7 @@ follows:
 
    if (exprtk::collect_variables(expression, variable_list))
    {
-      for (auto var : variable_list)
+      for (const auto& var : variable_list)
       {
          ...
       }
@@ -3619,7 +3734,7 @@ follows:
 
    if (exprtk::collect_functions(expression, function_list))
    {
-      for (auto func : function_list)
+      for (const auto& func : function_list)
       {
          ...
       }
@@ -3664,7 +3779,7 @@ expression string are passed to the exprtk::collect_functions routine.
 
    if (exprtk::collect_functions(expression, sym_tab, function_list))
    {
-      for (auto func : function_list)
+      for (const auto& func : function_list)
       {
          ...
       }
@@ -3682,12 +3797,12 @@ overloads, the definitions of which are:
 
    (1) No variables
    (2) One variable called x
-   (3) Two variable called x and y
-   (3) Three variable called x, y and z
+   (3) Two variables called x and y
+   (3) Three variables called x, y and z
 
 
-An example use of each of the three overloads for the compute  routine
-is as follows:
+Example uses of  each of the  three overloads for  the compute routine
+are as follows:
 
    T result = T(0);
 
@@ -3732,11 +3847,11 @@ is as follows:
 
 (d) integrate
 This free function will attempt to perform a numerical integration  of
-a single variable compiled expression  over a defined range and  given
-step size. The numerical integration is based on the three point  form
-of the Simpson's rule. The integrate function has two overloads, where
-the variable of integration can either be passed as a reference or  as
-a name in string form. Example usage of the function is as follows:
+a single variable compiled expression over a specified range and  step
+size. The numerical  integration is based  on the three  point form of
+Simpson's rule. The  integrate function has  two overloads, where  the
+variable of integration can  either be passed as  a reference or as  a
+name in string form. Example usage of the function is as follows:
 
    typedef exprtk::parser<T>             parser_t;
    typedef exprtk::expression<T>     expression_t;
@@ -3792,10 +3907,10 @@ function is as follows:
 
    ....
 
-   // Differentiate expression where value of x = 12.3 using a reference
+   // Differentiate expression at value of x = 12.3 using a reference
    // to the x variable
    x = T(12.3);
-   T derivative1 = exprtk::derivative(expression,x);
+   T derivative1 = exprtk::derivative(expression, x);
 
    // Differentiate expression where value x = 45.6 using name
    // of the x variable
@@ -3873,7 +3988,7 @@ is as follows:
    // Third derivative of expression where value of x = 12.3 using a
    // reference to the x variable
    x = T(12.3);
-   T derivative1 = exprtk::third_derivative(expression,x);
+   T derivative1 = exprtk::third_derivative(expression, x);
 
    // Third derivative of expression where value of x = 45.6 using
    // name of the x variable
@@ -3976,7 +4091,7 @@ expressions. As an example, lets take the following expression:
    1 / sqrt(2x) * e^(3y)
 
 
-Let's say we would like to determine which sub-part of the  expression
+Lets say we would like to determine which sub-part  of the  expression
 takes the  most time  to evaluate  and perhaps  attempt to  rework the
 expression based on the results. In order to do this we will create  a
 text file  called 'test.txt'  and then  proceed to  make some educated
@@ -4062,7 +4177,7 @@ into account when using ExprTk:
 
  (09) The  life-time of  objects registered  with or  created from  a
       specific symbol-table must span  at least the life-time  of the
-      compiled expressions which utilize objects, such as  variables,
+      compiled expressions which utilise objects, such as  variables,
       of that  symbol-table, otherwise  the result  will be undefined
       behavior.
 
@@ -4218,7 +4333,15 @@ into account when using ExprTk:
       performance  critical  code  paths, and  should  instead  occur
       entirely either before or after such code paths.
 
- (32) Before jumping in and using ExprTk, do take the time to  peruse
+ (32) Deep  copying  an  expression  instance  for  the  purposes  of
+      persisting to disk or otherwise transmitting elsewhere with the
+      intent to 'resurrect' the  expression instance later on  is not
+      possible due  to the  reasons described  in the  final note  of
+      Section 10. The recommendation is to instead simply persist the
+      string form  of the  expression and  compile the  expression at
+      run-time on the target.
+
+ (33) Before jumping in and using ExprTk, do take the time to  peruse
       the documentation and all of the examples, both in the main and
       the extras  distributions. Having  an informed  general view of
       what can and  can't be done,  and how something  should be done
@@ -4338,47 +4461,53 @@ disable certain features and  capabilities. The defines can  either be
 part of a compiler command line switch or scoped around the include to
 the ExprTk header. The defines are as follows:
 
-   (1) exprtk_enable_debugging
-   (2) exprtk_disable_comments
-   (3) exprtk_disable_break_continue
-   (4) exprtk_disable_sc_andor
-   (5) exprtk_disable_enhanced_features
-   (6) exprtk_disable_string_capabilities
-   (7) exprtk_disable_superscalar_unroll
-   (8) exprtk_disable_rtl_io_file
+   (01) exprtk_enable_debugging
+   (02) exprtk_disable_comments
+   (03) exprtk_disable_break_continue
+   (04) exprtk_disable_sc_andor
+   (05) exprtk_disable_return_statement
+   (06) exprtk_disable_enhanced_features
+   (07) exprtk_disable_string_capabilities
+   (08) exprtk_disable_superscalar_unroll
+   (09) exprtk_disable_rtl_io_file
+   (10) exprtk_disable_rtl_vecops
+   (11) exprtk_disable_caseinsensitivity
 
 
-(1) exprtk_enable_debugging
+(01) exprtk_enable_debugging
 This define will enable printing of debug information to stdout during
 the compilation process.
 
-(2) exprtk_disable_comments
+(02) exprtk_disable_comments
 This define will disable the ability for expressions to have comments.
 Expressions that have comments when parsed with a build that has  this
 option, will result in a compilation failure.
 
-(3) exprtk_disable_break_continue
+(03) exprtk_disable_break_continue
 This  define  will  disable  the  loop-wise  'break'  and   'continue'
 capabilities. Any expression that contains those keywords will  result
 in a compilation failure.
 
-(4) exprtk_disable_sc_andor
+(04) exprtk_disable_sc_andor
 This define  will disable  the short-circuit  '&' (and)  and '|'  (or)
 operators
 
-(5) exprtk_disable_enhanced_features
+(05) exprtk_disable_return_statement
+This define will disable use of return statements within expressions.
+
+(06) exprtk_disable_enhanced_features
 This  define  will  disable all  enhanced  features  such as  strength
 reduction and special  function optimisations and  expression specific
 type instantiations.  This feature  will reduce  compilation times and
 binary sizes but will  also result in massive  performance degradation
 of expression evaluations.
 
-(6) exprtk_disable_string_capabilities
+(07) exprtk_disable_string_capabilities
 This  define  will  disable all  string  processing  capabilities. Any
 expression that contains a string or string related syntax will result
 in a compilation failure.
 
-(7) exprtk_disable_superscalar_unroll
+(08) exprtk_disable_superscalar_unroll
 This define will set  the loop unroll batch  size to 4 operations  per
 loop  instead of  the default  8 operations.  This define  is used  in
 operations that  involve vectors  and aggregations  over vectors. When
@@ -4386,16 +4515,21 @@ targeting  non-superscalar  architectures, it  may  be recommended  to
 build using this particular option if efficiency of evaluations is  of
 concern.
 
-(8) exprtk_disable_rtl_io_file
+(09) exprtk_disable_rtl_io_file
 This  define will  disable  the  file I/O  RTL package  features. When
 present, any  attempts to register  the file I/O package with  a given
 symbol table will fail causing a compilation error.
 
-(9) exprtk_disable_rtl_vecops
+(10) exprtk_disable_rtl_vecops
 This define will  disable the extended  vector operations RTL  package
 features. When present, any attempts to register the vector operations
 package with  a given  symbol table  will fail  causing a  compilation
 error.
+
+(11) exprtk_disable_caseinsensitivity
+This define  will disable  case-insensitivity when  matching variables
+and  functions. Furthermore  all reserved  and keywords  will only  be
+acknowledged when in all lower-case.
 
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

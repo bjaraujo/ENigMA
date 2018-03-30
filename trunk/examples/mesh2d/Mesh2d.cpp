@@ -133,7 +133,7 @@ void Mesh2D::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
     else if (key == "m" || key == "M")
     {
 
-        generateMesh(240, 120);
+        generateMesh(60, 30);
         drawMesh();
 
         this->ui->qvtkWidget->GetRenderWindow()->Render();
@@ -245,7 +245,7 @@ bool Mesh2D::generateMesh(const unsigned int nu, const unsigned int nv)
 
         timer.start();
 
-        res = m_mesher.generate(aBoundaryMesh3, 99999, sInteriorPoints, d, 0.1, 1E-4);
+        res = m_mesher.generate(aBoundaryMesh3, 9999, sInteriorPoints, d, 0.05, 1E-1);
 
         std::cout << "Done. Elapsed time = " << timer.elapsed() / 1000.0 << " s" << std::endl;
         std::cout << "Number of elements: " << m_mesher.mesh().nbElements() << std::endl;

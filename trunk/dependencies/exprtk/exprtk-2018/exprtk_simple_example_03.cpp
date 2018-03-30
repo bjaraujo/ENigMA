@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Simple Example 3                                           *
- * Author:  Arash Partow (1999-2017)                          *
+ * Author: Arash Partow (1999-2018)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <string>
+
 #include "exprtk.hpp"
 
 
@@ -30,9 +31,9 @@ void polynomial()
 
    std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
 
-   T r0 = T(0);
-   T r1 = T(1);
-   T  x = T(0);
+   const T r0 = T(0);
+   const T r1 = T(1);
+         T  x = T(0);
 
    symbol_table_t symbol_table;
    symbol_table.add_variable("x",x);
