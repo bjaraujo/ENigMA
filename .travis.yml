@@ -4,10 +4,10 @@ language:
   - cpp
 
 before_install:
- - sudo wget http://bitbucket.org/eigen/eigen/get/3.3.4.tar.gz
- - sudo wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
- - sudo tar -xzvf 3.3.4.tar.gz
- - sudo tar -xzvf release-1.8.0.tar.gz
+  - sudo wget http://bitbucket.org/eigen/eigen/get/3.3.4.tar.gz
+  - sudo wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
+  - sudo tar -xzvf 3.3.4.tar.gz
+  - sudo tar -xzvf release-1.8.0.tar.gz
 
 script:
   - mkdir build

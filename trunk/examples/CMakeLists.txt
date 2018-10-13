@@ -2,6 +2,7 @@
 project(Examples)
 
 IF (ENIGMA_BUILD_CONSOLE_EXAMPLES)
+add_subdirectory(merge)
 add_subdirectory(mesher)
 add_subdirectory(bemheat)
 add_subdirectory(fdmheat)

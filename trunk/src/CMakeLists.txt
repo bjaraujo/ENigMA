@@ -92,6 +92,8 @@ mesh/MshTriangleMesher.hpp
 mesh/MshTriangleMesher_Imp.hpp
 mesh/MshQuadrilateralMesher.hpp
 mesh/MshQuadrilateralMesher_Imp.hpp
+mesh/MshTetrahedronMesher.hpp
+mesh/MshTetrahedronMesher_Imp.hpp
 )
 
 set(INT_HEADERS

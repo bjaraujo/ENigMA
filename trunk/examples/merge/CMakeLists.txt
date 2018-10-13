@@ -1,10 +1,10 @@
-project(Mesher)
+project(Merge)
 
-set(MESHER_SOURCES
+set(MERGE_SOURCES
 main.cpp
 )
 
-source_group("Source Files" FILES ${MESHER_SOURCES})
+source_group("Source Files" FILES ${MERGE_SOURCES})
 
 include_directories(
 ${Eigen3_DIR}
@@ -24,7 +24,7 @@ ${Exprtk_DIR}
 ../../src/stl
 )
 
-add_executable(Mesher ${MESHER_SOURCES})
+add_executable(Merge ${MERGE_SOURCES})
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
