@@ -38,6 +38,7 @@ TestMshBasicMesher.cpp
 TestMshExtrudedMesher.cpp
 TestMshTriangleMesher.cpp
 TestMshQuadrilateralMesher.cpp
+TestMshTetrahedronMesher.cpp
 )
 
 set(TEST_BEM_SOURCES

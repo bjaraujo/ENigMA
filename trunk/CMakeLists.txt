@@ -38,6 +38,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY AUTOGEN_TARGETS_FOLDER automoc)
 
+if(MSVC)
+    add_definitions("/MP")
+endif()
+
 if(USE_VIENNACL)
     add_definitions(-DUSE_VIENNACL)
 endif()
