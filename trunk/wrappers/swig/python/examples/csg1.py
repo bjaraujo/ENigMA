@@ -34,7 +34,7 @@ e.setTolerance(tol)
 
 f = a.intersect(b).subtract(c.add(d).add(e))
 
-print f.nbPolygons()
+print(f.nbPolygons())
 
 f.toStl().save("f.stl")
 

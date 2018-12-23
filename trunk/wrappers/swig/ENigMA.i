@@ -137,6 +137,7 @@ namespace std
 #include "MshExtrudedMesher.hpp"
 #include "MshTriangleMesher.hpp"
 #include "MshQuadrilateralMesher.hpp"
+#include "MshTetrahedronMesher.hpp"
 #include "SleSystem.hpp"
 #include "MatMaterial.hpp"
 #include "PdeField.hpp"
@@ -578,6 +579,13 @@ namespace std
 %ignore ENigMA::mesh::CMshQuadrilateralMesher<double>::onUpdate;
 
 %template(CMshQuadrilateralMesherDouble) ENigMA::mesh::CMshQuadrilateralMesher<double>;
+
+// Quadrilateral Mesher
+%include "MshTetrahedronMesher.hpp"
+
+%ignore ENigMA::mesh::CMshTetrahedronMesher<double>::onUpdate;
+
+%template(CMshTetrahedronMesherDouble) ENigMA::mesh::CMshTetrahedronMesher<double>;
 
 // System of Linear Equations
 %include "SleSystem.hpp"

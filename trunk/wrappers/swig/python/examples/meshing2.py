@@ -1,4 +1,5 @@
 
+from timeit import default_timer as timer
 import subprocess
 
 import ENigMA
@@ -42,12 +43,17 @@ meshSize = 20
 
 edgeMesh.generateFaces(1E-3)
 quadrilateralMesher.remesh(edgeMesh, meshSize);
+
+start = timer()
 quadrilateralMesher.generate(edgeMesh, 9999, meshSize, 0.1, 1E-3)
+end = timer()
+
+print("Elapsed time: " + str(end - start))
 
 surfaceMesh = quadrilateralMesher.mesh()
 
-print surfaceMesh.nbNodes()
-print surfaceMesh.nbElements()
+print(surfaceMesh.nbNodes())
+print(surfaceMesh.nbElements())
 
 pdeField = ENigMA.CPdeFieldDouble()
 
@@ -55,6 +61,6 @@ pdeField.setMesh(surfaceMesh)
 
 posGmsh = ENigMA.CPosGmshDouble()
 
-posGmsh.save(pdeField, "mesh1.msh", "tris");
+posGmsh.save(pdeField, "mesh2.msh", "tris");
 
-subprocess.call(['gmsh.exe', 'mesh1.msh'])
+#subprocess.call(['gmsh.exe', 'mesh1.msh'])

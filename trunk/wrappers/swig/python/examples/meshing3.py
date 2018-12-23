@@ -1,13 +1,14 @@
     
+from timeit import default_timer as timer
 import subprocess
 
 import ENigMA
 
 d = 0.125
 
-nu = 8
-nv = 8
-nw = 8
+nu = 16
+nv = 16
+nw = 16
  
 vertex1 = ENigMA.CGeoCoordinateDouble(0.0, 0.0, 0.0)
 vertex2 = ENigMA.CGeoCoordinateDouble(nu * d, 0.0, 0.0)
@@ -39,12 +40,16 @@ surfaceMesh.generateFaces(1E-5)
 
 tetrahedronMesher = ENigMA.CMshTetrahedronMesherDouble()
 
-tetrahedronMesher.generate(surfaceMesh, 9999, d, 0.1, 1E-3);
+start = timer()
+tetrahedronMesher.generate(surfaceMesh, 99999, d, 0.1, 1E-3);
+end = timer()
+
+print("Elapsed time: " + str(end - start))
 
 volumeMesh = tetrahedronMesher.mesh()
 
-print volumeMesh.nbNodes()
-print volumeMesh.nbElements()
+print(volumeMesh.nbNodes())
+print(volumeMesh.nbElements())
 
 pdeField = ENigMA.CPdeFieldDouble()
 
@@ -52,6 +57,6 @@ pdeField.setMesh(volumeMesh)
 
 posGmsh = ENigMA.CPosGmshDouble()
 
-posGmsh.save(pdeField, "mesh2.msh", "tetras");
+posGmsh.save(pdeField, "mesh3.msh", "tetras");
 
-subprocess.call(['gmsh.exe', 'mesh2.msh'])
+#subprocess.call(['gmsh.exe', 'mesh2.msh'])
