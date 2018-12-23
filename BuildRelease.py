@@ -7,7 +7,7 @@ import shutil
 import glob
 
 # Build platform
-build = 'msvc14-win64'
+build = 'msvc15-win64'
 
 configuration = 'Release'
     
@@ -67,8 +67,8 @@ print('version: ' + strNewVersion)
 print('build: ' + build)
 
 os.system("pause")
-os.system('"C:\Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe" build/' + build + '/wrappers/swig/python/_ENigMA.vcxproj /p:Configuration=' + configuration + ' /t:Rebuild')
-       
+os.system('"C:\Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe" build/' + build + '/wrappers/swig/python/_ENigMA.vcxproj /p:Configuration=' + configuration + ' /t:Rebuild')
+
 if not os.path.exists('releases'):
     os.mkdir('releases')
 
