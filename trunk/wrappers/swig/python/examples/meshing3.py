@@ -6,10 +6,10 @@ import ENigMA
 
 d = 0.125
 
-nu = 8
-nv = 8
-nw = 8
- 
+nu = 12
+nv = 12
+nw = 12
+
 vertex1 = ENigMA.CGeoCoordinateDouble(0.0, 0.0, 0.0)
 vertex2 = ENigMA.CGeoCoordinateDouble(nu * d, 0.0, 0.0)
 vertex3 = ENigMA.CGeoCoordinateDouble(nu * d, nv * d, 0.0)
