@@ -638,7 +638,7 @@ pdeEquation.setElimination(u)
 pdeEquation.solve(u)
 
 posGmsh = ENigMA.CPosGmshDouble()
-posGmsh.save(u, "fem_01.msh", "tris")
+posGmsh.save(u, "fem_01.msh", "Structural")
 
 # Theoretical displacement
 deflection = (F * L * L * L) / (3 * E * I)
@@ -728,7 +728,7 @@ pdeEquation.setElimination(u)
 pdeEquation.solve(u)
 
 posGmsh = ENigMA.CPosGmshDouble()
-posGmsh.save(u, "fem_02.msh", "tris")
+posGmsh.save(u, "fem_02.msh", "Thermal")
 
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
@@ -858,7 +858,7 @@ for i in range(0, fvmMesh.nbControlVolumes()):
     u.setValue(i * 2 + 1, pisoSolver.v(controlVolumeId))
 
 posGmsh = ENigMA.CPosGmshDouble()
-posGmsh.save(u, "fvm_01.msh", "tris")
+posGmsh.save(u, "fvm_01.msh", "Flow")
 ```
 
 </p>
