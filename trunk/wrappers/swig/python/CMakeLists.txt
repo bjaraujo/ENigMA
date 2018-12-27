@@ -44,7 +44,7 @@ set(CMAKE_SWIG_FLAGS "")
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_FLAGS "-debug-tmused")
 
-swig_add_module(ENigMA python ${ENGIMA_INTERFACE})
+swig_add_library(ENigMA LANGUAGE python SOURCES ${ENGIMA_INTERFACE})
 swig_link_libraries(ENigMA ${PYTHON_LIBRARIES})
 
 if(WIN32)

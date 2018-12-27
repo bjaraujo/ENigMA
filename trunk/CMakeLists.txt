@@ -1,6 +1,6 @@
 
 #Specify the version being used aswell as the language
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.8)
 
 if(POLICY CMP0020)
   # Accept new policy related to automatically linking Qt apps to qtmain.lib on Windows
@@ -21,6 +21,7 @@ set(QT_MOC_EXECUTABLE "$ENV{QTDIR}/bin/moc.exe" CACHE FILEPATH "")
 set(QT_UIC_EXECUTABLE "$ENV{QTDIR}/bin/uic.exe" CACHE FILEPATH "")
 set(QT_QMAKE_EXECUTABLE "$ENV{QTDIR}/bin/qmake.exe" CACHE FILEPATH "")
 set(VTK_DIR $ENV{VTK_DIR} CACHE FILEPATH "")
+set(CASROOT $ENV{CASROOT} CACHE FILEPATH "")
 
 set(USE_VIENNACL OFF CACHE BOOL "Use ViennaCL")
 
@@ -28,6 +29,7 @@ set(ENIGMA_BUILD_CONSOLE_EXAMPLES OFF CACHE BOOL "Build console examples")
 set(ENIGMA_BUILD_OPENGL_EXAMPLES OFF CACHE BOOL "Build OpenGL examples")
 set(ENIGMA_BUILD_QT_EXAMPLES OFF CACHE BOOL "Build QT examples")
 set(ENIGMA_BUILD_VTK_EXAMPLES OFF CACHE BOOL "Build VTK examples")
+set(ENIGMA_BUILD_OCC_EXAMPLES OFF CACHE BOOL "Build OpenCASCADE examples")
 
 set(ENIGMA_BUILD_UNIT_TESTS ON CACHE BOOL "Build unit tests")
 

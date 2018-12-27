@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>../res/icons/new.png</file>
+    <file>../res/icons/open.png</file>
+    <file>../res/icons/save.png</file>
+</qresource>
+</RCC>

@@ -1,7 +1,7 @@
 
 project(Examples)
 
-IF (ENIGMA_BUILD_CONSOLE_EXAMPLES)
+if(ENIGMA_BUILD_CONSOLE_EXAMPLES)
 add_subdirectory(merge)
 add_subdirectory(mesher)
 add_subdirectory(bemheat)
@@ -13,19 +13,19 @@ add_subdirectory(sphheat)
 add_subdirectory(boxvolumesearch)
 endif(ENIGMA_BUILD_CONSOLE_EXAMPLES)
 
-IF (ENIGMA_BUILD_OPENGL_EXAMPLES)
+if(ENIGMA_BUILD_OPENGL_EXAMPLES)
 add_subdirectory(lbmflow)
 add_subdirectory(sphfs)
 add_subdirectory(sphstatic)
 endif(ENIGMA_BUILD_OPENGL_EXAMPLES)
 
-IF (ENIGMA_BUILD_QT_EXAMPLES)
+if(ENIGMA_BUILD_QT_EXAMPLES)
 add_subdirectory(heat1d)
 add_subdirectory(finance)
 add_subdirectory(lineintersection)
 endif(ENIGMA_BUILD_QT_EXAMPLES)
 
-IF (ENIGMA_BUILD_VTK_EXAMPLES)
+if(ENIGMA_BUILD_VTK_EXAMPLES)
 add_subdirectory(mesh2d)
 add_subdirectory(femflow)
 add_subdirectory(fvmflow)
@@ -39,4 +39,7 @@ add_subdirectory(triangleintersection)
 add_subdirectory(stlutils)
 endif(ENIGMA_BUILD_VTK_EXAMPLES)
 
+if(ENIGMA_BUILD_OCC_EXAMPLES)
+add_subdirectory(occactive)
+endif(ENIGMA_BUILD_OCC_EXAMPLES)
 

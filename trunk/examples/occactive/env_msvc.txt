@@ -1,0 +1,3 @@
+PATH=$(CASROOT)\opencascade-7.3.0\win64\vc14\bin;$(CASROOT)\freeimage-3.17.0-vc14-64\bin;$(CASROOT)\freetype-2.5.5-vc14-64\bin;$(CASROOT)\tbb_2017.0.100\bin\intel64\vc14;$(QTDIR)\bin;%PATH%
+
+
