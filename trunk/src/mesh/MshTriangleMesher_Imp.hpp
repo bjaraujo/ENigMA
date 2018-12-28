@@ -1063,7 +1063,7 @@ namespace ENigMA
                         aBoundingBox.addCoordinate(aNode1);
                         aBoundingBox.addCoordinate(aNode2);
                         aBoundingBox.addCoordinate(anAuxNode);
-                        aBoundingBox.grow(aTolerance);
+                        aBoundingBox.grow(localMeshSize);
 
                         std::vector<Integer> sEdges;
                         m_tree.find(sEdges, aBoundingBox);

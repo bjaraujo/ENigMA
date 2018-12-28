@@ -51,10 +51,7 @@ namespace ENigMA
 
                 Integer neighborId[2];
 
-                Integer triangleId;
                 Integer quadrilateralId;
-
-                Integer nodeNotId3;
 
                 CGeoLine<Real> line;
 
@@ -90,7 +87,6 @@ namespace ENigMA
 
             inline bool edgeExists(SAdvancingFrontEdge& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
             inline bool edgeOk(SAdvancingFrontEdge& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
-            inline bool triangleContainsNode(ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, ENigMA::mesh::CMshNode<Real>& aNode3, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
             inline bool quadrilateralContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
             inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
@@ -99,7 +95,6 @@ namespace ENigMA
             void findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes);
             Real findShortestDistance(std::vector<Integer>& sEdges, CGeoLine<Real>& aLine, Integer anAdvEdgeId, const Real aTolerance);
 
-            void addTriangle(SAdvancingFrontEdge& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
             void addQuadrilateral(SAdvancingFrontEdge& anAdvEdge, const Integer aNodeId3, const Integer aNodeId4, std::vector<Integer>& sEdges, const Real aTolerance);
 
             void addEdgeToRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
@@ -107,7 +102,6 @@ namespace ENigMA
 
             void removeEdge(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
 
-            bool advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
             bool advancingFrontQuadMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
 
             Integer frontSize();
