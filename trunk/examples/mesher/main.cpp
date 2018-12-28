@@ -23,7 +23,7 @@ using namespace ENigMA::post;
 using namespace ENigMA::pde;
 using namespace ENigMA::stl;
 
-void Example1(const double meshSize, const int maxEle)
+void Example1(const double meshSize, const int maxEle, const double tol)
 {
 
     CMshTriangleMesher<double> aTriangleMesher;
@@ -73,11 +73,11 @@ void Example1(const double meshSize, const int maxEle)
     start = clock();
 
     aTriangleMesher.remesh(anEdgeMesh, meshSize);
-    aTriangleMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, 1E-4);
+    aTriangleMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, tol);
 
-    aTriangleMesher.collapseEdges(meshSize, 1E-4);
+    aTriangleMesher.collapseEdges(meshSize, tol);
     
-    aTriangleMesher.relaxNodes(1E-4);
+    aTriangleMesher.relaxNodes(tol);
 
     finish = clock();
 
@@ -99,7 +99,7 @@ void Example1(const double meshSize, const int maxEle)
 
 }
 
-void Example2(const double meshSize, const int maxEle)
+void Example2(const double meshSize, const int maxEle, const double tol)
 {
 
     CMshQuadrilateralMesher<double> aQuadrilateralMesher;
@@ -176,7 +176,7 @@ void Example2(const double meshSize, const int maxEle)
     start = clock();
 
     aQuadrilateralMesher.remesh(anEdgeMesh, meshSize);
-    aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, 1E-4);
+    aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, tol);
 
     finish = clock();
 
@@ -203,8 +203,8 @@ int main(int argc, char *argv[])
 
     if (argc > 1)
     {
-        Example1(atof(argv[1]), atoi(argv[2]));
-        //Example2(atof(argv[1]), atoi(argv[2]));
+        //Example1(atof(argv[1]), atoi(argv[2]), atof(argv[3]));
+        Example2(atof(argv[1]), atoi(argv[2]), atof(argv[3]));
     }
 
 }

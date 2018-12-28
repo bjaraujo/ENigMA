@@ -32,12 +32,12 @@ ${Exprtk_DIR}
 ../../src/post
 ../../src/analytical
 ${OPENGL_INCLUDE_DIRS}
-${GLUT_INCLUDE_DIRS}
+${GLUT_INCLUDE_DIR}
 )
 
 add_executable(SphStatic ${SPHSTATIC_HEADERS} ${SPHSTATIC_SOURCES})
 
 target_link_libraries(SphStatic 
 ${OPENGL_LIBRARIES}
-${GLUT_LIBRARY}
+${GLUT_LIBRARIES}
 )

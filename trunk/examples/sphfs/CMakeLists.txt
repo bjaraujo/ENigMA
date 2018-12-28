@@ -32,12 +32,12 @@ ${Exprtk_DIR}
 ../../src/post
 ../../src/analytical
 ${OPENGL_INCLUDE_DIRS}
-${GLUT_INCLUDE_DIRS}
+${GLUT_INCLUDE_DIR}
 )
 
 add_executable(SphFS ${SPHFS_HEADERS} ${SPHFS_SOURCES})
 
 target_link_libraries(SphFS 
 ${OPENGL_LIBRARIES}
-${GLUT_LIBRARY}
+${GLUT_LIBRARIES}
 )

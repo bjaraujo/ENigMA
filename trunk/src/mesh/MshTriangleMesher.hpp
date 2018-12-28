@@ -52,6 +52,7 @@ namespace ENigMA
                 Integer neighborId[2];
 
                 Integer triangleId;
+
                 Integer nodeNotId3;
 
                 ENigMA::geometry::CGeoLine<Real> line;
@@ -103,7 +104,7 @@ namespace ENigMA
 
             void removeEdge(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
 
-            bool advancingFrontMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
+            bool advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
 
             Integer frontSize();
 

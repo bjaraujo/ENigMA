@@ -924,8 +924,8 @@ namespace ENigMA
 
                 bool res = true;
 
-                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
-                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
+                res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
+                res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
 
                 m_surfaceMesh.removeDanglingNodes();
                 m_surfaceMesh.renumber();
@@ -972,7 +972,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::advancingFrontMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
         {
 
             bool res = true;

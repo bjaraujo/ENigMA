@@ -25,14 +25,14 @@ ${Exprtk_DIR}
 ../../src/solvers
 ../../src/analytical
 ${OPENGL_INCLUDE_DIRS}
-${GLUT_INCLUDE_DIRS}
+${GLUT_INCLUDE_DIR}
 )
 
 add_executable(LbmFlow ${LBMFLOW_SOURCES})
 
 target_link_libraries(LbmFlow
 ${OPENGL_LIBRARIES}
-${GLUT_LIBRARY}
+${GLUT_LIBRARIES}
 )
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
