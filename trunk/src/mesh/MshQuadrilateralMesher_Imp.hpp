@@ -1151,15 +1151,12 @@ namespace ENigMA
                         Integer aNewNodeId2 = m_surfaceMesh.nextNodeId() + 1;
 
                         // Get closest edges
-                        CMshNode<Real> anAuxNode1 = aMidNode1 + v * localMeshSize * sizeFactor * 1.5;
-                        CMshNode<Real> anAuxNode2 = aMidNode2 + v * localMeshSize * sizeFactor * 1.5;
-
                         CGeoBoundingBox<Real> aBoundingBox;
                         aBoundingBox.addCoordinate(aNode1);
                         aBoundingBox.addCoordinate(aNode2);
-                        aBoundingBox.addCoordinate(anAuxNode1);
-                        aBoundingBox.addCoordinate(anAuxNode2);
-                        aBoundingBox.grow(localMeshSize);
+                        aBoundingBox.addCoordinate(aNewNode1);
+                        aBoundingBox.addCoordinate(aNewNode2);
+                        aBoundingBox.grow(localMeshSize * sizeFactor * 0.5);
 
                         std::vector<Integer> sEdges;
                         m_tree.find(sEdges, aBoundingBox);
@@ -1169,9 +1166,18 @@ namespace ENigMA
                         this->findClosestNodes(sEdges, sNodes);
 
                         // Meshing priority
-                        // Priority = 1: close hole
-                        // Priority = 2: other nodes in vicinity (3, 4, other node)
-                        // Priority = 3: new node forming correct spacing
+                        // Priority = 1: close quadrilateral hole
+                        // Priority = 2: close triangular hole
+                        // Priority = 3: other nodes in vicinity (3, 4, other node)
+                        // Priority = 4: new node forming correct spacing
+
+                        if ((aNodeId3 == aNodeId5 && aNodeId4 == aNodeId6) ||
+                            (aNodeId3 == aNodeId6 && aNodeId4 == aNodeId5))
+                        {
+                            this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
+                            res = true;
+                            continue;
+                        }
 
                         if (aNodeId3 == aNodeId4)
                         {

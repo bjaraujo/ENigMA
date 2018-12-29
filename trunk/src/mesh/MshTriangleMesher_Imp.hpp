@@ -1057,13 +1057,11 @@ namespace ENigMA
                         Integer aNewNodeId = m_surfaceMesh.nextNodeId();
 
                         // Get closest edges
-                        CMshNode<Real> anAuxNode = aMidNode + v * localMeshSize * sizeFactor * 1.5;
-
                         CGeoBoundingBox<Real> aBoundingBox;
                         aBoundingBox.addCoordinate(aNode1);
                         aBoundingBox.addCoordinate(aNode2);
-                        aBoundingBox.addCoordinate(anAuxNode);
-                        aBoundingBox.grow(localMeshSize);
+                        aBoundingBox.addCoordinate(aNewNode);
+                        aBoundingBox.grow(localMeshSize * sizeFactor * 0.5);
 
                         std::vector<Integer> sEdges;
                         m_tree.find(sEdges, aBoundingBox);
