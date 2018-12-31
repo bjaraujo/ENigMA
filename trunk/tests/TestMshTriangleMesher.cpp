@@ -755,7 +755,7 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
 
     CMshTriangleMesher<decimal> aTriangleMesher;
 
-    aTriangleMesher.generate(anEdgeMesh, 9999, sInnerPoints, 5, 0.1, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 9999, sInnerPoints, 25, 0.1, 1E-3);
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
@@ -763,7 +763,7 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface7.msh", "tris");
 
-    EXPECT_GE(aSurfaceMesh.nbElements(), 48);
-    EXPECT_LE(aSurfaceMesh.nbElements(), 50);
+    EXPECT_GE(aSurfaceMesh.nbElements(), 26);
+    EXPECT_LE(aSurfaceMesh.nbElements(), 28);
 
 }
