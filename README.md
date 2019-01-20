@@ -1,6 +1,6 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4050d56f8c8a48a5a9008e9e49fec78a)](https://app.codacy.com/app/bjaraujo/ENigMA?utm_source=github.com&utm_medium=referral&utm_content=bjaraujo/ENigMA&utm_campaign=Badge_Grade_Dashboard)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/bjaraujo/ENigMA.svg?branch=master)](https://travis-ci.org/bjaraujo/ENigMA/build)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4050d56f8c8a48a5a9008e9e49fec78a)](https://app.codacy.com/app/bjaraujo/ENigMA?utm_source=github.com&utm_medium=referral&utm_content=bjaraujo/ENigMA&utm_campaign=Badge_Grade_Dashboard)
 
 
 # ENigMA - Extended Numerical Multiphysics Analysis #
