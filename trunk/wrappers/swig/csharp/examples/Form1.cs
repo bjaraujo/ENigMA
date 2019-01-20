@@ -111,8 +111,9 @@ namespace CSDemo
             var aPoint = new GeoCoordinate();
 
             if (aLine1.intersects(aLine2, aPoint, 1E-6))
+            {
                 DrawPoint(e, aPoint, Color.FromArgb(255, 0, 0, 255), 10);
-
+            }
         }
 
         private void DrawLineDistance(PaintEventArgs e)
@@ -205,7 +206,9 @@ namespace CSDemo
                 var anElement = aMesher.mesh().element(anElementId);
 
                 if (anElement.elementType() != eElementType.ET_TRIANGLE)
+                {
                     continue;
+                }
 
                 var aTriangle = new GeoTriangle();
 
@@ -228,7 +231,6 @@ namespace CSDemo
 
                 DrawQuadrilateral(e, aQuadrilateral, Color.FromArgb(255, 0, 0, 255));
                 */
-
             }
 
         }

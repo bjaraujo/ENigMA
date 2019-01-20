@@ -80,9 +80,13 @@ namespace Demo
                     sPoints.InsertNextPoint(aVertex.x(), aVertex.y(), aVertex.z());
 
                     if (aPolygonId == aNewPolygonId)
+                    {
                         sColors.InsertNextTuple3(255, 255, 0);
+                    }
                     else
+                    {
                         sColors.InsertNextTuple3(0, 255, 255);
+                    }
 
                     np++;
 
@@ -130,8 +134,6 @@ namespace Demo
             aRenderer.ResetCamera();
 
             aRenderControl.Refresh();
-
         }
-
     }
 }

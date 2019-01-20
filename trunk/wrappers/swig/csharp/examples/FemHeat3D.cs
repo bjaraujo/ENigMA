@@ -104,16 +104,24 @@ namespace Demo
                 var aNode = T.mesh().node(aNodeId);
 
                 if (Math.Abs(aNode.x() + 0.0) < 1E-6)
+                {
                     T.setFixedValue(i, 0.0);
+                }
 
                 if (Math.Abs(aNode.x() - 1.0) < 1E-6)
+                {
                     T.setFixedValue(i, 0.0);
+                }
 
                 if (Math.Abs(aNode.y() + 0.0) < 1E-6)
+                {
                     T.setFixedValue(i, 0.0);
+                }
 
                 if (Math.Abs(aNode.y() - 1.0) < 1E-6)
+                {
                     T.setFixedValue(i, 1.0);
+                }
 
                 T.setValue(i, 0.0);
 
@@ -136,7 +144,6 @@ namespace Demo
                 int aNodeId = T.mesh().nodeId(i);
 
                 sScalars.SetTuple1(aNodeId, T.value(i));
-
             }
 
             anUnstructuredGrid.GetPointData().SetScalars(sScalars);

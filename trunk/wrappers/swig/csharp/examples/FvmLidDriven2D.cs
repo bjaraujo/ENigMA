@@ -13,7 +13,6 @@ namespace Demo
 
         static public void GenerateMesh(CMshBasicMesherDouble aMesher, vtkRenderer aRenderer)
         {
-
             var aVertex1 = new CGeoCoordinateDouble(+0.00, +0.00, -0.1);
             var aVertex2 = new CGeoCoordinateDouble(+1.00, +0.00, -0.1);
             var aVertex3 = new CGeoCoordinateDouble(+1.00, +1.00, -0.1);
@@ -37,7 +36,6 @@ namespace Demo
             aMesher.generate(aHexahedron, 40, 40, 1, false);
 
             aMesher.mesh().generateFaces(1E-3);
-
         }
 
         static public void DrawMesh(CMshBasicMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid)
@@ -219,17 +217,17 @@ namespace Demo
                 aRenderer.Render();
 
                 if (ii == 0)
+                {
                     aRenderer.ResetCamera();
+                }
 
                 aRenderControl.Refresh();
-
             }
 
         }
 
         static public void Show(RenderWindowControl aRenderControl)
         {
-
             // get a reference to the renderwindow of our renderWindowControl1
             var aRenderWindow = aRenderControl.RenderWindow;
 
@@ -255,8 +253,6 @@ namespace Demo
             aRenderer.ResetCamera();
 
             aRenderControl.Refresh();
-
         }
-
     }
 }
