@@ -1,5 +1,5 @@
 
-project(Heat1D)
+project(Burgers1D)
 
 if(NOT Qt5_FOUND)
   find_package(Qt5Core)
@@ -44,9 +44,9 @@ set(HEAT1D_HEADERS MainWindow.h QCustomPlot.h)
 set(HEAT1D_SOURCES main.cpp MainWindow.cpp QCustomPlot.cpp)
 set(HEAT1D_UI MainWindow.ui)
 
-add_executable(Heat1D ${HEAT1D_HEADERS} ${HEAT1D_SOURCES} ${HEAT1D_UI})
+add_executable(Burgers1D ${HEAT1D_HEADERS} ${HEAT1D_SOURCES} ${HEAT1D_UI})
 
-target_link_libraries(Heat1D
+target_link_libraries(Burgers1D
   Qt5::Core
   Qt5::Widgets
   Qt5::Gui

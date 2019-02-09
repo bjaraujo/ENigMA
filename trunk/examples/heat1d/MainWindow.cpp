@@ -191,7 +191,6 @@ void MainWindow::solveHeatConduction1D()
             double x = aNode.x();
 
             double Ti;
-
             aAnaTemperature.steadyStateHeatConduction1D(x, Ti);
 
             Ta.u(i) = Ti;
@@ -234,7 +233,7 @@ void MainWindow::solveHeatConduction1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) -laplacian<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) - laplacian<double>(T) = 0);
 
             aPdeEquation.solve(T);
 
@@ -321,7 +320,7 @@ void MainWindow::solveHeatConduction1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) -laplacian<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) - laplacian<double>(T) = 0);
 
             aPdeEquation.solve(T);
 
@@ -523,7 +522,7 @@ void MainWindow::unsteadyHeatConduction1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) -k * laplacian<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) - k * laplacian<double>(T) = 0);
 
             aPdeEquation.solve(T);
 
@@ -562,7 +561,7 @@ void MainWindow::unsteadyHeatConduction1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) -k * laplacian<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) - k * laplacian<double>(T) = 0);
 
             aPdeEquation.setElimination(T);
 
@@ -607,7 +606,7 @@ void MainWindow::unsteadyHeatConduction1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) -k * laplacian<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) - k * laplacian<double>(T) = 0);
 
             aPdeEquation.solve(T);
 
@@ -806,7 +805,7 @@ void MainWindow::unsteadyHeatConvection1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) +u * divergence<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) + u * divergence<double>(T) = 0);
 
             aPdeEquation.solve(T);
 
@@ -851,7 +850,7 @@ void MainWindow::unsteadyHeatConvection1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) +u * divergence<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) + u * divergence<double>(T) = 0);
 
             aPdeEquation.solve(T);
 
@@ -892,7 +891,7 @@ void MainWindow::unsteadyHeatConvection1D()
         for (Integer i = 0; i < nIter; ++i)
         {
 
-            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) +u * divergence<double>(T) = 0);
+            CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) + u * divergence<double>(T) = 0);
 
             aPdeEquation.solve(T);
 

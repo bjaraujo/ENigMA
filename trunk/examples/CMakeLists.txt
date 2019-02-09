@@ -21,6 +21,7 @@ endif(ENIGMA_BUILD_OPENGL_EXAMPLES)
 
 if(ENIGMA_BUILD_QT_EXAMPLES)
 add_subdirectory(heat1d)
+add_subdirectory(burgers1d)
 add_subdirectory(finance)
 add_subdirectory(lineintersection)
 endif(ENIGMA_BUILD_QT_EXAMPLES)
