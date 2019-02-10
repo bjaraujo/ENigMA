@@ -28,6 +28,19 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CPdeField<Real>::init()
+        {
+            if (m_discretLocation == DL_NODE)
+            {
+                u.resize(m_mesh.nbNodes() * m_nbDofs);
+            }
+            else if (m_discretLocation == DL_ELEMENT_CENTER)
+            {
+                u.resize(m_mesh.nbElements() * m_nbDofs);
+            }
+        }
+
+        template <typename Real>
         void CPdeField<Real>::setMesh(ENigMA::mesh::CMshMesh<Real>& aMesh)
         {
 

@@ -15,7 +15,6 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
     Q_OBJECT
 
 private:
-    double m_length;
     Integer m_step;
     Integer m_plotId;
     QList<QCPScatterStyle> m_pointStyles;
@@ -23,11 +22,11 @@ private:
 
     QCPTextElement* m_plotTitle;
 
-    void solveBurgersEquation1D();
+    void solveViscousBurgersEquation1D();
+    void solveInviscidBurgersEquation1D();
 
     void resetPlots();
-    void addPlot(CPdeField<double> T, QString plotName, const bool bLine = false);
-    double phi(const double x, const double t, const double mu);
+    void addPlot(CPdeField<double>& u, QString plotName, const bool bLine = false);
 
 public:
     MainWindow(QWidget *parent = 0);

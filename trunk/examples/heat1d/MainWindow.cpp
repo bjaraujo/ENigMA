@@ -179,7 +179,7 @@ void MainWindow::solveHeatConduction1D()
         Ta.setSimulationType(ST_THERMAL);
         Ta.setNbDofs(1);
 
-        Ta.u.resize(Ta.mesh().nbNodes());
+        Ta.init();
 
         CAnaTemperature<double> aAnaTemperature;
 
@@ -213,7 +213,8 @@ void MainWindow::solveHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
-        T.u.resize(T.mesh().nbNodes());
+        T.init();
+
         for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
         {
 
@@ -240,7 +241,6 @@ void MainWindow::solveHeatConduction1D()
         }
 
         this->addPlot(T, "FDM");
-
     }
 
     // FEM
@@ -255,7 +255,8 @@ void MainWindow::solveHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
-        T.u.resize(T.mesh().nbNodes());
+        T.init();
+
         for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
         {
 
@@ -277,7 +278,6 @@ void MainWindow::solveHeatConduction1D()
         aPdeEquation.solve(T);
 
         this->addPlot(T, "FEM");
-
     }
 
     // FVM
@@ -292,7 +292,8 @@ void MainWindow::solveHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
-        T.u.resize(T.mesh().nbElements());
+        T.init();
+
         for (Integer i = 0; i < T.mesh().nbElements(); ++i)
             T.u(i) = 0.0;
 
@@ -327,7 +328,6 @@ void MainWindow::solveHeatConduction1D()
         }
 
         this->addPlot(T, "FVM");
-
     }
 
     // SPH
@@ -392,7 +392,6 @@ void MainWindow::solveHeatConduction1D()
         }
 
         this->addPlot(T, "SPH");
-
     }
 
     std::cout << "Done." << std::endl;
@@ -467,7 +466,7 @@ void MainWindow::unsteadyHeatConduction1D()
         Ta.setSimulationType(ST_THERMAL);
         Ta.setNbDofs(1);
 
-        Ta.u.resize(Ta.mesh().nbNodes());
+        Ta.init();
 
         CAnaTemperature<double> aAnaTemperature;
 
@@ -483,7 +482,6 @@ void MainWindow::unsteadyHeatConduction1D()
             aAnaTemperature.transientHeatConduction1D(x, dt * nIter, 1.0, Ti);
 
             Ta.u(i) = Ti;
-
         }
 
         this->addPlot(Ta, "Analytical", true);
@@ -502,7 +500,8 @@ void MainWindow::unsteadyHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
-        T.u.resize(T.mesh().nbNodes());
+        T.init();
+
         for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
             T.u(i) = 0.0;
 
@@ -529,7 +528,6 @@ void MainWindow::unsteadyHeatConduction1D()
         }
 
         this->addPlot(T, "FDM");
-
     }
 
     // FEM
@@ -544,7 +542,8 @@ void MainWindow::unsteadyHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
-        T.u.resize(T.mesh().nbNodes());
+        T.init();
+
         for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
         {
 
@@ -570,7 +569,6 @@ void MainWindow::unsteadyHeatConduction1D()
         }
 
         this->addPlot(T, "FEM");
-
     }
 
     // FVM
@@ -585,7 +583,8 @@ void MainWindow::unsteadyHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
-        T.u.resize(T.mesh().nbElements());
+        T.init();
+
         for (Integer i = 0; i < T.mesh().nbElements(); ++i)
             T.u(i) = 1.0;
 
@@ -613,7 +612,6 @@ void MainWindow::unsteadyHeatConduction1D()
         }
 
         this->addPlot(T, "FVM");
-
     }
 
     // SPH
@@ -667,7 +665,6 @@ void MainWindow::unsteadyHeatConduction1D()
         }
 
         this->addPlot(T, "SPH");
-
     }
 
     std::cout << "Done." << std::endl;
@@ -773,7 +770,6 @@ void MainWindow::unsteadyHeatConvection1D()
         }
 
         this->addPlot(Ta, "Analytical", true);
-
     }
 
     // FDM
@@ -818,7 +814,6 @@ void MainWindow::unsteadyHeatConvection1D()
         }
 
         this->addPlot(T, "FDM");
-
     }
 
     // FEM
@@ -860,7 +855,6 @@ void MainWindow::unsteadyHeatConvection1D()
         }
 
         this->addPlot(T, "FEM");
-
     }
 
     // FVM
@@ -901,7 +895,6 @@ void MainWindow::unsteadyHeatConvection1D()
         }
 
         this->addPlot(T, "FVM");
-
     }
 
     // SPH
@@ -951,7 +944,6 @@ void MainWindow::unsteadyHeatConvection1D()
         }
 
         this->addPlot(T, "SPH");
-
     }
 
     std::cout << "Done." << std::endl;

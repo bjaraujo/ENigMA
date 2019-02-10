@@ -195,6 +195,8 @@ namespace ENigMA
 
                             ip = ii + 1;
 
+                            aSystem.matrixA.coeffRef(ii, ii) = 1.0;
+
                             if (isFixed[ii])
                                 aSystem.vectorB[ii] += -(aField.u(ip) - aField.uFixed[ii]) / dx;
 
@@ -217,6 +219,8 @@ namespace ENigMA
                             Integer im;
 
                             im = ii - 1;
+
+                            aSystem.matrixA.coeffRef(ii, ii) = 1.0;
 
                             if (isFixed[ii])
                                 aSystem.vectorB[ii] += -(aField.uFixed[ii] - aField.u(im)) / dx;

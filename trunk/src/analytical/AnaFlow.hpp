@@ -29,7 +29,7 @@ namespace ENigMA
             CAnaFlow();
             ~CAnaFlow();
 
-            void burgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u);
+            void viscousBurgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u);
         };
 
     }

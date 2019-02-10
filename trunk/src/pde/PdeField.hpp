@@ -82,6 +82,8 @@ namespace ENigMA
             std::map<Integer, Real> uFixed;
             std::map<Integer, Real> uSource;
 
+            void init();
+
             void setMesh(ENigMA::mesh::CMshMesh<Real>& aMesh);
             ENigMA::mesh::CMshMesh<Real>& mesh();
 

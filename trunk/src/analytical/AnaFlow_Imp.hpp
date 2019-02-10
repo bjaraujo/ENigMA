@@ -36,7 +36,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CAnaFlow<Real>::burgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u)
+        void CAnaFlow<Real>::viscousBurgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u)
         {
 
             Real phi0 = phi(x, t, L, mu);
@@ -45,7 +45,6 @@ namespace ENigMA
             u = -2 * mu / phi0 * (phi1 - phi0) / dx + 4;
 
         }
-
     }
 
 }
