@@ -282,6 +282,6 @@ TEST_F(CTestSphGaussian, laplacian)
 
     }
 
-    EXPECT_NEAR(1.0, lap, 0.5);
+    EXPECT_NEAR(1.5, lap, 0.5);
 
 }

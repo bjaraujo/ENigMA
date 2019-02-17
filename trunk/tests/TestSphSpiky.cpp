@@ -282,7 +282,7 @@ TEST_F(CTestSphSpiky, laplacian)
 
     }
 
-    //EXPECT_NEAR(1.0, lap, 0.5);
+    EXPECT_NEAR(0.0, lap, 0.5);
 
 }
 
