@@ -107,7 +107,7 @@ namespace ENigMA
             Real w = pow(1 - 0.5 * q, 4) * (2 * q + 1);
             Real dw = 2 * pow(1 - 0.5 * q, 4) - 2 * pow(1 - 0.5 * q, 3) * (2 * q + 1);
 
-            return CSphKernel<Real>::m_C * h * (dw * q + w * CSphKernel<Real>::m_dim);
+            return CSphKernel<Real>::m_C * h * (-dw * q + w * CSphKernel<Real>::m_dim);
 
         }
 

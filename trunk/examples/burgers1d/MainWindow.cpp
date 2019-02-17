@@ -13,7 +13,6 @@
 using namespace ENigMA::mesh;
 using namespace ENigMA::post;
 using namespace ENigMA::analytical;
-using namespace ENigMA::sph;
 
 MainWindow::MainWindow(QWidget *parent) : m_step(0), m_plotId(0)
 {
@@ -21,8 +20,8 @@ MainWindow::MainWindow(QWidget *parent) : m_step(0), m_plotId(0)
     Ui::MainWindow::setupUi(this);
 
     customPlot->xAxis->setLabel("x");
-    customPlot->yAxis->setLabel("u");
-
+    customPlot->yAxis->setLabel("u (m/s)");
+    
     m_plotTitle = new QCPTextElement(customPlot, "", QFont("sans", 12, QFont::Bold));
 
     customPlot->plotLayout()->insertRow(0);
@@ -431,7 +430,7 @@ void MainWindow::solveInviscidBurgersEquation1D()
             {
                 u.u[k] = u.u[k] - u.u[k] * (dt / dx)*(u.u[k] - u.u[k - 1]);
             }
-            u.u[0] = u.u[nu - 1] = 0;
+            u.u[0] = u.u[u.u.size() - 1] = 0.0;
 
             if (j % 100 == 0)
             {

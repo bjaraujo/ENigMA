@@ -1,5 +1,5 @@
 
-project(Burgers1D)
+project(SphHeat1D)
 
 if(NOT Qt5_FOUND)
   find_package(Qt5Core)
@@ -40,13 +40,13 @@ include_directories(
   ../../src/analytical
 )
 
-set(BURGERS1D_HEADERS MainWindow.h QCustomPlot.h)
-set(BURGERS1D_SOURCES main.cpp MainWindow.cpp QCustomPlot.cpp)
-set(BURGERS1D_UI MainWindow.ui)
+set(SPH_HEAT1D_HEADERS MainWindow.h QCustomPlot.h)
+set(SPH_HEAT1D_SOURCES main.cpp MainWindow.cpp QCustomPlot.cpp)
+set(SPH_HEAT1D_UI MainWindow.ui)
 
-add_executable(Burgers1D ${BURGERS1D_HEADERS} ${BURGERS1D_SOURCES} ${BURGERS1D_UI})
+add_executable(SphHeat1D ${SPH_HEAT1D_HEADERS} ${SPH_HEAT1D_SOURCES} ${SPH_HEAT1D_UI})
 
-target_link_libraries(Burgers1D
+target_link_libraries(SphHeat1D
   Qt5::Core
   Qt5::Widgets
   Qt5::Gui

@@ -103,13 +103,11 @@ namespace ENigMA
                 CSphKernel<Real>::m_C = 1.0 / (CSphKernel<Real>::m_pi * h * h);
             else if (CSphKernel<Real>::m_dim == 3)
                 CSphKernel<Real>::m_C = 1.0 / (CSphKernel<Real>::m_pi * CSphKernel<Real>::m_pi * CSphKernel<Real>::m_pi * h * h * h);
-
-            Real w, dw;
             
-            w = exp(-q * q);
-            dw = -2.0 * q * w;
+            Real w = exp(-q * q);
+            Real dw = -2.0 * q * w;
 
-            return CSphKernel<Real>::m_C * h * (dw * q + w * CSphKernel<Real>::m_dim);
+            return CSphKernel<Real>::m_C * h * (-dw * q + w * CSphKernel<Real>::m_dim);
             
         }
 
