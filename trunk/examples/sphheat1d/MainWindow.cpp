@@ -117,7 +117,7 @@ void MainWindow::addPlot(CPdeField<double> T, QString plotName, const bool bLine
 
 }
 
-void MainWindow::solveHeatConduction1D()
+void MainWindow::solveHeatConduction1D1()
 {
 
     std::cout << "**** One-dimensional steady-state heat conduction ****" << std::endl;
@@ -129,41 +129,12 @@ void MainWindow::solveHeatConduction1D()
 
     CGeoLine<double> aLine(aPoint1, aPoint2);
 
-    CGeoCoordinate<double> aVertex1(+0.00, -0.05, -0.05);
-    CGeoCoordinate<double> aVertex2(+1.00, -0.05, -0.05);
-    CGeoCoordinate<double> aVertex3(+1.00, +0.05, -0.05);
-    CGeoCoordinate<double> aVertex4(+0.00, +0.05, -0.05);
-    CGeoCoordinate<double> aVertex5(+0.00, -0.05, +0.05);
-    CGeoCoordinate<double> aVertex6(+1.00, -0.05, +0.05);
-    CGeoCoordinate<double> aVertex7(+1.00, +0.05, +0.05);
-    CGeoCoordinate<double> aVertex8(+0.00, +0.05, +0.05);
-
-    CGeoHexahedron<double> aHexahedron;
-
-    aHexahedron.addVertex(aVertex1);
-    aHexahedron.addVertex(aVertex2);
-    aHexahedron.addVertex(aVertex3);
-    aHexahedron.addVertex(aVertex4);
-    aHexahedron.addVertex(aVertex5);
-    aHexahedron.addVertex(aVertex6);
-    aHexahedron.addVertex(aVertex7);
-    aHexahedron.addVertex(aVertex8);
-
-    const Integer nu = 50;
-    const Integer nv = 1;
-    const Integer nw = 1;
+    const Integer nu = 100;
 
     CMshBasicMesher<double> aBasicMesher;
     
     aBasicMesher.generate(aLine, nu);
     CMshMesh<double> aLineMesh = aBasicMesher.mesh();
-
-    aBasicMesher.generate(aHexahedron, nu, nv, nw);
-    CMshMesh<double> aVolumeMesh = aBasicMesher.mesh();
-
-    aVolumeMesh.generateFaces(1E-12);
-    aVolumeMesh.calculateFaceCentroid();
-    aVolumeMesh.calculateElementCentroid();
 
     double dt = 0.01;
     Integer nIter = 100;
@@ -216,17 +187,19 @@ void MainWindow::solveHeatConduction1D()
         // Ghost points
         CMshNode<double> aNode;
 
+        double dx = 1.0 / nu;
+
         // Side 1
-        for (Integer i = 0; i < 5; ++i)
+        for (Integer i = 0; i < 20; ++i)
         {
-            aNode << 0.0 - (double)(i + 1) / nu, 0.0, 0.0;
+            aNode << 0.0 - (double)(i + 1) * dx, 0.0, 0.0;
             T.mesh().addNode(T.mesh().nextNodeId(), aNode);
         }
 
         // Side 2
-        for (Integer i = 0; i < 5; ++i)
+        for (Integer i = 0; i < 20; ++i)
         {
-            aNode << 1.0 + (double)(i + 1) / nu, 0.0, 0.0;
+            aNode << 1.0 + (double)(i + 1) * dx, 0.0, 0.0;
             T.mesh().addNode(T.mesh().nextNodeId(), aNode);
         }
 
@@ -238,11 +211,200 @@ void MainWindow::solveHeatConduction1D()
             Integer aNodeId = T.mesh().nodeId(i);
             CMshNode<double> aNode = T.mesh().node(aNodeId);
 
-            if (aNode.x() < 0.0 + 1E-6)
+            if (aNode.x() <= 0.0)
                 T.setFixedValue(i, 0.0);
 
-            if (aNode.x() > 1.0 - 1E-6)
+            if (aNode.x() >= 1.0)
                 T.setFixedValue(i, 1.0);
+
+            T.u(i) = 0.0;
+
+        }
+
+        double h = 0.25;
+        double diff = 1.0;
+        double mass = 1.0;
+        double rho = 1.0;
+
+        {
+            CSphSpiky<double> aKernel(1);
+            CSphParticles<double> sParticles(aKernel);
+
+            T.u.fill(0.0);
+            sParticles.init(T, mass, rho, diff, h, dt);
+
+            for (Integer i = 0; i < nIter; ++i)
+            {
+                sParticles.solve(T);
+            }
+
+            this->addPlot(T, "SPH - Spiky");
+        }
+
+        {
+            CSphGaussian<double> aKernel(1);
+            CSphParticles<double> sParticles(aKernel);
+
+            T.u.fill(0.0);
+            sParticles.init(T, mass, rho, diff, h, dt);
+
+            for (Integer i = 0; i < nIter; ++i)
+            {
+                sParticles.solve(T);
+            }
+
+            this->addPlot(T, "SPH - Gaussian");
+        }
+
+        {
+            CSphConvex<double> aKernel(1);
+            CSphParticles<double> sParticles(aKernel);
+
+            T.u.fill(0.0);
+            sParticles.init(T, mass, rho, diff, h, dt);
+
+            for (Integer i = 0; i < nIter; ++i)
+            {
+                sParticles.solve(T);
+            }
+
+            this->addPlot(T, "SPH - Convex");
+        }
+
+        {
+            CSphQuintic<double> aKernel(1);
+            CSphParticles<double> sParticles(aKernel);
+
+            T.u.fill(0.0);
+            sParticles.init(T, mass, rho, diff, h, dt);
+
+            for (Integer i = 0; i < nIter; ++i)
+            {
+                sParticles.solve(T);
+            }
+
+            this->addPlot(T, "SPH - Quintic");
+        }
+
+        {
+            CSphCubicSpline<double> aKernel(1);
+            CSphParticles<double> sParticles(aKernel);
+
+            T.u.fill(0.0);
+            sParticles.init(T, mass, rho, diff, h, dt);
+
+            for (Integer i = 0; i < nIter; ++i)
+            {
+                sParticles.solve(T);
+            }
+
+            this->addPlot(T, "SPH - CubicSpline");
+        }
+    }
+
+    std::cout << "Done." << std::endl;
+
+}
+
+void MainWindow::solveHeatConduction1D2()
+{
+
+    std::cout << "**** One-dimensional steady-state heat conduction ****" << std::endl;
+
+    m_plotTitle->setText("One-dimensional steady-state heat conduction");
+
+    CGeoCoordinate<double> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<double> aPoint2(1.0, 0.0, 0.0);
+
+    CGeoLine<double> aLine(aPoint1, aPoint2);
+
+    const Integer nu = 100;
+
+    CMshBasicMesher<double> aBasicMesher;
+
+    aBasicMesher.generate(aLine, nu);
+    CMshMesh<double> aLineMesh = aBasicMesher.mesh();
+
+    double dt = 0.01;
+    Integer nIter = 100;
+
+    // Analytical
+    {
+
+        CPdeField<double> Ta;
+
+        Ta.setMesh(aLineMesh);
+        Ta.setDiscretLocation(DL_NODE);
+        Ta.setDiscretOrder(DO_LINEAR);
+        Ta.setSimulationType(ST_THERMAL);
+        Ta.setNbDofs(1);
+
+        Ta.init();
+
+        CAnaTemperature<double> aAnaTemperature;
+
+        for (Integer i = 0; i < Ta.mesh().nbNodes(); ++i)
+        {
+
+            Integer aNodeId = Ta.mesh().nodeId(i);
+            CMshNode<double> aNode = Ta.mesh().node(aNodeId);
+            double x = aNode.x();
+
+            double Ti;
+            aAnaTemperature.steadyStateHeatConduction1D(1.0 - x, Ti);
+
+            Ta.u(i) = Ti;
+
+        }
+
+        this->addPlot(Ta, "Analytical", true);
+
+    }
+
+    // SPH 1
+    {
+
+        CPdeField<double> T;
+
+        T.setMesh(aLineMesh);
+        T.setDiscretMethod(DM_SPH);
+        T.setDiscretLocation(DL_NODE);
+        T.setDiscretOrder(DO_LINEAR);
+        T.setSimulationType(ST_THERMAL);
+        T.setNbDofs(1);
+
+        // Ghost points
+        CMshNode<double> aNode;
+
+        double dx = 1.0 / nu;
+
+        // Side 1
+        for (Integer i = 0; i < 20; ++i)
+        {
+            aNode << 0.0 - (double)(i + 1) * dx, 0.0, 0.0;
+            T.mesh().addNode(T.mesh().nextNodeId(), aNode);
+        }
+
+        // Side 2
+        for (Integer i = 0; i < 20; ++i)
+        {
+            aNode << 1.0 + (double)(i + 1) * dx, 0.0, 0.0;
+            T.mesh().addNode(T.mesh().nextNodeId(), aNode);
+        }
+
+        T.u.resize(T.mesh().nbNodes());
+        T.u.fill(0.0);
+        for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
+        {
+
+            Integer aNodeId = T.mesh().nodeId(i);
+            CMshNode<double> aNode = T.mesh().node(aNodeId);
+
+            if (aNode.x() <= 0.0)
+                T.setFixedValue(i, 1.0);
+
+            if (aNode.x() >= 1.0)
+                T.setFixedValue(i, 0.0);
 
             T.u(i) = 0.0;
 
@@ -347,41 +509,12 @@ void MainWindow::unsteadyHeatConduction1D()
 
     CGeoLine<double> aLine(aPoint1, aPoint2);
 
-    CGeoCoordinate<double> aVertex1(+0.00, -0.05, -0.05);
-    CGeoCoordinate<double> aVertex2(+1.00, -0.05, -0.05);
-    CGeoCoordinate<double> aVertex3(+1.00, +0.05, -0.05);
-    CGeoCoordinate<double> aVertex4(+0.00, +0.05, -0.05);
-    CGeoCoordinate<double> aVertex5(+0.00, -0.05, +0.05);
-    CGeoCoordinate<double> aVertex6(+1.00, -0.05, +0.05);
-    CGeoCoordinate<double> aVertex7(+1.00, +0.05, +0.05);
-    CGeoCoordinate<double> aVertex8(+0.00, +0.05, +0.05);
-
-    CGeoHexahedron<double> aHexahedron;
-
-    aHexahedron.addVertex(aVertex1);
-    aHexahedron.addVertex(aVertex2);
-    aHexahedron.addVertex(aVertex3);
-    aHexahedron.addVertex(aVertex4);
-    aHexahedron.addVertex(aVertex5);
-    aHexahedron.addVertex(aVertex6);
-    aHexahedron.addVertex(aVertex7);
-    aHexahedron.addVertex(aVertex8);
-
-    const Integer nu = 50;
-    const Integer nv = 1;
-    const Integer nw = 1;
+    const Integer nu = 100;
 
     CMshBasicMesher<double> aBasicMesher;
 
     aBasicMesher.generate(aLine, nu);
     CMshMesh<double> aLineMesh = aBasicMesher.mesh();
-
-    aBasicMesher.generate(aHexahedron, nu, nv, nw);
-    CMshMesh<double> aVolumeMesh = aBasicMesher.mesh();
-
-    aVolumeMesh.generateFaces(1E-12);
-    aVolumeMesh.calculateFaceCentroid();
-    aVolumeMesh.calculateElementCentroid();
 
     double rho = 1.0;   // density
     double Cp = 1.0;    // specific heat
@@ -435,12 +568,15 @@ void MainWindow::unsteadyHeatConduction1D()
         T.setSimulationType(ST_THERMAL);
         T.setNbDofs(1);
 
+        // Ghost points
         CMshNode<double> aNode;
 
+        double dx = 1.0 / nu;
+
         // Side 1
-        for (Integer i = 0; i < 5; ++i)
+        for (Integer i = 0; i < 20; ++i)
         {
-            aNode << 1.0 + (double)(i + 1) / nu, 0.0, 0.0;
+            aNode << 1.0 + (double)(i + 1) * dx, 0.0, 0.0;
             T.mesh().addNode(T.mesh().nextNodeId(), aNode);
         }
 
@@ -451,7 +587,7 @@ void MainWindow::unsteadyHeatConduction1D()
             Integer aNodeId = T.mesh().nodeId(i);
             CMshNode<double> aNode = T.mesh().node(aNodeId);
 
-            if (aNode.x() > 1.0 - 1E-6)
+            if (aNode.x() >= 1.0)
                 T.setFixedValue(i, 0.0);
 
             T.u(i) = 1.0;
@@ -558,58 +694,12 @@ void MainWindow::unsteadyHeatConvection1D()
 
     CGeoLine<double> aLine(aPoint1, aPoint2);
 
-    CGeoCoordinate<double> aVertex1(+0.00, -0.05, -0.05);
-    CGeoCoordinate<double> aVertex2(+1.00, -0.05, -0.05);
-    CGeoCoordinate<double> aVertex3(+1.00, +0.05, -0.05);
-    CGeoCoordinate<double> aVertex4(+0.00, +0.05, -0.05);
-    CGeoCoordinate<double> aVertex5(+0.00, -0.05, +0.05);
-    CGeoCoordinate<double> aVertex6(+1.00, -0.05, +0.05);
-    CGeoCoordinate<double> aVertex7(+1.00, +0.05, +0.05);
-    CGeoCoordinate<double> aVertex8(+0.00, +0.05, +0.05);
-
-    CGeoHexahedron<double> aHexahedron;
-
-    aHexahedron.addVertex(aVertex1);
-    aHexahedron.addVertex(aVertex2);
-    aHexahedron.addVertex(aVertex3);
-    aHexahedron.addVertex(aVertex4);
-    aHexahedron.addVertex(aVertex5);
-    aHexahedron.addVertex(aVertex6);
-    aHexahedron.addVertex(aVertex7);
-    aHexahedron.addVertex(aVertex8);
-
     const Integer nu = 100;
-    const Integer nv = 1;
-    const Integer nw = 1;
 
     CMshBasicMesher<double> aBasicMesher;
 
     aBasicMesher.generate(aLine, nu);
     CMshMesh<double> aLineMesh = aBasicMesher.mesh();
-
-    aBasicMesher.generate(aHexahedron, nu, nv, nw);
-    CMshMesh<double> aVolumeMesh = aBasicMesher.mesh();
-
-    aVolumeMesh.generateFaces(1E-12);
-    aVolumeMesh.calculateFaceCentroid();
-    aVolumeMesh.calculateElementCentroid();
-
-    // Cyclic
-    Integer aFaceId1, aFaceId2;
-    for (Integer i = 0; i < aVolumeMesh.nbFaces(); ++i)
-    {
-
-        Integer aFaceId = aVolumeMesh.faceId(i);
-
-        if (fabs(aVolumeMesh.faceCentroid(aFaceId).x() - 0.0) < 1E-6)
-            aFaceId1 = aFaceId;
-
-        if (fabs(aVolumeMesh.faceCentroid(aFaceId).x() - 1.0) < 1E-6)
-            aFaceId2 = aFaceId;
-
-    }
-    aVolumeMesh.face(aFaceId1).setPairFaceId(aFaceId2);
-    aVolumeMesh.face(aFaceId2).setPairFaceId(aFaceId1);
 
     double dt = 0.005;
     Integer nIter = 400;
@@ -703,11 +793,13 @@ void MainWindow::on_btnCalculate_clicked()
 
     this->resetPlots();
 
-    if (m_step % 3 == 0)
-        this->solveHeatConduction1D();
-    else if (m_step % 3 == 1)
+    if (m_step % 4 == 0)
+        this->solveHeatConduction1D1();
+    else if (m_step % 4 == 1)
+        this->solveHeatConduction1D2();
+    else if (m_step % 4 == 2)
         this->unsteadyHeatConduction1D();
-    else if (m_step % 3 == 2)
+    else if (m_step % 4 == 3)
         this->unsteadyHeatConvection1D();
 
     customPlot->replot();

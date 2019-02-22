@@ -22,7 +22,8 @@ private:
 
     QCPTextElement* m_plotTitle;
 
-    void solveHeatConduction1D();
+    void solveHeatConduction1D1();
+    void solveHeatConduction1D2();
     void unsteadyHeatConduction1D();
     void unsteadyHeatConvection1D();
 
