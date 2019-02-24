@@ -31,19 +31,19 @@ using namespace ENigMA::sph;
 
 #define kPi 3.1415926535f
 
-const int NX = 120;         // x
-const int NY = 120;         // y
+const int NX = 40;         // x
+const int NY = 40;         // y
 
-const int NPX = 60;
-const int NPY = 60;
+const int NPX = 20;
+const int NPY = 20;
 
 int MOVING_PARTICLES = NPX * NPY;
 
 float dt = 1E-2f;      // time step
-float h = 10.0f;
+float h = 2.5f;
 float m0 = 300.0f;
 float rho0 = 1000.0f;
-float visc0 = 1000.0f;
+float visc0 = 1200.0f;
 
 #define kParticleRadius 0.1f
 
