@@ -43,7 +43,7 @@ float dt = 1E-2f;      // time step
 float h = 2.5f;
 float m0 = 300.0f;
 float rho0 = 1000.0f;
-float visc0 = 1200.0f;
+float visc0 = 2500.0f;
 
 #define kParticleRadius 0.1f
 
@@ -256,8 +256,8 @@ void drawParticles()
         smax = std::max(smax, s);
     }
 
-    std::cout << "smin = " << smin << std::endl;
-    std::cout << "smax = " << smax << std::endl;
+    //std::cout << "smin = " << smin << std::endl;
+    //std::cout << "smax = " << smax << std::endl;
 
     glPointSize(6.0f);
 
@@ -371,7 +371,7 @@ void init()
     }
 
     // Add wall particles
-    for (int i = 5; i < NX - 5 + 2; ++i)
+    for (int i = 4; i < NX - 5 + 2; ++i)
     {
 
         for (int j = 0; j < 5; ++j)
