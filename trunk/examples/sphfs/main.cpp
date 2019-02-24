@@ -43,7 +43,7 @@ float dt = 1E-2f;      // time step
 float h = 2.5f;
 float m0 = 300.0f;
 float rho0 = 1000.0f;
-float visc0 = 2500.0f;
+float visc0 = 2200.0f;
 
 #define kParticleRadius 0.1f
 
