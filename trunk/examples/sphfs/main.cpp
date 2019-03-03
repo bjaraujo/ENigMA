@@ -42,7 +42,7 @@ int MOVING_PARTICLES = NPX * NPY;
 float dt = 1E-2f;      // time step
 float h = 2.5f;
 float m0 = 300.0f;
-float rho0 = 1000.0f;
+float rho0 = 1200.0f;
 float visc0 = 2200.0f;
 
 #define kParticleRadius 0.1f
@@ -209,14 +209,14 @@ void moveParticles()
             p[pi].pos.y() += dt * p[pi].vel.y();
 
             // Bound positions
-            if (p[pi].pos.x() < 4)
-                p[pi].pos.x() = 4;
+            if (p[pi].pos.x() < 5)
+                p[pi].pos.x() = 5;
 
             if (p[pi].pos.x() > NX - 4)
                 p[pi].pos.x() = NX - 4;
 
-            if (p[pi].pos.y() < 4)
-                p[pi].pos.y() = 4;
+            if (p[pi].pos.y() < 5)
+                p[pi].pos.y() = 5;
 
             if (p[pi].pos.y() > NY - 4)
                 p[pi].pos.y() = NY - 4;
@@ -249,15 +249,10 @@ void drawParticles()
 
     for (int pi = 0; pi < p.size(); ++pi)
     {
-        //s = sqrt(p[pi].vel.x() * p[pi].vel.x() + p[pi].vel.y() * p[pi].vel.y());
-        //s = p[pi].p;
         s = p[pi].rho;
         smin = std::min(smin, s);
         smax = std::max(smax, s);
     }
-
-    //std::cout << "smin = " << smin << std::endl;
-    //std::cout << "smax = " << smax << std::endl;
 
     glPointSize(6.0f);
 
@@ -265,8 +260,6 @@ void drawParticles()
 
     for (int pi = 0; pi < p.size(); ++pi)
     {
-        //s = (sqrt(p[pi].vel.x() * p[pi].vel.x() + p[pi].vel.y() * p[pi].vel.y()) - smin) / (smax - smin);
-        //s = (p[pi].p - smin) / (smax - smin);
         s = (p[pi].rho - smin) / (smax - smin);
         getColor(s, r, g, b);
         glColor3f(r, g, b);
@@ -371,7 +364,7 @@ void init()
     }
 
     // Add wall particles
-    for (int i = 4; i < NX - 5 + 2; ++i)
+    for (int i = 5; i < NX - 5 + 2; ++i)
     {
 
         for (int j = 0; j < 5; ++j)
@@ -385,9 +378,9 @@ void init()
             pi.vel.x() = 0.0;
             pi.vel.y() = 0.0;
 
-            pi.mass = m0*(1.0 + (4 - j) * 0.1f);
+            pi.mass = m0 * 1.1f;
             pi.visc = visc0;
-            pi.rho = pi.mass;
+            pi.rho = rho0;
 
             p.push_back(pi);
 
@@ -406,9 +399,9 @@ void init()
             pi.pos.x() = j;
             pi.pos.y() = i;
 
-            pi.mass = m0*(1.0 + (4 - j) * 0.1f);
+            pi.mass = m0 * 1.1f;
             pi.visc = visc0;
-            pi.rho = pi.mass;
+            pi.rho = rho0;
 
             p.push_back(pi);
 
@@ -422,9 +415,9 @@ void init()
             pi.pos.x() = NX - j + 1;
             pi.pos.y() = i;
 
-            pi.mass = m0*(1.0 + (4 - j) * 0.1f);
+            pi.mass = m0 * 1.1f;
             pi.visc = visc0;
-            pi.rho = pi.mass;
+            pi.rho = rho0;
 
             p.push_back(pi);
 
