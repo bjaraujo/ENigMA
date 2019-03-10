@@ -29,14 +29,14 @@ using namespace std;
 using namespace ENigMA::geometry;
 using namespace ENigMA::sph;
 
-const int NX = 20;         // x
-const int NY = 20;         // y
+const int NX = 50;         // x
+const int NY = 50;         // y
 
-float dt = 1E-2f;      // time step
+float dt = 2E-3f;      // time step
 float h = 0.1f;
 float m0 = 1.0f;
-float rho0 = 1000.0f;
-float visc0 = 1.0f;
+float rho0 = 900.0f;
+float visc0 = 100.0f;
 
 struct Particle
 {
@@ -134,7 +134,7 @@ void calculateDensityAndPressure()
 
             CGeoVector<float> r = p[pj].pos - p[pi].pos;
 
-            p[pi].rho += p[pj].mass * aCubicSplineKernel.W(r, h);
+            p[pi].rho += p[pj].mass * aSpikyKernel.W(r, h);
 
         }
 
@@ -184,7 +184,7 @@ void moveParticles()
             dpx += p[pj].mass * (p[pi].p / (p[pi].rho * p[pi].rho) + p[pj].p / (p[pj].rho * p[pj].rho)) * gradW.x();
             dpy += p[pj].mass * (p[pi].p / (p[pi].rho * p[pi].rho) + p[pj].p / (p[pj].rho * p[pj].rho)) * gradW.y();
 
-            float lapW = aQuinticKernel.laplacianW(r, h);
+            float lapW = aSpikyKernel.laplacianW(r, h);
 
             dviscx += p[pj].mass * p[pi].visc / p[pi].rho * (p[pj].vel.x() - p[pi].vel.x()) / p[pj].rho * lapW;
             dviscy += p[pj].mass * p[pi].visc / p[pi].rho * (p[pj].vel.y() - p[pi].vel.y()) / p[pj].rho * lapW;
@@ -194,31 +194,50 @@ void moveParticles()
         p[pi].vel.x() += dt * (gx - dpx + dviscx);
         p[pi].vel.y() += dt * (gy - dpy + dviscy);
 
+        if (p[pi].vel.x() > 1.0f)
+        {
+            p[pi].vel.x() = 1.0f;
+        }
+
+        if (p[pi].vel.x() < -1.0f)
+        {
+            p[pi].vel.x() = -1.0f;
+        }
+
+        if (p[pi].vel.y() > 1.0f)
+        {
+            p[pi].vel.y() = 1.0f;
+        }
+
+        if (p[pi].vel.y() < -1.0f)
+        {
+            p[pi].vel.y() = -1.0f;
+        }
+
         p[pi].pos.x() += dt * p[pi].vel.x();
         p[pi].pos.y() += dt * p[pi].vel.y();
 
         // Bound positions
         if (p[pi].pos.x() <= 0.0f)
         {
-            p[pi].pos.x() = 0.0f;
+            p[pi].vel.x() = +0.5f * (std::fabs(p[pi].vel.x()));
         }
 
         if (p[pi].pos.x() >= 1.0f)
         {
-            p[pi].pos.x() = 1.0f;
+            p[pi].vel.x() = -0.5f * (std::fabs(p[pi].vel.x()));
         }
 
         if (p[pi].pos.y() <= 0.0f)
         {
-            p[pi].pos.y() = 0.0f;
+            p[pi].vel.y() = +0.5f * (std::fabs(p[pi].vel.y()));
         }
 
-        if (p[pi].pos.y() >= 1.0f)
+        if (p[pi].pos.y() >= 0.98f)
         {
-            p[pi].pos.y() = 1.0f;
             p[pi].vel.x() = 1.0f;
+            p[pi].vel.y() = -0.5f * (std::fabs(p[pi].vel.y()));
         }
-
     }
 
 }
