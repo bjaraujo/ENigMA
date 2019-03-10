@@ -17,6 +17,7 @@ if(ENIGMA_BUILD_OPENGL_EXAMPLES)
 add_subdirectory(lbmflow)
 add_subdirectory(sphfs)
 add_subdirectory(sphstatic)
+add_subdirectory(sphflow)
 endif(ENIGMA_BUILD_OPENGL_EXAMPLES)
 
 if(ENIGMA_BUILD_QT_EXAMPLES)

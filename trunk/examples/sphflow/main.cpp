@@ -29,21 +29,14 @@ using namespace std;
 using namespace ENigMA::geometry;
 using namespace ENigMA::sph;
 
-#define kPi 3.1415926535f
-
-const int NX = 80;         // x
-const int NY = 80;         // y
-
-const int NPX = 40;
-const int NPY = 40;
-
-int MOVING_PARTICLES = NPX * NPY;
+const int NX = 20;         // x
+const int NY = 20;         // y
 
 float dt = 1E-2f;      // time step
-float h = 3.2f;
-float m0 = 320.0f;
+float h = 0.1f;
+float m0 = 1.0f;
 float rho0 = 1000.0f;
-float visc0 = 1200.0f;
+float visc0 = 1.0f;
 
 struct Particle
 {
@@ -161,7 +154,7 @@ void moveParticles()
     float dviscx, dviscy;
 
     float gx = 0.0;
-    float gy = -9.8;
+    float gy = 0.0;
 
 #pragma omp parallel for num_threads(4)
     for (int pi = 0; pi < p.size(); ++pi)
@@ -198,43 +191,32 @@ void moveParticles()
 
         }
 
-        if (pi < MOVING_PARTICLES)
+        p[pi].vel.x() += dt * (gx - dpx + dviscx);
+        p[pi].vel.y() += dt * (gy - dpy + dviscy);
+
+        p[pi].pos.x() += dt * p[pi].vel.x();
+        p[pi].pos.y() += dt * p[pi].vel.y();
+
+        // Bound positions
+        if (p[pi].pos.x() <= 0.0f)
         {
-            p[pi].vel.x() += dt * (gx - dpx + dviscx);
-            p[pi].vel.y() += dt * (gy - dpy + dviscy);
+            p[pi].pos.x() = 0.0f;
+        }
 
-            p[pi].pos.x() += dt * p[pi].vel.x();
-            p[pi].pos.y() += dt * p[pi].vel.y();
+        if (p[pi].pos.x() >= 1.0f)
+        {
+            p[pi].pos.x() = 1.0f;
+        }
 
-            // Bound positions
-            if (p[pi].pos.x() < 5)
-            {
-                p[pi].pos.x() = 5;
-                p[pi].vel.x() = 0;
-                p[pi].vel.y() = 0;
-            }
+        if (p[pi].pos.y() <= 0.0f)
+        {
+            p[pi].pos.y() = 0.0f;
+        }
 
-            if (p[pi].pos.x() > NX - 4)
-            {
-                p[pi].pos.x() = NX - 4;
-                p[pi].vel.x() = 0;
-                p[pi].vel.y() = 0;
-            }
-
-            if (p[pi].pos.y() < 5)
-            {
-                p[pi].pos.y() = 5;
-                p[pi].vel.x() = 0;
-                p[pi].vel.y() = 0;
-            }
-
-            if (p[pi].pos.y() > NY - 4)
-            {
-                p[pi].pos.y() = NY - 4;
-                p[pi].vel.x() = 0;
-                p[pi].vel.y() = 0;
-            }
-
+        if (p[pi].pos.y() >= 1.0f)
+        {
+            p[pi].pos.y() = 1.0f;
+            p[pi].vel.x() = 1.0f;
         }
 
     }
@@ -277,7 +259,7 @@ void drawParticles()
         s = (p[pi].rho - smin) / (smax - smin);
         getColor(s, r, g, b);
         glColor3f(r, g, b);
-        glVertex2i((int)(p[pi].pos.x()*winwidth / (NX + 1)), (int)(p[pi].pos.y()*winheight / (NY + 1)));
+        glVertex2f(p[pi].pos.x(), p[pi].pos.y());
     }
 
     glEnd();
@@ -294,7 +276,7 @@ void display()
     // setup 2d pixel plotting camera
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0f, (GLfloat)winwidth, 0.0f, (GLfloat)winheight, 0.0f, 1.0f);
+    glOrtho(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport(0, 0, winwidth, winheight);
@@ -353,16 +335,16 @@ void init()
 {
 
     // Add fluid particles
-    for (int i = 0; i < NPX; ++i)
+    for (int i = 0; i < NX; ++i)
     {
 
-        for (int j = 0; j < NPY; ++j)
+        for (int j = 0; j < NY; ++j)
         {
 
             Particle pi;
 
-            pi.pos.x() = 5 + ((float)i / NPX * (NX - 8) * 0.50f);
-            pi.pos.y() = 5 + ((float)j / NPY * (NY - 8) * 0.50f);
+            pi.pos.x() = (float) i / (float) (NX - 1);
+            pi.pos.y() = (float) j / (float) (NY - 1);
 
             pi.vel.x() = 0.0;
             pi.vel.y() = 0.0;
@@ -376,70 +358,6 @@ void init()
         }
 
     }
-
-    // Add wall particles
-    /*
-    for (int i = 5; i < NX - 5 + 2; ++i)
-    {
-
-        for (int j = 0; j < 5; ++j)
-        {
-
-            Particle pi;
-
-            pi.pos.x() = i;
-            pi.pos.y() = j;
-
-            pi.vel.x() = 0.0;
-            pi.vel.y() = 0.0;
-
-            pi.mass = m0 * 1.1f;
-            pi.visc = visc0;
-            pi.rho = rho0;
-
-            p.push_back(pi);
-
-        }
-
-    }
-
-    for (int i = 5; i < NY * 0.75; ++i)
-    {
-
-        for (int j = 0; j < 5; ++j)
-        {
-
-            Particle pi;
-
-            pi.pos.x() = j;
-            pi.pos.y() = i;
-
-            pi.mass = m0 * 1.1f;
-            pi.visc = visc0;
-            pi.rho = rho0;
-
-            p.push_back(pi);
-
-        }
-
-        for (int j = 0; j < 5; ++j)
-        {
-
-            Particle pi;
-
-            pi.pos.x() = NX - j + 1;
-            pi.pos.y() = i;
-
-            pi.mass = m0 * 1.1f;
-            pi.visc = visc0;
-            pi.rho = rho0;
-
-            p.push_back(pi);
-
-        }
-
-    }
-    */
 
     scale[0][0] = 0.0 / 4.0;
     scale[0][1] = 0;
