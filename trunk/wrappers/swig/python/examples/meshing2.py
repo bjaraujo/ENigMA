@@ -1,9 +1,9 @@
 
 from timeit import default_timer as timer
-import subprocess
+#import subprocess
 
 import ENigMA
- 
+
 edgeMesh = ENigMA.CMshMeshDouble()
 
 node1 = ENigMA.CMshNodeDouble(0, 0, 0)
