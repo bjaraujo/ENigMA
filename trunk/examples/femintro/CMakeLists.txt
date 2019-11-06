@@ -8,10 +8,10 @@ main.cpp
 source_group("Source Files" FILES ${FEMINTRO_SOURCES})
 
 include_directories(
-${Eigen3_DIR}
-${ViennaCL_DIR}
-${RTree_DIR}
-${Exprtk_DIR}
+${EIGEN_DIR}
+${VIENNACL_DIR}
+${RTREE_DIR}
+${EXPRTK_DIR}
   ../../src/common
   ../../src/geometry
   ../../src/integration

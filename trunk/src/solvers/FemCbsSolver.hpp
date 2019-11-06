@@ -91,9 +91,9 @@ namespace ENigMA
             
             Eigen::SparseMatrix<Real> m_G1, m_G2, m_G3;
 
-            virtual void calculateVelocityField() override;
-            virtual void calculatePressureField() override;
-            virtual void correctVelocityField() override;
+            virtual void calculateVelocityField();
+            virtual void calculatePressureField();
+            virtual void correctVelocityField();
             
         public:
 

@@ -10,11 +10,8 @@ endif()
 project(ENigMA CXX)
 
 #Configure options
-set(ENigMA_DIR $ENV{ENIGMA_DIR} CACHE FILEPATH "")
-set(Exprtk_DIR $ENV{EXPRTK_DIR} CACHE FILEPATH "")
-set(RTree_DIR $ENV{RTREE_DIR} CACHE FILEPATH "")
-set(Eigen3_DIR $ENV{EIGEN_DIR} CACHE FILEPATH "")
-set(ViennaCL_DIR $ENV{VIENNACL_DIR} CACHE FILEPATH "")
+set(EXPRTK_DIR "${CMAKE_SOURCE_DIR}/dependencies/exprtk/exprtk-2018")
+set(RTREE_DIR "${CMAKE_SOURCE_DIR}/dependencies/RTree/RTree-2011")
 
 set(QT_MOC_EXECUTABLE "$ENV{QTDIR}/bin/moc.exe" CACHE FILEPATH "")
 set(QT_UIC_EXECUTABLE "$ENV{QTDIR}/bin/uic.exe" CACHE FILEPATH "")
@@ -46,6 +43,8 @@ endif()
 if(USE_VIENNACL)
     add_definitions(-DUSE_VIENNACL)
 endif()
+
+include(GetEigen)
 
 add_subdirectory(lib)
 

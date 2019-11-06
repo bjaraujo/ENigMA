@@ -90,44 +90,24 @@ set(TEST_STL_SOURCES
 TestStlUtils.cpp
 )
 
-include(ExternalProject)
+# Download and unpack googletest at configure time
+configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tests/googletest-download"
+)
+execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tests/googletest-download"
+)
 
-# Set default ExternalProject root directory
-set_directory_properties(PROPERTIES EP_PREFIX ${CMAKE_BINARY_DIR}/third_party)
+# Prevent GoogleTest from overriding our compiler/linker options
+# when building with Visual Studio
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-ExternalProject_Add(
-  googletest
-  URL https://github.com/google/googletest/archive/release-1.8.1.zip
-  UPDATE_COMMAND ""
-  INSTALL_COMMAND ""
-  LOG_DOWNLOAD ON
-  LOG_CONFIGURE ON
-  LOG_BUILD ON)
-
-ExternalProject_Get_Property(googletest source_dir)
-set(GTEST_INCLUDE_DIRS ${source_dir}/googletest/include)
-set(GMOCK_INCLUDE_DIRS ${source_dir}/googlemock/include)
-
-ExternalProject_Get_Property(googletest binary_dir)
-set(GTEST_LIBRARY_PATH ${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
-set(GTEST_LIBRARY gtest)
-add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
-add_dependencies(${GTEST_LIBRARY} googletest)
-
-set(GTEST_MAIN_LIBRARY_PATH ${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a)
-set(GTEST_MAIN_LIBRARY gtest_main)
-add_library(${GTEST_MAIN_LIBRARY} UNKNOWN IMPORTED)
-add_dependencies(${GTEST_MAIN_LIBRARY} googletest)
-
-set(GMOCK_LIBRARY_PATH ${binary_dir}/googlemock/${CMAKE_FIND_LIBRARY_PREFIXES}gmock.a)
-set(GMOCK_LIBRARY gmock)
-add_library(${GMOCK_LIBRARY} UNKNOWN IMPORTED)
-add_dependencies(${GMOCK_LIBRARY} googletest)
-
-set(GMOCK_MAIN_LIBRARY_PATH ${binary_dir}/googlemock/${CMAKE_FIND_LIBRARY_PREFIXES}gmock_main.a)
-set(GMOCK_MAIN_LIBRARY gmock_main)
-add_library(${GMOCK_MAIN_LIBRARY} UNKNOWN IMPORTED)
-add_dependencies(${GMOCK_MAIN_LIBRARY} ${GTEST_LIBRARY})
+# Add googletest directly to our build. This adds the following targets:
+# gtest, gtest_main, gmock and gmock_main
+add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+                 "${CMAKE_BINARY_DIR}/googletest-build"
+)
 
 enable_testing()
 
@@ -143,11 +123,10 @@ source_group("Source Files\\post" FILES ${TEST_POS_SOURCES})
 source_group("Source Files\\stl" FILES ${TEST_STL_SOURCES})
 
 include_directories(
-  ${Eigen3_DIR}
-  ${ViennaCL_DIR}
-  ${RTree_DIR}
-  ${Exprtk_DIR}
-  ${GTEST_INCLUDE_DIRS}
+  ${EIGEN_DIR}
+  ${VIENNACL_DIR}
+  ${RTREE_DIR}
+  ${EXPRTK_DIR}
   ../src/common
   ../src/geometry
   ../src/mesh

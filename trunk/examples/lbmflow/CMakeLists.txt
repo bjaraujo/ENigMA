@@ -11,9 +11,9 @@ find_package(GLUT REQUIRED)
 source_group("Source Files" FILES ${LBMFLOW_SOURCES})
 
 include_directories(
-${Eigen3_DIR}
-${RTree_DIR}
-${Exprtk_DIR}
+${EIGEN_DIR}
+${RTREE_DIR}
+${EXPRTK_DIR}
 ../../src/common
 ../../src/geometry
 ../../src/integration
