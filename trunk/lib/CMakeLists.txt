@@ -391,8 +391,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_dependencies(ENigMALib eigen)
-
 add_library(ENigMALib 
     ENigMA.hpp
     ENigMA.cpp
@@ -432,4 +430,5 @@ add_library(ENigMALib
     ${STL_HEADERS}
 )
 
+add_dependencies(ENigMALib eigen)
 

@@ -148,6 +148,8 @@ include_directories(
 
 add_executable(UnitTests ${TEST_GEOMETRY_SOURCES} ${TEST_MESH_SOURCES} ${TEST_BEM_SOURCES} ${TEST_FEM_SOURCES} ${TEST_CVFEM_SOURCES} ${TEST_FVM_SOURCES} ${TEST_SPH_SOURCES} ${TEST_PDE_SOURCES} ${TEST_ANA_SOURCES} ${TEST_POS_SOURCES} ${TEST_STL_SOURCES})
 
+add_dependencies(UnitTests eigen gtest gtest_main)
+
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     add_definitions(/bigobj)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MD")
@@ -156,8 +158,6 @@ endif()
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 endif()
-
-add_dependencies(UnitTests eigen gtest gtest_main)
 
 if(WIN32)
     target_link_libraries(UnitTests
