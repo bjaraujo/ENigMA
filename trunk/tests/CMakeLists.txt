@@ -157,6 +157,8 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 endif()
 
+add_dependencies(UnitTests eigen gtest gtest_main)
+
 if(WIN32)
     target_link_libraries(UnitTests
     gtest
