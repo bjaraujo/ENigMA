@@ -11,44 +11,36 @@
 
 #include <cmath>
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace sph
+namespace sph {
+
+    template <typename Real>
+    CSphKernel<Real>::CSphKernel(const Integer nDimension)
     {
 
-        template <typename Real>
-        CSphKernel<Real>::CSphKernel(const Integer nDimension)
-        {
-
-            m_pi = std::acos(-1.0);
-            this->setDimension(nDimension);
-
-        }
-
-        template <typename Real>
-        CSphKernel<Real>::CSphKernel()
-        {
-
-            m_pi = std::acos(-1.0);
-            this->setDimension(1);
-
-        }
-
-        template <typename Real>
-        CSphKernel<Real>::~CSphKernel()
-        {
-
-        }
-
-        template <typename Real>
-        void CSphKernel<Real>::setDimension(const Integer nDimension)
-        {
-
-            m_dim = nDimension;
-
-        }
-
+        m_pi = std::acos(-1.0);
+        this->setDimension(nDimension);
     }
 
+    template <typename Real>
+    CSphKernel<Real>::CSphKernel()
+    {
+
+        m_pi = std::acos(-1.0);
+        this->setDimension(1);
+    }
+
+    template <typename Real>
+    CSphKernel<Real>::~CSphKernel()
+    {
+    }
+
+    template <typename Real>
+    void CSphKernel<Real>::setDimension(const Integer nDimension)
+    {
+
+        m_dim = nDimension;
+    }
+}
 }

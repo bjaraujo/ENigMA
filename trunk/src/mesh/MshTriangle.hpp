@@ -11,31 +11,23 @@
 
 #include "GeoTriangle.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace mesh
-    {
+namespace mesh {
 
-        template <typename Real>
-        class CMshTriangle : public ENigMA::geometry::CGeoTriangle<Real>
-        {
-        private:
+    template <typename Real>
+    class CMshTriangle : public ENigMA::geometry::CGeoTriangle<Real> {
+    private:
+        Real m_quality;
 
-            Real m_quality;
+    public:
+        CMshTriangle();
+        ~CMshTriangle();
 
-        public:
-            CMshTriangle();
-            ~CMshTriangle();
-
-            void calculateQuality();
-            Real quality();
-
-        };
-
-    }
-
+        void calculateQuality();
+        Real quality();
+    };
+}
 }
 
 #include "MshTriangle_Imp.hpp"
-

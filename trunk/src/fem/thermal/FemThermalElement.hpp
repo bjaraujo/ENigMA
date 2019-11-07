@@ -9,39 +9,29 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace thermal
-        {
+    namespace thermal {
 
-            template <typename Real>
-            class CFemThermalElement
-            {
-            private:
+        template <typename Real>
+        class CFemThermalElement {
+        private:
+            Real m_specificHeat;
+            Real m_density;
+            Real m_thermalConductivity;
 
-                Real m_specificHeat;
-                Real m_density;
-                Real m_thermalConductivity;
+        public:
+            CFemThermalElement();
+            ~CFemThermalElement();
 
-            public:
-
-                CFemThermalElement();
-                ~CFemThermalElement();
-
-                Real& specificHeat();
-                Real& density();
-                Real& thermalConductivity();
-    
-            };
-
-        }
-
+            Real& specificHeat();
+            Real& density();
+            Real& thermalConductivity();
+        };
     }
-
+}
 }
 
 #include "FemThermalElement_Imp.hpp"

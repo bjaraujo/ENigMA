@@ -9,40 +9,30 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace structural
-        {
+    namespace structural {
 
-            template <typename Real>
-            class CFemStructuralElement
-            {
-            private:
+        template <typename Real>
+        class CFemStructuralElement {
+        private:
+            Real m_coeffPoisson;
+            Real m_elasticModulus;
 
-                Real m_coeffPoisson;
-                Real m_elasticModulus;
+        public:
+            CFemStructuralElement();
+            ~CFemStructuralElement();
 
-            public:
+            void setCoeffPoisson(const Real aValue);
+            Real coeffPoisson() const;
 
-                CFemStructuralElement();
-                ~CFemStructuralElement();
-
-                void setCoeffPoisson(const Real aValue);
-                Real coeffPoisson() const;
-
-                void setElasticModulus(const Real aValue);
-                Real elasticModulus() const;
-
-            };
-
-        }
-
+            void setElasticModulus(const Real aValue);
+            Real elasticModulus() const;
+        };
     }
-
+}
 }
 
 #include "FemStructuralElement_Imp.hpp"

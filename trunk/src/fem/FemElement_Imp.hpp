@@ -9,94 +9,80 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
+namespace fem {
+
+    template <typename Real>
+    CFemElement<Real>::CFemElement()
     {
 
-        template <typename Real>
-        CFemElement<Real>::CFemElement()
-        {
+        m_dt = 1.0;
+        m_diffusionCoefficient = 1.0;
+        m_convectionCoefficient = 1.0;
 
-            m_dt = 1.0;
-            m_diffusionCoefficient = 1.0;
-            m_convectionCoefficient = 1.0;
+        m_transient = false;
+    }
 
-            m_transient = false;
+    template <typename Real>
+    CFemElement<Real>::~CFemElement()
+    {
+    }
 
-        }
+    template <typename Real>
+    void CFemElement<Real>::setDt(const Real aValue)
+    {
 
-        template <typename Real>
-        CFemElement<Real>::~CFemElement()
-        {
+        m_dt = aValue;
+    }
 
-        }
+    template <typename Real>
+    Real CFemElement<Real>::dt() const
+    {
 
-        template <typename Real>
-        void CFemElement<Real>::setDt(const Real aValue)
-        {
+        return m_dt;
+    }
 
-            m_dt = aValue;
+    template <typename Real>
+    void CFemElement<Real>::setDiffusionCoefficient(const Real aValue)
+    {
 
-        }
+        m_diffusionCoefficient = aValue;
+    }
 
-        template <typename Real>
-        Real CFemElement<Real>::dt() const
-        {
-        
-            return m_dt;
-            
-        }
+    template <typename Real>
+    Real CFemElement<Real>::diffusionCoefficient() const
+    {
 
-        template <typename Real>
-        void CFemElement<Real>::setDiffusionCoefficient(const Real aValue)
-        {
+        return m_diffusionCoefficient;
+    }
 
-            m_diffusionCoefficient = aValue;
+    template <typename Real>
+    void CFemElement<Real>::setConvectionCoefficient(const Real aValue)
+    {
 
-        }
+        m_convectionCoefficient = aValue;
+    }
 
-        template <typename Real>
-        Real CFemElement<Real>::diffusionCoefficient() const
-        {
-        
-            return m_diffusionCoefficient;
-            
-        }
+    template <typename Real>
+    Real CFemElement<Real>::convectionCoefficient() const
+    {
 
-        template <typename Real>
-        void CFemElement<Real>::setConvectionCoefficient(const Real aValue)
-        {
+        return m_convectionCoefficient;
+    }
 
-            m_convectionCoefficient = aValue;
+    template <typename Real>
+    void CFemElement<Real>::setTransient(const bool aValue)
+    {
 
-        }
+        m_transient = aValue;
+    }
 
-        template <typename Real>
-        Real CFemElement<Real>::convectionCoefficient() const
-        {
-        
-            return m_convectionCoefficient;
-            
-        }
+    template <typename Real>
+    bool CFemElement<Real>::transient() const
+    {
 
-        template <typename Real>
-        void CFemElement<Real>::setTransient(const bool aValue)
-        {
-
-            m_transient = aValue;
-
-        }
-
-        template <typename Real>
-        bool CFemElement<Real>::transient() const
-        {
-        
-            return m_transient;
-            
-        }
-
+        return m_transient;
     }
 }
-
+}

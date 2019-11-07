@@ -9,34 +9,28 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
+namespace geometry {
+
+    template <typename Real>
+    CGeoCentroid<Real>::CGeoCentroid()
+        : m_bCentroid(false)
     {
 
-        template <typename Real>
-        CGeoCentroid<Real>::CGeoCentroid() : m_bCentroid(false)
-        {
-
-            m_centroid << 0.0, 0.0, 0.0;
-
-        }
-
-        template <typename Real>
-        CGeoCentroid<Real>::~CGeoCentroid()
-        {
-
-        }
-
-        template <typename Real>
-        CGeoCoordinate<Real>& CGeoCentroid<Real>::centroid() 
-        { 
-            
-            return m_centroid; 
-
-        }
-
+        m_centroid << 0.0, 0.0, 0.0;
     }
 
+    template <typename Real>
+    CGeoCentroid<Real>::~CGeoCentroid()
+    {
+    }
+
+    template <typename Real>
+    CGeoCoordinate<Real>& CGeoCentroid<Real>::centroid()
+    {
+
+        return m_centroid;
+    }
+}
 }

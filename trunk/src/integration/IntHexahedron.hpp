@@ -11,31 +11,23 @@
 
 #include "IntGaussIntegration.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace integration
-    {
+namespace integration {
 
-        template <typename Real>
-        class CIntHexahedron : public CIntGaussIntegration<Real>
-        {
-        protected:
+    template <typename Real>
+    class CIntHexahedron : public CIntGaussIntegration<Real> {
+    protected:
+        std::vector<Real> m_xi, m_eta, m_zeta;
+        std::vector<Real> m_wxi, m_weta, m_wzeta;
 
-            std::vector<Real> m_xi, m_eta, m_zeta;
-            std::vector<Real> m_wxi, m_weta, m_wzeta;
+        void setGaussPoints();
 
-            void setGaussPoints();
-
-        public:
-
-            CIntHexahedron();
-            ~CIntHexahedron();
-
-        };
-
-    }
-
+    public:
+        CIntHexahedron();
+        ~CIntHexahedron();
+    };
+}
 }
 
 #include "IntHexahedron_Imp.hpp"

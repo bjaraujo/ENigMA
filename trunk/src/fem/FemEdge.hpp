@@ -9,34 +9,26 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        template <typename Real>
-        class CFemEdge
-        {
-        protected:
+    template <typename Real>
+    class CFemEdge {
+    protected:
+        Real m_sectionArea;
+        Real m_perimeter;
 
-            Real m_sectionArea;
-            Real m_perimeter;
-                
-        public:
+    public:
+        CFemEdge();
+        ~CFemEdge();
 
-            CFemEdge();
-            ~CFemEdge();
+        Real& sectionArea();
+        Real& perimeter();
 
-            Real& sectionArea();
-            Real& perimeter();
-
-            virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
-
-        };
-
-    }
-
+        virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
+    };
+}
 }
 
 #include "FemEdge_Imp.hpp"

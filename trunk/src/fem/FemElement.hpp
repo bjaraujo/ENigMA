@@ -11,57 +11,49 @@
 
 #include <Eigen/Dense>
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        template <typename Real>
-        class CFemElement
-        {
-        protected:
+    template <typename Real>
+    class CFemElement {
+    protected:
+        Real m_dt; // delta t
+        Real m_diffusionCoefficient; // ex: viscosity
+        Real m_convectionCoefficient; // ex: velocity
 
-            Real m_dt;                            // delta t
-            Real m_diffusionCoefficient;          // ex: viscosity
-            Real m_convectionCoefficient;         // ex: velocity
+        bool m_transient;
 
-            bool m_transient;
+        virtual void setTransientTerm() = 0;
+        virtual void setDiffusionTerm() = 0;
+        virtual void setConvectiveTerm() = 0;
 
-            virtual void setTransientTerm() = 0;
-            virtual void setDiffusionTerm() = 0;
-            virtual void setConvectiveTerm() = 0;
+    public:
+        CFemElement();
+        ~CFemElement();
 
-        public:
+        Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> ddt;
+        Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> laplacian;
+        Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> divergence;
+        Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> gradient;
+        Eigen::Matrix<Real, Eigen::Dynamic, 1> source;
 
-            CFemElement();
-            ~CFemElement();
+        void setDt(const Real aValue);
+        Real dt() const;
 
-            Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> ddt;
-            Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> laplacian;
-            Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> divergence;
-            Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> gradient;
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> source;
+        void setDiffusionCoefficient(const Real aValue);
+        Real diffusionCoefficient() const;
 
-            void setDt(const Real aValue);
-            Real dt() const;
+        void setConvectionCoefficient(const Real aValue);
+        Real convectionCoefficient() const;
 
-            void setDiffusionCoefficient(const Real aValue);
-            Real diffusionCoefficient() const;
+        void setTransient(const bool aValue);
+        bool transient() const;
 
-            void setConvectionCoefficient(const Real aValue);
-            Real convectionCoefficient() const;
-
-            void setTransient(const bool aValue);
-            bool transient() const;
-
-            virtual void rebuild() = 0;
-            virtual void update() = 0;
-
-        };
-
-    }
-
+        virtual void rebuild() = 0;
+        virtual void update() = 0;
+    };
+}
 }
 
 #include "FemElement_Imp.hpp"

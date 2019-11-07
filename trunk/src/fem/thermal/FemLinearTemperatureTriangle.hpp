@@ -9,44 +9,32 @@
 
 #pragma once
 
-#include "FemTriangle.hpp"
 #include "FemThermalElement.hpp"
+#include "FemTriangle.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace thermal
-        {
+    namespace thermal {
 
-            template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
-            class CFemLinearTemperatureTriangle : public CFemThermalElement<Real>, public CFemTriangle<Real, NbNodes, Dof, Order>
-            {
-            };
+        template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
+        class CFemLinearTemperatureTriangle : public CFemThermalElement<Real>, public CFemTriangle<Real, NbNodes, Dof, Order> {
+        };
 
-            template <typename Real>
-            class CFemLinearTemperatureTriangle<Real, 3, 1, 1> : public CFemThermalElement<Real>, public CFemTriangle<Real, 3, 1, 1>
-            {
-            public:
-                
-                CFemLinearTemperatureTriangle();
-                ~CFemLinearTemperatureTriangle();
+        template <typename Real>
+        class CFemLinearTemperatureTriangle<Real, 3, 1, 1> : public CFemThermalElement<Real>, public CFemTriangle<Real, 3, 1, 1> {
+        public:
+            CFemLinearTemperatureTriangle();
+            ~CFemLinearTemperatureTriangle();
 
-                void setDiffusionTerm();
+            void setDiffusionTerm();
 
-                void setConvectionOnEdge(const Integer anEdgeIndex, const Real h, const Real Tinf);
-                void setConvectionOnEdge(const Integer anEdgeIndex, const Real e, const Real teta, const Real Tinf);
-
-            };
-
-        }
-
+            void setConvectionOnEdge(const Integer anEdgeIndex, const Real h, const Real Tinf);
+            void setConvectionOnEdge(const Integer anEdgeIndex, const Real e, const Real teta, const Real Tinf);
+        };
     }
-
+}
 }
 
 #include "FemLinearTemperatureTriangle_Imp.hpp"
-
-

@@ -12,46 +12,39 @@
 #include "GeoCoordinate.hpp"
 #include "GeoVector.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoBoundingBox : public CGeoCoordinate<Real>
-        {
-        private:
-            
-            CGeoCoordinate<Real> m_center;
+    template <typename Real>
+    class CGeoBoundingBox : public CGeoCoordinate<Real> {
+    private:
+        CGeoCoordinate<Real> m_center;
 
-            CGeoVector<Real> m_min;
-            CGeoVector<Real> m_max;
+        CGeoVector<Real> m_min;
+        CGeoVector<Real> m_max;
 
-        public:
-            CGeoBoundingBox();
-            CGeoBoundingBox(const Real aMinX, const Real aMinY, const Real aMinZ, const Real aMaxX, const Real aMaxY, const Real aMaxZ);
-            ~CGeoBoundingBox();
+    public:
+        CGeoBoundingBox();
+        CGeoBoundingBox(const Real aMinX, const Real aMinY, const Real aMinZ, const Real aMaxX, const Real aMaxY, const Real aMaxZ);
+        ~CGeoBoundingBox();
 
-            void reset();
-            void addCoordinate(CGeoCoordinate<Real>& aCoordinate);
+        void reset();
+        void addCoordinate(CGeoCoordinate<Real>& aCoordinate);
 
-            CGeoVector<Real>& min();
-            CGeoVector<Real>& max();
+        CGeoVector<Real>& min();
+        CGeoVector<Real>& max();
 
-            void grow(const Real anAmount);
-            void grow(const Real anAmountX, const Real anAmountY, const Real anAmountZ);
+        void grow(const Real anAmount);
+        void grow(const Real anAmountX, const Real anAmountY, const Real anAmountZ);
 
-            void shrink(const Real anAmount);
+        void shrink(const Real anAmount);
 
-            inline bool intersects(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
-            inline bool contains(const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance = 0.0);
-            inline bool contains(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
-
-        };
-
-    }
-
+        inline bool intersects(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
+        inline bool contains(const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance = 0.0);
+        inline bool contains(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
+    };
+}
 }
 
 #include "GeoBoundingBox_Imp.hpp"

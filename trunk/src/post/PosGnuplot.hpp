@@ -13,27 +13,19 @@
 
 using namespace ENigMA::pde;
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace post
-    {
+namespace post {
 
-        template <typename Real>
-        class CPosGnuplot
-        {
-        public:
+    template <typename Real>
+    class CPosGnuplot {
+    public:
+        CPosGnuplot();
+        ~CPosGnuplot();
 
-            CPosGnuplot();
-            ~CPosGnuplot();
-
-            bool save(CPdeField<Real>& aField, std::string strFileName);
-
-        };
-
-    }
-
+        bool save(CPdeField<Real>& aField, std::string strFileName);
+    };
+}
 }
 
 #include "PosGnuplot_Imp.hpp"
-

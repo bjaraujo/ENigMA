@@ -11,34 +11,26 @@
 
 #include "GeoCoordinate.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoCentroid
-        {
-        protected:
+    template <typename Real>
+    class CGeoCentroid {
+    protected:
+        CGeoCoordinate<Real> m_centroid;
 
-            CGeoCoordinate<Real> m_centroid;
+        bool m_bCentroid;
 
-            bool m_bCentroid;
+    public:
+        CGeoCentroid();
+        ~CGeoCentroid();
 
-        public:
+        virtual void calculateCentroid(bool bReCalculate = false) = 0;
 
-            CGeoCentroid();
-            ~CGeoCentroid();
-
-            virtual void calculateCentroid(bool bReCalculate = false) = 0;
-
-            CGeoCoordinate<Real>& centroid();
-
-        };
-
-    }
-
+        CGeoCoordinate<Real>& centroid();
+    };
+}
 }
 
 #include "GeoCentroid_Imp.hpp"

@@ -12,39 +12,27 @@
 #include "FemBeam.hpp"
 #include "FemThermalElement.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace thermal
-        {
+    namespace thermal {
 
-            template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
-            class CFemLinearTemperatureBeam : public CFemThermalElement<Real>, public CFemBeam<Real, NbNodes, Dof, Order>
-            {
-            };
+        template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
+        class CFemLinearTemperatureBeam : public CFemThermalElement<Real>, public CFemBeam<Real, NbNodes, Dof, Order> {
+        };
 
-            template <typename Real>
-            class CFemLinearTemperatureBeam<Real, 2, 1, 1> : public CFemThermalElement<Real>, public CFemBeam<Real, 2, 1, 1>
-            {
-            public:
-                
-                CFemLinearTemperatureBeam();
-                ~CFemLinearTemperatureBeam();
+        template <typename Real>
+        class CFemLinearTemperatureBeam<Real, 2, 1, 1> : public CFemThermalElement<Real>, public CFemBeam<Real, 2, 1, 1> {
+        public:
+            CFemLinearTemperatureBeam();
+            ~CFemLinearTemperatureBeam();
 
-                void setConvectionOnEdge(const Real h, const Real Tinf);
-                void setConvectionOnEdge(const Real e, const Real teta, const Real Tinf);
-
-            };
-
-        }
-
+            void setConvectionOnEdge(const Real h, const Real Tinf);
+            void setConvectionOnEdge(const Real e, const Real teta, const Real Tinf);
+        };
     }
-
+}
 }
 
 #include "FemLinearTemperatureBeam_Imp.hpp"
-
-

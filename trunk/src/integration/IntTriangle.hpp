@@ -11,35 +11,27 @@
 
 #include "IntGaussIntegration.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace integration
-    {
+namespace integration {
 
-        template <typename Real>
-        class CIntTriangle : public CIntGaussIntegration<Real>
-        {
-        protected:
+    template <typename Real>
+    class CIntTriangle : public CIntGaussIntegration<Real> {
+    protected:
+        std::vector<Real> m_xi, m_eta;
+        std::vector<Real> m_wxi, m_weta;
 
-            std::vector<Real> m_xi, m_eta;
-            std::vector<Real> m_wxi, m_weta;
+        std::vector<Real> m_beta1, m_beta2, m_beta3; // barycentric coordinates
+        std::vector<Real> m_wbeta; // weights
 
-            std::vector<Real> m_beta1, m_beta2, m_beta3;    // barycentric coordinates
-            std::vector<Real> m_wbeta;                        // weights
+        void setGaussPoints();
+        void setBarycentricGaussPoints();
 
-            void setGaussPoints();
-            void setBarycentricGaussPoints();
-
-        public:
-
-            CIntTriangle();
-            ~CIntTriangle();
-
-        };
-
-    }
-
+    public:
+        CIntTriangle();
+        ~CIntTriangle();
+    };
+}
 }
 
 #include "IntTriangle_Imp.hpp"

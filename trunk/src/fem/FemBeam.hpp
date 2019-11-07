@@ -9,54 +9,43 @@
 
 #pragma once
 
-#include "GeoLine.hpp"
-#include "FemElement.hpp"
 #include "FemEdge.hpp"
+#include "FemElement.hpp"
+#include "GeoLine.hpp"
 
 using namespace ENigMA::geometry;
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        /*
+    /*
            Edge/line element.
            0                 1
            *-----------------*-----> xi
         */
 
-        template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
-        class CFemBeam : public CFemElement<Real>, public CFemEdge<Real>, public CGeoLine<Real>
-        {
-        };
+    template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
+    class CFemBeam : public CFemElement<Real>, public CFemEdge<Real>, public CGeoLine<Real> {
+    };
 
-        template <typename Real>
-        class CFemBeam<Real, 2, 1, 1> : public CFemElement<Real>, public CFemEdge<Real>, public CGeoLine<Real>
-        {
-        protected:
+    template <typename Real>
+    class CFemBeam<Real, 2, 1, 1> : public CFemElement<Real>, public CFemEdge<Real>, public CGeoLine<Real> {
+    protected:
+        void setTransientTerm();
+        void setDiffusionTerm();
+        void setConvectiveTerm();
 
-            void setTransientTerm();
-            void setDiffusionTerm();
-            void setConvectiveTerm();
+    public:
+        CFemBeam();
+        ~CFemBeam();
 
-        public:
+        void rebuild();
+        void update();
 
-            CFemBeam();
-            ~CFemBeam();
-
-            void rebuild();
-            void update();
-            
-            void setSourceOnNode(const Integer aNodeIndex, const Real aValue);
-
-        };
-        
-    }
-
+        void setSourceOnNode(const Integer aNodeIndex, const Real aValue);
+    };
+}
 }
 
 #include "FemBeam_Imp.hpp"
-
-

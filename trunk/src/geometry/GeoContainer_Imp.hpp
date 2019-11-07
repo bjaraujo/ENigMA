@@ -9,56 +9,44 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
+namespace geometry {
+
+    template <class T, typename Real>
+    CGeoContainer<T, Real>::CGeoContainer()
     {
-
-        template <class T, typename Real>
-        CGeoContainer<T, Real>::CGeoContainer()
-        {
-
-        }
-
-        template <class T, typename Real>
-        CGeoContainer<T, Real>::~CGeoContainer()
-        {
-
-        }
-
-        template <class T, typename Real>
-        void CGeoContainer<T, Real>::reset()
-        {
-
-            m_geometricObjectIds.clear();
-            m_geometricObjects.clear();
-
-        }
-
-        template <class T, typename Real>
-        void CGeoContainer<T, Real>::addGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject)
-        {
-
-            m_geometricObjectIds[static_cast<Integer>(m_geometricObjects.size())] = aGeomtericObjectId;
-            m_geometricObjects.push_back(aGeometricObject);
-        
-        }
-
-        template <class T, typename Real>
-        void CGeoContainer<T, Real>::removeGeometricObject(const Integer aGeomtericObjectId)
-        {
-
-
-        }
-
-        template <class T, typename Real>
-        void CGeoContainer<T, Real>::removeGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject)
-        {
-
-
-        }
-
     }
 
+    template <class T, typename Real>
+    CGeoContainer<T, Real>::~CGeoContainer()
+    {
+    }
+
+    template <class T, typename Real>
+    void CGeoContainer<T, Real>::reset()
+    {
+
+        m_geometricObjectIds.clear();
+        m_geometricObjects.clear();
+    }
+
+    template <class T, typename Real>
+    void CGeoContainer<T, Real>::addGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject)
+    {
+
+        m_geometricObjectIds[static_cast<Integer>(m_geometricObjects.size())] = aGeomtericObjectId;
+        m_geometricObjects.push_back(aGeometricObject);
+    }
+
+    template <class T, typename Real>
+    void CGeoContainer<T, Real>::removeGeometricObject(const Integer aGeomtericObjectId)
+    {
+    }
+
+    template <class T, typename Real>
+    void CGeoContainer<T, Real>::removeGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject)
+    {
+    }
+}
 }

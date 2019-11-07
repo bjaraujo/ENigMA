@@ -11,33 +11,26 @@
 
 using namespace ENigMA::geometry;
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        template <typename Real>
-        class CFemFace
-        {
-        protected:
-            Real m_thickness;
+    template <typename Real>
+    class CFemFace {
+    protected:
+        Real m_thickness;
 
-        public:
+    public:
+        CFemFace();
+        ~CFemFace();
 
-            CFemFace();
-            ~CFemFace();
+        void setThickness(const Real aValue);
+        Real thickness() const;
 
-            void setThickness(const Real aValue);
-            Real thickness() const;
-
-            virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
-            virtual void setSourceOnEdge(const Integer anEdgeIndex, const Real aValue) = 0;
-
-        };
-
-    }
-
+        virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
+        virtual void setSourceOnEdge(const Integer anEdgeIndex, const Real aValue) = 0;
+    };
+}
 }
 
 #include "FemFace_Imp.hpp"

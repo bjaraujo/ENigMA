@@ -14,42 +14,41 @@
 #include "CmnTypes.hpp"
 #include "GeoCoordinateSystem.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        struct CGeoCoordinate : public Eigen::Matrix<Real, 3, 1>
+    template <typename Real>
+    struct CGeoCoordinate : public Eigen::Matrix<Real, 3, 1> {
+    public:
+        typedef Eigen::Matrix<Real, 3, 1> Base;
+
+        inline CGeoCoordinate(Real value = (Real)0) { this->setConstant(value); }
+
+        inline CGeoCoordinate(const Real x, const Real y, const Real z)
+            : Base(x, y, z)
         {
-        public:
+        }
 
-            typedef Eigen::Matrix<Real, 3, 1> Base;
+        template <typename Derived>
+        inline CGeoCoordinate(const Eigen::MatrixBase<Derived>& p)
+            : Base(p)
+        {
+        }
 
-            inline CGeoCoordinate(Real value = (Real) 0) { this->setConstant(value); }
+        template <typename Derived>
+        CGeoCoordinate& operator=(const Eigen::MatrixBase<Derived>& p)
+        {
+            this->Base::operator=(p);
+            return *this;
+        }
 
-            inline CGeoCoordinate(const Real x, const Real y, const Real z) : Base(x, y, z) { }
+        inline void transform(const CGeoCoordinateSystem<Real>& cs);
+    };
 
-            template <typename Derived>
-            inline CGeoCoordinate(const Eigen::MatrixBase<Derived>& p) : Base(p) { }
-
-            template <typename Derived>
-            CGeoCoordinate &operator=(const Eigen::MatrixBase<Derived>& p)
-            {
-                this->Base::operator=(p);
-                return *this;
-            }
-
-            inline void transform(const CGeoCoordinateSystem<Real>& cs);
-
-        };
-
-        template <typename Real>
-        std::ostream &operator<< (std::ostream &output, CGeoCoordinate<Real> &aCoordinate);
-
-    }
-
+    template <typename Real>
+    std::ostream& operator<<(std::ostream& output, CGeoCoordinate<Real>& aCoordinate);
+}
 }
 
 #include "GeoCoordinate_Imp.hpp"

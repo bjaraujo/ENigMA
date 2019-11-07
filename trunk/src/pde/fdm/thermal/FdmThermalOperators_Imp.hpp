@@ -9,239 +9,196 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace pde
-    {
+namespace pde {
 
-        namespace fdm
-        {
+    namespace fdm {
 
-            namespace thermal
+        namespace thermal {
+
+            template <typename Real>
+            void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
 
-                template <typename Real>
-                void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
-                {
+                aSystem.matrixType = MT_SPARSE;
 
-                    aSystem.matrixType = MT_SPARSE;
+                aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
+                aSystem.matrixA.reserve(aField.mesh().nbNodes());
+                aSystem.matrixA.setZero();
 
-                    aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
-                    aSystem.matrixA.reserve(aField.mesh().nbNodes());
-                    aSystem.matrixA.setZero();
+                aSystem.vectorB.resize(aField.mesh().nbNodes());
+                aSystem.vectorB.setZero();
 
-                    aSystem.vectorB.resize(aField.mesh().nbNodes());
-                    aSystem.vectorB.setZero();
+                std::vector<bool> isFixed;
 
-                    std::vector<bool> isFixed;
+                isFixed.resize(aField.mesh().nbNodes(), false);
 
-                    isFixed.resize(aField.mesh().nbNodes(), false);
+                for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
 
-                    for(typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr)
-                    {
-
-                        Integer anIndex = itr->first;
-                        isFixed[anIndex] = true;
-
-                    }
-
-                    for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii)
-                    {
-
-                        aSystem.matrixA.coeffRef(ii, ii) += 1.0;
-
-                        if (isFixed[ii])
-                            aSystem.vectorB[ii] += aField.uFixed[ii];
-                        else
-                            aSystem.vectorB[ii] += aField.u[ii];
-
-                    }
-
-                    aSystem.matrixA.finalize();
-
+                    Integer anIndex = itr->first;
+                    isFixed[anIndex] = true;
                 }
 
-                template <typename Real>
-                void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
-                {
+                for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii) {
 
-                    aSystem.matrixType = MT_SPARSE;
+                    aSystem.matrixA.coeffRef(ii, ii) += 1.0;
 
-                    aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
-                    aSystem.matrixA.reserve(aField.mesh().nbNodes());
-                    aSystem.matrixA.setZero();
+                    if (isFixed[ii])
+                        aSystem.vectorB[ii] += aField.uFixed[ii];
+                    else
+                        aSystem.vectorB[ii] += aField.u[ii];
+                }
 
-                    aSystem.vectorB.resize(aField.mesh().nbNodes());
-                    aSystem.vectorB.setZero();
+                aSystem.matrixA.finalize();
+            }
 
-                    std::vector<bool> isFixed;
+            template <typename Real>
+            void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
+            {
 
-                    isFixed.resize(aField.mesh().nbNodes(), false);
+                aSystem.matrixType = MT_SPARSE;
 
-                    for(typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr)
-                    {
+                aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
+                aSystem.matrixA.reserve(aField.mesh().nbNodes());
+                aSystem.matrixA.setZero();
 
-                        Integer anIndex = itr->first;
-                        isFixed[anIndex] = true;
+                aSystem.vectorB.resize(aField.mesh().nbNodes());
+                aSystem.vectorB.setZero();
 
-                    }
+                std::vector<bool> isFixed;
 
-                    // Assume constant spacing
-                    Real dx = aField.mesh().dx();
+                isFixed.resize(aField.mesh().nbNodes(), false);
 
-                    for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii)
-                    {
+                for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
 
-                        if (ii == 0)
-                        {
+                    Integer anIndex = itr->first;
+                    isFixed[anIndex] = true;
+                }
 
-                            Integer ip;
+                // Assume constant spacing
+                Real dx = aField.mesh().dx();
 
-                            ip = ii + 1;
+                for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii) {
 
-                            if (isFixed[ii])
-                            {
-                                aSystem.matrixA.coeffRef(ii, ii) += -2.0 / (dx * dx);
-                                aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (dx * dx);
+                    if (ii == 0) {
 
-                                aSystem.vectorB[ii] += -1.0 / (dx * dx) * aField.uFixed[ii];
-                            }
-                            else
-                            {
-                                // Fixed gradient
-                                aSystem.matrixA.coeffRef(ii, ii) += -1.0 / (dx * dx);
-                                aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (dx * dx);
-                            }
+                        Integer ip;
 
-                        }
-                        else if (ii < aField.mesh().nbNodes() - 1)
-                        {
+                        ip = ii + 1;
 
-                            Integer im, ip;
-
-                            im = ii - 1;
-                            ip = ii + 1;
-
-                            aSystem.matrixA.coeffRef(ii, im) += +1.0 / (dx * dx);
+                        if (isFixed[ii]) {
                             aSystem.matrixA.coeffRef(ii, ii) += -2.0 / (dx * dx);
                             aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (dx * dx);
 
-                        }
-                        else if (ii == aField.mesh().nbNodes() - 1)
-                        {
-
-                            Integer im;
-
-                            im = ii - 1;
-
-                            if (isFixed[ii])
-                            {
-                                aSystem.matrixA.coeffRef(ii, im) += +1.0 / (dx * dx);
-                                aSystem.matrixA.coeffRef(ii, ii) += -2.0 / (dx * dx);
-
-                                aSystem.vectorB[ii] += -1.0 / (dx * dx) * aField.uFixed[ii];
-                            }
-                            else
-                            {
-                                // Fixed gradient
-                                aSystem.matrixA.coeffRef(ii, im) += +1.0 / (dx * dx);
-                                aSystem.matrixA.coeffRef(ii, ii) += -1.0 / (dx * dx);
-                            }
-
+                            aSystem.vectorB[ii] += -1.0 / (dx * dx) * aField.uFixed[ii];
+                        } else {
+                            // Fixed gradient
+                            aSystem.matrixA.coeffRef(ii, ii) += -1.0 / (dx * dx);
+                            aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (dx * dx);
                         }
 
+                    } else if (ii < aField.mesh().nbNodes() - 1) {
+
+                        Integer im, ip;
+
+                        im = ii - 1;
+                        ip = ii + 1;
+
+                        aSystem.matrixA.coeffRef(ii, im) += +1.0 / (dx * dx);
+                        aSystem.matrixA.coeffRef(ii, ii) += -2.0 / (dx * dx);
+                        aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (dx * dx);
+
+                    } else if (ii == aField.mesh().nbNodes() - 1) {
+
+                        Integer im;
+
+                        im = ii - 1;
+
+                        if (isFixed[ii]) {
+                            aSystem.matrixA.coeffRef(ii, im) += +1.0 / (dx * dx);
+                            aSystem.matrixA.coeffRef(ii, ii) += -2.0 / (dx * dx);
+
+                            aSystem.vectorB[ii] += -1.0 / (dx * dx) * aField.uFixed[ii];
+                        } else {
+                            // Fixed gradient
+                            aSystem.matrixA.coeffRef(ii, im) += +1.0 / (dx * dx);
+                            aSystem.matrixA.coeffRef(ii, ii) += -1.0 / (dx * dx);
+                        }
                     }
-
-                    aSystem.matrixA.finalize();
-
                 }
 
-                template <typename Real>
-                void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
-                {
-
-                    aSystem.matrixType = MT_SPARSE;
-
-                    aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
-                    aSystem.matrixA.reserve(aField.mesh().nbNodes());
-                    aSystem.matrixA.setZero();
-
-                    aSystem.vectorB.resize(aField.mesh().nbNodes());
-                    aSystem.vectorB.setZero();
-
-                    std::vector<bool> isFixed;
-
-                    isFixed.resize(aField.mesh().nbNodes(), false);
-
-                    for(typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr)
-                    {
-
-                        Integer anIndex = itr->first;
-                        isFixed[anIndex] = true;
-
-                    }
-
-                    // Assume constant spacing
-                    Real dx = aField.mesh().dx();
-                    
-                    for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii)
-                    {
-
-                        if (ii == 0)
-                        {
-
-                            Integer ip;
-
-                            ip = ii + 1;
-
-                            if (isFixed[ii])
-                                aSystem.vectorB[ii] += -(aField.u(ip) - aField.uFixed[ii]) / dx;
-
-                        }
-                        else if (ii < aField.mesh().nbNodes() - 1)
-                        {
-
-                            Integer im, ip;
-
-                            im = ii - 1;
-                            ip = ii + 1;
-
-                            aSystem.matrixA.coeffRef(ii, im) += -1.0 / (2.0 * dx);
-                            aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (2.0 * dx);
-
-                        }
-                        else if (ii == aField.mesh().nbNodes() - 1)
-                        {
-
-                            Integer im;
-
-                            im = ii - 1;
-
-                            if (isFixed[ii])
-                                aSystem.vectorB[ii] += -(aField.uFixed[ii] - aField.u(im)) / dx;
-
-                        }
-
-                    }
-
-                    aSystem.matrixA.finalize();
-
-                }
-
-                template <typename Real>
-                void source(Eigen::Matrix<Real, Eigen::Dynamic, 1>& aVectorB, CPdeField<Real>& aField, Real aSource)
-                {
-
-                    // TODO:
-
-                }
-
+                aSystem.matrixA.finalize();
             }
 
+            template <typename Real>
+            void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
+            {
+
+                aSystem.matrixType = MT_SPARSE;
+
+                aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
+                aSystem.matrixA.reserve(aField.mesh().nbNodes());
+                aSystem.matrixA.setZero();
+
+                aSystem.vectorB.resize(aField.mesh().nbNodes());
+                aSystem.vectorB.setZero();
+
+                std::vector<bool> isFixed;
+
+                isFixed.resize(aField.mesh().nbNodes(), false);
+
+                for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
+
+                    Integer anIndex = itr->first;
+                    isFixed[anIndex] = true;
+                }
+
+                // Assume constant spacing
+                Real dx = aField.mesh().dx();
+
+                for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii) {
+
+                    if (ii == 0) {
+
+                        Integer ip;
+
+                        ip = ii + 1;
+
+                        if (isFixed[ii])
+                            aSystem.vectorB[ii] += -(aField.u(ip) - aField.uFixed[ii]) / dx;
+
+                    } else if (ii < aField.mesh().nbNodes() - 1) {
+
+                        Integer im, ip;
+
+                        im = ii - 1;
+                        ip = ii + 1;
+
+                        aSystem.matrixA.coeffRef(ii, im) += -1.0 / (2.0 * dx);
+                        aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (2.0 * dx);
+
+                    } else if (ii == aField.mesh().nbNodes() - 1) {
+
+                        Integer im;
+
+                        im = ii - 1;
+
+                        if (isFixed[ii])
+                            aSystem.vectorB[ii] += -(aField.uFixed[ii] - aField.u(im)) / dx;
+                    }
+                }
+
+                aSystem.matrixA.finalize();
+            }
+
+            template <typename Real>
+            void source(Eigen::Matrix<Real, Eigen::Dynamic, 1>& aVectorB, CPdeField<Real>& aField, Real aSource)
+            {
+
+                // TODO:
+            }
         }
-
     }
-
 }
-
+}

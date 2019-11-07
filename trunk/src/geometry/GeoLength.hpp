@@ -11,39 +11,30 @@
 
 #include "GeoBoundingBox.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoLength
-        {
-        protected:
+    template <typename Real>
+    class CGeoLength {
+    protected:
+        Real m_length;
+        CGeoBoundingBox<Real> m_boundingBox;
 
-            Real m_length;
-            CGeoBoundingBox<Real> m_boundingBox;
+        bool m_bLength;
+        bool m_bBoundingBox;
 
-            bool m_bLength;
-            bool m_bBoundingBox;
+    public:
+        CGeoLength();
+        ~CGeoLength();
 
-        public:
+        virtual void calculateLength(bool bReCalculate = false) = 0;
+        virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
 
-            CGeoLength();
-            ~CGeoLength();
-
-            virtual void calculateLength(bool bReCalculate = false) = 0;
-            virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
-
-            Real length();
-            CGeoBoundingBox<Real>& boundingBox();
-
-        };
-
-    }
-
+        Real length();
+        CGeoBoundingBox<Real>& boundingBox();
+    };
+}
 }
 
 #include "GeoLength_Imp.hpp"
-

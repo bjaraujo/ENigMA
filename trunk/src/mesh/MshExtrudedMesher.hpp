@@ -11,32 +11,24 @@
 
 #include "MshMesh.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace mesh
-    {
+namespace mesh {
 
-        template <typename Real>
-        class CMshExtrudedMesher
-        {
-        private:
+    template <typename Real>
+    class CMshExtrudedMesher {
+    private:
+        ENigMA::mesh::CMshMesh<Real> m_mesh;
 
-            ENigMA::mesh::CMshMesh<Real> m_mesh;
+    public:
+        CMshExtrudedMesher();
+        ~CMshExtrudedMesher();
 
-        public:
-            CMshExtrudedMesher();
-            ~CMshExtrudedMesher();
+        bool generate(CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance = 0.0);
 
-            bool generate(CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance = 0.0);
-            
-            ENigMA::mesh::CMshMesh<Real>& mesh();
-            
-        };
-
-    }
-
+        ENigMA::mesh::CMshMesh<Real>& mesh();
+    };
+}
 }
 
 #include "MshExtrudedMesher_Imp.hpp"
-

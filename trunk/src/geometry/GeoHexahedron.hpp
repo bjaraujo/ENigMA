@@ -11,36 +11,30 @@
 
 #include <vector>
 
-#include "GeoVolume.hpp"
-#include "GeoVertexList.hpp"
 #include "GeoTetrahedron.hpp"
+#include "GeoVertexList.hpp"
+#include "GeoVolume.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoHexahedron : public CGeoVolume<Real>, public CGeoVertexList<Real>
-        {
-        public:
-            CGeoHexahedron();
-            ~CGeoHexahedron();
+    template <typename Real>
+    class CGeoHexahedron : public CGeoVolume<Real>, public CGeoVertexList<Real> {
+    public:
+        CGeoHexahedron();
+        ~CGeoHexahedron();
 
-            void reset();
+        void reset();
 
-            inline void calculateCentroid(bool bReCalculate = false);
-            inline void calculateSurfaceArea(bool bReCalculate = false);
-            inline void calculateVolume(bool bReCalculate = false);
-            inline void calculateBoundingBox(bool bReCalculate = false);
+        inline void calculateCentroid(bool bReCalculate = false);
+        inline void calculateSurfaceArea(bool bReCalculate = false);
+        inline void calculateVolume(bool bReCalculate = false);
+        inline void calculateBoundingBox(bool bReCalculate = false);
 
-            void decimate(std::vector<CGeoTetrahedron<Real> >& sTetrahedrons);
-
-        };
-
-    }
+        void decimate(std::vector<CGeoTetrahedron<Real>>& sTetrahedrons);
+    };
+}
 }
 
 #include "GeoHexahedron_Imp.hpp"
-
