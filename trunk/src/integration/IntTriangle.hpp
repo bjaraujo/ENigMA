@@ -29,7 +29,7 @@ namespace integration {
 
     public:
         CIntTriangle();
-        ~CIntTriangle();
+        virtual ~CIntTriangle();
     };
 }
 }

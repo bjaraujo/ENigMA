@@ -30,7 +30,7 @@ namespace geometry {
 
     public:
         CGeoVolume();
-        ~CGeoVolume();
+        virtual ~CGeoVolume();
 
         virtual void calculateSurfaceArea(bool bReCalculate = false) = 0;
         virtual void calculateVolume(bool bReCalculate = false) = 0;

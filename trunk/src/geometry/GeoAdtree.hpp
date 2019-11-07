@@ -49,7 +49,7 @@ namespace geometry {
 
     public:
         CGeoAdtree6();
-        ~CGeoAdtree6();
+        virtual ~CGeoAdtree6();
 
         void reset();
         void set(const Real acmin[6], const Real acmax[6]);

@@ -30,7 +30,7 @@ namespace fvm {
     public:
         CFvmMeshSearch();
         CFvmMeshSearch(CFvmMesh<Real>& aMesh);
-        ~CFvmMeshSearch();
+        virtual ~CFvmMeshSearch();
 
         void set(CFvmMesh<Real>& aMesh);
 

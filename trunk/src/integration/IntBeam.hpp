@@ -25,7 +25,7 @@ namespace integration {
 
     public:
         CIntBeam();
-        ~CIntBeam();
+        virtual ~CIntBeam();
     };
 }
 }

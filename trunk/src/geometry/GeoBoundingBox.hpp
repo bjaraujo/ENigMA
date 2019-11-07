@@ -27,7 +27,7 @@ namespace geometry {
     public:
         CGeoBoundingBox();
         CGeoBoundingBox(const Real aMinX, const Real aMinY, const Real aMinZ, const Real aMaxX, const Real aMaxY, const Real aMaxZ);
-        ~CGeoBoundingBox();
+        virtual ~CGeoBoundingBox();
 
         void reset();
         void addCoordinate(CGeoCoordinate<Real>& aCoordinate);

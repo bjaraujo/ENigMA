@@ -40,7 +40,7 @@ namespace mesh {
     public:
         CMshFace();
         CMshFace(EFaceType aFaceType);
-        ~CMshFace();
+        virtual ~CMshFace();
 
         Integer nbNodeIds();
 

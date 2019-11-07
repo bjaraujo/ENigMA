@@ -22,7 +22,7 @@ namespace fem {
 
     public:
         CFemFace();
-        ~CFemFace();
+        virtual ~CFemFace();
 
         void setThickness(const Real aValue);
         Real thickness() const;

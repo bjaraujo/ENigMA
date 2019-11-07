@@ -24,7 +24,7 @@ namespace geometry {
 
     public:
         CGeoVertexList();
-        ~CGeoVertexList();
+        virtual ~CGeoVertexList();
 
         Integer nbVertices();
 

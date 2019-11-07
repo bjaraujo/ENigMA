@@ -25,7 +25,7 @@ namespace geometry {
     public:
         CGeoSphere(const CGeoCoordinate<Real>& aPoint1, const CGeoCoordinate<Real>& aPoint2, const CGeoCoordinate<Real>& aPoint3, const CGeoCoordinate<Real>& aPoint4, const Real aTolerance = 0.0);
         CGeoSphere(const CGeoCoordinate<Real>& aCenter, const Real aRadius);
-        ~CGeoSphere();
+        virtual ~CGeoSphere();
 
         CGeoCoordinate<Real>& center();
         Real radius();

@@ -39,7 +39,7 @@ namespace mesh {
     public:
         CMshElement();
         CMshElement(EElementType anElementType);
-        ~CMshElement();
+        virtual ~CMshElement();
 
         Integer nbNodeIds();
 

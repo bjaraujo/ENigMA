@@ -27,7 +27,7 @@ namespace mesh {
 
     public:
         CMshMeshQuery(CMshMesh<Real>& aMesh);
-        ~CMshMeshQuery();
+        virtual ~CMshMeshQuery();
 
         void elementsSharingNode(const Integer aNodeId, std::vector<Integer>& sElementIds);
         void elementsSharingNodes(const Integer aNodeId1, const Integer aNodeId2, std::vector<Integer>& sElementIds);

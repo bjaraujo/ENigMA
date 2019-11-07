@@ -25,7 +25,7 @@ namespace geometry {
 
     public:
         CGeoContainer();
-        ~CGeoContainer();
+        virtual ~CGeoContainer();
 
         virtual void reset();
 

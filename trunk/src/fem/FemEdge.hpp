@@ -23,7 +23,7 @@ namespace fem {
 
     public:
         CFemEdge();
-        ~CFemEdge();
+        virtual ~CFemEdge();
 
         Real& sectionArea();
         Real& perimeter();

@@ -21,7 +21,7 @@ namespace geometry {
     class CGeoTriangle : public CGeoArea<Real>, public CGeoVertexList<Real> {
     public:
         CGeoTriangle();
-        ~CGeoTriangle();
+        virtual ~CGeoTriangle();
 
         void reset();
 

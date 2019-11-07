@@ -22,7 +22,7 @@ namespace mesh {
 
     public:
         CMshTriangle();
-        ~CMshTriangle();
+        virtual ~CMshTriangle();
 
         void calculateQuality();
         Real quality();

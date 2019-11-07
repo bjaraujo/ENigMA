@@ -25,8 +25,7 @@ namespace geometry {
     public:
         CGeoPlane();
         CGeoPlane(CGeoNormal<Real>& aNormal, const Real d);
-
-        ~CGeoPlane();
+        virtual ~CGeoPlane();
 
         CGeoNormal<Real>& normal();
 

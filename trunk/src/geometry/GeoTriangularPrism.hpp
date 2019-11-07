@@ -20,7 +20,7 @@ namespace geometry {
     class CGeoTriangularPrism : public CGeoVolume<Real>, public CGeoVertexList<Real> {
     public:
         CGeoTriangularPrism();
-        ~CGeoTriangularPrism();
+        virtual ~CGeoTriangularPrism();
 
         void reset();
 

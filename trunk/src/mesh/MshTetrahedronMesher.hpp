@@ -113,7 +113,7 @@ namespace mesh {
 
     public:
         CMshTetrahedronMesher();
-        ~CMshTetrahedronMesher();
+        virtual ~CMshTetrahedronMesher();
 
         bool generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minQuality = 0.0, const Real aTolerance = 0.0);
         bool generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minQuality = 0.0, const Real aTolerance = 0.0);

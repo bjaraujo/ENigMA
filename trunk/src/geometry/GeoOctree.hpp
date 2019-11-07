@@ -45,7 +45,7 @@ namespace geometry {
 
     public:
         CGeoOctree();
-        ~CGeoOctree();
+        virtual ~CGeoOctree();
 
         void reset();
 

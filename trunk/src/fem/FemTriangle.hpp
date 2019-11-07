@@ -57,7 +57,7 @@ namespace fem {
 
     public:
         CFemTriangle();
-        ~CFemTriangle();
+        virtual ~CFemTriangle();
 
         void rebuild();
         void update();

@@ -49,7 +49,7 @@ namespace pde {
     public:
         CPdeBoundaryCondition(EBoundaryConditionType aBoundaryType);
         CPdeBoundaryCondition();
-        ~CPdeBoundaryCondition();
+        virtual ~CPdeBoundaryCondition();
 
         void setBoundaryConditionType(EBoundaryConditionType aBoundaryType);
         EBoundaryConditionType boundaryConditionType();

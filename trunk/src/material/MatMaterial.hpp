@@ -34,7 +34,7 @@ namespace material {
 
     public:
         CMatMaterial();
-        ~CMatMaterial();
+        virtual ~CMatMaterial();
 
         void addProperty(EPropertyType aPropertyType, const Real aPropertyValue);
         void addProperty(EPropertyType aPropertyType, CAnaFunction<Real>& aPropertyFunction);

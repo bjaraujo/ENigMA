@@ -22,7 +22,7 @@ namespace mesh {
 
     public:
         CMshTetrahedron();
-        ~CMshTetrahedron();
+        virtual ~CMshTetrahedron();
 
         void calculateQuality();
         Real quality();

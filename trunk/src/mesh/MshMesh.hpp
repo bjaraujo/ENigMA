@@ -57,7 +57,7 @@ namespace mesh {
 
     public:
         CMshMesh();
-        ~CMshMesh();
+        virtual ~CMshMesh();
 
         void reset();
 

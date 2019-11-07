@@ -25,7 +25,7 @@ namespace geometry {
 
     public:
         CGeoRtree();
-        ~CGeoRtree();
+        virtual ~CGeoRtree();
 
         void reset();
 

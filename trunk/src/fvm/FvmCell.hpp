@@ -23,7 +23,7 @@ namespace fvm {
     class CFvmCell {
     public:
         CFvmCell();
-        ~CFvmCell();
+        virtual ~CFvmCell();
     };
 }
 }

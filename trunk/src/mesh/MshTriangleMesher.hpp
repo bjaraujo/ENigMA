@@ -102,7 +102,7 @@ namespace mesh {
 
     public:
         CMshTriangleMesher();
-        ~CMshTriangleMesher();
+        virtual ~CMshTriangleMesher();
 
         bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, Real meshSize);
         bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);

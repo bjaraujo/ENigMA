@@ -24,7 +24,7 @@ namespace geometry {
 
     public:
         CGeoLineList();
-        ~CGeoLineList();
+        virtual ~CGeoLineList();
 
         Integer nbLines();
 

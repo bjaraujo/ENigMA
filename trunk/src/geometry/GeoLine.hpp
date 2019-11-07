@@ -62,7 +62,7 @@ namespace geometry {
     public:
         CGeoLine();
         CGeoLine(CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2);
-        ~CGeoLine();
+        virtual ~CGeoLine();
 
         void reset();
 

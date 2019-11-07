@@ -22,7 +22,7 @@ namespace mesh {
 
     public:
         CMshExtrudedMesher();
-        ~CMshExtrudedMesher();
+        virtual ~CMshExtrudedMesher();
 
         bool generate(CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance = 0.0);
 

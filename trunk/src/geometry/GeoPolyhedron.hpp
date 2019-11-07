@@ -38,8 +38,7 @@ namespace geometry {
         CGeoPolyhedron(CGeoTetrahedron<Real>& aTetrahedron);
         CGeoPolyhedron(CGeoTriangularPrism<Real>& aTriangularPrism);
         CGeoPolyhedron(CGeoHexahedron<Real>& aHexahedron);
-
-        ~CGeoPolyhedron();
+        virtual ~CGeoPolyhedron();
 
         void reset();
 

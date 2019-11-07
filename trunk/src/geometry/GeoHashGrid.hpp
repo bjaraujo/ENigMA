@@ -35,7 +35,7 @@ namespace geometry {
 
     public:
         CGeoHashGrid();
-        ~CGeoHashGrid();
+        virtual ~CGeoHashGrid();
 
         void reset();
 

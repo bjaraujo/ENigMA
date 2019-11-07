@@ -24,7 +24,7 @@ namespace geometry {
 
     public:
         CGeoCentroid();
-        ~CGeoCentroid();
+        virtual ~CGeoCentroid();
 
         virtual void calculateCentroid(bool bReCalculate = false) = 0;
 

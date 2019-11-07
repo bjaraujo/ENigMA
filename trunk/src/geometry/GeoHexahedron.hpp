@@ -23,7 +23,7 @@ namespace geometry {
     class CGeoHexahedron : public CGeoVolume<Real>, public CGeoVertexList<Real> {
     public:
         CGeoHexahedron();
-        ~CGeoHexahedron();
+        virtual ~CGeoHexahedron();
 
         void reset();
 

@@ -25,7 +25,7 @@ namespace integration {
 
     public:
         CIntHexahedron();
-        ~CIntHexahedron();
+        virtual ~CIntHexahedron();
     };
 }
 }

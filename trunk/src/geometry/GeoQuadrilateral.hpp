@@ -21,7 +21,7 @@ namespace geometry {
     class CGeoQuadrilateral : public CGeoArea<Real>, public CGeoVertexList<Real> {
     public:
         CGeoQuadrilateral();
-        ~CGeoQuadrilateral();
+        virtual ~CGeoQuadrilateral();
 
         void reset();
 

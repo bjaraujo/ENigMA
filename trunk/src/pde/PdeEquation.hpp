@@ -32,7 +32,7 @@ namespace pde {
 
     public:
         CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem);
-        ~CPdeEquation();
+        virtual ~CPdeEquation();
 
         ENigMA::sle::CSleSystem<Real>& system();
 

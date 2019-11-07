@@ -27,7 +27,7 @@ namespace mesh {
 
     public:
         CMshBasicMesher();
-        ~CMshBasicMesher();
+        virtual ~CMshBasicMesher();
 
         bool generate(ENigMA::geometry::CGeoLine<Real>& aLine, const Integer nu);
         bool generate(ENigMA::geometry::CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate = false);

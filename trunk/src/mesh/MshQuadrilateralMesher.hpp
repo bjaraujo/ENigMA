@@ -100,7 +100,7 @@ namespace mesh {
 
     public:
         CMshQuadrilateralMesher();
-        ~CMshQuadrilateralMesher();
+        virtual ~CMshQuadrilateralMesher();
 
         bool remesh(CMshMesh<Real>& anEdgeMesh, Real meshSize);
         bool remesh(CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);

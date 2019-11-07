@@ -25,7 +25,7 @@ namespace integration {
 
     public:
         CIntTriangularPrism();
-        ~CIntTriangularPrism();
+        virtual ~CIntTriangularPrism();
     };
 }
 }

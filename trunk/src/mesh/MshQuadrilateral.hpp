@@ -22,7 +22,7 @@ namespace mesh {
 
     public:
         CMshQuadrilateral();
-        ~CMshQuadrilateral();
+        virtual ~CMshQuadrilateral();
 
         void calculateQuality();
         Real quality();

@@ -28,7 +28,7 @@ namespace geometry {
 
     public:
         CGeoPolygon();
-        ~CGeoPolygon();
+        virtual ~CGeoPolygon();
 
         void reset();
 

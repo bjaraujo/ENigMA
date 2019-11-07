@@ -30,7 +30,7 @@ namespace geometry {
 
     public:
         CGeoArea();
-        ~CGeoArea();
+        virtual ~CGeoArea();
 
         virtual void calculateNormal(bool bReCalculate = false) = 0;
         virtual void calculateArea(bool bReCalculate = false) = 0;

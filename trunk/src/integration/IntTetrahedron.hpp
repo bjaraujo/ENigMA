@@ -19,7 +19,7 @@ namespace integration {
     class CIntTetrahedron : public CIntGaussIntegration<Real> {
     public:
         CIntTetrahedron();
-        ~CIntTetrahedron();
+        virtual ~CIntTetrahedron();
     };
 }
 }

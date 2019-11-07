@@ -66,7 +66,7 @@ namespace pde {
 
     public:
         CPdeField();
-        ~CPdeField();
+        virtual ~CPdeField();
 
         Eigen::Matrix<Real, Eigen::Dynamic, 1> u;
 

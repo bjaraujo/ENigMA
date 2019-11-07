@@ -26,7 +26,7 @@ namespace geometry {
 
     public:
         CGeoLength();
-        ~CGeoLength();
+        virtual ~CGeoLength();
 
         virtual void calculateLength(bool bReCalculate = false) = 0;
         virtual void calculateBoundingBox(bool bReCalculate = false) = 0;

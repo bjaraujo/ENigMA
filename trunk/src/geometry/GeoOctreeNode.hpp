@@ -23,7 +23,7 @@ namespace geometry {
 
     public:
         CGeoOctreeNode();
-        ~CGeoOctreeNode();
+        virtual ~CGeoOctreeNode();
 
         Real xmin, xmax, ymin, ymax, zmin, zmax;
         Real xmid, ymid, zmid;

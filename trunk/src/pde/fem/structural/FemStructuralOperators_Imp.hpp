@@ -36,11 +36,11 @@ namespace pde {
 
                 aSystem.matrixType = MT_SPARSE_SYMMETRIC;
 
-                aSystem.matrixA.resize(aField.mesh().nbNodes() * aField.nbDofs(), aField.mesh().nbNodes() * aField.nbDofs());
+                aSystem.matrixA.resize(static_cast<Eigen::Index>(aField.mesh().nbNodes() * aField.nbDofs()), static_cast<Eigen::Index>(aField.mesh().nbNodes() * aField.nbDofs()));
 
-                aSystem.matrixA.reserve(aField.mesh().nbNodes() * aField.nbDofs());
+                aSystem.matrixA.reserve(static_cast<Eigen::Index>(aField.mesh().nbNodes() * aField.nbDofs()));
 
-                aSystem.vectorB.resize(aField.mesh().nbNodes() * aField.nbDofs());
+                aSystem.vectorB.resize(static_cast<Eigen::Index>(aField.mesh().nbNodes() * aField.nbDofs()));
                 aSystem.vectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {

@@ -25,7 +25,7 @@ namespace integration {
 
     public:
         CIntQuadrilateral();
-        ~CIntQuadrilateral();
+        virtual ~CIntQuadrilateral();
     };
 }
 }
