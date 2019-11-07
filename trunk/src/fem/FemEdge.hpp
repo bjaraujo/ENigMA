@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "CmnTypes.hpp"
+
 namespace ENigMA {
 
 namespace fem {

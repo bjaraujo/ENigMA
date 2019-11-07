@@ -208,7 +208,7 @@ namespace pde {
     // Boundary conditions
 
     template <typename Real>
-    void CPdeField<Real>::addBCNode(const Integer aNodeId, ENigMA::pde::CPdeBoundaryCondition<Real> aBoundaryCondition)
+    void CPdeField<Real>::addBCNode(const Integer aNodeId, const ENigMA::pde::CPdeBoundaryCondition<Real>& aBoundaryCondition)
     {
 
         m_bcNode[aNodeId] = aBoundaryCondition;
@@ -232,7 +232,7 @@ namespace pde {
     }
 
     template <typename Real>
-    void CPdeField<Real>::addBCFace(const Integer aFaceId, ENigMA::pde::CPdeBoundaryCondition<Real> aBoundaryCondition)
+    void CPdeField<Real>::addBCFace(const Integer aFaceId, const ENigMA::pde::CPdeBoundaryCondition<Real>& aBoundaryCondition)
     {
 
         m_bcFace[aFaceId] = aBoundaryCondition;

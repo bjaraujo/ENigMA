@@ -9,6 +9,8 @@
 
 #pragma once
 
+using namespace ENigMA::fvm;
+
 namespace ENigMA {
 
 namespace pde {

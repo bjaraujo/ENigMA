@@ -110,11 +110,11 @@ namespace pde {
         bool hasMaterial(const Integer anElementIndex);
         ENigMA::material::CMatMaterial<Real>& material(const Integer anElementIndex);
 
-        void addBCNode(const Integer aNodeId, ENigMA::pde::CPdeBoundaryCondition<Real> aBoundaryCondition);
+        void addBCNode(const Integer aNodeId, const ENigMA::pde::CPdeBoundaryCondition<Real>& aBoundaryCondition);
         bool nodeHasBC(const Integer aNodeId);
         ENigMA::pde::CPdeBoundaryCondition<Real>& nodeBC(const Integer aNodeId);
 
-        void addBCFace(const Integer aFaceId, ENigMA::pde::CPdeBoundaryCondition<Real> aBoundaryCondition);
+        void addBCFace(const Integer aFaceId, const ENigMA::pde::CPdeBoundaryCondition<Real>& aBoundaryCondition);
         bool faceHasBC(const Integer aFaceId);
         ENigMA::pde::CPdeBoundaryCondition<Real>& faceBC(const Integer aFaceId);
 

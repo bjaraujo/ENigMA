@@ -9,7 +9,7 @@
 
 #pragma once
 
-using namespace ENigMA::geometry;
+#include "CmnTypes.hpp"
 
 namespace ENigMA {
 
