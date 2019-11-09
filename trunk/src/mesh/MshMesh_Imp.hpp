@@ -23,13 +23,11 @@ namespace mesh {
         : m_nodeIndex(0)
         , m_faceIndex(0)
         , m_elementIndex(0)
+        , m_nbBoundaryFaces(0)
+        , m_dx(0.0)
+        , m_dy(0.0)
+        , m_dz(0.0)
     {
-
-        m_dx = 0.0;
-        m_dy = 0.0;
-        m_dz = 0.0;
-
-        m_nbBoundaryFaces = 0;
     }
 
     template <typename Real> CMshMesh<Real>::CMshMesh(const CMshMesh<Real>& aMesh)
@@ -282,7 +280,7 @@ namespace mesh {
 
 			m_nbBoundaryFaces = 0;
 
-			for (typename mapFace::iterator it = m_faces.begin(); it != m_faces.end(); it++) {
+			for (typename mapFace::iterator it = m_faces.begin(); it != m_faces.end(); ++it) {
 
 				if (!it->second.hasPair())
 					m_nbBoundaryFaces++;
@@ -423,7 +421,7 @@ namespace mesh {
     template <typename Real> void CMshMesh<Real>::scale(const Real aFactor)
     {
 
-        for (typename mapNode::iterator it = m_nodes.begin(); it != m_nodes.end(); it++) {
+        for (typename mapNode::iterator it = m_nodes.begin(); it != m_nodes.end(); ++it) {
             it->second *= aFactor;
         }
     }
