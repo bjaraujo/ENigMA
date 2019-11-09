@@ -26,7 +26,7 @@ namespace sle {
     class CSleSystem {
     public:
         CSleSystem();
-        ~CSleSystem();
+        virtual ~CSleSystem();
 
         EMatrixType matrixType;
 

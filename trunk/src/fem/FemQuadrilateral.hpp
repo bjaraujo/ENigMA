@@ -58,7 +58,7 @@ namespace fem {
 
     public:
         CFemQuadrilateral();
-        ~CFemQuadrilateral();
+        virtual ~CFemQuadrilateral();
 
         void rebuild();
         void update();

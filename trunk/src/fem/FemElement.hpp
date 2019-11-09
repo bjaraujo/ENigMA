@@ -30,7 +30,7 @@ namespace fem {
 
     public:
         CFemElement();
-        ~CFemElement();
+        virtual ~CFemElement();
 
         Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> ddt;
         Eigen::Matrix<Real, Eigen::Dynamic, Eigen::Dynamic> laplacian;

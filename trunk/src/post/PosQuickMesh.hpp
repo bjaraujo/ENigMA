@@ -21,7 +21,7 @@ namespace post {
     class CPosQuickMesh {
     public:
         CPosQuickMesh();
-        ~CPosQuickMesh();
+        virtual ~CPosQuickMesh();
 
         bool load(CPdeField<Real>& aField, std::string strFileName);
         bool save(CPdeField<Real>& aField, std::string strFileName);

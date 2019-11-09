@@ -31,7 +31,7 @@ namespace analytical {
         CAnaFunction();
         CAnaFunction(Real aConstant);
         CAnaFunction(std::string anExpression);
-        ~CAnaFunction();
+        virtual ~CAnaFunction();
 
         void set(Real aConstant);
         void set(std::string anExpression);

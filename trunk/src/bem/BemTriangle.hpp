@@ -25,7 +25,7 @@ namespace bem {
         void laplacianCoeff(const Integer i, const Integer j, CBemTriangle<Real>& aBemTriangle, Real& h, Real& g);
 
         CBemTriangle();
-        ~CBemTriangle();
+        virtual ~CBemTriangle();
     };
 }
 }

@@ -38,7 +38,7 @@ namespace fem {
 
     public:
         CFemBeam();
-        ~CFemBeam();
+        virtual ~CFemBeam();
 
         void rebuild();
         void update();

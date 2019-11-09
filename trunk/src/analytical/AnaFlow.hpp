@@ -22,7 +22,7 @@ namespace analytical {
 
     public:
         CAnaFlow();
-        ~CAnaFlow();
+        virtual ~CAnaFlow();
 
         void viscousBurgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u);
     };

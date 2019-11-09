@@ -70,7 +70,7 @@ namespace fem {
 
     public:
         CFemTriangularPrism();
-        ~CFemTriangularPrism();
+        virtual ~CFemTriangularPrism();
 
         void rebuild();
         void update();

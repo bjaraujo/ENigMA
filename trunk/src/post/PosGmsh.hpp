@@ -22,7 +22,7 @@ namespace post {
 
     public:
         CPosGmsh();
-        ~CPosGmsh();
+        virtual ~CPosGmsh();
 
         bool load(ENigMA::pde::CPdeField<Real>& aField, const std::string strFileName);
         bool save(ENigMA::pde::CPdeField<Real>& aField, const std::string strFileName, const std::string strViewName);

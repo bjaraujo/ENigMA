@@ -19,7 +19,7 @@ namespace analytical {
     class CAnaTemperature : public CAnaFunction<Real> {
     public:
         CAnaTemperature();
-        ~CAnaTemperature();
+        virtual ~CAnaTemperature();
 
         void steadyStateHeatConduction1D(Real x, Real& T);
         void steadyStateHeatConduction2D(Real x, Real y, Real& T);

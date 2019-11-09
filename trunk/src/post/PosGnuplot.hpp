@@ -21,7 +21,7 @@ namespace post {
     class CPosGnuplot {
     public:
         CPosGnuplot();
-        ~CPosGnuplot();
+        virtual ~CPosGnuplot();
 
         bool save(CPdeField<Real>& aField, std::string strFileName);
     };

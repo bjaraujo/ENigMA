@@ -63,7 +63,7 @@ namespace fem {
 
     public:
         CFemTetrahedron();
-        ~CFemTetrahedron();
+        virtual ~CFemTetrahedron();
 
         void rebuild();
         void update();

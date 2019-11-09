@@ -74,7 +74,7 @@ namespace fvm {
 
     public:
         CFvmPisoSolver(CFvmMesh<Real>& aFvmMesh);
-        ~CFvmPisoSolver();
+        virtual ~CFvmPisoSolver();
 
         void setGravity(const Real gx, const Real gy, const Real gz);
 
