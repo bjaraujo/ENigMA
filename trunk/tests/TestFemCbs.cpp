@@ -54,9 +54,8 @@ TEST_F(CTestFemCbs, hydroPressure) {
     CMshBasicMesher<decimal> aBasicMesher;
 
     aBasicMesher.generate(aQuadrilateral, 10, 40, true);
-    CMshMesh<decimal> aMesh = aBasicMesher.mesh();
     
-    CFemCbsSolver<decimal, 2> aCbsSolver(aMesh);
+    CFemCbsSolver<decimal, 2> aCbsSolver(aBasicMesher.mesh());
 
     decimal g = -9.8;
     aCbsSolver.setGravity(0.0, -9.8);
@@ -66,11 +65,11 @@ TEST_F(CTestFemCbs, hydroPressure) {
  
     aCbsSolver.setMaterialProperties(rho, mu);
 
-    for (Integer i = 0; i < aMesh.nbNodes(); ++i)
+    for (Integer i = 0; i < aBasicMesher.mesh().nbNodes(); ++i)
     {
 
-        Integer aNodeId = aMesh.nodeId(i);
-        CMshNode<decimal> aNode = aMesh.node(aNodeId);
+        Integer aNodeId = aBasicMesher.mesh().nodeId(i);
+        CMshNode<decimal> aNode = aBasicMesher.mesh().node(aNodeId);
 
         if (fabs(aNode.x() - 0.0) < 1E-3 ||
             fabs(aNode.x() - 1.0) < 1E-3)
@@ -108,7 +107,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     decimal p = 0.0;
 
-    for (Integer i = 0; i < aMesh.nbNodes(); ++i)
+    for (Integer i = 0; i < aBasicMesher.mesh().nbNodes(); ++i)
     {
         p = std::max(p, aCbsSolver.p().value(i));
     }
