@@ -50,7 +50,7 @@ namespace fem {
 
     public:
         explicit CFemCbsSolver(CMshMesh<Real>& aMesh);
-        ~CFemCbsSolver();
+        virtual ~CFemCbsSolver();
 
         virtual void setGravity(const Real gx, const Real gy);
         virtual void setMaterialProperties(const Real aDensity, const Real aViscosity);

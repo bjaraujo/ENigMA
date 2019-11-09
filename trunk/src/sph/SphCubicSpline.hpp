@@ -20,7 +20,7 @@ namespace sph {
     public:
         CSphCubicSpline();
         CSphCubicSpline(const Integer nDimension);
-        ~CSphCubicSpline();
+        virtual ~CSphCubicSpline();
 
         void setDimension(const Integer nDimension);
 

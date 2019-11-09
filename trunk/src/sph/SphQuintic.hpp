@@ -20,7 +20,7 @@ namespace sph {
     public:
         CSphQuintic();
         CSphQuintic(const Integer nDimension);
-        ~CSphQuintic();
+        virtual ~CSphQuintic();
 
         void setDimension(const Integer nDimension);
 

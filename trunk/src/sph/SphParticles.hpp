@@ -53,7 +53,7 @@ namespace sph {
 
     public:
         CSphParticles(CSphKernel<Real>& kernel);
-        ~CSphParticles();
+        virtual ~CSphParticles();
 
         void setBoundary(const ENigMA::geometry::CGeoBoundingBox<Real>& aBoundary);
         void setInitialVelocity(CPdeField<Real>& aField, const ENigMA::geometry::CGeoVector<Real>& aVelocity);

@@ -20,7 +20,7 @@ namespace sph {
     public:
         CSphSpiky();
         CSphSpiky(const Integer nDimension);
-        ~CSphSpiky();
+        virtual ~CSphSpiky();
 
         void setDimension(const Integer nDimension);
 

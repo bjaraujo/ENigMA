@@ -20,7 +20,7 @@ namespace sph {
     public:
         CSphGaussian();
         CSphGaussian(const Integer nDimension);
-        ~CSphGaussian();
+        virtual ~CSphGaussian();
 
         void setDimension(const Integer nDimension);
 

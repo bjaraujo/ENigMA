@@ -20,7 +20,7 @@ namespace sph {
     public:
         CSphConvex();
         CSphConvex(const Integer nDimension);
-        ~CSphConvex();
+        virtual ~CSphConvex();
 
         void setDimension(const Integer nDimension);
 

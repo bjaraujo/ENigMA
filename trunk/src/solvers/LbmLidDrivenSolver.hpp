@@ -45,7 +45,7 @@ namespace lbm {
 
     public:
         CLbmLidDrivenSolver(Integer nx, Integer ny, Integer nz);
-        ~CLbmLidDrivenSolver();
+        virtual ~CLbmLidDrivenSolver();
 
         void setDensity(Integer i, Integer j, Real aValue);
 
