@@ -11,42 +11,35 @@
 
 #include "GeoContainer.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoOctreeNode
-        {
-        private:
+    template <typename Real>
+    class CGeoOctreeNode {
+    private:
+        std::vector<Integer> m_coordinateList;
+        bool m_isLeaf;
 
-            std::vector<Integer> m_coordinateList;
-            bool m_isLeaf;
+    public:
+        CGeoOctreeNode();
+        virtual ~CGeoOctreeNode();
 
-        public:
-            CGeoOctreeNode();
-            ~CGeoOctreeNode();
+        Real xmin, xmax, ymin, ymax, zmin, zmax;
+        Real xmid, ymid, zmid;
 
-            Real xmin, xmax, ymin, ymax, zmin, zmax;
-            Real xmid, ymid, zmid;
+        std::vector<CGeoOctreeNode<Real>> nodes;
 
-            std::vector<CGeoOctreeNode<Real> > nodes;
+        Integer nbCoordinates();
+        void addCoordinate(Integer aCoordinateIndex);
+        Integer coordinate(Integer aCoordinateIndex);
 
-            Integer nbCoordinates();
-            void addCoordinate(Integer aCoordinateIndex);
-            Integer coordinate(Integer aCoordinateIndex);
+        void setIsLeaf(bool isLeaf);
+        bool isLeaf();
 
-            void setIsLeaf(bool isLeaf);
-            bool isLeaf();
-
-            void reset();
-
-        };
-
-    }
-
+        void reset();
+    };
+}
 }
 
 #include "GeoOctreeNode_Imp.hpp"

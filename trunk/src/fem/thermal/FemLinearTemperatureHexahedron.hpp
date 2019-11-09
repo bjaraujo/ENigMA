@@ -12,39 +12,27 @@
 #include "FemHexahedron.hpp"
 #include "FemThermalElement.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace thermal
-        {
+    namespace thermal {
 
-            template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
-            class CFemLinearTemperatureHexahedron : public CFemThermalElement<Real>, public CFemHexahedron<Real, NbNodes, Dof, Order>
-            {
-            };
+        template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
+        class CFemLinearTemperatureHexahedron : public CFemThermalElement<Real>, public CFemHexahedron<Real, NbNodes, Dof, Order> {
+        };
 
-            template <typename Real>
-            class CFemLinearTemperatureHexahedron<Real, 8, 1, 1> : public CFemThermalElement<Real>, public CFemHexahedron<Real, 8, 1, 1>
-            {
-            public:
-                
-                CFemLinearTemperatureHexahedron();
-                ~CFemLinearTemperatureHexahedron();
+        template <typename Real>
+        class CFemLinearTemperatureHexahedron<Real, 8, 1, 1> : public CFemThermalElement<Real>, public CFemHexahedron<Real, 8, 1, 1> {
+        public:
+            CFemLinearTemperatureHexahedron();
+            ~CFemLinearTemperatureHexahedron();
 
-                void setConvectionOnFace(const Integer aFaceIndex, const Real h, const Real Tinf);
-                void setConvectionOnFace(const Integer aFaceIndex, const Real e, const Real teta, const Real Tinf);
-
-            };
-
-        }
-
+            void setConvectionOnFace(const Integer aFaceIndex, const Real h, const Real Tinf);
+            void setConvectionOnFace(const Integer aFaceIndex, const Real e, const Real teta, const Real Tinf);
+        };
     }
-
+}
 }
 
 #include "FemLinearTemperatureHexahedron_Imp.hpp"
-
-

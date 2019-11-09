@@ -11,41 +11,34 @@
 
 #include <map>
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <class T, typename Real>
-        class CGeoContainer
-        {
-        protected:
+    template <class T, typename Real>
+    class CGeoContainer {
+    protected:
+        typedef std::map<Integer, Integer> mapGeometricObject;
+        mapGeometricObject m_geometricObjectIds;
 
-            typedef std::map<Integer, Integer> mapGeometricObject;
-            mapGeometricObject m_geometricObjectIds;
+        std::vector<T> m_geometricObjects;
 
-            std::vector<T> m_geometricObjects;
+    public:
+        CGeoContainer();
+        virtual ~CGeoContainer();
 
-        public:
-            CGeoContainer();
-            ~CGeoContainer();
+        virtual void reset();
 
-            virtual void reset();
+        virtual void build() = 0;
 
-            virtual void build() = 0;
+        virtual void find(std::vector<Integer>& sGeomtericObjectIds, T& aGeometricObject, const Real aTolerance = 0.0) = 0;
 
-            virtual void find(std::vector<Integer>& sGeomtericObjectIds, T& aGeometricObject, const Real aTolerance = 0.0) = 0;
+        virtual void addGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject);
 
-            virtual void addGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject);
-
-            virtual void removeGeometricObject(const Integer aGeomtericObjectId);
-            virtual void removeGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject);
-
-        };
-
-    }
-
+        virtual void removeGeometricObject(const Integer aGeomtericObjectId);
+        virtual void removeGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject);
+    };
+}
 }
 
 #include "GeoContainer_Imp.hpp"

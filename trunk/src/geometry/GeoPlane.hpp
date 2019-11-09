@@ -9,44 +9,36 @@
 
 #pragma once
 
-#include "GeoNormal.hpp"
 #include "GeoCoordinate.hpp"
+#include "GeoNormal.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoPlane
-        {
-        private:
+    template <typename Real>
+    class CGeoPlane {
+    private:
+        CGeoNormal<Real> m_normal;
+        Real m_d;
 
-            CGeoNormal<Real> m_normal;
-            Real m_d;
+    public:
+        CGeoPlane();
+        CGeoPlane(CGeoNormal<Real>& aNormal, const Real d);
+        virtual ~CGeoPlane();
 
-        public:
-            CGeoPlane();
-            CGeoPlane(CGeoNormal<Real>& aNormal, const Real d);
+        CGeoNormal<Real>& normal();
 
-            ~CGeoPlane();
+        void setD(const Real aValue);
+        Real d() const;
 
-            CGeoNormal<Real>& normal();
+        void set(CGeoNormal<Real>& aNormal, const Real d);
 
-            void setD(const Real aValue);
-            Real d() const;
+        void invert();
 
-            void set(CGeoNormal<Real>& aNormal, const Real d);
-
-            void invert();
-
-            inline bool distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance = 0.0);
-
-        };
-
-    }
-
+        inline bool distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance = 0.0);
+    };
+}
 }
 
 #include "GeoPlane_Imp.hpp"

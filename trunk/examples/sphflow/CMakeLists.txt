@@ -16,9 +16,9 @@ source_group("Header Files" FILES ${SPHFLOW_HEADERS})
 source_group("Source Files" FILES ${SPHFLOW_SOURCES})
 
 include_directories(
-${Eigen3_DIR}
-${RTree_DIR}
-${Exprtk_DIR}
+${EIGEN_DIR}
+${RTREE_DIR}
+${EXPRTK_DIR}
 ../../src/common
 ../../src/geometry
 ../../src/integration

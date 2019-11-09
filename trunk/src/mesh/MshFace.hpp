@@ -13,67 +13,59 @@
 
 #include "GeoArea.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace mesh
-    {
+namespace mesh {
 
-        enum EFaceType 
-        {
-            FT_NONE = 0,
-            FT_POINT,
-            FT_LINE,
-            FT_TRIANGLE,
-            FT_QUADRILATERAL
-        };
+    enum EFaceType {
+        FT_NONE = 0,
+        FT_POINT,
+        FT_LINE,
+        FT_TRIANGLE,
+        FT_QUADRILATERAL
+    };
 
-        template <typename Real>
-        class CMshFace
-        {
-        private:
+    template <typename Real>
+    class CMshFace {
+    private:
+        std::vector<Integer> m_nodeIds;
 
-            std::vector<Integer> m_nodeIds;
+        EFaceType m_faceType;
 
-            EFaceType m_faceType;
+        bool m_hasPair;
 
-            bool m_hasPair;
+        Integer m_pairFaceId;
+        Integer m_elementId;
 
-            Integer m_pairFaceId;
-            Integer m_elementId;
+    public:
+        CMshFace();
+        CMshFace(EFaceType aFaceType);
+        virtual ~CMshFace();
 
-        public:
-            CMshFace();
-            CMshFace(EFaceType aFaceType);
-            ~CMshFace();
+        Integer nbNodeIds();
 
-            Integer nbNodeIds();
+        void addNodeId(Integer aNodeId);
+        Integer nodeId(Integer aNodeIndex);
+        void setNodeId(const Integer aNodeIndex, const Integer aNodeId);
 
-            void addNodeId(Integer aNodeId);
-            Integer nodeId(Integer aNodeIndex);
-            void setNodeId(const Integer aNodeIndex, const Integer aNodeId);
+        void setPairFaceId(Integer aPairFace);
+        Integer pairFaceId();
 
-            void setPairFaceId(Integer aPairFace);
-            Integer pairFaceId();
+        void setHasPair(bool hasPair);
+        bool hasPair();
 
-            void setHasPair(bool hasPair);
-            bool hasPair();
+        void setElementId(Integer anElementId);
+        Integer elementId();
 
-            void setElementId(Integer anElementId);
-            Integer elementId();
+        void setFaceType(EFaceType aFaceType);
+        EFaceType faceType();
 
-            void setFaceType(EFaceType aFaceType);
-            EFaceType faceType();
+        void reset();
+    };
 
-            void reset();
-
-        };
-
-        template <typename Real>
-        std::ostream &operator<< (std::ostream &output, CMshFace<Real> &aFace);
-
-    }
-
+    template <typename Real>
+    std::ostream& operator<<(std::ostream& output, CMshFace<Real>& aFace);
+}
 }
 
 #include "MshFace_Imp.hpp"

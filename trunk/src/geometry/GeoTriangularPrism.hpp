@@ -9,33 +9,27 @@
 
 #pragma once
 
-#include "GeoVolume.hpp"
 #include "GeoVertexList.hpp"
+#include "GeoVolume.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoTriangularPrism : public CGeoVolume<Real>, public CGeoVertexList<Real>
-        {
-        public:
-            CGeoTriangularPrism();
-            ~CGeoTriangularPrism();
+    template <typename Real>
+    class CGeoTriangularPrism : public CGeoVolume<Real>, public CGeoVertexList<Real> {
+    public:
+        CGeoTriangularPrism();
+        virtual ~CGeoTriangularPrism();
 
-            void reset();
+        void reset();
 
-            inline void calculateCentroid(bool bReCalculate = false);
-            inline void calculateSurfaceArea(bool bReCalculate = false);
-            inline void calculateVolume(bool bReCalculate = false);
-            inline void calculateBoundingBox(bool bReCalculate = false);
-
-        };
-
-    }
-
+        inline void calculateCentroid(bool bReCalculate = false);
+        inline void calculateSurfaceArea(bool bReCalculate = false);
+        inline void calculateVolume(bool bReCalculate = false);
+        inline void calculateBoundingBox(bool bReCalculate = false);
+    };
+}
 }
 
 #include "GeoTriangularPrism_Imp.hpp"

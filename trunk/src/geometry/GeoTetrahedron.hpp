@@ -9,37 +9,31 @@
 
 #pragma once
 
-#include "GeoVolume.hpp"
 #include "GeoVertexList.hpp"
+#include "GeoVolume.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoTetrahedron : public CGeoVolume<Real>, public CGeoVertexList<Real>
-        {
-        public:
-            CGeoTetrahedron();
-            ~CGeoTetrahedron();
+    template <typename Real>
+    class CGeoTetrahedron : public CGeoVolume<Real>, public CGeoVertexList<Real> {
+    public:
+        CGeoTetrahedron();
+        virtual ~CGeoTetrahedron();
 
-            void reset();
+        void reset();
 
-            inline void calculateCentroid(bool bReCalculate = false);
-            inline void calculateSurfaceArea(bool bReCalculate = false);
-            inline void calculateVolume(bool bReCalculate = false);
-            inline void calculateBoundingBox(bool bReCalculate = false);
+        inline void calculateCentroid(bool bReCalculate = false);
+        inline void calculateSurfaceArea(bool bReCalculate = false);
+        inline void calculateVolume(bool bReCalculate = false);
+        inline void calculateBoundingBox(bool bReCalculate = false);
 
-            inline bool contains(const CGeoCoordinate<Real>& aPoint, const Real aTolerance = 0.0);
+        inline bool contains(const CGeoCoordinate<Real>& aPoint, const Real aTolerance = 0.0);
 
-            void invert();
-
-        };
-
-    }
+        void invert();
+    };
+}
 }
 
 #include "GeoTetrahedron_Imp.hpp"
-

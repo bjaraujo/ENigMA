@@ -9,43 +9,35 @@
 
 #pragma once
 
+#include "GeoHexahedron.hpp"
 #include "GeoLine.hpp"
-#include "GeoTriangle.hpp"
 #include "GeoQuadrilateral.hpp"
 #include "GeoTetrahedron.hpp"
-#include "GeoHexahedron.hpp"
+#include "GeoTriangle.hpp"
 #include "MshMesh.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace mesh
-    {
+namespace mesh {
 
-        template <typename Real>
-        class CMshBasicMesher
-        {
-        private:
+    template <typename Real>
+    class CMshBasicMesher {
+    private:
+        ENigMA::mesh::CMshMesh<Real> m_mesh;
 
-            ENigMA::mesh::CMshMesh<Real> m_mesh;
+    public:
+        CMshBasicMesher();
+        virtual ~CMshBasicMesher();
 
-        public:
+        bool generate(ENigMA::geometry::CGeoLine<Real>& aLine, const Integer nu);
+        bool generate(ENigMA::geometry::CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate = false);
+        bool generate(ENigMA::geometry::CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate = false);
 
-            CMshBasicMesher();
-            ~CMshBasicMesher();
+        bool generate(ENigMA::geometry::CGeoBoundingBox<Real>& aBoundingBox, const Real meshSize, bool decimate = false);
 
-            bool generate(ENigMA::geometry::CGeoLine<Real>& aLine, const Integer nu);
-            bool generate(ENigMA::geometry::CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate = false);
-            bool generate(ENigMA::geometry::CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate = false);
-
-            bool generate(ENigMA::geometry::CGeoBoundingBox<Real>& aBoundingBox, const Real meshSize, bool decimate = false);
-
-            ENigMA::mesh::CMshMesh<Real>& mesh();
-
-        };
-
-    }
-
+        ENigMA::mesh::CMshMesh<Real>& mesh();
+    };
+}
 }
 
 #include "MshBasicMesher_Imp.hpp"

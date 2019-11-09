@@ -11,90 +11,77 @@
 
 #include <vector>
 
-#include "GeoCoordinate.hpp"
 #include "GeoBoundingBox.hpp"
 #include "GeoContainer.hpp"
+#include "GeoCoordinate.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoAdtreeNode6
-        {
-        public:
+    template <typename Real>
+    class CGeoAdtreeNode6 {
+    public:
+        CGeoAdtreeNode6<Real>* leftNode;
+        CGeoAdtreeNode6<Real>* rightNode;
+        CGeoAdtreeNode6<Real>* fatherNode;
 
-            CGeoAdtreeNode6<Real>* leftNode;
-            CGeoAdtreeNode6<Real>* rightNode;
-            CGeoAdtreeNode6<Real>* fatherNode;
+        Integer id;
 
-            Integer id;
+        Real sep;
+        Real data[6];
 
-            Real sep;
-            Real data[6];
+        Integer nbChildren;
 
-            Integer nbChildren;
+        CGeoAdtreeNode6();
 
-            CGeoAdtreeNode6();
+        void deleteChildren();
+    };
 
-            void deleteChildren();
+    template <typename Real>
+    class CGeoAdtree6 {
+    protected:
+        CGeoAdtreeNode6<Real>* m_root;
 
-        };
+        Real m_cmin[6], m_cmax[6];
 
-        template <typename Real>
-        class CGeoAdtree6
-        {
-        protected:
+        std::vector<CGeoAdtreeNode6<Real>*> m_nodes;
 
-            CGeoAdtreeNode6<Real>* m_root;
+    public:
+        CGeoAdtree6();
+        virtual ~CGeoAdtree6();
 
-            Real m_cmin[6], m_cmax[6];
+        void reset();
+        void set(const Real acmin[6], const Real acmax[6]);
+        void insert(const Real p[6], const Integer anId);
+        void remove(Integer anId);
 
-            std::vector<CGeoAdtreeNode6<Real>* > m_nodes;
+        void getIntersecting(const Real bmin[6], const Real bmax[6], std::vector<Integer>& sIds);
+    };
 
-        public:
-            CGeoAdtree6();
-            ~CGeoAdtree6();
+    template <typename Real>
+    class CGeoAdtree : public CGeoContainer<CGeoBoundingBox<Real>, Real> {
+    private:
+        CGeoAdtree6<Real> m_tree;
+        CGeoBoundingBox<Real> m_boundingBox;
 
-            void reset();
-            void set(const Real acmin[6], const Real acmax[6]);
-            void insert(const Real p[6], const Integer anId);
-            void remove(Integer anId);
+    public:
+        CGeoAdtree();
+        ~CGeoAdtree();
 
-            void getIntersecting(const Real bmin[6], const Real bmax[6], std::vector<Integer> & sIds);
+        void set(CGeoBoundingBox<Real>& aBoundingBox);
 
-        };
+        void reset();
 
-        template <typename Real>
-        class CGeoAdtree : public CGeoContainer<CGeoBoundingBox<Real>, Real>
-        {
-        private:
+        void build();
 
-            CGeoAdtree6<Real> m_tree;
-            CGeoBoundingBox<Real> m_boundingBox;
+        void find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
 
-        public:
-            CGeoAdtree();
-            ~CGeoAdtree();
+        void addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox);
 
-            void set(CGeoBoundingBox<Real>& aBoundingBox);
-
-            void reset();
-
-            void build();
-
-            void find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
-
-            void addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox);
-            
-            void removeGeometricObject(const Integer aBoundingBoxId);
-
-        };
-
-    }
-
+        void removeGeometricObject(const Integer aBoundingBoxId);
+    };
+}
 }
 
 #include "GeoAdtree_Imp.hpp"

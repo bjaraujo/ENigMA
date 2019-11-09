@@ -9,100 +9,91 @@
 
 #pragma once
 
-#include "GeoLength.hpp"
 #include "GeoCoordinate.hpp"
-#include "GeoVector.hpp"
+#include "GeoLength.hpp"
 #include "GeoPlane.hpp"
+#include "GeoVector.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        enum EIntersectionType {
-            IT_NONE = 0,
-            IT_VERTEX,
-            IT_EDGE,
-            IT_COINCIDENT,
-            IT_INTERNAL,
-            IT_SWAP
-        };
+    enum EIntersectionType {
+        IT_NONE = 0,
+        IT_VERTEX,
+        IT_EDGE,
+        IT_COINCIDENT,
+        IT_INTERNAL,
+        IT_SWAP
+    };
 
-        class CGeoIntersectionType {
-        private:
-            EIntersectionType m_intersectionType;
+    class CGeoIntersectionType {
+    private:
+        EIntersectionType m_intersectionType;
 
-        public:
+    public:
+        CGeoIntersectionType()
+            : m_intersectionType(IT_NONE){};
+        CGeoIntersectionType(const EIntersectionType anIntersectionType)
+            : m_intersectionType(anIntersectionType){};
 
-            CGeoIntersectionType() : m_intersectionType(IT_NONE) {};
-            CGeoIntersectionType(const EIntersectionType anIntersectionType) : m_intersectionType(anIntersectionType) {};
-
-            CGeoIntersectionType operator=(const EIntersectionType& anIntersectionType)
-            {
-
-                this->m_intersectionType = anIntersectionType;
-                return *this;
-
-            }
-
-            bool operator==(const EIntersectionType& anIntersectionType) const {
-
-                return this->m_intersectionType == anIntersectionType;
-
-            }
-
-        };
-
-        template <typename Real>
-        class CGeoLine : public CGeoLength<Real>
+        CGeoIntersectionType operator=(const EIntersectionType& anIntersectionType)
         {
-        protected:
 
-            CGeoCoordinate<Real> m_startPoint;
-            CGeoCoordinate<Real> m_endPoint;
+            this->m_intersectionType = anIntersectionType;
+            return *this;
+        }
 
-            CGeoVector<Real> m_vector;
+        bool operator==(const EIntersectionType& anIntersectionType) const
+        {
 
-        public:
-            CGeoLine();
-            CGeoLine(CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2);
-            ~CGeoLine();
+            return this->m_intersectionType == anIntersectionType;
+        }
+    };
 
-            void reset();
+    template <typename Real>
+    class CGeoLine : public CGeoLength<Real> {
+    protected:
+        CGeoCoordinate<Real> m_startPoint;
+        CGeoCoordinate<Real> m_endPoint;
 
-            void setStartPoint(CGeoCoordinate<Real>& aPoint1);
-            void setEndPoint(CGeoCoordinate<Real>& aPoint2);
+        CGeoVector<Real> m_vector;
 
-            CGeoCoordinate<Real>& startPoint();
-            CGeoCoordinate<Real>& endPoint();
-            CGeoVector<Real>& vector();
+    public:
+        CGeoLine();
+        CGeoLine(CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2);
+        virtual ~CGeoLine();
 
-            CGeoCoordinate<Real> midPoint(Real factor);
+        void reset();
 
-            inline void calculateLength(bool bReCalculate = false);
-            inline void calculateBoundingBox(bool bReCalculate = false);
+        void setStartPoint(CGeoCoordinate<Real>& aPoint1);
+        void setEndPoint(CGeoCoordinate<Real>& aPoint2);
 
-            inline CGeoLine<Real> clip(CGeoPlane<Real>& aPlane);
+        CGeoCoordinate<Real>& startPoint();
+        CGeoCoordinate<Real>& endPoint();
+        CGeoVector<Real>& vector();
 
-            inline bool intersects(CGeoPlane<Real>& aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
+        CGeoCoordinate<Real> midPoint(Real factor);
 
-            inline bool intersects(CGeoLine<Real>& aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
-            inline bool intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance = 0.0);
-            inline bool intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
+        inline void calculateLength(bool bReCalculate = false);
+        inline void calculateBoundingBox(bool bReCalculate = false);
 
-            inline bool contains(const CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
+        inline CGeoLine<Real> clip(CGeoPlane<Real>& aPlane);
 
-            inline bool distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance = 0.0);
-            inline bool distance(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance = 0.0);
+        inline bool intersects(CGeoPlane<Real>& aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
 
-            void invert();
+        inline bool intersects(CGeoLine<Real>& aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
+        inline bool intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance = 0.0);
+        inline bool intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
 
-        };
+        inline bool contains(const CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
 
-    }
+        inline bool distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance = 0.0);
+        inline bool distance(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance = 0.0);
 
+        void invert();
+    };
+}
 }
 
 #include "GeoLine_Imp.hpp"
-

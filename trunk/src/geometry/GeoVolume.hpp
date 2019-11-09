@@ -9,46 +9,38 @@
 
 #pragma once
 
-#include "GeoCoordinate.hpp"
-#include "GeoCentroid.hpp"
 #include "GeoBoundingBox.hpp"
+#include "GeoCentroid.hpp"
+#include "GeoCoordinate.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoVolume : public CGeoCentroid<Real>
-        {
-        protected:
+    template <typename Real>
+    class CGeoVolume : public CGeoCentroid<Real> {
+    protected:
+        Real m_surfaceArea;
+        Real m_volume;
+        CGeoBoundingBox<Real> m_boundingBox;
 
-            Real m_surfaceArea;
-            Real m_volume;
-            CGeoBoundingBox<Real> m_boundingBox;
+        bool m_bSurfaceArea;
+        bool m_bVolume;
+        bool m_bBoundingBox;
 
-            bool m_bSurfaceArea;
-            bool m_bVolume;
-            bool m_bBoundingBox;
+    public:
+        CGeoVolume();
+        virtual ~CGeoVolume();
 
-        public:
+        virtual void calculateSurfaceArea(bool bReCalculate = false) = 0;
+        virtual void calculateVolume(bool bReCalculate = false) = 0;
+        virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
 
-            CGeoVolume();
-            ~CGeoVolume();
-
-            virtual void calculateSurfaceArea(bool bReCalculate = false) = 0;
-            virtual void calculateVolume(bool bReCalculate = false) = 0;
-            virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
-
-            Real& surfaceArea();
-            Real& volume();
-            CGeoBoundingBox<Real>& boundingBox();
-
-        };
-
-    }
-
+        Real& surfaceArea();
+        Real& volume();
+        CGeoBoundingBox<Real>& boundingBox();
+    };
+}
 }
 
 #include "GeoVolume_Imp.hpp"

@@ -26,10 +26,10 @@ include_directories(
   ${Qt5Core_INCLUDE_DIRS}
   ${Qt5Gui_INCLUDE_DIRS}
   ${Qt5Widgets_INCLUDE_DIRS}
-  ${Eigen3_DIR}
-  ${ViennaCL_DIR}
-  ${RTree_DIR}
-  ${Exprtk_DIR}
+  ${EIGEN_DIR}
+  ${VIENNACL_DIR}
+  ${RTREE_DIR}
+  ${EXPRTK_DIR}
   ../../src/common
   ../../src/geometry
   ../../src/integration

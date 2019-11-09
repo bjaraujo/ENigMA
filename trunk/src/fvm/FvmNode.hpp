@@ -13,36 +13,34 @@
 
 using namespace ENigMA::geometry;
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fvm
-    {
+namespace fvm {
 
-        template <typename Real>
-        class CFvmNode : public CGeoCoordinate<Real>
+    template <typename Real>
+    class CFvmNode : public CGeoCoordinate<Real> {
+    public:
+        typedef CGeoCoordinate<Real> Base;
+
+        inline CFvmNode(Real value = (Real)0) { this->setConstant(value); }
+
+        inline CFvmNode(const Real x, const Real y, const Real z)
+            : Base(x, y, z)
         {
-        public:
+        }
 
-            typedef CGeoCoordinate<Real> Base;
+        template <typename Derived>
+        inline CFvmNode(const Eigen::MatrixBase<Derived>& p)
+            : Base(p)
+        {
+        }
 
-            inline CFvmNode(Real value = (Real) 0) { this->setConstant(value); }
-
-            inline CFvmNode(const Real x, const Real y, const Real z) : Base(x, y, z) { }
-
-            template <typename Derived>
-            inline CFvmNode(const Eigen::MatrixBase<Derived>& p) : Base(p) { }
-
-            template <typename Derived>
-            CFvmNode &operator=(const Eigen::MatrixBase<Derived>& p)
-            {
-                this->Base::operator=(p);
-                return *this;
-            }
-
-        };
-
-    }
-
+        template <typename Derived>
+        CFvmNode& operator=(const Eigen::MatrixBase<Derived>& p)
+        {
+            this->Base::operator=(p);
+            return *this;
+        }
+    };
 }
-
+}

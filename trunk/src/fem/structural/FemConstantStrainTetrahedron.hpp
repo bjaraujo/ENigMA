@@ -9,48 +9,35 @@
 
 #pragma once
 
-#include "FemTetrahedron.hpp"
 #include "FemStructuralElement.hpp"
+#include "FemTetrahedron.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace structural
-        {
+    namespace structural {
 
-            template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
-            class CFemConstantStrainTetrahedron : public CFemStructuralElement<Real>, public CFemTetrahedron<Real, 4, 1, 1>
-            {
-            };
+        template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
+        class CFemConstantStrainTetrahedron : public CFemStructuralElement<Real>, public CFemTetrahedron<Real, 4, 1, 1> {
+        };
 
-            template <typename Real>
-            class CFemConstantStrainTetrahedron<Real, 4, 3, 1> : public CFemStructuralElement<Real>, public CFemTetrahedron<Real, 4, 3, 1>
-            {
-            protected:
+        template <typename Real>
+        class CFemConstantStrainTetrahedron<Real, 4, 3, 1> : public CFemStructuralElement<Real>, public CFemTetrahedron<Real, 4, 3, 1> {
+        protected:
+            void setTransientTerm();
+            void setDiffusionTerm();
+            void setConvectiveTerm();
 
-                void setTransientTerm();
-                void setDiffusionTerm();
-                void setConvectiveTerm();
+        public:
+            CFemConstantStrainTetrahedron();
+            ~CFemConstantStrainTetrahedron();
 
-            public:
-
-                CFemConstantStrainTetrahedron();
-                ~CFemConstantStrainTetrahedron();
-
-                void update();
-                void reCalcD();
-            
-            };
-
-        }
-
+            void update();
+            void reCalcD();
+        };
     }
-
+}
 }
 
 #include "FemConstantStrainTetrahedron_Imp.hpp"
-
-

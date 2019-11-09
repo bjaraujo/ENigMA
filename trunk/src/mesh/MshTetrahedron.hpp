@@ -11,31 +11,23 @@
 
 #include "GeoTetrahedron.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace mesh
-    {
+namespace mesh {
 
-        template <typename Real>
-        class CMshTetrahedron : public ENigMA::geometry::CGeoTetrahedron<Real>
-        {
-        private:
+    template <typename Real>
+    class CMshTetrahedron : public ENigMA::geometry::CGeoTetrahedron<Real> {
+    private:
+        Real m_quality;
 
-            Real m_quality;
+    public:
+        CMshTetrahedron();
+        virtual ~CMshTetrahedron();
 
-        public:
-            CMshTetrahedron();
-            ~CMshTetrahedron();
-
-            void calculateQuality();
-            Real quality();
-
-        };
-
-    }
-
+        void calculateQuality();
+        Real quality();
+    };
+}
 }
 
 #include "MshTetrahedron_Imp.hpp"
-

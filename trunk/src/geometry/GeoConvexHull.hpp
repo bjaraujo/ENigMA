@@ -14,53 +14,44 @@
 #include "GeoCoordinate.hpp"
 #include "GeoVector.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        struct SVertex
+    template <typename Real>
+    struct SVertex {
+        CGeoCoordinate<Real> v2D;
+        CGeoCoordinate<Real> v3D;
+
+        bool operator<(const SVertex& p) const
         {
-            CGeoCoordinate<Real> v2D;
-            CGeoCoordinate<Real> v3D;
+            return this->v2D.x() < p.v2D.x() || (this->v2D.x() == p.v2D.x() && this->v2D.y() < p.v2D.y());
+        }
+    };
 
-            bool operator <(const SVertex& p) const
-            {
-                return this->v2D.x() < p.v2D.x() || (this->v2D.x() == p.v2D.x() && this->v2D.y() < p.v2D.y());
-            }
+    // Class to compute planar convex hull of a series of vertices
 
-        };
+    template <typename Real>
+    class CGeoConvexHull {
+    private:
+        std::vector<CGeoCoordinate<Real>> m_vertices;
 
-        // Class to compute planar convex hull of a series of vertices
+    public:
+        CGeoConvexHull(std::vector<CGeoCoordinate<Real>>& sVertices);
+        CGeoConvexHull();
+        virtual ~CGeoConvexHull();
 
-        template <typename Real>
-        class CGeoConvexHull
-        {
-        private:
+        void set(std::vector<CGeoCoordinate<Real>>& sVertices);
 
-            std::vector<CGeoCoordinate<Real> > m_vertices;
+        Integer nbVertices();
 
-        public:
-            CGeoConvexHull(std::vector<CGeoCoordinate<Real> >& sVertices);
-            CGeoConvexHull();
-            ~CGeoConvexHull();
+        void reset();
 
-            void set(std::vector<CGeoCoordinate<Real> >& sVertices);
+        void addVertex(CGeoCoordinate<Real>& aVertex);
 
-            Integer nbVertices();
-
-            void reset();
-
-            void addVertex(CGeoCoordinate<Real>& aVertex);
-
-            CGeoCoordinate<Real>& vertex(const Integer aVertexIndex);
-
-        };
-
-    }
-
+        CGeoCoordinate<Real>& vertex(const Integer aVertexIndex);
+    };
+}
 }
 
 #include "GeoConvexHull_Imp.hpp"

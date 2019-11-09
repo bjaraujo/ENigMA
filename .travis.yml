@@ -4,15 +4,11 @@ language:
   - cpp
 
 before_install:
-  - sudo wget http://bitbucket.org/eigen/eigen/get/3.3.4.tar.gz
-  - sudo wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
-  - sudo tar -xzvf 3.3.4.tar.gz
-  - sudo tar -xzvf release-1.8.0.tar.gz
 
 script:
   - mkdir build
   - cd build
-  - cmake ../trunk -DGTest_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/googletest-release-1.8.0" -DEigen3_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/eigen-eigen-5a0156e40feb" -DExprtk_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/trunk/dependencies/exprtk/exprtk-2018" -DRTree_DIR:STRING="/home/travis/build/bjaraujo/ENigMA/trunk/dependencies/RTree/RTree-2011" 
+  - cmake ../trunk
   - make
   - cd tests
   - ./UnitTests

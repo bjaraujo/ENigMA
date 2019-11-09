@@ -11,96 +11,86 @@
 
 #include <map>
 
+#include "FvmNode.hpp"
 #include "GeoPolygon.hpp"
 #include "MshFace.hpp"
-#include "FvmNode.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fvm
-    {
+namespace fvm {
 
-        enum EBoundaryType
+    enum EBoundaryType {
+        BT_NONE = 0,
+        BT_INTERIOR_FACE,
+        BT_INTERFACE,
+        BT_WALL_NO_SLIP,
+        BT_INLET_FLOW,
+        BT_INLET_PRESSURE,
+        BT_OUTLET
+    };
+
+    class CFvmBoundaryType {
+    private:
+        EBoundaryType m_boundaryType;
+
+    public:
+        CFvmBoundaryType()
+            : m_boundaryType(BT_NONE){};
+        CFvmBoundaryType(const EBoundaryType aBoundaryType)
+            : m_boundaryType(aBoundaryType){};
+
+        CFvmBoundaryType operator=(const EBoundaryType& aBoundaryType)
         {
-            BT_NONE = 0,
-            BT_INTERIOR_FACE,
-            BT_INTERFACE,
-            BT_WALL_NO_SLIP,
-            BT_INLET_FLOW,
-            BT_INLET_PRESSURE,
-            BT_OUTLET
-        };
 
-        class CFvmBoundaryType {
-        private:
-            EBoundaryType m_boundaryType;
+            this->m_boundaryType = aBoundaryType;
+            return *this;
+        }
 
-        public:
-
-            CFvmBoundaryType() : m_boundaryType(BT_NONE) {};
-            CFvmBoundaryType(const EBoundaryType aBoundaryType) : m_boundaryType(aBoundaryType) {};
-
-            CFvmBoundaryType operator=(const EBoundaryType& aBoundaryType)
-            {
-
-                this->m_boundaryType = aBoundaryType;
-                return *this;
-
-            }
-
-            bool operator==(const EBoundaryType& aBoundaryType) const {
-
-                return this->m_boundaryType == aBoundaryType;
-
-            }
-
-            bool operator!=(const EBoundaryType& aBoundaryType) const {
-
-                return this->m_boundaryType != aBoundaryType;
-
-            }
-
-        };
-
-        template <typename Real>
-        class CFvmFace : public ENigMA::mesh::CMshFace<Real>, public ENigMA::geometry::CGeoPolygon<Real>
+        bool operator==(const EBoundaryType& aBoundaryType) const
         {
-        private:
 
-            Integer m_controlVolumeId;
-            Integer m_neighborId;
+            return this->m_boundaryType == aBoundaryType;
+        }
 
-            CFvmBoundaryType m_boundaryType;
+        bool operator!=(const EBoundaryType& aBoundaryType) const
+        {
 
-        public:
-            CFvmFace();
-            CFvmFace(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
-            ~CFvmFace();
+            return this->m_boundaryType != aBoundaryType;
+        }
+    };
 
-            void set(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
+    template <typename Real>
+    class CFvmFace : public ENigMA::mesh::CMshFace<Real>, public ENigMA::geometry::CGeoPolygon<Real> {
+    private:
+        Integer m_controlVolumeId;
+        Integer m_neighborId;
 
-            void addNode(const CFvmNode<Real>& aNode);
+        CFvmBoundaryType m_boundaryType;
 
-            void setControlVolumeId(const Integer aControlVolumeId);
-            Integer controlVolumeId();
-            Integer controlVolumeId(const Integer aControlVolumeId);
+    public:
+        CFvmFace();
+        CFvmFace(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
+        virtual ~CFvmFace();
 
-            void setNeighborId(const Integer aNeighborId);
-            Integer neighborId(const Integer aControlVolumeId);
+        void set(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
 
-            void close();
+        void addNode(const CFvmNode<Real>& aNode);
 
-            void reset();
+        void setControlVolumeId(const Integer aControlVolumeId);
+        Integer controlVolumeId();
+        Integer controlVolumeId(const Integer aControlVolumeId);
 
-            CFvmBoundaryType& boundaryType();
-            void setBoundaryType(CFvmBoundaryType aBoundaryType);
+        void setNeighborId(const Integer aNeighborId);
+        Integer neighborId(const Integer aControlVolumeId);
 
-        };
+        void close();
 
-    }
+        void reset();
 
+        CFvmBoundaryType& boundaryType();
+        void setBoundaryType(CFvmBoundaryType aBoundaryType);
+    };
+}
 }
 
 #include "FvmFace_Imp.hpp"
-

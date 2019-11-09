@@ -5,11 +5,11 @@ find_package(CSharp REQUIRED)
 include(${CSHARP_USE_FILE})
 
 include_directories(
-  ${Eigen3_DIR}
-  ${Eigen3_DIR}/Eigen
-  ${ViennaCL_DIR}
-  ${RTree_DIR}
-  ${Exprtk_DIR}
+  ${EIGEN_DIR}
+  ${EIGEN_DIR}/Eigen
+  ${VIENNACL_DIR}
+  ${RTREE_DIR}
+  ${EXPRTK_DIR}
   ../../../src/common
   ../../../src/analytical
   ../../../src/bem

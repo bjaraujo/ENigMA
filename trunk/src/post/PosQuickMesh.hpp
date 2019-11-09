@@ -13,28 +13,20 @@
 
 using namespace ENigMA::pde;
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace post
-    {
+namespace post {
 
-        template <typename Real>
-        class CPosQuickMesh
-        {
-        public:
+    template <typename Real>
+    class CPosQuickMesh {
+    public:
+        CPosQuickMesh();
+        ~CPosQuickMesh();
 
-            CPosQuickMesh();
-            ~CPosQuickMesh();
-
-            bool load(CPdeField<Real>& aField, std::string strFileName);
-            bool save(CPdeField<Real>& aField, std::string strFileName);
-
-        };
-
-    }
-
+        bool load(CPdeField<Real>& aField, std::string strFileName);
+        bool save(CPdeField<Real>& aField, std::string strFileName);
+    };
+}
 }
 
 #include "PosQuickMesh_Imp.hpp"
-

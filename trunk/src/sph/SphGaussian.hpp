@@ -11,31 +11,24 @@
 
 #include "SphKernel.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace sph
-    {
+namespace sph {
 
-        template <typename Real> 
-        class CSphGaussian : public CSphKernel<Real>
-        {
-        public:
-            CSphGaussian();
-            CSphGaussian(const Integer nDimension);
-            ~CSphGaussian();
+    template <typename Real>
+    class CSphGaussian : public CSphKernel<Real> {
+    public:
+        CSphGaussian();
+        CSphGaussian(const Integer nDimension);
+        ~CSphGaussian();
 
-            void setDimension(const Integer nDimension);
+        void setDimension(const Integer nDimension);
 
-            Real W(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
-            ENigMA::geometry::CGeoVector<Real> gradientW(const ENigMA::geometry::CGeoVector<Real> r, const Real h, const Real aTolerance = 0.0);
-            Real laplacianW(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
-
-        };
-
-    }
-
+        Real W(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
+        ENigMA::geometry::CGeoVector<Real> gradientW(const ENigMA::geometry::CGeoVector<Real> r, const Real h, const Real aTolerance = 0.0);
+        Real laplacianW(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
+    };
+}
 }
 
 #include "SphGaussian_Imp.hpp"
-

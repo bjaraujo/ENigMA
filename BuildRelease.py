@@ -1,10 +1,6 @@
 
 import os
-import platform
-import time
-import sys
 import shutil
-import glob
 
 # Build platform
 build = 'msvc15-win64'

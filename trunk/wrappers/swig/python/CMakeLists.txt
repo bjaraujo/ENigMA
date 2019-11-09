@@ -5,11 +5,11 @@ find_package(PythonLibs 3.0 REQUIRED)
 find_package(PythonInterp 3.0 REQUIRED)
 
 include_directories(
-  ${Eigen3_DIR}
-  ${Eigen3_DIR}/Eigen
-  ${ViennaCL_DIR}
-  ${RTree_DIR}
-  ${Exprtk_DIR}
+  ${EIGEN_DIR}
+  ${EIGEN_DIR}/Eigen
+  ${VIENNACL_DIR}
+  ${RTREE_DIR}
+  ${EXPRTK_DIR}
   ../../../src/common
   ../../../src/analytical
   ../../../src/bem

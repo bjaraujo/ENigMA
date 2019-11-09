@@ -9,23 +9,15 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace integration
-    {
+namespace integration {
 
-        template <typename Real>
-        class CIntGaussIntegration
-        {
-        protected:
-
-            Integer m_integPoints;
-            virtual void setGaussPoints() = 0;
-
-        };
-
-    }
-
+    template <typename Real>
+    class CIntGaussIntegration {
+    protected:
+        Integer m_integPoints;
+        virtual void setGaussPoints() = 0;
+    };
 }
-
+}

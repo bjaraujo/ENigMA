@@ -25,10 +25,10 @@ include_directories(
     ../../src/pde
     ../../src/post
     ../../src/stl
-    ${Eigen3_DIR}
-    ${ViennaCL_DIR}
-    ${RTree_DIR}
-    ${Exprtk_DIR}
+    ${EIGEN_DIR}
+    ${VIENNACL_DIR}
+    ${RTREE_DIR}
+    ${EXPRTK_DIR}
     ${OpenCASCADE_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}

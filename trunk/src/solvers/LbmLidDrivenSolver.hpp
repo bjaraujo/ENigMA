@@ -13,64 +13,52 @@
 
 #include "CmnTypes.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace lbm
-    {
+namespace lbm {
 
-        template <typename Real, Integer nDim, Integer nSpeeds>
-        class CLbmLidDrivenSolver
-        {
+    template <typename Real, Integer nDim, Integer nSpeeds>
+    class CLbmLidDrivenSolver {
+    };
 
-        };
+    template <typename Real>
+    class CLbmLidDrivenSolver<Real, 2, 9> {
+    private:
+        Integer m_nx, m_ny, m_nz;
 
-        template <typename Real>
-        class CLbmLidDrivenSolver<Real, 2, 9>
-        {
-        private:
+        std::vector<std::vector<Integer>> m_e;
+        std::vector<Real> m_w;
+        std::vector<Real> m_op;
 
-            Integer m_nx, m_ny, m_nz;
+        std::vector<std::vector<Integer>> m_B;
+        std::vector<std::vector<Real>> m_rho;
 
-            std::vector<std::vector<Integer> > m_e;
-            std::vector<Real> m_w;
-            std::vector<Real> m_op;
+        std::vector<std::vector<std::vector<Real>>> m_u, m_u0;
+        std::vector<std::vector<std::vector<Real>>> m_f;
+        std::vector<std::vector<std::vector<Real>>> m_F;
 
-            std::vector<std::vector<Integer> > m_B;
-            std::vector<std::vector<Real> > m_rho;
+        Real feq2(Integer k, Real rho, std::vector<Real>& u);
 
-            std::vector<std::vector<std::vector<Real> > > m_u, m_u0;
-            std::vector<std::vector<std::vector<Real> > > m_f;
-            std::vector<std::vector<std::vector<Real> > > m_F;
+        void resizeMatrix(std::vector<std::vector<Integer>>& mat);
+        void resizeMatrix(std::vector<std::vector<Real>>& mat);
+        void resizeMatrix(std::vector<std::vector<std::vector<Real>>>& mat, Integer n);
 
-            Real feq2(Integer k, Real rho, std::vector<Real>& u);
+    public:
+        CLbmLidDrivenSolver(Integer nx, Integer ny, Integer nz);
+        ~CLbmLidDrivenSolver();
 
-            void resizeMatrix(std::vector<std::vector<Integer> >& mat);
-            void resizeMatrix(std::vector<std::vector<Real> >& mat);
-            void resizeMatrix(std::vector<std::vector<std::vector<Real> > >& mat, Integer n);
+        void setDensity(Integer i, Integer j, Real aValue);
 
-        public:
+        void setVelocity(Integer i, Integer j, Integer d, Real aValue);
+        Real getVelocity(Integer i, Integer j, Integer d);
 
-            CLbmLidDrivenSolver(Integer nx, Integer ny, Integer nz);
-            ~CLbmLidDrivenSolver();
+        void setBoundary(Integer i, Integer j, Integer aValue);
+        Integer getBoundary(Integer i, Integer j);
 
-            void setDensity(Integer i, Integer j, Real aValue);
-
-            void setVelocity(Integer i, Integer j, Integer d, Real aValue);
-            Real getVelocity(Integer i, Integer j, Integer d);
-
-            void setBoundary(Integer i, Integer j, Integer aValue);
-            Integer getBoundary(Integer i, Integer j);
-
-            void init();
-            void evolve(Real tau_f);
-
-        };
-
-    }
-
+        void init();
+        void evolve(Real tau_f);
+    };
+}
 }
 
 #include "LbmLidDrivenSolver_Imp.hpp"
-
-

@@ -9,39 +9,32 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
+namespace fem {
+
+    template <typename Real>
+    CFemFace<Real>::CFemFace()
+    {
+    }
+
+    template <typename Real>
+    CFemFace<Real>::~CFemFace()
+    {
+    }
+
+    template <typename Real>
+    void CFemFace<Real>::setThickness(const Real aValue)
     {
 
-        template <typename Real>
-        CFemFace<Real>::CFemFace()
-        {
+        m_thickness = aValue;
+    }
 
-        }
+    template <typename Real>
+    Real CFemFace<Real>::thickness() const
+    {
 
-        template <typename Real>
-        CFemFace<Real>::~CFemFace()
-        {
-
-        }
-
-        template <typename Real>
-        void CFemFace<Real>::setThickness(const Real aValue)
-        {
-
-            m_thickness = aValue;
-
-        }
-
-        template <typename Real>
-        Real CFemFace<Real>::thickness() const
-        {
-        
-            return m_thickness;
-            
-        }
+        return m_thickness;
     }
 }
-
+}

@@ -3,10 +3,10 @@ project(OccActive)
 include(${QT_USE_FILE})
 
 include_directories(
-    ${Eigen3_DIR}
-    ${ViennaCL_DIR}
-    ${RTree_DIR}
-    ${Exprtk_DIR}
+    ${EIGEN_DIR}
+    ${VIENNACL_DIR}
+    ${RTREE_DIR}
+    ${EXPRTK_DIR}
     ${OpenCASCADE_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}

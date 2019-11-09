@@ -1,6 +1,6 @@
-    
+
 from timeit import default_timer as timer
-import subprocess
+#import subprocess
 
 import ENigMA
 

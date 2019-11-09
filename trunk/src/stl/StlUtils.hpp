@@ -12,105 +12,93 @@
 #include "MshMesh.hpp"
 #include "StlFile.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace stl
-    {
+namespace stl {
 
-#define LABEL_SIZE             80
-#define NUM_FACET_SIZE         4
-#define HEADER_SIZE            84
-#define STL_MIN_FILE_SIZE      134
-#define ASCII_LINES_PER_FACET  7
-#define SIZEOF_EDGE_SORT       24
-#define SIZEOF_STL_FACET       50
+#define LABEL_SIZE 80
+#define NUM_FACET_SIZE 4
+#define HEADER_SIZE 84
+#define STL_MIN_FILE_SIZE 134
+#define ASCII_LINES_PER_FACET 7
+#define SIZEOF_EDGE_SORT 24
+#define SIZEOF_STL_FACET 50
 
-        template <typename Real>
-        struct CDisjointPoint
+    template <typename Real>
+    struct CDisjointPoint {
+
+        ENigMA::geometry::CGeoCoordinate<Real> aStartPoint;
+        ENigMA::geometry::CGeoCoordinate<Real> aPoint;
+
+        bool operator<(const CDisjointPoint& a) const
         {
+            return (aPoint - aStartPoint).norm() < (a.aPoint - aStartPoint).norm();
+        }
+    };
 
-            ENigMA::geometry::CGeoCoordinate<Real> aStartPoint;
-            ENigMA::geometry::CGeoCoordinate<Real> aPoint;
+    template <typename Real>
+    struct CDisjointLine {
+        ENigMA::geometry::CGeoLine<Real> aLine;
+        std::vector<CDisjointPoint<Real>> sPoints;
 
-            bool operator<(const CDisjointPoint& a) const
-            {
-                return (aPoint - aStartPoint).norm() < (a.aPoint - aStartPoint).norm();
-            }
+        Integer wFacet;
+        Integer wEdge;
+    };
 
-        };
+    template <typename Real>
+    class CStlUtils {
+    private:
+        CStlFile<Real> m_stlFile;
 
-        template <typename Real>
-        struct CDisjointLine
-        {
-            ENigMA::geometry::CGeoLine<Real> aLine;
-            std::vector<CDisjointPoint<Real> > sPoints;
+        bool saveAscii(std::string strFileName);
+        bool saveBinary(std::string strFileName);
 
-            Integer wFacet;
-            Integer wEdge;
+        bool writeFloat(std::ofstream& stream, const Real aValue);
+        bool writeInt(std::ofstream& stream, const Integer aValue);
 
-        };
+        Real getFloat(std::ifstream& stream);
+        Integer getInt(std::ifstream& stream);
 
-        template <typename Real>
-        class CStlUtils
-        {
-        private:
+        void invertFacet(Integer aFacetId, Integer aVertexNot);
 
-            CStlFile<Real> m_stlFile;
+    public:
+        CStlUtils();
+        CStlUtils(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
 
-            bool saveAscii(std::string strFileName);
-            bool saveBinary(std::string strFileName);
+        ~CStlUtils();
 
-            bool writeFloat(std::ofstream& stream, const Real aValue);
-            bool writeInt(std::ofstream& stream, const Integer aValue);
+        ENigMA::stl::CStlFile<Real>& stlFile();
 
-            Real getFloat(std::ifstream& stream);
-            Integer getInt(std::ifstream& stream);
+        void set(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
 
-            void invertFacet(Integer aFacetId, Integer aVertexNot);
+        bool load(std::string strFileName);
+        bool save(std::string strFileName);
 
-        public:
+        bool add(CStlUtils<Real>& aStl);
 
-            CStlUtils();
-            CStlUtils(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
+        bool addFacet(const Integer aFacetId, ENigMA::stl::CStlFacet<Real> aFacet);
+        bool removeFacet(const Integer aFacetId);
 
-            ~CStlUtils();
+        bool calculateStatistics();
 
-            ENigMA::stl::CStlFile<Real>& stlFile();
+        bool removeDuplicateFacets(const Real aTolerance = 0.0);
+        bool removeInvalidFacets(const Real aTolerance = 0.0);
 
-            void set(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
+        bool generateConnectivity(const Real aTolerance = 0.0);
+        bool setOrientation(Integer aPivotFacetId, const Real aTolerance = 0.0);
+        bool setOrientation(bool bPointOut = true, const Real aTolerance = 0.0);
 
-            bool load(std::string strFileName);
-            bool save(std::string strFileName);
+        ENigMA::mesh::CMshMesh<Real> mesh();
 
-            bool add(CStlUtils<Real>& aStl);
+        bool getFacetQuality(ENigMA::stl::CStlFacet<Real>& aFacet, Integer& smallEdge, Integer& bigEdge, Real& dmin, Real& dmax, Real& q);
 
-            bool addFacet(const Integer aFacetId, ENigMA::stl::CStlFacet<Real> aFacet);
-            bool removeFacet(const Integer aFacetId);
-
-            bool calculateStatistics();
-
-            bool removeDuplicateFacets(const Real aTolerance = 0.0);
-            bool removeInvalidFacets(const Real aTolerance = 0.0);
-
-            bool generateConnectivity(const Real aTolerance = 0.0);
-            bool setOrientation(Integer aPivotFacetId, const Real aTolerance = 0.0);
-            bool setOrientation(bool bPointOut = true, const Real aTolerance = 0.0);
-
-            ENigMA::mesh::CMshMesh<Real> mesh();
-
-            bool getFacetQuality(ENigMA::stl::CStlFacet<Real>& aFacet, Integer& smallEdge, Integer& bigEdge, Real& dmin, Real& dmax, Real& q);
-
-            bool splitFacets(const Real splitSize, const Real fq);
-            bool relaxVertices();
-            bool checkEdges(const Real angle);
-            bool flipEdges(const Real swapAngle);
-            bool collapseEdges(const Real minQuality, const Real maxAngle);
-
-        };
-
-    }
-
+        bool splitFacets(const Real splitSize, const Real fq);
+        bool relaxVertices();
+        bool checkEdges(const Real angle);
+        bool flipEdges(const Real swapAngle);
+        bool collapseEdges(const Real minQuality, const Real maxAngle);
+    };
+}
 }
 
 #include "StlUtils_Imp.hpp"

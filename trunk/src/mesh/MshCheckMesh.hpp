@@ -11,28 +11,20 @@
 
 #include "MshMesh.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace mesh
-    {
+namespace mesh {
 
-        template <typename Real>
-        class CMshCheckMesh
-        {
-        public:
+    template <typename Real>
+    class CMshCheckMesh {
+    public:
+        CMshCheckMesh();
+        virtual ~CMshCheckMesh();
 
-            CMshCheckMesh();
-            ~CMshCheckMesh();
-
-            bool checkOpen(CMshMesh<Real>& aMesh);
-            bool checkIntersections(CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
-
-        };
-
-    }
-
+        bool checkOpen(CMshMesh<Real>& aMesh);
+        bool checkIntersections(CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
+    };
+}
 }
 
 #include "MshCheckMesh_Imp.hpp"
-

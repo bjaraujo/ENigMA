@@ -13,42 +13,35 @@
 
 #include "GeoCoordinate.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace geometry
-    {
+namespace geometry {
 
-        template <typename Real>
-        class CGeoVertexList
-        {
-        protected:
+    template <typename Real>
+    class CGeoVertexList {
+    protected:
+        std::vector<CGeoCoordinate<Real>> m_vertices;
 
-            std::vector<CGeoCoordinate<Real> > m_vertices;
+    public:
+        CGeoVertexList();
+        virtual ~CGeoVertexList();
 
-        public:
-            CGeoVertexList();
-            ~CGeoVertexList();
+        Integer nbVertices();
 
-            Integer nbVertices();
+        virtual void reset();
 
-            virtual void reset();
+        void addVertex(CGeoCoordinate<Real>& aVertex);
+        void insertVertex(const Integer aVertexIndex, CGeoCoordinate<Real>& aVertex);
+        void removeVertex(const Integer aVertexIndex);
 
-            void addVertex(CGeoCoordinate<Real>& aVertex);
-            void insertVertex(const Integer aVertexIndex, CGeoCoordinate<Real>& aVertex);
-            void removeVertex(const Integer aVertexIndex);
+        CGeoCoordinate<Real>& vertex(const Integer aVertexIndex);
 
-            CGeoCoordinate<Real>& vertex(const Integer aVertexIndex);
+        void removeDuplicates();
+        void removeCollinear(const Real aTolerance = 0.0);
 
-            void removeDuplicates();
-            void removeCollinear(const Real aTolerance = 0.0);
-
-            void invert();
-
-        };
-
-    }
-
+        void invert();
+    };
+}
 }
 
 #include "GeoVertexList_Imp.hpp"

@@ -9,26 +9,18 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fvm
+namespace fvm {
+
+    template <typename Real>
+    CFvmCell<Real>::CFvmCell()
     {
-
-        template <typename Real>
-        CFvmCell<Real>::CFvmCell()
-        {
-
-        }
-        
-        template <typename Real>
-        CFvmCell<Real>::~CFvmCell()
-        {
-
-        }
-
     }
 
+    template <typename Real>
+    CFvmCell<Real>::~CFvmCell()
+    {
+    }
 }
-
-
+}

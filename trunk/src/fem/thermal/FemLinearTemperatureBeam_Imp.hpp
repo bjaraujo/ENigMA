@@ -11,49 +11,39 @@
 
 using namespace ENigMA::geometry;
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fem
-    {
+namespace fem {
 
-        namespace thermal
+    namespace thermal {
+
+        template <typename Real>
+        CFemLinearTemperatureBeam<Real, 2, 1, 1>::CFemLinearTemperatureBeam()
         {
-
-            template <typename Real>
-            CFemLinearTemperatureBeam<Real, 2, 1, 1>::CFemLinearTemperatureBeam()
-            {
-                
-            }
-
-            template <typename Real>
-            CFemLinearTemperatureBeam<Real, 2, 1, 1>::~CFemLinearTemperatureBeam()
-            {
-
-            }
-
-            template <typename Real>
-            void CFemLinearTemperatureBeam<Real, 2, 1, 1>::setConvectionOnEdge(const Real h, const Real Tinf)
-            {
-
-                CFemElement<Real>::source(0) += h * Tinf * this->m_perimeter * this->m_length;
-                CFemElement<Real>::source(1) += h * Tinf * this->m_perimeter * this->m_length;
-
-                CFemElement<Real>::laplacian(0, 0) += h * this->m_perimeter * this->m_length;
-                CFemElement<Real>::laplacian(1, 1) += h * this->m_perimeter * this->m_length;
-
-            }
-
-            template <typename Real>
-            void CFemLinearTemperatureBeam<Real, 2, 1, 1>::setConvectionOnEdge(const Real e, const Real teta, const Real Tinf)
-            {
-
-                this->setConvectionOnEdge(e, teta, Tinf);
-
-            }
-
         }
 
-    }
+        template <typename Real>
+        CFemLinearTemperatureBeam<Real, 2, 1, 1>::~CFemLinearTemperatureBeam()
+        {
+        }
 
+        template <typename Real>
+        void CFemLinearTemperatureBeam<Real, 2, 1, 1>::setConvectionOnEdge(const Real h, const Real Tinf)
+        {
+
+            CFemElement<Real>::source(0) += h * Tinf * this->m_perimeter * this->m_length;
+            CFemElement<Real>::source(1) += h * Tinf * this->m_perimeter * this->m_length;
+
+            CFemElement<Real>::laplacian(0, 0) += h * this->m_perimeter * this->m_length;
+            CFemElement<Real>::laplacian(1, 1) += h * this->m_perimeter * this->m_length;
+        }
+
+        template <typename Real>
+        void CFemLinearTemperatureBeam<Real, 2, 1, 1>::setConvectionOnEdge(const Real e, const Real teta, const Real Tinf)
+        {
+
+            this->setConvectionOnEdge(e, teta, Tinf);
+        }
+    }
+}
 }

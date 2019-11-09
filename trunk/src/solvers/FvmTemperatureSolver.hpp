@@ -11,55 +11,46 @@
 
 #include "FvmPisoSolver.hpp"
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    namespace fvm
-    {
+namespace fvm {
 
-        template <typename Real>
-        class CFvmTemperatureSolver : public CFvmPisoSolver<Real>
-        {
-        protected:
+    template <typename Real>
+    class CFvmTemperatureSolver : public CFvmPisoSolver<Real> {
+    protected:
+        bool m_calcT;
 
-            bool m_calcT;
+        Real m_bthcond; // Boundary thermal conductivity
 
-            Real m_bthcond;             // Boundary thermal conductivity
+        varMap m_thcond; // Cell thermal conductivity
+        varMap m_spheat; // Cell specific heat
 
-            varMap m_thcond;            // Cell thermal conductivity
-            varMap m_spheat;            // Cell specific heat
+        varMap m_T0; // Cell center temperature - previous time step
+        varMap m_T; // Cell center temperature
+        varMap m_Tf; // Face center temperature
 
-            varMap m_T0;                // Cell center temperature - previous time step
-            varMap m_T;                 // Cell center temperature
-            varMap m_Tf;                // Face center temperature
+        void calculateTemperatureField();
 
-            void calculateTemperatureField();
+    public:
+        CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh);
+        ~CFvmTemperatureSolver();
 
-        public:
+        virtual void storePreviousQuantities();
 
-            CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh);
-            ~CFvmTemperatureSolver();
+        virtual void setMaterialProperties(const Real aDensity, const Real aViscosity, const Real aThermalConductivity, const Real aSpecificHeat);
 
-            virtual void storePreviousQuantities();
+        void setBoundaryTemperature(const std::vector<Integer>& sFaceIds, const EBoundaryType sFaceType, const Real T);
 
-            virtual void setMaterialProperties(const Real aDensity, const Real aViscosity, const Real aThermalConductivity, const Real aSpecificHeat);
+        virtual void iterate(const Real dt, const bool bInit = false);
+        virtual void residual(Real& ru, Real& rv, Real& rw, Real& rp, Real& rT);
 
-            void setBoundaryTemperature(const std::vector<Integer>& sFaceIds, const EBoundaryType sFaceType, const Real T);
+        Real T(const Integer aControlVolumeId);
 
-            virtual void iterate(const Real dt, const bool bInit = false);
-            virtual void residual(Real& ru, Real& rv, Real& rw, Real& rp, Real& rT);
+        Real Tf(const Integer aFaceId);
 
-            Real T(const Integer aControlVolumeId);
-
-            Real Tf(const Integer aFaceId);
-
-            CGeoVector<Real> gradT(const Integer aControlVolumeId);
-            
-        };
-
-    }
-
+        CGeoVector<Real> gradT(const Integer aControlVolumeId);
+    };
+}
 }
 
 #include "FvmTemperatureSolver_Imp.hpp"
-
