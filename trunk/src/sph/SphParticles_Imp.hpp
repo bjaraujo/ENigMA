@@ -38,7 +38,7 @@ namespace sph {
             m_particles[i].density = rho;
             m_particles[i].conductivity = diff;
 
-            m_particles[i].velocity = typename CGeoVector<Real>::CGeoVector(0, 0, 0);
+            m_particles[i].velocity = CGeoVector<Real>(0, 0, 0);
         }
 
         m_bCyclic = bCyclic;

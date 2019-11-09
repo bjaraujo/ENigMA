@@ -16,18 +16,18 @@ namespace ENigMA {
 namespace sph {
 
     template <typename Real>
-    CSphKernel<Real>::CSphKernel(const Integer nDimension)
+    CSphKernel<Real>::CSphKernel(const Integer nDimension) :
+        m_pi(std::acos(-1.0))
     {
 
-        m_pi = std::acos(-1.0);
         this->setDimension(nDimension);
     }
 
     template <typename Real>
-    CSphKernel<Real>::CSphKernel()
+    CSphKernel<Real>::CSphKernel() :
+        m_pi(std::acos(-1.0))
     {
 
-        m_pi = std::acos(-1.0);
         this->setDimension(1);
     }
 

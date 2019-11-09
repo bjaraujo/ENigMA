@@ -19,7 +19,7 @@ namespace sph {
     class CSphGaussian : public CSphKernel<Real> {
     public:
         CSphGaussian();
-        CSphGaussian(const Integer nDimension);
+        explicit CSphGaussian(const Integer nDimension);
         virtual ~CSphGaussian();
 
         void setDimension(const Integer nDimension);

@@ -70,7 +70,7 @@ namespace sph {
             q = aTolerance;
 
         if (q > 2.0)
-            return typename CGeoVector<Real>::CGeoVector(0, 0, 0);
+            return CGeoVector<Real>(0, 0, 0);
 
         if (CSphKernel<Real>::m_dim == 1)
             CSphKernel<Real>::m_C = 5.0 / (24.0 * h);

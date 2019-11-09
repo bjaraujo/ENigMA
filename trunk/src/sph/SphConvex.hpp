@@ -19,7 +19,7 @@ namespace sph {
     class CSphConvex : public CSphKernel<Real> {
     public:
         CSphConvex();
-        CSphConvex(const Integer nDimension);
+        explicit CSphConvex(const Integer nDimension);
         virtual ~CSphConvex();
 
         void setDimension(const Integer nDimension);
