@@ -16,11 +16,8 @@ namespace fem {
     namespace flow {
 
         template <typename Real>
-        CFemFlowElement<Real>::CFemFlowElement()
+        CFemFlowElement<Real>::CFemFlowElement() : m_density(1.0), m_viscosity(1.0)
         {
-
-            m_density = 1.0;
-            m_viscosity = 1.0;
         }
 
         template <typename Real>

@@ -16,16 +16,10 @@ namespace ENigMA {
 namespace fvm {
 
     template <typename Real>
-    CFvmPisoSolver<Real>::CFvmPisoSolver(CFvmMesh<Real>& aFvmMesh)
+    CFvmPisoSolver<Real>::CFvmPisoSolver(CFvmMesh<Real>& aFvmMesh) : m_dt(0.0), m_gx(0.0), m_gy(0.0), m_gz(0.0)
     {
 
         m_fvmMesh = aFvmMesh;
-
-        m_dt = 1.0;
-
-        m_gx = 0.0;
-        m_gy = 0.0;
-        m_gz = 0.0;
 
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
 
