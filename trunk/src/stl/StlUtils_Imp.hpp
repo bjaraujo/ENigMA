@@ -499,7 +499,7 @@ namespace stl {
 
             for (Integer k = 1; k < static_cast<Integer>(sCoordinates.size()); ++k) {
 
-                Integer wFacetId = sCoordinates[k];
+                Integer wFacetId = sCoordinates.at(k);
 
                 m_stlFile.facet(wFacetId).calculateArea();
 
@@ -597,10 +597,10 @@ namespace stl {
 
                 for (Integer k = 0; k < static_cast<Integer>(sCoordinates.size()); ++k) {
 
-                    if (sCoordinates[k] != aFacetId * 3 + j) {
+                    if (sCoordinates.at(k) != aFacetId * 3 + j) {
 
-                        Integer ni = sCoordinates[k] / 3;
-                        Integer nj = sCoordinates[k] % 3;
+                        Integer ni = sCoordinates.at(k) / 3;
+                        Integer nj = sCoordinates.at(k) % 3;
 
                         m_stlFile.facet(aFacetId).edge(j).setNeighbor(ni);
                         m_stlFile.facet(aFacetId).edge(j).setWhichVertexNot((nj + 2) % 3);

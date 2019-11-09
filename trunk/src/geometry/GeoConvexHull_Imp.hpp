@@ -34,8 +34,8 @@ namespace geometry {
             if (sVertices.size() < 3)
                 return;
 
-            CGeoVector<Real> v0 = sVertices[1] - sVertices[0];
-            CGeoVector<Real> v1 = sVertices[2] - sVertices[0];
+            CGeoVector<Real> v0 = sVertices.at(1) - sVertices.at(0);
+            CGeoVector<Real> v1 = sVertices.at(2) - sVertices.at(0);
 
             CGeoVector<Real> vx = v0;
             vx.normalize();
@@ -58,8 +58,8 @@ namespace geometry {
 
                 SVertex<Real> aVertex;
 
-                aVertex.v2D = sVertices[i];
-                aVertex.v3D = sVertices[i];
+                aVertex.v2D = sVertices.at(i);
+                aVertex.v3D = sVertices.at(i);
 
                 aVertex.v2D.transform(aCoordinateSystem);
 

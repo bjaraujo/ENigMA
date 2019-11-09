@@ -54,7 +54,7 @@ namespace mesh {
     Integer CMshFace<Real>::nodeId(const Integer aNodeIndex)
     {
 
-        return m_nodeIds[aNodeIndex];
+        return m_nodeIds.at(aNodeIndex);
     }
 
     template <typename Real>

@@ -764,7 +764,7 @@ namespace mesh {
                             Integer anElementId = anEdgeMesh.face(aPairFaceId).elementId();
 
                             if (newEdgeIds.find(anElementId) != newEdgeIds.end()) {
-                                anAdvEdge.neighborId[j] = newEdgeIds[anElementId];
+                                anAdvEdge.neighborId[j] = newEdgeIds.at(anElementId);
                             } else
                                 std::cout << "Error: element id = " << anElementId << " not found!" << std::endl;
 
@@ -894,7 +894,7 @@ namespace mesh {
                     x = aMidNode.x();
                     y = aMidNode.y();
 
-                    // Rotate vector by 90º
+                    // Rotate vector by 90ï¿½
                     CGeoVector<Real> v = aNode2 - aNode1;
 
                     Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
@@ -1228,7 +1228,7 @@ namespace mesh {
 
             Integer anElementId = aFace.elementId();
 
-            if (sFlipped[anElementId])
+            if (sFlipped.at(anElementId))
                 continue;
 
             CMshElement<Real>& anElement = m_surfaceMesh.element(anElementId);
@@ -1262,7 +1262,7 @@ namespace mesh {
 
                 Integer aNeighborId = aPairFace.elementId();
 
-                if (sFlipped[aNeighborId])
+                if (sFlipped.at(aNeighborId))
                     continue;
 
                 CMshElement<Real>& aNeighbor = m_surfaceMesh.element(aNeighborId);
@@ -1383,7 +1383,7 @@ namespace mesh {
             Integer aMovingNodeId = m_surfaceMesh.nodeId(i);
             CMshNode<Real>& aMovingNode = m_surfaceMesh.node(aMovingNodeId);
 
-            if (bBoundaryNode[aMovingNodeId])
+            if (bBoundaryNode.at(aMovingNodeId))
                 continue;
 
             aMeshQuery.elementsSharingNode(aMovingNodeId, sElementIds);
@@ -1532,7 +1532,7 @@ namespace mesh {
 
                 Real anEdgeLength = (aNode1 - aNode2).norm();
 
-                if (bBoundaryNode[aNodeId2])
+                if (bBoundaryNode.at(aNodeId2))
                     continue;
 
                 if (anEdgeLength < collapseSize * 0.75) {

@@ -202,7 +202,7 @@ namespace pde {
     ENigMA::material::CMatMaterial<Real>& CPdeField<Real>::material(const Integer anElementIndex)
     {
 
-        return m_materials[anElementIndex];
+        return m_materials.at(anElementIndex);
     }
 
     // Boundary conditions
@@ -228,7 +228,7 @@ namespace pde {
     ENigMA::pde::CPdeBoundaryCondition<Real>& CPdeField<Real>::nodeBC(const Integer aNodeId)
     {
 
-        return m_bcNode[aNodeId];
+        return m_bcNode.at(aNodeId);
     }
 
     template <typename Real>
@@ -252,7 +252,7 @@ namespace pde {
     ENigMA::pde::CPdeBoundaryCondition<Real>& CPdeField<Real>::faceBC(const Integer aFaceId)
     {
 
-        return m_bcFace[aFaceId];
+        return m_bcFace.at(aFaceId);
     }
 
     template <typename Real>

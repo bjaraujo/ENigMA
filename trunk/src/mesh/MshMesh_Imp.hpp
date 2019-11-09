@@ -499,8 +499,8 @@ namespace mesh {
                     if (sNodes.at(k) > aNodeId) {
 
                         // Duplicate node found
-                        bDeleteNode[sNodes[k]] = true;
-                        sNewNodeIds[sNodes[k]] = aNodeId;
+                        bDeleteNode[sNodes.at(k)] = true;
+                        sNewNodeIds[sNodes.at(k)] = aNodeId;
                     }
                 }
             }

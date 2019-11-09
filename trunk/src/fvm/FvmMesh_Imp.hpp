@@ -54,7 +54,7 @@ namespace fvm {
         // MshFaces->FvmFaces
         for (Integer i = 0; i < aMesh.nbFaces(); ++i) {
 
-            if (faceAdded[aMesh.faceId(i)])
+            if (faceAdded.at(aMesh.faceId(i)))
                 continue;
 
             CMshFace<Real> aMshFace = aMesh.face(aMesh.faceId(i));
@@ -105,9 +105,9 @@ namespace fvm {
 
             for (Integer j = 0; j < aMshElement.nbFaceIds(); ++j) {
 
-                Integer aFaceId = newFaceIds[aMshElement.faceId(j)];
+                Integer aFaceId = newFaceIds.at(aMshElement.faceId(j));
 
-                CFvmFace<Real> aFace = m_faces[aFaceId];
+                CFvmFace<Real> aFace = m_faces.at(aFaceId);
 
                 if (aFace.controlVolumeId() != aControlVolumeId) {
                     // Invert
@@ -157,28 +157,28 @@ namespace fvm {
     Integer CFvmMesh<Real>::faceId(const Integer aFaceIndex)
     {
 
-        return m_faceIds[aFaceIndex];
+        return m_faceIds.at(aFaceIndex);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::faceIndex(const Integer aFaceId)
     {
 
-        return m_faceIndices[aFaceId];
+        return m_faceIndices.at(aFaceId);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::controlVolumeId(const Integer aControlVolumeIndex)
     {
 
-        return m_controlVolumeIds[aControlVolumeIndex];
+        return m_controlVolumeIds.at(aControlVolumeIndex);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::controlVolumeIndex(const Integer aControlVolumeId)
     {
 
-        return m_controlVolumeIndices[aControlVolumeId];
+        return m_controlVolumeIndices.at(aControlVolumeId);
     }
 
     template <typename Real>
@@ -226,14 +226,14 @@ namespace fvm {
     CFvmFace<Real>& CFvmMesh<Real>::face(const Integer aFaceId)
     {
 
-        return m_faces[aFaceId];
+        return m_faces.at(aFaceId);
     }
 
     template <typename Real>
     CFvmControlVolume<Real>& CFvmMesh<Real>::controlVolume(const Integer aControlVolumeId)
     {
 
-        return m_controlVolumes[aControlVolumeId];
+        return m_controlVolumes.at(aControlVolumeId);
     }
 
     template <typename Real>
@@ -264,11 +264,11 @@ namespace fvm {
 
         for (Integer i = 0; i < static_cast<Integer>(m_controlVolumeIds.size()); ++i) {
 
-            Integer aControlVolumeId = m_controlVolumeIds[i];
+            Integer aControlVolumeId = m_controlVolumeIds.at(i);
 
-            m_controlVolumes[aControlVolumeId].calculateVolume();
+            m_controlVolumes.at(aControlVolumeId).calculateVolume();
 
-            volume += m_controlVolumes[aControlVolumeId].volume();
+            volume += m_controlVolumes.at(aControlVolumeId).volume();
         }
 
         return volume;

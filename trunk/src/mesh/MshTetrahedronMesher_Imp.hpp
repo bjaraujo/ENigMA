@@ -1510,7 +1510,7 @@ namespace mesh {
             Integer aMovingNodeId = m_volumeMesh.nodeId(i);
             CMshNode<Real>& aMovingNode = m_volumeMesh.node(aMovingNodeId);
 
-            if (bBoundaryNode[aMovingNodeId])
+            if (bBoundaryNode.at(aMovingNodeId))
                 continue;
 
             aMeshQuery.elementsSharingNode(aMovingNodeId, sElementIds);
@@ -1870,7 +1870,7 @@ namespace mesh {
             if (anElement.elementType() != ET_TETRAHEDRON)
                 continue;
 
-            if (sFlipped[anElementId])
+            if (sFlipped.at(anElementId))
                 continue;
 
             Integer aNodeId1 = anElement.nodeId(0);
@@ -1880,7 +1880,7 @@ namespace mesh {
 
             for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
 
-                if (sFlipped[anElementId])
+                if (sFlipped.at(anElementId))
                     continue;
 
                 Integer aFaceId = anElement.faceId(j);
@@ -1894,10 +1894,10 @@ namespace mesh {
 
                 for (Integer k = 0; k < aFace.nbNodeIds(); ++k) {
 
-                    if (sFlipped[anElementId])
+                    if (sFlipped.at(anElementId))
                         continue;
 
-                    if (bBoundaryNode[aFace.nodeId((k + 0) % 3)] && bBoundaryNode[aFace.nodeId((k + 1) % 3)])
+                    if (bBoundaryNode.at(aFace.nodeId((k + 0) % 3)) && bBoundaryNode.at(aFace.nodeId((k + 1) % 3)))
                         continue;
 
                     aMeshQuery.elementsSharingNodes(aFace.nodeId((k + 0) % 3), aFace.nodeId((k + 1) % 3), sElementIds);

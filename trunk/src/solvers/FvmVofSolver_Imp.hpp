@@ -106,7 +106,7 @@ namespace fvm {
             Real cs = 1.0;
 
             if (bInterface) {
-                Real s = std::min(std::max(m_s[aControlVolumeId], 0.0), 1.0);
+                Real s = std::min(std::max(m_s.at(aControlVolumeId), 0.0), 1.0);
                 cs = (1.0 - s) * (1.0 - s) * s * s * 16.0;
             }
 
@@ -119,9 +119,9 @@ namespace fvm {
                 Real flux;
 
                 if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                    flux = +m_flux[aFaceId];
+                    flux = +m_flux.at(aFaceId);
                 else
-                    flux = -m_flux[aFaceId];
+                    flux = -m_flux.at(aFaceId);
 
                 Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
 
@@ -164,9 +164,9 @@ namespace fvm {
                 Real flux;
 
                 if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                    flux = +m_flux[aFaceId];
+                    flux = +m_flux.at(aFaceId);
                 else
-                    flux = -m_flux[aFaceId];
+                    flux = -m_flux.at(aFaceId);
 
                 if (flux < 0.0) {
 
@@ -256,7 +256,7 @@ namespace fvm {
 
             Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
 
-            Real betaj = m_betaf[aFaceId];
+            Real betaj = m_betaf.at(aFaceId);
 
             if (betaj < 1E-2)
                 continue;
@@ -272,9 +272,9 @@ namespace fvm {
                 Real flux;
 
                 if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                    flux = +m_flux[aFaceId];
+                    flux = +m_flux.at(aFaceId);
                 else
-                    flux = -m_flux[aFaceId];
+                    flux = -m_flux.at(aFaceId);
 
                 if (flux != 0.0) {
 
@@ -335,8 +335,8 @@ namespace fvm {
 
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
-            m_dens[aControlVolumeId] = m_dens0 * (1.0 - m_s[aControlVolumeId]) + m_dens1 * m_s[aControlVolumeId];
-            m_visc[aControlVolumeId] = m_visc0 * (1.0 - m_s[aControlVolumeId]) + m_visc1 * m_s[aControlVolumeId];
+            m_dens[aControlVolumeId] = m_dens0 * (1.0 - m_s.at(aControlVolumeId)) + m_dens1 * m_s.at(aControlVolumeId);
+            m_visc[aControlVolumeId] = m_visc0 * (1.0 - m_s.at(aControlVolumeId)) + m_visc1 * m_s.at(aControlVolumeId);
         }
     }
 
@@ -360,7 +360,7 @@ namespace fvm {
 
             Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
 
-            Integer anIndexP = m_mapIdToIndex[aControlVolumeId];
+            Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
 
             for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j) {
 
@@ -372,37 +372,37 @@ namespace fvm {
                 Real flux;
 
                 if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                    flux = +m_flux[aFaceId];
+                    flux = +m_flux.at(aFaceId);
                 else
-                    flux = -m_flux[aFaceId];
+                    flux = -m_flux.at(aFaceId);
 
                 if (m_fvmMesh.face(aFaceId).hasPair()) {
 
                     Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
-                    Integer anIndexN = m_mapIdToIndex[aNeighborId];
+                    Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                     if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId)) {
 
                         Real beta = 0.0;
 
                         if (flux < 0.0)
-                            beta = m_betaf[aFaceId];
+                            beta = m_betaf.at(aFaceId);
                         else
-                            beta = 1.0 - m_betaf[aFaceId];
+                            beta = 1.0 - m_betaf.at(aFaceId);
 
                         // Convection
                         A.coeffRef(anIndexP, anIndexP) += 0.5 * (1.0 - beta) * flux;
                         A.coeffRef(anIndexP, anIndexN) += 0.5 * beta * flux;
 
-                        b[anIndexP] += -0.5 * (1.0 - beta) * flux * m_s[aControlVolumeId];
-                        b[anIndexP] += -0.5 * beta * flux * m_s[aNeighborId];
+                        b.at(anIndexP) += -0.5 * (1.0 - beta) * flux * m_s.at(aControlVolumeId);
+                        b.at(anIndexP) += -0.5 * beta * flux * m_s.at(aNeighborId);
                     }
 
                 } else {
 
                     // Convection
-                    b[anIndexP] += -1.0 * flux * m_sf[aFaceId];
+                    b.at(anIndexP) += -1.0 * flux * m_sf.at(aFaceId);
                 }
             }
 
@@ -410,7 +410,7 @@ namespace fvm {
 
                 // Unsteady term - Euler
                 A.coeffRef(anIndexP, anIndexP) += volume / m_dt;
-                b[anIndexP] += volume / m_dt * m_s0[aControlVolumeId];
+                b.at(anIndexP) += volume / m_dt * m_s0.at(aControlVolumeId);
             }
         }
 
@@ -423,9 +423,9 @@ namespace fvm {
 
         for (int i = 0; i < s.rows(); ++i) {
 
-            Integer aControlVolumeId = m_mapIndexToId[i];
+            Integer aControlVolumeId = m_mapIndexToId.at(i);
 
-            m_s[aControlVolumeId] = std::min(std::max(s[i], 0.0), 1.0);
+            m_s[aControlVolumeId] = std::min(std::max(s.at(i), 0.0), 1.0);
         }
     }
 
@@ -475,11 +475,11 @@ namespace fvm {
 
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
-            ru += (m_u[aControlVolumeId] - m_u0[aControlVolumeId]) * (m_u[aControlVolumeId] - m_u0[aControlVolumeId]);
-            rv += (m_v[aControlVolumeId] - m_v0[aControlVolumeId]) * (m_v[aControlVolumeId] - m_v0[aControlVolumeId]);
-            rw += (m_w[aControlVolumeId] - m_w0[aControlVolumeId]) * (m_w[aControlVolumeId] - m_w0[aControlVolumeId]);
-            rp += (m_p[aControlVolumeId] - m_p0[aControlVolumeId]) * (m_p[aControlVolumeId] - m_p0[aControlVolumeId]);
-            rs += (m_s[aControlVolumeId] - m_s0[aControlVolumeId]) * (m_s[aControlVolumeId] - m_s0[aControlVolumeId]);
+            ru += (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId)) * (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId));
+            rv += (m_v.at(aControlVolumeId) - m_v0.at(aControlVolumeId)) * (m_v.at(aControlVolumeId) - m_v0.at(aControlVolumeId));
+            rw += (m_w.at(aControlVolumeId) - m_w0.at(aControlVolumeId)) * (m_w.at(aControlVolumeId) - m_w0.at(aControlVolumeId));
+            rp += (m_p.at(aControlVolumeId) - m_p0.at(aControlVolumeId)) * (m_p.at(aControlVolumeId) - m_p0.at(aControlVolumeId));
+            rs += (m_s.at(aControlVolumeId) - m_s0.at(aControlVolumeId)) * (m_s.at(aControlVolumeId) - m_s0.at(aControlVolumeId));
         }
     }
 
@@ -487,14 +487,14 @@ namespace fvm {
     Real CFvmVofSolver<Real>::s(const Integer aControlVolumeId)
     {
 
-        return m_s[aControlVolumeId];
+        return m_s.at(aControlVolumeId);
     }
 
     template <typename Real>
     Real CFvmVofSolver<Real>::sf(const Integer aFaceId)
     {
 
-        return m_sf[aFaceId];
+        return m_sf.at(aFaceId);
     }
 
     template <typename Real>

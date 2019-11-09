@@ -239,8 +239,8 @@ for (Integer i = 0; i < aMesh.nbNodes(); ++i)
 
 Integer aNodeId = aMesh.nodeId(i);
 
-U.u(i * 3 + 0) = u.u[aNodeId];
-U.u(i * 3 + 1) = v.u[aNodeId];
+U.u(i * 3 + 0) = u.u.at(aNodeId);
+U.u(i * 3 + 1) = v.u.at(aNodeId);
 U.u(i * 3 + 2) = 0.0;
 
 }
@@ -451,9 +451,9 @@ for (Integer i = 0; i < aMesh.nbNodes(); ++i)
 
 Integer aNodeId = aMesh.nodeId(i);
 
-U.u(i * 3 + 0) = u.u[aNodeId];
-U.u(i * 3 + 1) = v.u[aNodeId];
-U.u(i * 3 + 2) = w.u[aNodeId];
+U.u(i * 3 + 0) = u.u.at(aNodeId);
+U.u(i * 3 + 1) = v.u.at(aNodeId);
+U.u(i * 3 + 2) = w.u.at(aNodeId);
 
 }
 
