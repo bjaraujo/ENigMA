@@ -744,7 +744,7 @@ namespace mesh {
             CMshFace<Real> aFace = m_faces.at(anOldFaceId);
 
             for (Integer j = 0; j < aFace.nbNodeIds(); ++j)
-                aFace.setNodeId(j, sNewFaceIds.at(aFace.nodeId(j)]);
+                aFace.setNodeId(j, sNewFaceIds.at(aFace.nodeId(j)));
 
             sNewFaces[aNewFaceId] = aFace;
         }
