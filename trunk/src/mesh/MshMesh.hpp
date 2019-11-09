@@ -57,7 +57,7 @@ namespace mesh {
        
     public:
         CMshMesh();
-        explicit CMshMesh(const CMshMesh& aMesh);
+        CMshMesh(const CMshMesh<Real>& aMesh);
         virtual ~CMshMesh();
 
         void reset();

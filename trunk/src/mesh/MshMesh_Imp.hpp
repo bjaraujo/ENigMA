@@ -32,37 +32,33 @@ namespace mesh {
         m_nbBoundaryFaces = 0;
     }
 
-    template <typename Real>
-    CMshMesh<Real>::CMshMesh(const CMshMesh& aMesh)
+    template <typename Real> CMshMesh<Real>::CMshMesh(const CMshMesh<Real>& aMesh)
     {
-        for (Integer i = 0; i < aMesh.nbNodes(); ++i)
-        {
-            Integer aNodeId = aMesh.nodeId(i);
-            CMshNode<Real> aNode = aMesh.node(aNodeId);
+        for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
+            Integer aNodeId = m_nodeIds.at(i);
+            CMshNode<Real> aNode = aMesh.m_nodes.at(aNodeId);
 
             addNode(aNodeId, aNode);
         }
 
-        for (Integer i = 0; i < aMesh.nbElements(); ++i)
-        {
-            Integer anElementId = aMesh.elementId(i);
-            CMshElement<Real> anElement = aMesh.element(anElementId);
+        for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
+            Integer anElementId = aMesh.m_elementIds.at(i);
+            CMshElement<Real> anElement = aMesh.m_elements.at(anElementId);
 
             addElement(anElementId, anElement);
         }
 
-        for (Integer i = 0; i < aMesh.nbFaces(); ++i)
-        {
-            Integer aFaceId = aMesh.faceId(i);
-            CMshFace<Real> aFace = aMesh.face(aFaceId);
+        for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
+            Integer aFaceId = aMesh.m_faceIds.at(i);
+            CMshFace<Real> aFace = aMesh.m_faces.at(aFaceId);
 
             addFace(aFaceId, aFace);
         }
-
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::reset()
+    template <typename Real> CMshMesh<Real>::~CMshMesh() {}
+
+    template <typename Real> void CMshMesh<Real>::reset()
     {
 
         m_nodeIds.clear();
@@ -89,29 +85,13 @@ namespace mesh {
         m_nbBoundaryFaces = 0;
     }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nbNodes()
-    {
+    template <typename Real> Integer CMshMesh<Real>::nbNodes() { return static_cast<Integer>(m_nodeIds.size()); }
 
-        return static_cast<Integer>(m_nodeIds.size());
-    }
+    template <typename Real> Integer CMshMesh<Real>::nbFaces() { return static_cast<Integer>(m_faceIds.size()); }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nbFaces()
-    {
+    template <typename Real> Integer CMshMesh<Real>::nbElements() { return static_cast<Integer>(m_elementIds.size()); }
 
-        return static_cast<Integer>(m_faceIds.size());
-    }
-
-    template <typename Real>
-    Integer CMshMesh<Real>::nbElements()
-    {
-
-        return static_cast<Integer>(m_elementIds.size());
-    }
-
-    template <typename Real>
-    void CMshMesh<Real>::addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode)
+    template <typename Real> void CMshMesh<Real>::addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode)
     {
 
         m_nodes[aNodeId] = aNode;
@@ -121,8 +101,7 @@ namespace mesh {
         m_nodeIndex++;
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::addFace(const Integer aFaceId, const ENigMA::mesh::CMshFace<Real>& aFace)
+    template <typename Real> void CMshMesh<Real>::addFace(const Integer aFaceId, const ENigMA::mesh::CMshFace<Real>& aFace)
     {
 
         m_faces[aFaceId] = aFace;
@@ -132,8 +111,7 @@ namespace mesh {
         m_faceIndex++;
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::addElement(const Integer anElementId, const ENigMA::mesh::CMshElement<Real>& anElement)
+    template <typename Real> void CMshMesh<Real>::addElement(const Integer anElementId, const ENigMA::mesh::CMshElement<Real>& anElement)
     {
 
         m_elements[anElementId] = anElement;
@@ -143,8 +121,7 @@ namespace mesh {
         m_elementIndex++;
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::removeNode(const Integer aNodeId)
+    template <typename Real> void CMshMesh<Real>::removeNode(const Integer aNodeId)
     {
 
         m_nodes.erase(aNodeId);
@@ -152,8 +129,7 @@ namespace mesh {
         m_nodeIds.erase(std::find(m_nodeIds.begin(), m_nodeIds.end(), aNodeId));
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::removeFace(const Integer aFaceId)
+    template <typename Real> void CMshMesh<Real>::removeFace(const Integer aFaceId)
     {
 
         m_faces.erase(aFaceId);
@@ -161,8 +137,7 @@ namespace mesh {
         m_faceIds.erase(std::find(m_faceIds.begin(), m_faceIds.end(), aFaceId));
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::removeElement(const Integer anElementId)
+    template <typename Real> void CMshMesh<Real>::removeElement(const Integer anElementId)
     {
 
         m_elements.erase(anElementId);
@@ -170,8 +145,7 @@ namespace mesh {
         m_elementIds.erase(std::find(m_elementIds.begin(), m_elementIds.end(), anElementId));
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::addMesh(CMshMesh<Real>& aMesh)
+    template <typename Real> void CMshMesh<Real>::addMesh(CMshMesh<Real>& aMesh)
     {
 
         std::map<Integer, Integer> sNewNodeIds;
@@ -200,7 +174,7 @@ namespace mesh {
             CMshElement<Real>& anElement = aMesh.element(anElementId);
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                anElement.setNodeId(j, sNewNodeIds[anElement.nodeId(j)]);
+                anElement.setNodeId(j, sNewNodeIds.at(anElement.nodeId(j)));
 
             this->addElement(aStartElementId, anElement);
 
@@ -208,71 +182,25 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    ENigMA::mesh::CMshNode<Real>& CMshMesh<Real>::node(const Integer aNodeId)
-    {
+    template <typename Real> ENigMA::mesh::CMshNode<Real>& CMshMesh<Real>::node(const Integer aNodeId) {return m_nodes.at(aNodeId); }
 
-        return m_nodes[aNodeId];
-    }
+    template <typename Real> ENigMA::mesh::CMshFace<Real>& CMshMesh<Real>::face(const Integer aFaceId) {return m_faces.at(aFaceId); }
 
-    template <typename Real>
-    ENigMA::mesh::CMshFace<Real>& CMshMesh<Real>::face(const Integer aFaceId)
-    {
+    template <typename Real> ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId) {return m_elements.at(anElementId); }
 
-        return m_faces[aFaceId];
-    }
+    template <typename Real> Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex) { return m_nodeIds.at(aNodeIndex); }
 
-    template <typename Real>
-    ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId)
-    {
+    template <typename Real> Integer CMshMesh<Real>::faceId(const Integer aFaceIndex) { return m_faceIds.at(aFaceIndex); }
 
-        return m_elements[anElementId];
-    }
+    template <typename Real> Integer CMshMesh<Real>::elementId(const Integer anElementIndex) { return m_elementIds.at(anElementIndex); }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex)
-    {
+    template <typename Real> Integer CMshMesh<Real>::nodeIndex(const Integer aNodeId) { return m_nodeIndices.at(aNodeId); }
 
-        return m_nodeIds[aNodeIndex];
-    }
+    template <typename Real> Integer CMshMesh<Real>::faceIndex(const Integer aFaceId) { return m_faceIndices.at(aFaceId); }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::faceId(const Integer aFaceIndex)
-    {
+    template <typename Real> Integer CMshMesh<Real>::elementIndex(const Integer anElementId) { return m_elementIndices.at(anElementId); }
 
-        return m_faceIds[aFaceIndex];
-    }
-
-    template <typename Real>
-    Integer CMshMesh<Real>::elementId(const Integer anElementIndex)
-    {
-
-        return m_elementIds[anElementIndex];
-    }
-
-    template <typename Real>
-    Integer CMshMesh<Real>::nodeIndex(const Integer aNodeId)
-    {
-
-        return m_nodeIndices[aNodeId];
-    }
-
-    template <typename Real>
-    Integer CMshMesh<Real>::faceIndex(const Integer aFaceId)
-    {
-
-        return m_faceIndices[aFaceId];
-    }
-
-    template <typename Real>
-    Integer CMshMesh<Real>::elementIndex(const Integer anElementId)
-    {
-
-        return m_elementIndices[anElementId];
-    }
-
-    template <typename Real>
-    void CMshMesh<Real>::generateFaces(const Real aTolerance)
+    template <typename Real> void CMshMesh<Real>::generateFaces(const Real aTolerance)
     {
 
         m_faceIds.clear();
@@ -284,17 +212,17 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
             std::vector<CMshFace<Real>> sFaces;
 
-            m_elements[anElementId].generateFaces(sFaces);
+            m_elements.at(anElementId).generateFaces(sFaces);
 
             for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
-                sFaces[j].setElementId(anElementId);
+                sFaces.at(j).setElementId(anElementId);
                 Integer aFaceId = this->nextFaceId();
-                this->addFace(aFaceId, sFaces[j]);
-                m_elements[anElementId].addFaceId(aFaceId);
+                this->addFace(aFaceId, sFaces.at(j));
+                m_elements.at(anElementId).addFaceId(aFaceId);
             }
         }
 
@@ -305,22 +233,22 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
             CGeoCoordinate<Real> aCenterCoordinate(0.0, 0.0, 0.0);
 
-            for (Integer j = 0; j < m_faces[aFaceId].nbNodeIds(); ++j) {
+            for (Integer j = 0; j < m_faces.at(aFaceId).nbNodeIds(); ++j) {
 
-                Integer aNodeId = m_faces[aFaceId].nodeId(j);
-                Integer aNodeIndex = m_nodeIndices[aNodeId];
+                Integer aNodeId = m_faces.at(aFaceId).nodeId(j);
+                Integer aNodeIndex = m_nodeIndices.at(aNodeId);
 
-                CMshNode<Real> aNode = m_nodes[aNodeIndex];
+                CMshNode<Real> aNode = m_nodes.at(aNodeIndex);
 
                 aCenterCoordinate += aNode;
             }
 
-            if (m_faces[m_faceIds[i]].nbNodeIds() > 0)
-                aCenterCoordinate /= static_cast<Real>(m_faces[aFaceId].nbNodeIds());
+            if (m_faces.at(m_faceIds.at(i)).nbNodeIds() > 0)
+                aCenterCoordinate /= static_cast<Real>(m_faces.at(aFaceId).nbNodeIds());
 
             sCenterCoordinates.push_back(aCenterCoordinate);
 
@@ -331,21 +259,21 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
             std::vector<Integer> sCoordinates;
 
-            aHashGrid.find(sCoordinates, sCenterCoordinates[i], aTolerance);
+            aHashGrid.find(sCoordinates, sCenterCoordinates.at(i), aTolerance);
 
             for (Integer j = 0; j < static_cast<Integer>(sCoordinates.size()); ++j) {
 
-                if (sCoordinates[j] != aFaceId) {
+                if (sCoordinates.at(j) != aFaceId) {
 
-                    Integer aPairFaceId = sCoordinates[j];
+                    Integer aPairFaceId = sCoordinates.at(j);
 
-                    if (m_faces[aFaceId].faceType() == m_faces[aPairFaceId].faceType()) {
-                        m_faces[aFaceId].setPairFaceId(aPairFaceId);
-                        m_faces[aPairFaceId].setPairFaceId(aFaceId);
+                    if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType()) {
+                        m_faces.at(aFaceId).setPairFaceId(aPairFaceId);
+                        m_faces.at(aPairFaceId).setPairFaceId(aFaceId);
                         break;
                     }
                 }
@@ -361,15 +289,9 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nbBoundaryFaces()
-    {
+    template <typename Real> Integer CMshMesh<Real>::nbBoundaryFaces() { return m_nbBoundaryFaces; }
 
-        return m_nbBoundaryFaces;
-    }
-
-    template <typename Real>
-    ENigMA::mesh::CMshMesh<Real> CMshMesh<Real>::extractBoundary(const Real aTolerance)
+    template <typename Real> ENigMA::mesh::CMshMesh<Real> CMshMesh<Real>::extractBoundary(const Real aTolerance)
     {
 
         CMshMesh<Real> aBoundaryMesh;
@@ -380,9 +302,9 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
-            CMshFace<Real> aFace = m_faces[aFaceId];
+            CMshFace<Real> aFace = m_faces.at(aFaceId);
 
             if (!aFace.hasPair()) {
 
@@ -407,9 +329,9 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
 
-            Integer aNodeId = m_nodeIds[i];
+            Integer aNodeId = m_nodeIds.at(i);
 
-            CMshNode<Real> aNode = m_nodes[aNodeId];
+            CMshNode<Real> aNode = m_nodes.at(aNodeId);
 
             aBoundaryMesh.addNode(aNodeId, aNode);
         }
@@ -417,50 +339,19 @@ namespace mesh {
         return aBoundaryMesh;
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::setDx(const Real aValue)
-    {
+    template <typename Real> void CMshMesh<Real>::setDx(const Real aValue) { m_dx = aValue; }
 
-        m_dx = aValue;
-    }
+    template <typename Real> Real CMshMesh<Real>::dx() const { return m_dx; }
 
-    template <typename Real>
-    Real CMshMesh<Real>::dx() const
-    {
+    template <typename Real> void CMshMesh<Real>::setDy(const Real aValue) { m_dy = aValue; }
 
-        return m_dx;
-    }
+    template <typename Real> Real CMshMesh<Real>::dy() const { return m_dy; }
 
-    template <typename Real>
-    void CMshMesh<Real>::setDy(const Real aValue)
-    {
+    template <typename Real> void CMshMesh<Real>::setDz(const Real aValue) { m_dz = aValue; }
 
-        m_dy = aValue;
-    }
+    template <typename Real> Real CMshMesh<Real>::dz() const { return m_dz; }
 
-    template <typename Real>
-    Real CMshMesh<Real>::dy() const
-    {
-
-        return m_dy;
-    }
-
-    template <typename Real>
-    void CMshMesh<Real>::setDz(const Real aValue)
-    {
-
-        m_dz = aValue;
-    }
-
-    template <typename Real>
-    Real CMshMesh<Real>::dz() const
-    {
-
-        return m_dz;
-    }
-
-    template <typename Real>
-    void CMshMesh<Real>::calculateFaceCentroid()
+    template <typename Real> void CMshMesh<Real>::calculateFaceCentroid()
     {
 
         m_faceCentroid.clear();
@@ -477,7 +368,7 @@ namespace mesh {
 
             for (Integer j = 0; j < aFace.nbNodeIds(); ++j) {
 
-                aCentroid += m_nodes[aFace.nodeId(j)];
+                aCentroid += m_nodes.at(aFace.nodeId(j));
             }
 
             if (aFace.nbNodeIds() > 0)
@@ -487,17 +378,16 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::calculateElementCentroid()
+    template <typename Real> void CMshMesh<Real>::calculateElementCentroid()
     {
 
         m_elementCentroid.clear();
 
         for (Integer i = 0; i < this->nbElements(); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
-            CMshElement<Real>& anElement = m_elements[anElementId];
+            CMshElement<Real>& anElement = m_elements.at(anElementId);
 
             CGeoCoordinate<Real> aCentroid;
 
@@ -505,7 +395,7 @@ namespace mesh {
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
-                aCentroid += m_nodes[anElement.nodeId(j)];
+                aCentroid += m_nodes.at(anElement.nodeId(j));
             }
 
             if (anElement.nbNodeIds() > 0)
@@ -515,22 +405,15 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    CGeoCoordinate<Real>& CMshMesh<Real>::faceCentroid(const Integer aFaceId)
+    template <typename Real> CGeoCoordinate<Real>& CMshMesh<Real>::faceCentroid(const Integer aFaceId) { return m_faceCentroid.at(this->faceIndex(aFaceId)); }
+
+    template <typename Real> CGeoCoordinate<Real>& CMshMesh<Real>::elementCentroid(const Integer anElementId)
     {
 
-        return m_faceCentroid[this->faceIndex(aFaceId)];
+        return m_elementCentroid.at(m_elementIndices.at(anElementId));
     }
 
-    template <typename Real>
-    CGeoCoordinate<Real>& CMshMesh<Real>::elementCentroid(const Integer anElementId)
-    {
-
-        return m_elementCentroid[m_elementIndices[anElementId]];
-    }
-
-    template <typename Real>
-    void CMshMesh<Real>::scale(const Real aFactor)
+    template <typename Real> void CMshMesh<Real>::scale(const Real aFactor)
     {
 
         for (typename mapNode::iterator it = m_nodes.begin(); it != m_nodes.end(); it++) {
@@ -538,8 +421,7 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nextNodeId()
+    template <typename Real> Integer CMshMesh<Real>::nextNodeId()
     {
 
         if (m_nodes.size() > 0)
@@ -548,8 +430,7 @@ namespace mesh {
             return 0;
     }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nextFaceId()
+    template <typename Real> Integer CMshMesh<Real>::nextFaceId()
     {
 
         if (m_faces.size() > 0)
@@ -558,8 +439,7 @@ namespace mesh {
             return 0;
     }
 
-    template <typename Real>
-    Integer CMshMesh<Real>::nextElementId()
+    template <typename Real> Integer CMshMesh<Real>::nextElementId()
     {
 
         if (m_elements.size() > 0)
@@ -568,17 +448,16 @@ namespace mesh {
             return 0;
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::mergeNodes(const Real aTolerance)
+    template <typename Real> void CMshMesh<Real>::mergeNodes(const Real aTolerance)
     {
 
         CGeoHashGrid<Real> aHashGrid;
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
 
-            Integer aNodeId = m_nodeIds[i];
+            Integer aNodeId = m_nodeIds.at(i);
 
-            CMshNode<Real>& aNode = m_nodes[aNodeId];
+            CMshNode<Real>& aNode = m_nodes.at(aNodeId);
 
             aHashGrid.addGeometricObject(aNodeId, aNode);
         }
@@ -589,7 +468,7 @@ namespace mesh {
         std::map<Integer, Integer> sNewNodeIds;
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
-            Integer aNodeId = m_nodeIds[i];
+            Integer aNodeId = m_nodeIds.at(i);
 
             bDeleteNode[aNodeId] = false;
             sNewNodeIds[aNodeId] = aNodeId;
@@ -597,12 +476,12 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
 
-            Integer aNodeId = m_nodeIds[i];
+            Integer aNodeId = m_nodeIds.at(i);
 
-            if (bDeleteNode[aNodeId])
+            if (bDeleteNode.at(aNodeId))
                 continue;
 
-            CMshNode<Real>& aNode = m_nodes[aNodeId];
+            CMshNode<Real>& aNode = m_nodes.at(aNodeId);
 
             std::vector<Integer> sNodes;
 
@@ -612,7 +491,7 @@ namespace mesh {
 
                 for (Integer k = 0; k < static_cast<Integer>(sNodes.size()); ++k) {
 
-                    if (sNodes[k] > aNodeId) {
+                    if (sNodes.at(k) > aNodeId) {
 
                         // Duplicate node found
                         bDeleteNode[sNodes[k]] = true;
@@ -625,32 +504,32 @@ namespace mesh {
         // Renumber elements
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
-            CMshElement<Real>& anElement = m_elements[anElementId];
+            CMshElement<Real>& anElement = m_elements.at(anElementId);
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
                 Integer aNodeId = anElement.nodeId(j);
 
                 // Set to new node id
-                anElement.setNodeId(j, sNewNodeIds[aNodeId]);
+                anElement.setNodeId(j, sNewNodeIds.at(aNodeId));
             }
         }
 
         // Renumber faces
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
-            CMshFace<Real>& aFace = m_faces[aFaceId];
+            CMshFace<Real>& aFace = m_faces.at(aFaceId);
 
             for (Integer j = 0; j < aFace.nbNodeIds(); ++j) {
 
                 Integer aNodeId = aFace.nodeId(j);
 
                 // Set to new node id
-                aFace.setNodeId(j, sNewNodeIds[aNodeId]);
+                aFace.setNodeId(j, sNewNodeIds.at(aNodeId));
             }
         }
 
@@ -668,19 +547,18 @@ namespace mesh {
         this->rebuildIndices();
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::removeInvalidElements()
+    template <typename Real> void CMshMesh<Real>::removeInvalidElements()
     {
 
         std::map<Integer, bool> bDeleteElement;
 
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
             bDeleteElement[anElementId] = false;
 
-            CMshElement<Real>& anElement = m_elements[anElementId];
+            CMshElement<Real>& anElement = m_elements.at(anElementId);
 
             std::vector<Integer> sNodeIds;
 
@@ -703,8 +581,7 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::rebuildIndices()
+    template <typename Real> void CMshMesh<Real>::rebuildIndices()
     {
 
         // Rebuild node indices
@@ -712,7 +589,7 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
 
-            Integer aNodeId = m_nodeIds[i];
+            Integer aNodeId = m_nodeIds.at(i);
 
             m_nodeIndices[aNodeId] = i;
         }
@@ -722,7 +599,7 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
             m_faceIndices[aFaceId] = i;
         }
@@ -732,29 +609,28 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
             m_elementIndices[anElementId] = i;
         }
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::removeDanglingNodes()
+    template <typename Real> void CMshMesh<Real>::removeDanglingNodes()
     {
 
         std::map<Integer, bool> bDeleteNode;
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
-            Integer aNodeId = m_nodeIds[i];
+            Integer aNodeId = m_nodeIds.at(i);
 
             bDeleteNode[aNodeId] = true;
         }
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
-            CMshFace<Real>& aFace = m_faces[aFaceId];
+            CMshFace<Real>& aFace = m_faces.at(aFaceId);
 
             for (Integer k = 0; k < aFace.nbNodeIds(); ++k) {
                 Integer aNodeId = aFace.nodeId(k);
@@ -764,9 +640,9 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
-            CMshElement<Real>& anElement = m_elements[anElementId];
+            CMshElement<Real>& anElement = m_elements.at(anElementId);
 
             for (Integer k = 0; k < anElement.nbNodeIds(); ++k) {
                 Integer aNodeId = anElement.nodeId(k);
@@ -784,8 +660,7 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::collapseNakedEdges(const Real aTolerance)
+    template <typename Real> void CMshMesh<Real>::collapseNakedEdges(const Real aTolerance)
     {
 
         Real minDistance = std::numeric_limits<Real>::max();
@@ -794,9 +669,9 @@ namespace mesh {
         std::vector<Integer> sFaces;
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
-            Integer aFaceId = m_faceIds[i];
+            Integer aFaceId = m_faceIds.at(i);
 
-            CMshFace<Real>& aFace = m_faces[aFaceId];
+            CMshFace<Real>& aFace = m_faces.at(aFaceId);
 
             if (aFace.faceType() != FT_LINE)
                 continue;
@@ -807,8 +682,8 @@ namespace mesh {
                 Integer aNodeId1 = aFace.nodeId(0);
                 Integer aNodeId2 = aFace.nodeId(1);
 
-                CMshNode<Real>& aNode1 = m_nodes[aNodeId1];
-                CMshNode<Real>& aNode2 = m_nodes[aNodeId2];
+                CMshNode<Real>& aNode1 = m_nodes.at(aNodeId1);
+                CMshNode<Real>& aNode2 = m_nodes.at(aNodeId2);
 
                 Real aDistance = (aNode2 - aNode1).norm();
 
@@ -820,15 +695,15 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(sFaces.size()); ++i) {
 
-            Integer aFaceId = sFaces[i];
+            Integer aFaceId = sFaces.at(i);
 
-            CMshFace<Real>& aFace = m_faces[aFaceId];
+            CMshFace<Real>& aFace = m_faces.at(aFaceId);
 
             Integer aNodeId1 = aFace.nodeId(0);
             Integer aNodeId2 = aFace.nodeId(1);
 
-            CMshNode<Real>& aNode1 = m_nodes[aNodeId1];
-            CMshNode<Real>& aNode2 = m_nodes[aNodeId2];
+            CMshNode<Real>& aNode1 = m_nodes.at(aNodeId1);
+            CMshNode<Real>& aNode2 = m_nodes.at(aNodeId2);
 
             Real aDistance = (aNode2 - aNode1).norm();
 
@@ -838,8 +713,7 @@ namespace mesh {
         }
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::renumber()
+    template <typename Real> void CMshMesh<Real>::renumber()
     {
 
         mapNodeIndex sNewNodeIds;
@@ -847,12 +721,12 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
 
-            Integer anOldNodeId = m_nodeIds[i];
+            Integer anOldNodeId = m_nodeIds.at(i);
             Integer aNewNodeId = i;
 
             sNewNodeIds[anOldNodeId] = aNewNodeId;
 
-            CMshNode<Real> aNode = m_nodes[anOldNodeId];
+            CMshNode<Real> aNode = m_nodes.at(anOldNodeId);
 
             sNewNodes[aNewNodeId] = aNode;
         }
@@ -862,15 +736,15 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-            Integer anOldFaceId = m_faceIds[i];
+            Integer anOldFaceId = m_faceIds.at(i);
             Integer aNewFaceId = i;
 
             sNewFaceIds[anOldFaceId] = aNewFaceId;
 
-            CMshFace<Real> aFace = m_faces[anOldFaceId];
+            CMshFace<Real> aFace = m_faces.at(anOldFaceId);
 
             for (Integer j = 0; j < aFace.nbNodeIds(); ++j)
-                aFace.setNodeId(j, sNewFaceIds[aFace.nodeId(j)]);
+                aFace.setNodeId(j, sNewFaceIds.at(aFace.nodeId(j)]);
 
             sNewFaces[aNewFaceId] = aFace;
         }
@@ -879,16 +753,16 @@ namespace mesh {
 
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anOldElementId = m_elementIds[i];
+            Integer anOldElementId = m_elementIds.at(i);
             Integer aNewElementId = i;
 
-            CMshElement<Real>& anElement = m_elements[anOldElementId];
+            CMshElement<Real>& anElement = m_elements.at(anOldElementId);
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                anElement.setNodeId(j, sNewNodeIds[anElement.nodeId(j)]);
+                anElement.setNodeId(j, sNewNodeIds.at(anElement.nodeId(j)));
 
             for (Integer j = 0; j < anElement.nbFaceIds(); ++j)
-                anElement.setFaceId(j, sNewFaceIds[anElement.faceId(j)]);
+                anElement.setFaceId(j, sNewFaceIds.at(anElement.faceId(j)));
 
             sNewElements[aNewElementId] = anElement;
         }
@@ -915,20 +789,18 @@ namespace mesh {
         this->rebuildIndices();
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::invert()
+    template <typename Real> void CMshMesh<Real>::invert()
     {
 
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            Integer anElementId = m_elementIds[i];
+            Integer anElementId = m_elementIds.at(i);
 
-            m_elements[anElementId].invert();
+            m_elements.at(anElementId).invert();
         }
     }
 
-    template <typename Real>
-    void CMshMesh<Real>::meshQuality(Real& aMinQ, Real& aMaxQ, Real& aAveQ)
+    template <typename Real> void CMshMesh<Real>::meshQuality(Real& aMinQ, Real& aMaxQ, Real& aAveQ)
     {
 
         aMinQ = 1.0;
@@ -996,16 +868,15 @@ namespace mesh {
             aAveQ = aSumQ / n;
     }
 
-    template <typename Real>
-    CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox(const Integer anElementId)
+    template <typename Real> CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox(const Integer anElementId)
     {
 
         CGeoBoundingBox<Real> aBoundingBox;
 
-        for (Integer j = 0; j < m_elements[anElementId].nbNodeIds(); ++j) {
+        for (Integer j = 0; j < m_elements.at(anElementId).nbNodeIds(); ++j) {
 
-            Integer aNodeId = m_elements[anElementId].nodeId(j);
-            CMshNode<Real>& aNode = m_nodes[aNodeId];
+            Integer aNodeId = m_elements.at(anElementId).nodeId(j);
+            CMshNode<Real>& aNode = m_nodes.at(aNodeId);
 
             aBoundingBox.addCoordinate(aNode);
         }
@@ -1013,16 +884,15 @@ namespace mesh {
         return aBoundingBox;
     }
 
-    template <typename Real>
-    CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox()
+    template <typename Real> CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox()
     {
 
         CGeoBoundingBox<Real> aBoundingBox;
 
         for (Integer i = 0; i < static_cast<Integer>(m_nodes.size()); ++i) {
 
-            Integer aNodeId = m_nodeIds[i];
-            CMshNode<Real>& aNode = m_nodes[aNodeId];
+            Integer aNodeId = m_nodeIds.at(i);
+            CMshNode<Real>& aNode = m_nodes.at(aNodeId);
 
             aBoundingBox.addCoordinate(aNode);
         }
