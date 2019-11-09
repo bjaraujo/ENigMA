@@ -113,14 +113,14 @@ namespace stl {
     Integer CStlFile<Real>::facetId(const Integer aFacetIndex)
     {
 
-        return m_facetIds[aFacetIndex];
+        return m_facetIds.at(aFacetIndex);
     }
 
     template <typename Real>
     CStlFacet<Real>& CStlFile<Real>::facet(const Integer aFacetId)
     {
 
-        return m_facets[aFacetId];
+        return m_facets.at(aFacetId);
     }
 
     template <typename Real>
