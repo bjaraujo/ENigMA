@@ -351,7 +351,7 @@ namespace geometry {
                     return true;
                 }
 
-                if (d3 <= aTolerance && d4 > aTolerance) {
+                if (d3 <= aTolerance || d4 <= aTolerance) {
                     aPoint = this->m_startPoint;
 
                     if (d4 <= aTolerance)
