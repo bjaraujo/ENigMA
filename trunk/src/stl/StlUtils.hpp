@@ -63,7 +63,7 @@ namespace stl {
 
     public:
         CStlUtils();
-        CStlUtils(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
+        explicit CStlUtils(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
 
         ~CStlUtils();
 

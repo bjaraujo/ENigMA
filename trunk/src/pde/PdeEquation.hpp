@@ -31,7 +31,7 @@ namespace pde {
         bool m_eliminationMethod;
 
     public:
-        CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem);
+        explicit CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem);
         virtual ~CPdeEquation();
 
         ENigMA::sle::CSleSystem<Real>& system();

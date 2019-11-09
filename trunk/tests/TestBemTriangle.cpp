@@ -46,8 +46,6 @@ TEST_F(CTestBemTriangle, integPoints) {
     std::vector<CGeoCoordinate<decimal> > sPoints;
     std::vector<decimal> sWeights;
 
-    Integer nMaxOrder = 20;
-
     sPoints.clear();
     sWeights.clear();
 

@@ -47,7 +47,7 @@ namespace pde {
         std::map<EConditionType, CAnaFunction<Real>> m_conditionFunc;
 
     public:
-        CPdeBoundaryCondition(EBoundaryConditionType aBoundaryType);
+        explicit CPdeBoundaryCondition(EBoundaryConditionType aBoundaryType);
         CPdeBoundaryCondition();
         virtual ~CPdeBoundaryCondition();
 

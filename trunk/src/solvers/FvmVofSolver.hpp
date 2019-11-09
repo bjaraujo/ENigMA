@@ -42,7 +42,7 @@ namespace fvm {
         virtual void correctBeta(double dt, const Real aTolerance = 0.0);
 
     public:
-        CFvmVofSolver(CFvmMesh<Real>& aFvmMesh);
+        explicit CFvmVofSolver(CFvmMesh<Real>& aFvmMesh);
         virtual ~CFvmVofSolver();
 
         virtual void setMaterialProperties(const Real aDensity0, const Real aViscosity0, const Real aDensity1, const Real aViscosity1);

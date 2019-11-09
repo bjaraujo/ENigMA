@@ -25,7 +25,7 @@ namespace sph {
 
     public:
         CSphKernel();
-        CSphKernel(const Integer nDimension);
+        explicit CSphKernel(const Integer nDimension);
         virtual ~CSphKernel();
 
         virtual void setDimension(const Integer nDimension);

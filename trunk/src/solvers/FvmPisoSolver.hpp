@@ -73,7 +73,7 @@ namespace fvm {
         Real checkMassConservationCell(const Integer aControlVolumeId);
 
     public:
-        CFvmPisoSolver(CFvmMesh<Real>& aFvmMesh);
+        explicit CFvmPisoSolver(CFvmMesh<Real>& aFvmMesh);
         virtual ~CFvmPisoSolver();
 
         void setGravity(const Real gx, const Real gy, const Real gz);

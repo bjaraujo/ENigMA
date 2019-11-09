@@ -34,7 +34,7 @@ namespace fvm {
 
     public:
         CFvmControlVolume();
-        CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
+        explicit CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
         virtual ~CFvmControlVolume();
 
         void setControlVolumeId(const Integer aControlVolumeId);

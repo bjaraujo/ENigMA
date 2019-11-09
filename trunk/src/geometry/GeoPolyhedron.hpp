@@ -35,9 +35,9 @@ namespace geometry {
 
     public:
         CGeoPolyhedron();
-        CGeoPolyhedron(CGeoTetrahedron<Real>& aTetrahedron);
-        CGeoPolyhedron(CGeoTriangularPrism<Real>& aTriangularPrism);
-        CGeoPolyhedron(CGeoHexahedron<Real>& aHexahedron);
+        explicit CGeoPolyhedron(CGeoTetrahedron<Real>& aTetrahedron);
+        explicit CGeoPolyhedron(CGeoTriangularPrism<Real>& aTriangularPrism);
+        explicit CGeoPolyhedron(CGeoHexahedron<Real>& aHexahedron);
         virtual ~CGeoPolyhedron();
 
         void reset();

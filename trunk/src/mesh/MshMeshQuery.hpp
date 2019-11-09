@@ -26,7 +26,7 @@ namespace mesh {
         mapNodeToElement m_nodeToElement;
 
     public:
-        CMshMeshQuery(CMshMesh<Real>& aMesh);
+        explicit CMshMeshQuery(CMshMesh<Real>& aMesh);
         virtual ~CMshMeshQuery();
 
         void elementsSharingNode(const Integer aNodeId, std::vector<Integer>& sElementIds);

@@ -52,7 +52,7 @@ namespace sph {
         void addDiffusion(CPdeField<Real>& aField, ENigMA::geometry::CGeoHashGrid<Real>& aHashGrid);
 
     public:
-        CSphParticles(CSphKernel<Real>& kernel);
+        explicit CSphParticles(CSphKernel<Real>& kernel);
         virtual ~CSphParticles();
 
         void setBoundary(const ENigMA::geometry::CGeoBoundingBox<Real>& aBoundary);

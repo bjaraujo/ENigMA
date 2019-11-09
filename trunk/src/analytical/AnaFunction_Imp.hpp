@@ -27,7 +27,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    CAnaFunction<Real>::CAnaFunction(std::string anExpression)
+    CAnaFunction<Real>::CAnaFunction(const std::string& anExpression)
     {
 
         this->set(anExpression);
@@ -47,7 +47,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    void CAnaFunction<Real>::set(std::string anExpression)
+    void CAnaFunction<Real>::set(const std::string& anExpression)
     {
 
         m_expressionString = anExpression;
@@ -55,14 +55,14 @@ namespace analytical {
     }
 
     template <typename Real>
-    void CAnaFunction<Real>::defineVariable(const std::string aVariable, Real& aValue)
+    void CAnaFunction<Real>::defineVariable(const std::string& aVariable, Real& aValue)
     {
 
         m_symbolTable.add_variable(aVariable, aValue);
     }
 
     template <typename Real>
-    void CAnaFunction<Real>::undefineVariable(const std::string aVariable)
+    void CAnaFunction<Real>::undefineVariable(const std::string& aVariable)
     {
 
         m_symbolTable.remove_variable(aVariable);
@@ -94,7 +94,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    Real CAnaFunction<Real>::evaluate(const std::string aVariable, Real& aValue)
+    Real CAnaFunction<Real>::evaluate(const std::string& aVariable, Real& aValue)
     {
 
         exprtk::expression<Real> expression;
@@ -112,7 +112,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    Real CAnaFunction<Real>::evaluate(const std::string aVariable1, Real& aValue1, const std::string aVariable2, Real& aValue2)
+    Real CAnaFunction<Real>::evaluate(const std::string& aVariable1, Real& aValue1, const std::string& aVariable2, Real& aValue2)
     {
 
         exprtk::expression<Real> expression;
@@ -131,7 +131,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    Real CAnaFunction<Real>::bisection(const std::string strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+    Real CAnaFunction<Real>::bisection(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
 
         Real a = lowerBnd;
@@ -168,7 +168,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    Real CAnaFunction<Real>::brent(const std::string strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+    Real CAnaFunction<Real>::brent(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
 
         // http://en.wikipedia.org/wiki/Brent's_method
@@ -267,7 +267,7 @@ namespace analytical {
     }
 
     template <typename Real>
-    Real CAnaFunction<Real>::root(const std::string strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+    Real CAnaFunction<Real>::root(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
 
         return bisection(strVar, lowerBnd, upperBnd, nIterations, nMaxIterations, aTolerance);

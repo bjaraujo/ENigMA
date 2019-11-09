@@ -127,7 +127,7 @@ namespace analytical {
         CAnaFunction<Real>::defineVariable("G", G);
         CAnaFunction<Real>::defineVariable("M", M);
         CAnaFunction<Real>::defineVariable("x1", x1);
-        CAnaFunction<Real>::defineVariable("Tb1", Tb);
+        CAnaFunction<Real>::defineVariable("Tb1", Tb1);
 
         CAnaFunction<Real>::set("1/3*M^(-1/2)*(ln(((G*Tb^3+M)^(1/2)-M^(1/2))/((G*Tb^3+M)^(1/2)+M^(1/2)))-ln(((G*T^3+M)^(1/2)-M^(1/2))/((G*T^3+M)^(1/2)+M^(1/2))))-x");
 

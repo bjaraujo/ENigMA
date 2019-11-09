@@ -37,7 +37,7 @@ namespace geometry {
         std::vector<CGeoCoordinate<Real>> m_vertices;
 
     public:
-        CGeoConvexHull(std::vector<CGeoCoordinate<Real>>& sVertices);
+        explicit CGeoConvexHull(std::vector<CGeoCoordinate<Real>>& sVertices);
         CGeoConvexHull();
         virtual ~CGeoConvexHull();
 

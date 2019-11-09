@@ -19,7 +19,7 @@ namespace sph {
     class CSphSpiky : public CSphKernel<Real> {
     public:
         CSphSpiky();
-        CSphSpiky(const Integer nDimension);
+        explicit CSphSpiky(const Integer nDimension);
         virtual ~CSphSpiky();
 
         void setDimension(const Integer nDimension);

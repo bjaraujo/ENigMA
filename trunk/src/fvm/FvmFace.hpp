@@ -69,7 +69,7 @@ namespace fvm {
 
     public:
         CFvmFace();
-        CFvmFace(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
+        explicit CFvmFace(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
         virtual ~CFvmFace();
 
         void set(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);

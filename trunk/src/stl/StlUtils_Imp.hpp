@@ -134,7 +134,7 @@ namespace stl {
                 m_stlFile.stats.header[80] = '\0';
 
                 // Read the int following the header.  This should contain # of facets
-                Integer headerNumFacets = this->getInt(fileSTL);
+                //Integer headerNumFacets = this->getInt(fileSTL);
 
             } else {
 

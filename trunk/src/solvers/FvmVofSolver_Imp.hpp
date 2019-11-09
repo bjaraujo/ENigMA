@@ -443,7 +443,8 @@ namespace fvm {
 
         for (Integer j = 0; j < n; ++j) {
 
-            maxCp = this->calculateCourant(dt / n, false);
+            // Currant number
+            //maxCp = this->calculateCourant(dt / n, false);
 
             this->predictBeta(1E-16);
 
