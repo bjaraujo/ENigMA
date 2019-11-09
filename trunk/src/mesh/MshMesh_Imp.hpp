@@ -39,6 +39,35 @@ namespace ENigMA
         }
 
         template <typename Real>
+        CMshMesh<Real>::CMshMesh(const CMshMesh& aMesh)
+        {
+            for (Integer i = 0; i < aMesh.nbNodes(); ++i)
+            {
+                Integer aNodeId = aMesh.nodeId(i);
+                CMshNode<Real> aNode = aMesh.node(aNodeId);
+
+                addNode(aNodeId, aNode);
+            }
+
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
+            {
+                Integer anElementId = aMesh.elementId(i);
+                CMshElement<Real> anElement = aMesh.element(anElementId);
+
+                addElement(anElementId, anElement);
+            }
+
+            for (Integer i = 0; i < aMesh.nbFaces(); ++i)
+            {
+                Integer aFaceId = aMesh.faceId(i);
+                CMshFace<Real> aFace = aMesh.face(aFaceId);
+
+                addFace(aFaceId, aFace);
+            }
+
+        }
+
+        template <typename Real>
         void CMshMesh<Real>::reset()
         {
 

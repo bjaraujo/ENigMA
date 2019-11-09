@@ -64,6 +64,8 @@ namespace ENigMA
             CMshMesh();
             ~CMshMesh();
 
+            CMshMesh(const CMshMesh& aMesh);
+
             void reset();
 
             Integer nbNodes();

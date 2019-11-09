@@ -29,8 +29,6 @@ using namespace std;
 using namespace ENigMA::geometry;
 using namespace ENigMA::sph;
 
-#define kPi 3.1415926535f
-
 const int NX = 80;         // x
 const int NY = 80;         // y
 
@@ -40,10 +38,10 @@ const int NPY = 40;
 int MOVING_PARTICLES = NPX * NPY;
 
 float dt = 1E-2f;      // time step
-float h = 3.2f;
-float m0 = 320.0f;
+float h = 2.5f;
+float m0 = 200.0f;
 float rho0 = 1000.0f;
-float visc0 = 1200.0f;
+float visc0 = 100.0f;
 
 struct Particle
 {

@@ -33,10 +33,10 @@ const int NX = 50;         // x
 const int NY = 50;         // y
 
 float dt = 2E-3f;      // time step
-float h = 0.1f;
+float h = 0.05f;
 float m0 = 1.0f;
-float rho0 = 900.0f;
-float visc0 = 100.0f;
+float rho0 = 1000.0f;
+float visc0 = 1.0f;
 
 struct Particle
 {
@@ -62,6 +62,7 @@ int t0 = 0, te;
 CGeoHashGrid<float> aHashGrid;
 CSphCubicSpline<float> aCubicSplineKernel(2);
 CSphSpiky<float> aSpikyKernel(2);
+CSphGaussian<float> aGaussianKernel(2);
 CSphQuintic<float> aQuinticKernel(2);
 CSphConvex<float> aConvexKernel(2);
 
@@ -134,7 +135,7 @@ void calculateDensityAndPressure()
 
             CGeoVector<float> r = p[pj].pos - p[pi].pos;
 
-            p[pi].rho += p[pj].mass * aSpikyKernel.W(r, h);
+            p[pi].rho += p[pj].mass * aGaussianKernel.W(r, h);
 
         }
 
@@ -179,40 +180,19 @@ void moveParticles()
 
             CGeoVector<float> r = p[pj].pos - p[pi].pos;
 
-            CGeoVector<float> gradW = aSpikyKernel.gradientW(r, h, 1E-8);
+            CGeoVector<float> gradW = aGaussianKernel.gradientW(r, h, 1E-8);
 
             dpx += p[pj].mass * (p[pi].p / (p[pi].rho * p[pi].rho) + p[pj].p / (p[pj].rho * p[pj].rho)) * gradW.x();
             dpy += p[pj].mass * (p[pi].p / (p[pi].rho * p[pi].rho) + p[pj].p / (p[pj].rho * p[pj].rho)) * gradW.y();
 
-            float lapW = aSpikyKernel.laplacianW(r, h);
+            float lapW = aGaussianKernel.laplacianW(r, h);
 
             dviscx += p[pj].mass * p[pi].visc / p[pi].rho * (p[pj].vel.x() - p[pi].vel.x()) / p[pj].rho * lapW;
             dviscy += p[pj].mass * p[pi].visc / p[pi].rho * (p[pj].vel.y() - p[pi].vel.y()) / p[pj].rho * lapW;
-
         }
 
         p[pi].vel.x() += dt * (gx - dpx + dviscx);
         p[pi].vel.y() += dt * (gy - dpy + dviscy);
-
-        if (p[pi].vel.x() > 1.0f)
-        {
-            p[pi].vel.x() = 1.0f;
-        }
-
-        if (p[pi].vel.x() < -1.0f)
-        {
-            p[pi].vel.x() = -1.0f;
-        }
-
-        if (p[pi].vel.y() > 1.0f)
-        {
-            p[pi].vel.y() = 1.0f;
-        }
-
-        if (p[pi].vel.y() < -1.0f)
-        {
-            p[pi].vel.y() = -1.0f;
-        }
 
         p[pi].pos.x() += dt * p[pi].vel.x();
         p[pi].pos.y() += dt * p[pi].vel.y();
@@ -220,23 +200,36 @@ void moveParticles()
         // Bound positions
         if (p[pi].pos.x() <= 0.0f)
         {
-            p[pi].vel.x() = +0.5f * (std::fabs(p[pi].vel.x()));
+            p[pi].pos.x() = 0.01;
+            p[pi].vel.x() = 0.0;
+            p[pi].vel.y() = 0.0;
         }
 
         if (p[pi].pos.x() >= 1.0f)
         {
-            p[pi].vel.x() = -0.5f * (std::fabs(p[pi].vel.x()));
+            p[pi].pos.x() = 0.99;
+            p[pi].vel.x() = 0.0;
+            p[pi].vel.y() = 0.0;
         }
 
         if (p[pi].pos.y() <= 0.0f)
         {
-            p[pi].vel.y() = +0.5f * (std::fabs(p[pi].vel.y()));
+            p[pi].pos.y() = 0.01;
+            p[pi].vel.x() = 0.0;
+            p[pi].vel.y() = 0.0;
+        }
+
+        if (p[pi].pos.y() >= 1.0f)
+        {
+            p[pi].pos.y() = 0.99;
+            p[pi].vel.x() = 0.0;
+            p[pi].vel.y() = 0.0;
         }
 
         if (p[pi].pos.y() >= 0.98f)
         {
             p[pi].vel.x() = 1.0f;
-            p[pi].vel.y() = -0.5f * (std::fabs(p[pi].vel.y()));
+            p[pi].vel.y() = 0.0f;
         }
     }
 
@@ -362,8 +355,8 @@ void init()
 
             Particle pi;
 
-            pi.pos.x() = (float) i / (float) (NX - 1);
-            pi.pos.y() = (float) j / (float) (NY - 1);
+            pi.pos.x() = +i / (float) (NX - 1);
+            pi.pos.y() = +j / (float) (NY - 1);
 
             pi.vel.x() = 0.0;
             pi.vel.y() = 0.0;
@@ -376,6 +369,93 @@ void init()
 
         }
 
+    }
+
+    // Bottom wall
+    for (int i = 0; i < 2 * NX; ++i)
+    {
+        Particle pi;
+
+        pi.pos.x() = +i / (float)(2 * NX - 1);
+        pi.pos.y() = -1 / (float)(2 * NY - 1);
+
+        pi.vel.x() = 0.0;
+        pi.vel.y() = 0.0;
+
+        pi.mass = m0;
+        pi.visc = visc0;
+        pi.rho = rho0;
+
+        p.push_back(pi);
+    }
+
+    // Side walls
+    for (int j = 0; j < 2 * NY; ++j)
+    {
+        {
+            Particle pi;
+
+            pi.pos.x() = -1 / (float)(2 * NX - 1);
+            pi.pos.y() = +j / (float)(2 * NY - 1);
+
+            pi.vel.x() = 0.0;
+            pi.vel.y() = 0.0;
+
+            pi.mass = m0;
+            pi.visc = visc0;
+            pi.rho = rho0;
+
+            p.push_back(pi);
+        }
+
+        {
+            Particle pi;
+
+            pi.pos.x() = 1.0 + 1 / (float)(2 * NX - 1);
+            pi.pos.y() = +j / (float)(2 * NY - 1);
+
+            pi.vel.x() = 0.0;
+            pi.vel.y() = 0.0;
+
+            pi.mass = m0;
+            pi.visc = visc0;
+            pi.rho = rho0;
+
+            p.push_back(pi);
+        }
+    }
+
+    // Corners
+    {
+        Particle pi;
+
+        pi.pos.x() = -1 / (float)(2 * NX - 1);
+        pi.pos.y() = -1 / (float)(2 * NY - 1);
+
+        pi.vel.x() = 0.0;
+        pi.vel.y() = 0.0;
+
+        pi.mass = 10 * m0;
+        pi.visc = visc0;
+        pi.rho = rho0;
+
+        p.push_back(pi);
+    }
+
+    {
+        Particle pi;
+
+        pi.pos.x() = 1 + 1 / (float)(2 * NX - 1);
+        pi.pos.y() = -1 / (float)(2 * NY - 1);
+
+        pi.vel.x() = 0.0;
+        pi.vel.y() = 0.0;
+
+        pi.mass = 10 * m0;
+        pi.visc = visc0;
+        pi.rho = rho0;
+
+        p.push_back(pi);
     }
 
     scale[0][0] = 0.0 / 4.0;
