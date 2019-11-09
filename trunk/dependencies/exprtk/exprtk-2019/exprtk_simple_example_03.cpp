@@ -2,8 +2,8 @@
  **************************************************************
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
- * Simple Example 6                                           *
- * Author: Arash Partow (1999-2018)                           *
+ * Simple Example 3                                           *
+ * Author: Arash Partow (1999-2019)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -23,26 +23,21 @@
 
 
 template <typename T>
-void vector_function()
+void polynomial()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>     expression_t;
    typedef exprtk::parser<T>             parser_t;
 
-   std::string expression_string =
-                  " for (var i := 0; i < min(x[],y[],z[]); i += 1) "
-                  " {                                              "
-                  "   z[i] := 3sin(x[i]) + 2log(y[i]);             "
-                  " }                                              ";
+   const std::string expression_string =
+                  "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
 
-   T x[] = { T(1.1), T(2.2), T(3.3), T(4.4), T(5.5) };
-   T y[] = { T(1.1), T(2.2), T(3.3), T(4.4), T(5.5) };
-   T z[] = { T(0.0), T(0.0), T(0.0), T(0.0), T(0.0) };
+   const T r0 = T(0);
+   const T r1 = T(1);
+         T  x = T(0);
 
    symbol_table_t symbol_table;
-   symbol_table.add_vector("x",x);
-   symbol_table.add_vector("y",y);
-   symbol_table.add_vector("z",z);
+   symbol_table.add_variable("x",x);
 
    expression_t expression;
    expression.register_symbol_table(symbol_table);
@@ -50,11 +45,16 @@ void vector_function()
    parser_t parser;
    parser.compile(expression_string,expression);
 
-   expression.value();
+   const T delta = T(1.0 / 100.0);
+
+   for (x = r0; x <= r1; x += delta)
+   {
+      printf("%19.15f\t%19.15f\n", x, expression.value());
+   }
 }
 
 int main()
 {
-   vector_function<double>();
+   polynomial<double>();
    return 0;
 }

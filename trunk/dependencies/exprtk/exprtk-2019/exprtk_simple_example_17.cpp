@@ -2,8 +2,8 @@
  **************************************************************
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
- * Simple Example 3                                           *
- * Author: Arash Partow (1999-2018)                           *
+ * Simple Example 17                                          *
+ * Author: Arash Partow (1999-2019)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -17,43 +17,62 @@
 
 
 #include <cstdio>
+#include <cstdlib>
+#include <ctime>
 #include <string>
 
 #include "exprtk.hpp"
 
 
 template <typename T>
-void polynomial()
+struct rnd_01 : public exprtk::ifunction<T>
+{
+   using exprtk::ifunction<T>::operator();
+
+   rnd_01() : exprtk::ifunction<T>(0)
+   { ::srand(static_cast<unsigned int>(time(NULL))); }
+
+   inline T operator()()
+   {
+      // Note: Do not use this in production
+      // Result is in the interval [0,1)
+      return T(::rand() / T(RAND_MAX + 1.0));
+   }
+};
+
+template <typename T>
+void monte_carlo_pi()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>     expression_t;
    typedef exprtk::parser<T>             parser_t;
 
-   std::string expression_string = "25x^5 - 35x^4 - 15x^3 + 40x^2 - 15x + 1";
+   const std::string monte_carlo_pi_program =
+                  " var experiments[5 * 10^7] := [(rnd_01^2 + rnd_01^2) <= 1]; "
+                  " 4 * sum(experiments) / experiments[];                      ";
 
-   const T r0 = T(0);
-   const T r1 = T(1);
-         T  x = T(0);
+   rnd_01<T> rnd01;
 
    symbol_table_t symbol_table;
-   symbol_table.add_variable("x",x);
+   symbol_table.add_function("rnd_01",rnd01);
 
    expression_t expression;
    expression.register_symbol_table(symbol_table);
 
    parser_t parser;
-   parser.compile(expression_string,expression);
+   parser.compile(monte_carlo_pi_program,expression);
 
-   const T delta = T(1.0 / 100.0);
+   const T approximate_pi = expression.value();
 
-   for (x = r0; x <= r1; x += delta)
-   {
-      printf("%19.15f\t%19.15f\n",x,expression.value());
-   }
+   const T real_pi = T(3.141592653589793238462643383279502); // or close enough...
+
+   printf("pi ~ %20.17f\terror: %20.17f\n",
+          approximate_pi,
+          std::abs(real_pi - approximate_pi));
 }
 
 int main()
 {
-   polynomial<double>();
+   monte_carlo_pi<double>();
    return 0;
 }

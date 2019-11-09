@@ -2,8 +2,8 @@
  **************************************************************
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
- * Simple Example 1                                           *
- * Author: Arash Partow (1999-2018)                           *
+ * Simple Example 2                                           *
+ * Author: Arash Partow (1999-2019)                           *
  * URL: http://www.partow.net/programming/exprtk/index.html   *
  *                                                            *
  * Copyright notice:                                          *
@@ -23,35 +23,51 @@
 
 
 template <typename T>
-void trig_function()
+void square_wave()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>     expression_t;
    typedef exprtk::parser<T>             parser_t;
 
-   std::string expression_string = "clamp(-1.0,sin(2 * pi * x) + cos(x / 2 * pi),+1.0)";
+   const std::string expr_string =
+                  "a*(4/pi)*"
+                  "((1 /1)*sin( 2*pi*f*t)+(1 /3)*sin( 6*pi*f*t)+"
+                  " (1 /5)*sin(10*pi*f*t)+(1 /7)*sin(14*pi*f*t)+"
+                  " (1 /9)*sin(18*pi*f*t)+(1/11)*sin(22*pi*f*t)+"
+                  " (1/13)*sin(26*pi*f*t)+(1/15)*sin(30*pi*f*t)+"
+                  " (1/17)*sin(34*pi*f*t)+(1/19)*sin(38*pi*f*t)+"
+                  " (1/21)*sin(42*pi*f*t)+(1/23)*sin(46*pi*f*t)+"
+                  " (1/25)*sin(50*pi*f*t)+(1/27)*sin(54*pi*f*t))";
 
-   T x;
+   static const T pi = T(3.141592653589793238462643383279502);
+
+   const T f = pi / T(10);
+   const T a = T(10);
+         T t = T(0);
 
    symbol_table_t symbol_table;
-   symbol_table.add_variable("x",x);
+   symbol_table.add_variable("t",t);
+   symbol_table.add_constant("f",f);
+   symbol_table.add_constant("a",a);
    symbol_table.add_constants();
 
    expression_t expression;
    expression.register_symbol_table(symbol_table);
 
    parser_t parser;
-   parser.compile(expression_string,expression);
+   parser.compile(expr_string,expression);
 
-   for (x = T(-5); x <= T(+5); x += T(0.001))
+   const T delta = (T(4) * pi) / T(1000);
+
+   for (t = (T(-2) * pi); t <= (T(+2) * pi); t += delta)
    {
-      T y = expression.value();
-      printf("%19.15f\t%19.15f\n",x,y);
+      const T result = expression.value();
+      printf("%19.15f\t%19.15f\n", t, result);
    }
 }
 
 int main()
 {
-   trig_function<double>();
+   square_wave<double>();
    return 0;
 }

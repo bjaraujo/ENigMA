@@ -10,7 +10,7 @@ endif()
 project(ENigMA CXX)
 
 #Configure options
-set(EXPRTK_DIR "${CMAKE_SOURCE_DIR}/dependencies/exprtk/exprtk-2018")
+set(EXPRTK_DIR "${CMAKE_SOURCE_DIR}/dependencies/exprtk/exprtk-2019")
 set(RTREE_DIR "${CMAKE_SOURCE_DIR}/dependencies/RTree/RTree-2011")
 
 set(QT_MOC_EXECUTABLE "$ENV{QTDIR}/bin/moc.exe" CACHE FILEPATH "")
