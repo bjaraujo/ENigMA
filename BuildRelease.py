@@ -3,7 +3,7 @@ import os
 import shutil
 
 # Build platform
-build = 'msvc15-win64'
+build = 'msvc16-win64'
 
 configuration = 'Release'
     
@@ -63,23 +63,23 @@ print('version: ' + strNewVersion)
 print('build: ' + build)
 
 os.system("pause")
-os.system('"C:\Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe" build/' + build + '/wrappers/swig/python/_ENigMA.vcxproj /p:Configuration=' + configuration + ' /t:Rebuild')
+os.system('"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe" build/' + build + '/wrappers/swig/python/_ENigMA.vcxproj /p:Configuration=' + configuration + ' /t:Rebuild')
 
 if not os.path.exists('releases'):
     os.mkdir('releases')
 
 strNewFolder = 'releases/' + build
 if not os.path.isdir(strNewFolder):
-	os.mkdir(strNewFolder)
+    os.mkdir(strNewFolder)
 
 strNewFolder = 'releases/' + build + '/ENigMA_python3_64bit_' + strNewVersion
 if not os.path.isdir(strNewFolder):
-	os.mkdir(strNewFolder)
+    os.mkdir(strNewFolder)
 
 # Copy files
 shutil.copy2('build/' + build + '/wrappers/swig/python/' + configuration + '/_ENigMA.pyd', strNewFolder + '/_ENigMA.pyd')
 shutil.copy2('build/' + build + '/wrappers/swig/python/' + configuration + '/ENigMA.py', strNewFolder + '/ENigMA.py')
-    
+
 # Copy license
 shutil.copy2('LICENSE.txt', strNewFolder + '/LICENSE.txt')
 
@@ -87,7 +87,4 @@ shutil.copy2('LICENSE.txt', strNewFolder + '/LICENSE.txt')
 os.system('git commit -a -m v' + strNewVersion)
 os.system('git tag v' + strNewVersion)
 os.system('git push --tags')
-
-
-
 
