@@ -39,7 +39,7 @@ namespace fvm {
         CFvmBoundaryType(const EBoundaryType aBoundaryType)
             : m_boundaryType(aBoundaryType){};
 
-        CFvmBoundaryType operator=(const EBoundaryType& aBoundaryType)
+        CFvmBoundaryType& operator=(const EBoundaryType& aBoundaryType)
         {
 
             this->m_boundaryType = aBoundaryType;

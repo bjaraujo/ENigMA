@@ -37,7 +37,7 @@ namespace geometry {
         CGeoIntersectionType(const EIntersectionType anIntersectionType)
             : m_intersectionType(anIntersectionType){};
 
-        CGeoIntersectionType operator=(const EIntersectionType& anIntersectionType)
+        CGeoIntersectionType& operator=(const EIntersectionType& anIntersectionType)
         {
 
             this->m_intersectionType = anIntersectionType;
