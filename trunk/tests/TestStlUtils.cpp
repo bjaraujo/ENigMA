@@ -67,9 +67,11 @@ TEST_F(CTestStlUtils, io)
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
 
-    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-12);
+	CMshMesh<decimal> aMesh = aBasicMesher.mesh().extractBoundary(1E-12);
 
-    CStlUtils<decimal> aStl(aSurfaceMesh);
+    CStlUtils<decimal> aStl(aMesh);
+
+	EXPECT_EQ(48, aStl.stlFile().nbFacets());
 
     aStl.stlFile().stats.type = FT_BINARY;
 

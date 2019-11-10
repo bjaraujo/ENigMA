@@ -32,26 +32,38 @@ namespace mesh {
 
     template <typename Real> CMshMesh<Real>::CMshMesh(const CMshMesh<Real>& aMesh)
     {
-        for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i) {
-            Integer aNodeId = m_nodeIds.at(i);
-            CMshNode<Real> aNode = aMesh.m_nodes.at(aNodeId);
 
-            addNode(aNodeId, aNode);
+        try {
+
+            reset();
+
+            for (Integer i = 0; i < static_cast<Integer>(aMesh.m_nodeIds.size()); ++i) {
+                Integer aNodeId = aMesh.m_nodeIds.at(i);
+                CMshNode<Real> aNode = aMesh.m_nodes.at(aNodeId);
+
+                addNode(aNodeId, aNode);
+            }
+
+            for (Integer i = 0; i < static_cast<Integer>(aMesh.m_faceIds.size()); ++i) {
+                Integer aFaceId = aMesh.m_faceIds.at(i);
+                CMshFace<Real> aFace = aMesh.m_faces.at(aFaceId);
+
+                addFace(aFaceId, aFace);
+            }
+
+            for (Integer i = 0; i < static_cast<Integer>(aMesh.m_elementIds.size()); ++i) {
+                Integer anElementId = aMesh.m_elementIds.at(i);
+                CMshElement<Real> anElement = aMesh.m_elements.at(anElementId);
+
+                addElement(anElementId, anElement);
+            }
         }
-
-        for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
-            Integer anElementId = aMesh.m_elementIds.at(i);
-            CMshElement<Real> anElement = aMesh.m_elements.at(anElementId);
-
-            addElement(anElementId, anElement);
-        }
-
-        for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
-            Integer aFaceId = aMesh.m_faceIds.at(i);
-            CMshFace<Real> aFace = aMesh.m_faces.at(aFaceId);
-
-            addFace(aFaceId, aFace);
-        }
+		catch (const std::exception& e) { 
+			std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
+		}
+		catch (...) { 
+			std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
+		}
     }
 
     template <typename Real> CMshMesh<Real>::~CMshMesh() {}
@@ -203,31 +215,31 @@ namespace mesh {
 
         try {
 
-			m_faceIds.clear();
-			m_faces.clear();
+            m_faceIds.clear();
+            m_faces.clear();
 
-			m_faceIndices.clear();
+            m_faceIndices.clear();
 
-			m_faceIndex = 0;
+            m_faceIndex = 0;
 
-			for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
+            for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-				Integer anElementId = m_elementIds.at(i);
+                Integer anElementId = m_elementIds.at(i);
 
-				std::vector<CMshFace<Real>> sFaces;
+                std::vector<CMshFace<Real>> sFaces;
 
-				m_elements.at(anElementId).generateFaces(sFaces);
+                m_elements.at(anElementId).generateFaces(sFaces);
 
-				for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
-					sFaces.at(j).setElementId(anElementId);
-					Integer aFaceId = this->nextFaceId();
-					this->addFace(aFaceId, sFaces.at(j));
-					m_elements.at(anElementId).addFaceId(aFaceId);
-				}
-			}
+                for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
+                    sFaces.at(j).setElementId(anElementId);
+                    Integer aFaceId = this->nextFaceId();
+                    this->addFace(aFaceId, sFaces.at(j));
+                    m_elements.at(anElementId).addFaceId(aFaceId);
+                }
+            }
 
-			// Discover double faces
-			CGeoHashGrid<Real> aHashGrid;
+            // Discover double faces
+            CGeoHashGrid<Real> aHashGrid;
 
             std::vector<CGeoCoordinate<Real>> sCenterCoordinates;
 
@@ -253,45 +265,44 @@ namespace mesh {
                 aHashGrid.addGeometricObject(aFaceId, aCenterCoordinate);
             }
 
-			aHashGrid.build();
+            aHashGrid.build();
 
-			for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
+            for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-				Integer aFaceId = m_faceIds.at(i);
+                Integer aFaceId = m_faceIds.at(i);
 
-				std::vector<Integer> sCoordinates;
+                std::vector<Integer> sCoordinates;
 
-				aHashGrid.find(sCoordinates, sCenterCoordinates.at(i), aTolerance);
+                aHashGrid.find(sCoordinates, sCenterCoordinates.at(i), aTolerance);
 
-				for (Integer j = 0; j < static_cast<Integer>(sCoordinates.size()); ++j) {
+                for (Integer j = 0; j < static_cast<Integer>(sCoordinates.size()); ++j) {
 
-					if (sCoordinates.at(j) != aFaceId) {
+                    if (sCoordinates.at(j) != aFaceId) {
 
-						Integer aPairFaceId = sCoordinates.at(j);
+                        Integer aPairFaceId = sCoordinates.at(j);
 
-						if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType()) {
-							m_faces.at(aFaceId).setPairFaceId(aPairFaceId);
-							m_faces.at(aPairFaceId).setPairFaceId(aFaceId);
-							break;
-						}
-					}
-				}
-			}
+                        if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType()) {
+                            m_faces.at(aFaceId).setPairFaceId(aPairFaceId);
+                            m_faces.at(aPairFaceId).setPairFaceId(aFaceId);
+                            break;
+                        }
+                    }
+                }
+            }
 
-			m_nbBoundaryFaces = 0;
+            m_nbBoundaryFaces = 0;
 
-			for (typename mapFace::iterator it = m_faces.begin(); it != m_faces.end(); ++it) {
+            for (typename mapFace::iterator it = m_faces.begin(); it != m_faces.end(); ++it) {
 
-				if (!it->second.hasPair())
-					m_nbBoundaryFaces++;
-			}
+                if (!it->second.hasPair())
+                    m_nbBoundaryFaces++;
+            }
 
         } catch (const std::exception& e) {
             std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
         } catch (...) {
             std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
         }
-
     }
 
     template <typename Real> Integer CMshMesh<Real>::nbBoundaryFaces() { return m_nbBoundaryFaces; }
