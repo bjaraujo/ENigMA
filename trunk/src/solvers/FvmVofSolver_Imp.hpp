@@ -76,7 +76,7 @@ namespace fvm {
     {
 
         m_sf[aFaceId] = s;
-        m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+        m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
     }
 
     template <typename Real>
@@ -89,7 +89,7 @@ namespace fvm {
 
             m_sf[aFaceId] = s;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 

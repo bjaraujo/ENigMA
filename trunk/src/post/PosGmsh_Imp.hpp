@@ -27,7 +27,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosGmsh<Real>::findSection(std::ifstream& fileStream, std::string sectionName)
+    bool CPosGmsh<Real>::findSection(std::ifstream& fileStream, const std::string& sectionName)
     {
 
         while (!fileStream.eof()) {
@@ -45,7 +45,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosGmsh<Real>::load(ENigMA::pde::CPdeField<Real>& aField, const std::string strFileName)
+    bool CPosGmsh<Real>::load(ENigMA::pde::CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ifstream fileGmsh;
@@ -168,7 +168,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosGmsh<Real>::save(ENigMA::pde::CPdeField<Real>& aField, const std::string strFileName, const std::string strViewName)
+    bool CPosGmsh<Real>::save(ENigMA::pde::CPdeField<Real>& aField, const std::string& strFileName, const std::string& strViewName)
     {
 
         std::ofstream fileGmsh;

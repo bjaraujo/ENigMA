@@ -22,7 +22,7 @@ namespace geometry {
     class CGeoPolyline : public CGeoLength<Real>, public CGeoVertexList<Real> {
     public:
         CGeoPolyline();
-        CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
+        explicit CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
         virtual ~CGeoPolyline();
 
         void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);

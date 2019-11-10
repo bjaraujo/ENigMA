@@ -161,7 +161,7 @@ namespace fvm {
             m_vf[aFaceId] = v;
             m_wf[aFaceId] = w;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 
@@ -175,7 +175,7 @@ namespace fvm {
 
             m_pf[aFaceId] = p;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 
