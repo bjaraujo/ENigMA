@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include <Eigen/Sparse>
 
 namespace ENigMA {
@@ -395,14 +397,14 @@ namespace fvm {
                         A.coeffRef(anIndexP, anIndexP) += 0.5 * (1.0 - beta) * flux;
                         A.coeffRef(anIndexP, anIndexN) += 0.5 * beta * flux;
 
-                        b.at(anIndexP) += -0.5 * (1.0 - beta) * flux * m_s.at(aControlVolumeId);
-                        b.at(anIndexP) += -0.5 * beta * flux * m_s.at(aNeighborId);
+                        b[anIndexP] += -0.5 * (1.0 - beta) * flux * m_s.at(aControlVolumeId);
+                        b[anIndexP] += -0.5 * beta * flux * m_s.at(aNeighborId);
                     }
 
                 } else {
 
                     // Convection
-                    b.at(anIndexP) += -1.0 * flux * m_sf.at(aFaceId);
+                    b[anIndexP] += -1.0 * flux * m_sf.at(aFaceId);
                 }
             }
 
@@ -410,7 +412,7 @@ namespace fvm {
 
                 // Unsteady term - Euler
                 A.coeffRef(anIndexP, anIndexP) += volume / m_dt;
-                b.at(anIndexP) += volume / m_dt * m_s0.at(aControlVolumeId);
+                b[anIndexP] += volume / m_dt * m_s0.at(aControlVolumeId);
             }
         }
 
@@ -425,7 +427,7 @@ namespace fvm {
 
             Integer aControlVolumeId = m_mapIndexToId.at(i);
 
-            m_s[aControlVolumeId] = std::min(std::max(s.at(i), 0.0), 1.0);
+            m_s[aControlVolumeId] = std::min(std::max(s[i], 0.0), 1.0);
         }
     }
 
