@@ -3,9 +3,3 @@ path_classifiers:
     - exclude: /
     - trunk/src
     - trunk/tests
-queries:
-  - exclude: images
-  - exclude: trunk/cmake
-  - exclude: trunk/dependencies
-  - exclude: trunk/examples
-  - exclude: trunk/wrappers
