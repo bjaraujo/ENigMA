@@ -1,3 +1,8 @@
+path_classifiers:
+  test:
+    - exclude: /
+    - trunk/src
+    - trunk/tests
 queries:
   - exclude: images
   - exclude: trunk/cmake
