@@ -14,14 +14,12 @@ namespace ENigMA {
 namespace fem {
 
     template <typename Real>
-    CFemElement<Real>::CFemElement()
+    CFemElement<Real>::CFemElement() :
+        m_dt(1.0),
+        m_diffusionCoefficient(1.0),
+        m_convectionCoefficient(1.0),
+        m_transient(false)
     {
-
-        m_dt = 1.0;
-        m_diffusionCoefficient = 1.0;
-        m_convectionCoefficient = 1.0;
-
-        m_transient = false;
     }
 
     template <typename Real>
