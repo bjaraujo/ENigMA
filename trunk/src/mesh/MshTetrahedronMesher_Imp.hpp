@@ -24,6 +24,8 @@ namespace mesh {
     CMshTetrahedronMesher<Real>::CMshTetrahedronMesher()
         : m_timeInterval(1)
         , m_dataInterval(100)
+        , m_begin(0)
+        , m_end(0)
         , m_bStop(false)
         , onUpdate(nullptr)
         , m_previousNbElements(0)
