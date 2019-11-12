@@ -182,7 +182,7 @@ namespace geometry {
     void CGeoAdtree6<Real>::getIntersecting(const Real bmin[6], const Real bmax[6], std::vector<Integer>& sIds)
     {
 
-        const int max_depth = 1024;
+        const int maxDepth = 1024;
 
         struct node_dir {
             CGeoAdtreeNode6<Real>* node;
@@ -191,7 +191,7 @@ namespace geometry {
 
         try {
 
-            node_dir nodes[max_depth];
+            std::array<node_dir, maxDepth> nodes;
 
             nodes[0].node = m_root;
             nodes[0].dir = 0;
@@ -200,7 +200,7 @@ namespace geometry {
 
             while (stacks >= 0) {
 
-                node_dir a_node_dir = nodes[stacks];
+                node_dir a_node_dir = nodes.at(stacks);
 
                 CGeoAdtreeNode6<Real>* node = a_node_dir.node;
                 Integer dir = a_node_dir.dir;
@@ -219,25 +219,25 @@ namespace geometry {
                 if (node->leftNode && bmin[dir] <= node->sep) {
                     stacks++;
 
-                    if (stacks >= max_depth) {
-                        std::cout << "Error: max depth of " << max_depth << " reached!" << std::endl;
+                    if (stacks >= maxDepth) {
+                        std::cout << "Error: max depth of " << maxDepth << " reached!" << std::endl;
                         break;
                     }
 
-                    nodes[stacks].node = node->leftNode;
-                    nodes[stacks].dir = ndir;
+                    nodes.at(stacks).node = node->leftNode;
+                    nodes.at(stacks).dir = ndir;
                 }
 
                 if (node->rightNode && bmax[dir] >= node->sep) {
                     stacks++;
 
-                    if (stacks >= max_depth) {
-                        std::cout << "Error: max depth of " << max_depth << " reached!" << std::endl;
+                    if (stacks >= maxDepth) {
+                        std::cout << "Error: max depth of " << maxDepth << " reached!" << std::endl;
                         break;
                     }
 
-                    nodes[stacks].node = node->rightNode;
-                    nodes[stacks].dir = ndir;
+                    nodes.at(stacks).node = node->rightNode;
+                    nodes.at(stacks).dir = ndir;
                 }
             }
 
