@@ -50,6 +50,15 @@ add_subdirectory(lib)
 
 if(ENIGMA_BUILD_UNIT_TESTS)
     add_subdirectory(tests)
+
+    if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+        set(Coverage_NAME UnitTests_coverage)
+        include(CodeCoverage)
+        setup_target_for_coverage_lcov(UnitTests_coverage UnitTests coverage)
+
+        SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+        SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+    endif()
 endif()
 
 add_subdirectory(wrappers)
