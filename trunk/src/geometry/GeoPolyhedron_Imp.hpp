@@ -486,7 +486,6 @@ namespace geometry {
 
             Real fc = fa;
             Real s = 0.0;
-            Real fs = 0.0;
 
             Real vs = 0.0;
 
@@ -526,7 +525,7 @@ namespace geometry {
 
                 aPolyhedron.calculateVolume(true);
                 vs = aPolyhedron.volume();
-                fs = vs / vt - volumeFractionReq;
+                Real fs = vs / vt - volumeFractionReq;
 
                 f = e;
                 e = b;

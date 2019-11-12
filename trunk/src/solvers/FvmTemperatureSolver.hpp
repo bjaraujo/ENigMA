@@ -32,7 +32,7 @@ namespace fvm {
         void calculateTemperatureField();
 
     public:
-        CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh);
+        explicit CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh);
         virtual ~CFvmTemperatureSolver();
 
         virtual void storePreviousQuantities();
