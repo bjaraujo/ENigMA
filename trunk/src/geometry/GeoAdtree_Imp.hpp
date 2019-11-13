@@ -7,6 +7,8 @@
 // <Author> Billy Araujo </Author>
 // *****************************************************************************
 
+#include <array>
+
 #pragma once
 
 namespace ENigMA {
