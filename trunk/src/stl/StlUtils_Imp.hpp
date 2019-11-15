@@ -66,9 +66,9 @@ namespace stl {
 
             CStlFacet<Real> aFacet;
 
-            for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
+            for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
-                Integer aNodeId = anElement.nodeId(i);
+                Integer aNodeId = anElement.nodeId(j);
 
                 CGeoCoordinate<Real> aVertex = aTriMesh.node(aNodeId);
 
