@@ -198,7 +198,6 @@ namespace pde {
 
                             aSystem.matrixA.coeffRef(el, el) += +0.5 * Af / Vp * (nf.x() + nf.y() + nf.z());
                             aSystem.matrixA.coeffRef(el, nl) += +0.5 * Af / Vp * (nf.x() + nf.y() + nf.z());
-                            ;
 
                         } else {
 

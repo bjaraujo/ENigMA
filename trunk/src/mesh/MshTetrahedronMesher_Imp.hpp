@@ -681,7 +681,7 @@ namespace mesh {
 
                             if (newTriangleIds.find(aNeighborId) != newTriangleIds.end()) {
 
-                                anAdvTriangle.neighborId[j] = newTriangleIds[aNeighborId];
+                                anAdvTriangle.neighborId[j] = newTriangleIds.at(aNeighborId);
 
                                 CMshElement<Real>& aNeighbor = aSurfaceMesh.element(aNeighborId);
 
@@ -1207,10 +1207,10 @@ namespace mesh {
 
             SAdvancingFrontTriangle& anAdvTriangle = aReducedAdvFront[i];
 
-            anAdvTriangle.id = aAdvFrontMapId[anAdvTriangle.id];
-            anAdvTriangle.neighborId[0] = aAdvFrontMapId[anAdvTriangle.neighborId[0]];
-            anAdvTriangle.neighborId[1] = aAdvFrontMapId[anAdvTriangle.neighborId[1]];
-            anAdvTriangle.neighborId[2] = aAdvFrontMapId[anAdvTriangle.neighborId[2]];
+            anAdvTriangle.id = aAdvFrontMapId.at(anAdvTriangle.id);
+            anAdvTriangle.neighborId[0] = aAdvFrontMapId.at(anAdvTriangle.neighborId[0]);
+            anAdvTriangle.neighborId[1] = aAdvFrontMapId.at(anAdvTriangle.neighborId[1]);
+            anAdvTriangle.neighborId[2] = aAdvFrontMapId.at(anAdvTriangle.neighborId[2]);
 
             m_anAdvFront.push_back(anAdvTriangle);
 
