@@ -153,15 +153,15 @@ namespace stl {
                     char fhtest[5];
 
                     // Discard spaces
-                    Integer i = 0;
+                    Integer c = 0;
 
-                    while (i < 5) {
+                    while (c < 5) {
 
                         char letter = fileSTL.get();
 
                         if (letter != 32) {
-                            fhtest[i] = letter;
-                            i++;
+                            fhtest[c] = letter;
+                            c++;
                         }
                     }
 
@@ -191,8 +191,8 @@ namespace stl {
                     fileSTL.seekg(0);
 
                     // Read the header
-                    for (Integer i = 0; (i < 80) && (m_stlFile.stats.header[i] = static_cast<char>(fileSTL.get())) != '\n'; ++i)
-                        ;
+                    for (Integer i = 0; (i < 80) && (m_stlFile.stats.header[i] = static_cast<char>(fileSTL.get())) != '\n'; ++i);
+                    
                     m_stlFile.stats.header[80] = '\0';
 
                     numFacets = numLines / ASCII_LINES_PER_FACET;

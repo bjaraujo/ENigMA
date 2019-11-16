@@ -665,15 +665,15 @@ namespace mesh {
                         std::vector<CMshFace<Real>> sFaces;
                         aNewElement.generateFaces(sFaces);
 
-                        for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
+                        for (Integer k = 0; k < static_cast<Integer>(sFaces.size()); ++k) {
 
-                            CMshFace<Real> aNewFace = sFaces[j];
+                            CMshFace<Real> aNewFace = sFaces[k];
 
                             Integer aNewFaceId = anEdgeMesh.nextFaceId();
 
                             aNewFace.setElementId(aNewElementId);
 
-                            if (j == 0)
+                            if (k == 0)
                                 aNewFace.setPairFaceId(aPrevFaceId);
                             else
                                 aNewFace.setPairFaceId(aNewFaceId + 1);

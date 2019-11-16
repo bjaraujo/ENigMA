@@ -47,6 +47,7 @@ namespace post {
                     Integer id;
                     Real x, y, z;
 
+                    desc.reserve(50);
                     std::sscanf(line, "%25s %d %f %f %f", &desc[0], &id, &x, &y, &z);
 
                     CMshNode<Real> aNode(x, y, z);
@@ -61,6 +62,7 @@ namespace post {
                     Integer p1, p2, p3, p4;
                     Real v;
 
+                    desc.reserve(50);
                     std::sscanf(line, "%25s %d %d %d %d %d %d %d %d %d %f", &desc[0], &id, &n1, &n2, &n3, &n4, &p1, &p2, &p3, &p4, &v);
 
                     CMshElement<Real> anElement;
