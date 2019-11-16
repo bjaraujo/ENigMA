@@ -37,14 +37,12 @@ namespace geometry {
 
         CGeoIntersectionType& operator=(const EIntersectionType& anIntersectionType)
         {
-
             this->m_intersectionType = anIntersectionType;
             return *this;
         }
 
         bool operator==(const EIntersectionType& anIntersectionType) const
         {
-
             return this->m_intersectionType == anIntersectionType;
         }
     };
