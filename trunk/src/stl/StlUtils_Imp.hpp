@@ -1307,7 +1307,6 @@ namespace stl {
                     aFacet_f.push_back(m_stlFile.facet(aNeighborId));
                     whichFacet.push_back(aNeighborId);
                     whichVertex.push_back((aVertexNot + 1) % 3);
-
                     n++;
 
                     if (n >= nMaxSize) {

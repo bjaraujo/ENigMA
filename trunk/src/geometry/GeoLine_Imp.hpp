@@ -128,7 +128,7 @@ namespace geometry {
             Real den = aPlane.normal().dot(m_vector);
             Real num = aPlane.normal().dot(m_startPoint);
 
-            if (den != 0) {
+            if (std::fabs(den) > std::numeric_limits<Real>::epsilon()) {
 
                 Real alpha = (aPlane.d() - num) / den;
 
