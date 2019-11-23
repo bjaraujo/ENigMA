@@ -58,6 +58,11 @@ TEST_F(CTestPosGnuplot, plot)
     T.setDiscretLocation(DL_NODE);
     T.u.resize(T.mesh().nbNodes());
 
+    for (Integer i = 0; i < T.u.size(); ++i)
+    {
+        T.u[i] = 0.0;
+    }
+
     aPosGnuplot.save(T, "plot.dat");
 
     EXPECT_EQ(T.u.size(), 4);

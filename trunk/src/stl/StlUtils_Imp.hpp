@@ -82,7 +82,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::load(std::string strFileName)
+    bool CStlUtils<Real>::load(const std::string& strFileName)
     {
 
         // Open the file
@@ -273,7 +273,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::saveAscii(std::string strFileName)
+    bool CStlUtils<Real>::saveAscii(const std::string& strFileName)
     {
 
         std::ofstream fileSTL;
@@ -354,7 +354,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::saveBinary(std::string strFileName)
+    bool CStlUtils<Real>::saveBinary(const std::string& strFileName)
     {
 
         std::ofstream fileSTL;
@@ -365,8 +365,6 @@ namespace stl {
 
             for (Integer i = 0; i < LABEL_SIZE; ++i)
                 fileSTL.put(0);
-
-            fileSTL.seekp(LABEL_SIZE);
 
             this->writeInt(fileSTL, m_stlFile.nbFacets());
 
@@ -395,7 +393,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::save(std::string strFileName)
+    bool CStlUtils<Real>::save(const std::string& strFileName)
     {
 
         if (m_stlFile.stats.type == FT_ASCII)

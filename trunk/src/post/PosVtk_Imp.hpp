@@ -27,7 +27,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosVtk<Real>::load(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosVtk<Real>::load(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ifstream fileVtk;
@@ -47,7 +47,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosVtk<Real>::save(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosVtk<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ofstream fileVtk;

@@ -39,7 +39,7 @@ namespace pde {
     }
 
     template <typename Real>
-    void CPdeField<Real>::setMesh(ENigMA::mesh::CMshMesh<Real>& aMesh)
+    void CPdeField<Real>::setMesh(const ENigMA::mesh::CMshMesh<Real>& aMesh)
     {
 
         m_mesh = aMesh;

@@ -26,7 +26,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosQuickMesh<Real>::load(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosQuickMesh<Real>::load(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ifstream fileQuickMesh;
@@ -87,7 +87,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosQuickMesh<Real>::save(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosQuickMesh<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ofstream fileQuickMesh;

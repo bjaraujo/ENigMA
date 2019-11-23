@@ -75,7 +75,7 @@ namespace pde {
 
         void init();
 
-        void setMesh(ENigMA::mesh::CMshMesh<Real>& aMesh);
+        void setMesh(const ENigMA::mesh::CMshMesh<Real>& aMesh);
         ENigMA::mesh::CMshMesh<Real>& mesh();
 
         void setNbDofs(const Integer nbDofs);

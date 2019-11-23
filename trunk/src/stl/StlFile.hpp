@@ -88,16 +88,16 @@ namespace stl {
 
         void reset();
 
-        Integer nbFacets();
+        Integer nbFacets() const;
 
-        Integer facetId(const Integer aFacetIndex);
+        Integer facetId(const Integer aFacetIndex) const;
 
         void addFacet(const Integer aFacetId, CStlFacet<Real>& aFacet);
         void removeFacet(const Integer aFacetId);
 
         CStlFacet<Real>& facet(const Integer aFacetId);
 
-        Integer nextFacetId();
+        Integer nextFacetId() const;
 
         CStlStats<Real> stats;
     };

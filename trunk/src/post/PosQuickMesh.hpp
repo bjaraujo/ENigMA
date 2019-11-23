@@ -23,8 +23,8 @@ namespace post {
         CPosQuickMesh();
         virtual ~CPosQuickMesh();
 
-        bool load(CPdeField<Real>& aField, std::string strFileName);
-        bool save(CPdeField<Real>& aField, std::string strFileName);
+        bool load(CPdeField<Real>& aField, const std::string& strFileName);
+        bool save(CPdeField<Real>& aField, const std::string& strFileName);
     };
 }
 }

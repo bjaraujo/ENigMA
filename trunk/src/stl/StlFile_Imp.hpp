@@ -103,14 +103,14 @@ namespace stl {
     }
 
     template <typename Real>
-    Integer CStlFile<Real>::nbFacets()
+    Integer CStlFile<Real>::nbFacets() const
     {
 
         return static_cast<Integer>(m_facetIds.size());
     }
 
     template <typename Real>
-    Integer CStlFile<Real>::facetId(const Integer aFacetIndex)
+    Integer CStlFile<Real>::facetId(const Integer aFacetIndex) const
     {
 
         return m_facetIds.at(aFacetIndex);
@@ -140,7 +140,7 @@ namespace stl {
     }
 
     template <typename Real>
-    Integer CStlFile<Real>::nextFacetId()
+    Integer CStlFile<Real>::nextFacetId() const
     {
 
         if (m_facets.size() > 0)

@@ -26,7 +26,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosGnuplot<Real>::save(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosGnuplot<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ofstream fileGnuplot;
@@ -42,8 +42,13 @@ namespace post {
                 for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
 
                     Integer id = aField.mesh().nodeIndex(i);
+                    CMshNode<Real> aNode = aField.mesh().node(id);
 
-                    fileGnuplot << id + 1 << std::setprecision(16) << " " << aField.mesh().node(id).x() << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << " " << aField.u(i) << std::endl;
+                    fileGnuplot << id + 1 << std::setprecision(16) 
+                        << " " << aNode.x()
+                        << " " << aNode.y()
+                        << " " << aNode.z()
+                        << " " << aField.u(i) << std::endl;
                 }
             }
 
@@ -52,10 +57,14 @@ namespace post {
                 for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
 
                     Integer id = aField.mesh().elementIndex(i);
-
                     CGeoCoordinate<Real> aCentroid = aField.mesh().elementCentroid(id);
 
-                    fileGnuplot << id + 1 << std::setprecision(16) << " " << aCentroid.x() << " " << aCentroid.y() << " " << aCentroid.z() << " " << aField.u(i) << std::endl;
+                    fileGnuplot << id + 1 << std::setprecision(16) 
+                        << " " << aCentroid.x()
+                        << " " << aCentroid.y()
+                        << " " << aCentroid.z() 
+                        << " " << aField.u(i)
+                        << std::endl;
                 }
             }
 
