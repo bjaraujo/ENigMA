@@ -38,7 +38,7 @@ namespace mesh {
 
         Real d = sin(a) + sin(b) + sin(c);
 
-        if (d > 0)
+        if (d > std::numeric_limits<Real>::epsilon())
             m_quality = 4.0 * sin(a) * sin(b) * sin(c) / d;
         else
             m_quality = 0.0;

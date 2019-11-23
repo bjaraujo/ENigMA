@@ -206,7 +206,7 @@ namespace analytical {
 
         Integer i = 0;
 
-        while (!(fb == 0) && (fabs(a - b) > aTolerance)) {
+        while ((fb != 0) && (fabs(a - b) > aTolerance)) {
 
             Real s;
 

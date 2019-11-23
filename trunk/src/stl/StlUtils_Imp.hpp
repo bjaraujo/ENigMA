@@ -765,10 +765,10 @@ namespace stl {
 
         p = (d0 + d1 + d2) * 0.5;
 
-        if (p > 0) {
+        if (p > std::numeric_limits<Real>::epsilon()) {
             e = (p - d0) * (p - d1) * (p - d2) / p;
 
-            if (dmax != 0 && e > 0)
+            if (dmax > std::numeric_limits<Real>::epsilon() && e > 0)
                 q = sqrt(12.0) * sqrt(e) / dmax;
             else
                 q = 0;
@@ -1124,9 +1124,9 @@ namespace stl {
                 Real ang = normal_i.angle(normal_j);
 
                 m_stlFile.facet(aFacetId).calculateArea();
-                Real areai = m_stlFile.facet(aFacetId).area();
+                Real area = m_stlFile.facet(aFacetId).area();
 
-                if (fabs(ang) < swapAngle || areai < std::numeric_limits<Real>::min()) {
+                if (fabs(ang) < swapAngle || area < std::numeric_limits<Real>::min()) {
 
                     Real dmin, dmax;
 
