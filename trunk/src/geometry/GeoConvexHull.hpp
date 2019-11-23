@@ -43,7 +43,7 @@ namespace geometry {
 
         void set(std::vector<CGeoCoordinate<Real>>& sVertices);
 
-        Integer nbVertices();
+        Integer nbVertices() const;
 
         void reset();
 

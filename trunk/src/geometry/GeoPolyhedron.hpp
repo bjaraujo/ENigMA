@@ -45,7 +45,7 @@ namespace geometry {
         Integer polygonId(const Integer aPolygonIndex);
         CGeoPolygon<Real>& polygon(const Integer aPolygonId);
         void addPolygon(const Integer aPolygonId, CGeoPolygon<Real>& aPolygon);
-        Integer nbPolygons();
+        Integer nbPolygons() const;
 
         bool containsPolygon(const Integer aPolygonId);
 

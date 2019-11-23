@@ -33,7 +33,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoLineList<Real>::nbLines()
+    Integer CGeoLineList<Real>::nbLines() const
     {
 
         return static_cast<Integer>(m_lines.size());

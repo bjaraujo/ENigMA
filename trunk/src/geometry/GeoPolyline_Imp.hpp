@@ -71,7 +71,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoPolyline<Real>::nbLines()
+    Integer CGeoPolyline<Real>::nbLines() const
     {
 
         if (CGeoVertexList<Real>::nbVertices() == 0)

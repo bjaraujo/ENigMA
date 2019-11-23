@@ -195,7 +195,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoPolyhedron<Real>::nbPolygons()
+    Integer CGeoPolyhedron<Real>::nbPolygons() const
     {
 
         return static_cast<Integer>(m_polygonIds.size());

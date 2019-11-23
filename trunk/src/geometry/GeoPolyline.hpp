@@ -27,7 +27,7 @@ namespace geometry {
 
         void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
 
-        Integer nbLines();
+        Integer nbLines() const;
         CGeoLine<Real> line(Integer aLineIndex);
 
         bool isClosed(const Real aTolerance = 0);

@@ -41,13 +41,13 @@ namespace mesh {
         explicit CMshElement(EElementType anElementType);
         virtual ~CMshElement();
 
-        Integer nbNodeIds();
+        Integer nbNodeIds() const;
 
         void addNodeId(const Integer aNodeId);
         Integer nodeId(const Integer aNodeIndex);
         void setNodeId(const Integer aNodeIndex, const Integer aNodeId);
 
-        Integer nbFaceIds();
+        Integer nbFaceIds() const;
 
         void addFaceId(const Integer aFaceId);
         Integer faceId(const Integer aFaceIndex);

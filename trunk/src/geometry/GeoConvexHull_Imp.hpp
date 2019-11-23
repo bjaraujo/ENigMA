@@ -131,7 +131,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoConvexHull<Real>::nbVertices()
+    Integer CGeoConvexHull<Real>::nbVertices() const
     {
 
         return static_cast<Integer>(m_vertices.size());

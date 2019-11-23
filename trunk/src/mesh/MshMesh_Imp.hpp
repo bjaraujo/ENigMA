@@ -58,12 +58,12 @@ namespace mesh {
                 addElement(anElementId, anElement);
             }
         }
-		catch (const std::exception& e) { 
-			std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
-		}
-		catch (...) { 
-			std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
-		}
+        catch (const std::exception& e) { 
+            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
+        }
+        catch (...) { 
+            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
+        }
     }
 
     template <typename Real> CMshMesh<Real>::~CMshMesh() {}
@@ -95,11 +95,11 @@ namespace mesh {
         m_nbBoundaryFaces = 0;
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nbNodes() { return static_cast<Integer>(m_nodeIds.size()); }
+    template <typename Real> Integer CMshMesh<Real>::nbNodes() const { return static_cast<Integer>(m_nodeIds.size()); }
 
-    template <typename Real> Integer CMshMesh<Real>::nbFaces() { return static_cast<Integer>(m_faceIds.size()); }
+    template <typename Real> Integer CMshMesh<Real>::nbFaces() const { return static_cast<Integer>(m_faceIds.size()); }
 
-    template <typename Real> Integer CMshMesh<Real>::nbElements() { return static_cast<Integer>(m_elementIds.size()); }
+    template <typename Real> Integer CMshMesh<Real>::nbElements() const { return static_cast<Integer>(m_elementIds.size()); }
 
     template <typename Real> void CMshMesh<Real>::addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode)
     {
@@ -198,17 +198,17 @@ namespace mesh {
 
     template <typename Real> ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId) { return m_elements.at(anElementId); }
 
-    template <typename Real> Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex) { return m_nodeIds.at(aNodeIndex); }
+    template <typename Real> Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex) const { return m_nodeIds.at(aNodeIndex); }
 
-    template <typename Real> Integer CMshMesh<Real>::faceId(const Integer aFaceIndex) { return m_faceIds.at(aFaceIndex); }
+    template <typename Real> Integer CMshMesh<Real>::faceId(const Integer aFaceIndex) const { return m_faceIds.at(aFaceIndex); }
 
-    template <typename Real> Integer CMshMesh<Real>::elementId(const Integer anElementIndex) { return m_elementIds.at(anElementIndex); }
+    template <typename Real> Integer CMshMesh<Real>::elementId(const Integer anElementIndex) const { return m_elementIds.at(anElementIndex); }
 
-    template <typename Real> Integer CMshMesh<Real>::nodeIndex(const Integer aNodeId) { return m_nodeIndices.at(aNodeId); }
+    template <typename Real> Integer CMshMesh<Real>::nodeIndex(const Integer aNodeId) const { return m_nodeIndices.at(aNodeId); }
 
-    template <typename Real> Integer CMshMesh<Real>::faceIndex(const Integer aFaceId) { return m_faceIndices.at(aFaceId); }
+    template <typename Real> Integer CMshMesh<Real>::faceIndex(const Integer aFaceId) const { return m_faceIndices.at(aFaceId); }
 
-    template <typename Real> Integer CMshMesh<Real>::elementIndex(const Integer anElementId) { return m_elementIndices.at(anElementId); }
+    template <typename Real> Integer CMshMesh<Real>::elementIndex(const Integer anElementId) const { return m_elementIndices.at(anElementId); }
 
     template <typename Real> void CMshMesh<Real>::generateFaces(const Real aTolerance)
     {
@@ -305,7 +305,7 @@ namespace mesh {
         }
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nbBoundaryFaces() { return m_nbBoundaryFaces; }
+    template <typename Real> Integer CMshMesh<Real>::nbBoundaryFaces() const { return m_nbBoundaryFaces; }
 
     template <typename Real> ENigMA::mesh::CMshMesh<Real> CMshMesh<Real>::extractBoundary(const Real aTolerance)
     {

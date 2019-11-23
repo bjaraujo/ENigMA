@@ -62,17 +62,17 @@ namespace mesh {
 
         void reset();
 
-        Integer nbNodes();
-        Integer nbFaces();
-        Integer nbElements();
+        Integer nbNodes() const;
+        Integer nbFaces() const;
+        Integer nbElements() const;
 
-        Integer nodeId(Integer aNodeIndex);
-        Integer faceId(Integer aFaceIndex);
-        Integer elementId(Integer anElementIndex);
+        Integer nodeId(Integer aNodeIndex) const;
+        Integer faceId(Integer aFaceIndex) const;
+        Integer elementId(Integer anElementIndex) const;
 
-        Integer nodeIndex(Integer aNodeId);
-        Integer faceIndex(Integer aFaceId);
-        Integer elementIndex(Integer anElementId);
+        Integer nodeIndex(Integer aNodeId) const;
+        Integer faceIndex(Integer aFaceId) const;
+        Integer elementIndex(Integer anElementId) const;
 
         void addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode);
         void addFace(const Integer aFaceId, const ENigMA::mesh::CMshFace<Real>& aFace);
@@ -91,7 +91,7 @@ namespace mesh {
         void generateFaces(const Real aTolerance = 0.0);
 
         CMshMesh<Real> extractBoundary(const Real aTolerance = 0.0);
-        Integer nbBoundaryFaces();
+        Integer nbBoundaryFaces() const;
 
         void setDx(const Real aValue);
         Real dx() const;

@@ -74,7 +74,7 @@ namespace pde {
     }
 
     template <typename Real>
-    Integer CPdeField<Real>::nbDofs()
+    Integer CPdeField<Real>::nbDofs() const
     {
 
         return m_nbDofs;

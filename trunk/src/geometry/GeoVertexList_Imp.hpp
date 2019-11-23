@@ -33,7 +33,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoVertexList<Real>::nbVertices()
+    Integer CGeoVertexList<Real>::nbVertices() const
     {
         return static_cast<Integer>(m_vertices.size());
     }

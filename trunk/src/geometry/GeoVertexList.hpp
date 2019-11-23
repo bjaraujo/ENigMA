@@ -26,7 +26,7 @@ namespace geometry {
         CGeoVertexList();
         virtual ~CGeoVertexList();
 
-        Integer nbVertices();
+        Integer nbVertices() const;
 
         virtual void reset();
 

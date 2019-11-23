@@ -79,7 +79,7 @@ namespace pde {
         ENigMA::mesh::CMshMesh<Real>& mesh();
 
         void setNbDofs(const Integer nbDofs);
-        Integer nbDofs();
+        Integer nbDofs() const;
 
         void setDiscretMethod(EDiscretMethod aDiscretMethod);
         EDiscretMethod discretMethod();
