@@ -86,7 +86,7 @@ namespace stl {
     }
 
     template <typename Real>
-    CStlFacet<Real>::CStlFacet()
+    CStlFacet<Real>::CStlFacet() : extra({0, 0}) 
     {
     }
 

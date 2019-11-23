@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <array>
 #include <map>
 
 #include "GeoLine.hpp"
@@ -58,7 +59,7 @@ namespace stl {
         CStlFacet();
         ~CStlFacet();
 
-        char extra[2];
+        std::array<char, 2> extra;
 
         CStlEdge<Real>& edge(const Integer anEdgeIndex);
     };
