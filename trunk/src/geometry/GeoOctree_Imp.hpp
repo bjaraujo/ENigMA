@@ -158,7 +158,7 @@ namespace geometry {
 
         int ok[8];
 
-        Integer number_of_the_node = 0;
+        Integer numberOfTheNode;
 
         anOctreeNode.nodes.resize(8);
         for (Integer i = 0; i < 8; ++i) {
@@ -183,37 +183,37 @@ namespace geometry {
             double zm = CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[i].z() - C_EPS;
             double zp = CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[i].z() + C_EPS;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xm, ym, zm));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xm, ym, zm));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xm, ym, zp));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xm, ym, zp));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xm, yp, zm));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xm, yp, zm));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xm, yp, zp));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xm, yp, zp));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xp, ym, zm));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xp, ym, zm));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xp, ym, zp));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xp, ym, zp));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xp, yp, zm));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xp, yp, zm));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
-            number_of_the_node = static_cast<Integer>(dispatch(anOctreeNode, xp, yp, zp));
-            if (ok[number_of_the_node] == 0)
-                ok[number_of_the_node] = 1;
+            numberOfTheNode = static_cast<Integer>(dispatch(anOctreeNode, xp, yp, zp));
+            if (ok[numberOfTheNode] == 0)
+                ok[numberOfTheNode] = 1;
 
             for (Integer m = 0; m < 8; m++) {
                 if (ok[m] == 1) {

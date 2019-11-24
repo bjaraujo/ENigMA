@@ -863,7 +863,6 @@ namespace mesh {
         const Real pi = std::acos(-1.0);
 
         Real sumMeshSize = 0;
-        Real averageMeshSize = 0;
         Integer nMeshSize = 0;
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
@@ -916,7 +915,7 @@ namespace mesh {
 
                 sumMeshSize += localMeshSize;
                 nMeshSize++;
-                averageMeshSize = sumMeshSize / nMeshSize;
+                Real averageMeshSize = sumMeshSize / nMeshSize;
 
                 if (averageMeshSize > localMeshSize)
                     localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
