@@ -82,33 +82,26 @@ namespace geometry {
     void CGeoLineList<Real>::sort(const Real aTolerance)
     {
 
-        try {
+        for (Integer i = 0; i < static_cast<Integer>(m_lines.size()); ++i) {
 
-            for (Integer i = 0; i < static_cast<Integer>(m_lines.size()); ++i) {
+            for (Integer j = i + 1; j < static_cast<Integer>(m_lines.size()); ++j) {
 
-                for (Integer j = i + 1; j < static_cast<Integer>(m_lines.size()); ++j) {
+                // Start point
+                if ((m_lines[j].startPoint() - m_lines[i].endPoint()).norm() <= aTolerance) {
 
-                    // Start point
-                    if ((m_lines[j].startPoint() - m_lines[i].endPoint()).norm() <= aTolerance) {
+                    if (i + 1 != j)
+                        std::swap(m_lines[i + 1], m_lines[j]);
+                }
 
-                        if (i + 1 != j)
-                            std::swap(m_lines[i + 1], m_lines[j]);
-                    }
+                // End point
+                if ((m_lines[j].endPoint() - m_lines[i].endPoint()).norm() <= aTolerance) {
 
-                    // End point
-                    if ((m_lines[j].endPoint() - m_lines[i].endPoint()).norm() <= aTolerance) {
+                    m_lines[j].invert();
 
-                        m_lines[j].invert();
-
-                        if (i + 1 != j)
-                            std::swap(m_lines[i + 1], m_lines[j]);
-                    }
+                    if (i + 1 != j)
+                        std::swap(m_lines[i + 1], m_lines[j]);
                 }
             }
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
         }
     }
 
@@ -116,18 +109,11 @@ namespace geometry {
     void CGeoLineList<Real>::invert()
     {
 
-        try {
+        std::reverse(m_lines.begin(), m_lines.end());
 
-            std::reverse(m_lines.begin(), m_lines.end());
+        for (Integer i = 0; i < static_cast<Integer>(m_lines.size()); ++i)
+            m_lines[i].invert();
 
-            for (Integer i = 0; i < static_cast<Integer>(m_lines.size()); ++i)
-                m_lines[i].invert();
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        }
     }
 }
 }

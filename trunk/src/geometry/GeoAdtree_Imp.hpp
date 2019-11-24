@@ -82,77 +82,69 @@ namespace geometry {
     void CGeoAdtree6<Real>::insert(const Real p[6], const Integer anId)
     {
 
-        try {
+        CGeoAdtreeNode6<Real>* node;
+        CGeoAdtreeNode6<Real>* next;
 
-            CGeoAdtreeNode6<Real>* node;
-            CGeoAdtreeNode6<Real>* next;
+        Integer dir;
+        Integer lr(0);
 
-            Integer dir;
-            Integer lr(0);
+        Real bmin[6];
+        Real bmax[6];
 
-            Real bmin[6];
-            Real bmax[6];
+        memcpy(bmin, m_cmin, 6 * sizeof(Real));
+        memcpy(bmax, m_cmax, 6 * sizeof(Real));
 
-            memcpy(bmin, m_cmin, 6 * sizeof(Real));
-            memcpy(bmax, m_cmax, 6 * sizeof(Real));
+        next = m_root;
+        dir = 0;
 
-            next = m_root;
-            dir = 0;
+        while (next) {
 
-            while (next) {
+            node = next;
 
-                node = next;
+            if (node->id == -1) {
 
-                if (node->id == -1) {
+                memcpy(node->data, p, 6 * sizeof(Real));
+                node->id = static_cast<Integer>(anId);
 
-                    memcpy(node->data, p, 6 * sizeof(Real));
-                    node->id = static_cast<Integer>(anId);
+                m_nodes.push_back(node);
 
-                    m_nodes.push_back(node);
-
-                    return;
-                }
-
-                if (node->sep > p[dir]) {
-                    next = node->leftNode;
-                    bmax[dir] = node->sep;
-                    lr = 0;
-                } else {
-                    next = node->rightNode;
-                    bmin[dir] = node->sep;
-                    lr = 1;
-                }
-
-                dir++;
-
-                if (dir == 6)
-                    dir = 0;
+                return;
             }
 
-            next = new CGeoAdtreeNode6<Real>();
-
-            memcpy(next->data, p, 6 * sizeof(Real));
-            next->id = static_cast<Integer>(anId);
-            next->sep = static_cast<Real>((bmin[dir] + bmax[dir]) / 2.0);
-
-            m_nodes.push_back(next);
-
-            if (lr)
-                node->rightNode = next;
-            else
-                node->leftNode = next;
-
-            next->fatherNode = node;
-
-            while (node) {
-                node->nbChildren++;
-                node = node->fatherNode;
+            if (node->sep > p[dir]) {
+                next = node->leftNode;
+                bmax[dir] = node->sep;
+                lr = 0;
+            } else {
+                next = node->rightNode;
+                bmin[dir] = node->sep;
+                lr = 1;
             }
 
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+            dir++;
+
+            if (dir == 6)
+                dir = 0;
+        }
+
+        next = new CGeoAdtreeNode6<Real>();
+
+        memcpy(next->data, p, 6 * sizeof(Real));
+        next->id = static_cast<Integer>(anId);
+        next->sep = static_cast<Real>((bmin[dir] + bmax[dir]) / 2.0);
+
+        m_nodes.push_back(next);
+
+        if (lr)
+            node->rightNode = next;
+        else
+            node->leftNode = next;
+
+        next->fatherNode = node;
+
+        while (node) {
+            node->nbChildren++;
+            node = node->fatherNode;
         }
     }
 
@@ -160,24 +152,17 @@ namespace geometry {
     void CGeoAdtree6<Real>::remove(Integer anId)
     {
 
-        try {
+        CGeoAdtreeNode6<Real>* node = m_nodes[anId];
 
-            CGeoAdtreeNode6<Real>* node = m_nodes[anId];
+        node->id = -1;
 
-            node->id = -1;
+        node = node->fatherNode;
 
+        while (node) {
+            node->nbChildren--;
             node = node->fatherNode;
-
-            while (node) {
-                node->nbChildren--;
-                node = node->fatherNode;
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
         }
+
     }
 
     template <typename Real>
@@ -191,63 +176,56 @@ namespace geometry {
             unsigned char dir;
         };
 
-        try {
+        std::array<node_dir, maxDepth> nodes;
 
-            std::array<node_dir, maxDepth> nodes;
+        nodes[0].node = m_root;
+        nodes[0].dir = 0;
 
-            nodes[0].node = m_root;
-            nodes[0].dir = 0;
+        Integer stacks = 0;
 
-            Integer stacks = 0;
+        while (stacks >= 0) {
 
-            while (stacks >= 0) {
+            node_dir a_node_dir = nodes.at(stacks);
 
-                node_dir a_node_dir = nodes.at(stacks);
+            CGeoAdtreeNode6<Real>* node = a_node_dir.node;
+            Integer dir = a_node_dir.dir;
 
-                CGeoAdtreeNode6<Real>* node = a_node_dir.node;
-                Integer dir = a_node_dir.dir;
+            if (node->id != -1) {
 
-                if (node->id != -1) {
-
-                    if (node->data[0] <= bmax[0] && node->data[1] <= bmax[1] && node->data[2] <= bmax[2] && node->data[3] >= bmin[3] && node->data[4] >= bmin[4] && node->data[5] >= bmin[5]) {
-                        sIds.push_back(node->id);
-                    }
-                }
-
-                unsigned char ndir = (dir + 1) % 6;
-
-                stacks--;
-
-                if (node->leftNode && bmin[dir] <= node->sep) {
-                    stacks++;
-
-                    if (stacks >= maxDepth) {
-                        std::cout << "Error: max depth of " << maxDepth << " reached!" << std::endl;
-                        break;
-                    }
-
-                    nodes.at(stacks).node = node->leftNode;
-                    nodes.at(stacks).dir = ndir;
-                }
-
-                if (node->rightNode && bmax[dir] >= node->sep) {
-                    stacks++;
-
-                    if (stacks >= maxDepth) {
-                        std::cout << "Error: max depth of " << maxDepth << " reached!" << std::endl;
-                        break;
-                    }
-
-                    nodes.at(stacks).node = node->rightNode;
-                    nodes.at(stacks).dir = ndir;
+                if (node->data[0] <= bmax[0] && node->data[1] <= bmax[1] && node->data[2] <= bmax[2] && node->data[3] >= bmin[3] && node->data[4] >= bmin[4] && node->data[5] >= bmin[5]) {
+                    sIds.push_back(node->id);
                 }
             }
 
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+            unsigned char ndir = (dir + 1) % 6;
+
+            stacks--;
+
+            if (node->leftNode && bmin[dir] <= node->sep) {
+                stacks++;
+
+                if (stacks >= maxDepth) {
+                    std::cout << "Error: max depth of " << maxDepth << " reached!" << std::endl;
+                    break;
+                }
+
+                nodes.at(stacks).node = node->leftNode;
+                nodes.at(stacks).dir = ndir;
+            }
+
+            if (node->rightNode && bmax[dir] >= node->sep) {
+                stacks++;
+
+                if (stacks >= maxDepth) {
+                    std::cout << "Error: max depth of " << maxDepth << " reached!" << std::endl;
+                    break;
+                }
+
+                nodes.at(stacks).node = node->rightNode;
+                nodes.at(stacks).dir = ndir;
+            }
         }
+
     }
 
     template <typename Real>

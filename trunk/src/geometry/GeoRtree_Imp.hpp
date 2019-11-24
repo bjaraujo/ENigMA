@@ -35,52 +35,37 @@ namespace geometry {
     void CGeoRtree<Real>::addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
     {
 
-        try {
+        Real b_min[3];
+        Real b_max[3];
 
-            Real b_min[3];
-            Real b_max[3];
+        b_min[0] = aBoundingBox.min().x();
+        b_min[1] = aBoundingBox.min().y();
+        b_min[2] = aBoundingBox.min().z();
 
-            b_min[0] = aBoundingBox.min().x();
-            b_min[1] = aBoundingBox.min().y();
-            b_min[2] = aBoundingBox.min().z();
+        b_max[0] = aBoundingBox.max().x();
+        b_max[1] = aBoundingBox.max().y();
+        b_max[2] = aBoundingBox.max().z();
 
-            b_max[0] = aBoundingBox.max().x();
-            b_max[1] = aBoundingBox.max().y();
-            b_max[2] = aBoundingBox.max().z();
+        m_tree.Insert(b_min, b_max, aBoundingBoxId);
 
-            m_tree.Insert(b_min, b_max, aBoundingBoxId);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        }
     }
 
     template <typename Real>
     void CGeoRtree<Real>::removeGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
     {
 
-        try {
+        Real b_min[3];
+        Real b_max[3];
 
-            Real b_min[3];
-            Real b_max[3];
+        b_min[0] = aBoundingBox.min().x();
+        b_min[1] = aBoundingBox.min().y();
+        b_min[2] = aBoundingBox.min().z();
 
-            b_min[0] = aBoundingBox.min().x();
-            b_min[1] = aBoundingBox.min().y();
-            b_min[2] = aBoundingBox.min().z();
+        b_max[0] = aBoundingBox.max().x();
+        b_max[1] = aBoundingBox.max().y();
+        b_max[2] = aBoundingBox.max().z();
 
-            b_max[0] = aBoundingBox.max().x();
-            b_max[1] = aBoundingBox.max().y();
-            b_max[2] = aBoundingBox.max().z();
-
-            m_tree.Remove(b_min, b_max, aBoundingBoxId);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        }
+        m_tree.Remove(b_min, b_max, aBoundingBoxId);
     }
 
     template <typename Real>
@@ -91,29 +76,20 @@ namespace geometry {
     template <typename Real>
     void CGeoRtree<Real>::find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
     {
+        Real b_min[3];
+        Real b_max[3];
 
-        try {
+        b_min[0] = aBoundingBox.min().x();
+        b_min[1] = aBoundingBox.min().y();
+        b_min[2] = aBoundingBox.min().z();
 
-            Real b_min[3];
-            Real b_max[3];
+        b_max[0] = aBoundingBox.max().x();
+        b_max[1] = aBoundingBox.max().y();
+        b_max[2] = aBoundingBox.max().z();
 
-            b_min[0] = aBoundingBox.min().x();
-            b_min[1] = aBoundingBox.min().y();
-            b_min[2] = aBoundingBox.min().z();
+        boundingBoxIds.clear();
 
-            b_max[0] = aBoundingBox.max().x();
-            b_max[1] = aBoundingBox.max().y();
-            b_max[2] = aBoundingBox.max().z();
-
-            boundingBoxIds.clear();
-
-            m_tree.Search(b_min, b_max, boundingBoxIds, NULL);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        }
+        m_tree.Search(b_min, b_max, boundingBoxIds, NULL);
     }
 }
 }

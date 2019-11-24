@@ -32,37 +32,27 @@ namespace mesh {
 
     template <typename Real> CMshMesh<Real>::CMshMesh(const CMshMesh<Real>& aMesh)
     {
+        reset();
 
-        try {
+        for (Integer i = 0; i < static_cast<Integer>(aMesh.m_nodeIds.size()); ++i) {
+            Integer aNodeId = aMesh.m_nodeIds.at(i);
+            CMshNode<Real> aNode = aMesh.m_nodes.at(aNodeId);
 
-            reset();
-
-            for (Integer i = 0; i < static_cast<Integer>(aMesh.m_nodeIds.size()); ++i) {
-                Integer aNodeId = aMesh.m_nodeIds.at(i);
-                CMshNode<Real> aNode = aMesh.m_nodes.at(aNodeId);
-
-                addNode(aNodeId, aNode);
-            }
-
-            for (Integer i = 0; i < static_cast<Integer>(aMesh.m_faceIds.size()); ++i) {
-                Integer aFaceId = aMesh.m_faceIds.at(i);
-                CMshFace<Real> aFace = aMesh.m_faces.at(aFaceId);
-
-                addFace(aFaceId, aFace);
-            }
-
-            for (Integer i = 0; i < static_cast<Integer>(aMesh.m_elementIds.size()); ++i) {
-                Integer anElementId = aMesh.m_elementIds.at(i);
-                CMshElement<Real> anElement = aMesh.m_elements.at(anElementId);
-
-                addElement(anElementId, anElement);
-            }
+            addNode(aNodeId, aNode);
         }
-        catch (const std::exception& e) { 
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
+
+        for (Integer i = 0; i < static_cast<Integer>(aMesh.m_faceIds.size()); ++i) {
+            Integer aFaceId = aMesh.m_faceIds.at(i);
+            CMshFace<Real> aFace = aMesh.m_faces.at(aFaceId);
+
+            addFace(aFaceId, aFace);
         }
-        catch (...) { 
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl; 
+
+        for (Integer i = 0; i < static_cast<Integer>(aMesh.m_elementIds.size()); ++i) {
+            Integer anElementId = aMesh.m_elementIds.at(i);
+            CMshElement<Real> anElement = aMesh.m_elements.at(anElementId);
+
+            addElement(anElementId, anElement);
         }
     }
 
@@ -70,7 +60,6 @@ namespace mesh {
 
     template <typename Real> void CMshMesh<Real>::reset()
     {
-
         m_nodeIds.clear();
         m_nodes.clear();
 
@@ -212,96 +201,87 @@ namespace mesh {
 
     template <typename Real> void CMshMesh<Real>::generateFaces(const Real aTolerance)
     {
+        m_faceIds.clear();
+        m_faces.clear();
 
-        try {
+        m_faceIndices.clear();
 
-            m_faceIds.clear();
-            m_faces.clear();
+        m_faceIndex = 0;
 
-            m_faceIndices.clear();
+        for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
 
-            m_faceIndex = 0;
+            Integer anElementId = m_elementIds.at(i);
 
-            for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
+            std::vector<CMshFace<Real>> sFaces;
 
-                Integer anElementId = m_elementIds.at(i);
+            m_elements.at(anElementId).generateFaces(sFaces);
 
-                std::vector<CMshFace<Real>> sFaces;
+            for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
+                sFaces.at(j).setElementId(anElementId);
+                Integer aFaceId = this->nextFaceId();
+                this->addFace(aFaceId, sFaces.at(j));
+                m_elements.at(anElementId).addFaceId(aFaceId);
+            }
+        }
 
-                m_elements.at(anElementId).generateFaces(sFaces);
+        // Discover double faces
+        CGeoHashGrid<Real> aHashGrid;
 
-                for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
-                    sFaces.at(j).setElementId(anElementId);
-                    Integer aFaceId = this->nextFaceId();
-                    this->addFace(aFaceId, sFaces.at(j));
-                    m_elements.at(anElementId).addFaceId(aFaceId);
-                }
+        std::vector<CGeoCoordinate<Real>> sCenterCoordinates;
+
+        for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
+
+            Integer aFaceId = m_faceIds.at(i);
+
+            CGeoCoordinate<Real> aCenterCoordinate(0.0, 0.0, 0.0);
+
+            for (Integer j = 0; j < m_faces.at(aFaceId).nbNodeIds(); ++j) {
+
+                Integer aNodeId = m_faces.at(aFaceId).nodeId(j);
+                CMshNode<Real> aNode = m_nodes.at(aNodeId);
+
+                aCenterCoordinate += aNode;
             }
 
-            // Discover double faces
-            CGeoHashGrid<Real> aHashGrid;
+            if (m_faces.at(m_faceIds.at(i)).nbNodeIds() > 0)
+                aCenterCoordinate /= static_cast<Real>(m_faces.at(aFaceId).nbNodeIds());
 
-            std::vector<CGeoCoordinate<Real>> sCenterCoordinates;
+            sCenterCoordinates.push_back(aCenterCoordinate);
 
-            for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
+            aHashGrid.addGeometricObject(aFaceId, aCenterCoordinate);
+        }
 
-                Integer aFaceId = m_faceIds.at(i);
+        aHashGrid.build();
 
-                CGeoCoordinate<Real> aCenterCoordinate(0.0, 0.0, 0.0);
+        for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
 
-                for (Integer j = 0; j < m_faces.at(aFaceId).nbNodeIds(); ++j) {
+            Integer aFaceId = m_faceIds.at(i);
 
-                    Integer aNodeId = m_faces.at(aFaceId).nodeId(j);
-                    CMshNode<Real> aNode = m_nodes.at(aNodeId);
+            std::vector<Integer> sCoordinates;
 
-                    aCenterCoordinate += aNode;
-                }
+            aHashGrid.find(sCoordinates, sCenterCoordinates.at(i), aTolerance);
 
-                if (m_faces.at(m_faceIds.at(i)).nbNodeIds() > 0)
-                    aCenterCoordinate /= static_cast<Real>(m_faces.at(aFaceId).nbNodeIds());
+            for (Integer j = 0; j < static_cast<Integer>(sCoordinates.size()); ++j) {
 
-                sCenterCoordinates.push_back(aCenterCoordinate);
+                if (sCoordinates.at(j) != aFaceId) {
 
-                aHashGrid.addGeometricObject(aFaceId, aCenterCoordinate);
-            }
+                    Integer aPairFaceId = sCoordinates.at(j);
 
-            aHashGrid.build();
-
-            for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i) {
-
-                Integer aFaceId = m_faceIds.at(i);
-
-                std::vector<Integer> sCoordinates;
-
-                aHashGrid.find(sCoordinates, sCenterCoordinates.at(i), aTolerance);
-
-                for (Integer j = 0; j < static_cast<Integer>(sCoordinates.size()); ++j) {
-
-                    if (sCoordinates.at(j) != aFaceId) {
-
-                        Integer aPairFaceId = sCoordinates.at(j);
-
-                        if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType()) {
-                            m_faces.at(aFaceId).setPairFaceId(aPairFaceId);
-                            m_faces.at(aPairFaceId).setPairFaceId(aFaceId);
-                            break;
-                        }
+                    if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType()) {
+                        m_faces.at(aFaceId).setPairFaceId(aPairFaceId);
+                        m_faces.at(aPairFaceId).setPairFaceId(aFaceId);
+                        break;
                     }
                 }
             }
+        }
 
-            m_nbBoundaryFaces = 0;
+        m_nbBoundaryFaces = 0;
 
-            for (typename mapFace::iterator it = m_faces.begin(); it != m_faces.end(); ++it) {
+        for (typename mapFace::iterator it = m_faces.begin(); it != m_faces.end(); ++it) {
 
-                if (!it->second.hasPair())
-                    m_nbBoundaryFaces++;
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+            if (!it->second.hasPair())
+                m_nbBoundaryFaces++;
         }
     }
 
