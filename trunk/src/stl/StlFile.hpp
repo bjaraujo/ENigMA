@@ -27,11 +27,11 @@ namespace stl {
     template <typename Real>
     class CStlEdge : public ENigMA::geometry::CGeoLine<Real> {
     private:
-        bool m_outline;
-        bool m_naked;
-
         Integer m_neighbor;
         Integer m_whichVertexNot;
+
+        bool m_outline;
+        bool m_naked;
 
     public:
         CStlEdge();

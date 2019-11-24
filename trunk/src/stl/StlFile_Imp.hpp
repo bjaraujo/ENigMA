@@ -14,14 +14,12 @@ namespace ENigMA {
 namespace stl {
 
     template <typename Real>
-    CStlEdge<Real>::CStlEdge()
+    CStlEdge<Real>::CStlEdge() :
+        m_neighbor(-1),
+        m_whichVertexNot(-1)
+        m_outline(false),
+        m_naked(false)
     {
-
-        m_neighbor = -1;
-        m_whichVertexNot = -1;
-
-        m_outline = false;
-        m_naked = false;
     }
 
     template <typename Real>
