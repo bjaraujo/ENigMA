@@ -24,7 +24,7 @@ before_install:
 script:
     - mkdir build
     - cd build
-    - cmake ../trunk -G ${CMAKE_GENERATOR}
+    - cmake ../trunk -G "${CMAKE_GENERATOR}"
     - cmake --build . --target ALL_BUILD --config Release
     - cd "${TEST_DIR}"
     - ${RUN_TESTS}
