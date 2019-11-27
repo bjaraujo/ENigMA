@@ -6,9 +6,6 @@ language:
 matrix:
     include:
         - os: linux
-    
-            before_install:
-
             script:
                 - mkdir build
                 - cd build
