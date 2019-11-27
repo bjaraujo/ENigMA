@@ -24,7 +24,7 @@ matrix:
     - os: windows
       env: 
         - INSTALL_DEP="choco install visualstudio2019community --package-parameters \"--includeRecommended\""
-        - SET_ENV="type C:\\ProgramData\\chocolatey\\logs\\chocolatey.log"
+        - SET_ENV="type C:\ProgramData\chocolatey\logs\chocolatey.log"
 #        - SET_ENV="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
         - CMAKE_GENERATOR="Visual Studio 16 2019"
         - TEST_DIR="tests\\Release"
@@ -32,7 +32,7 @@ matrix:
 
 before_install:
     - ${INSTALL_DEP}
-    - ${SET_ENV}
+    - eval ${SET_ENV}
 
 script:
     - mkdir build
