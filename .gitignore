@@ -1,6 +1,7 @@
 *.cxx_parameters
 *.cxx_parameters
 *.depends
+*.dump
 *.exe
 CMakeLists.txt.user
 icons.qrc.depends

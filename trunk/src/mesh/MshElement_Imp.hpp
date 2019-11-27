@@ -32,7 +32,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshElement<Real>::nbNodeIds()
+    Integer CMshElement<Real>::nbNodeIds() const
     {
 
         return static_cast<Integer>(m_nodeIds.size());
@@ -60,7 +60,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshElement<Real>::nbFaceIds()
+    Integer CMshElement<Real>::nbFaceIds() const
     {
 
         return static_cast<Integer>(m_faceIds.size());

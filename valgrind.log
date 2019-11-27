@@ -1,0 +1,9 @@
+==153==
+==153== HEAP SUMMARY:
+==153==     in use at exit: 0 bytes in 0 blocks
+==153==   total heap usage: 1,250,106 allocs, 1,250,106 frees, 2,318,049,626 bytes allocated
+==153==
+==153== All heap blocks were freed -- no leaks are possible
+==153==
+==153== For counts of detected and suppressed errors, rerun with: -v
+==153== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

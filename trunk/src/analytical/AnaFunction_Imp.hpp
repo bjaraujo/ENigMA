@@ -137,15 +137,13 @@ namespace analytical {
         Real a = lowerBnd;
         Real b = upperBnd;
 
-        Real s;
-
         Integer i = 0;
 
         // Start loop
         while (fabs(b - a) > aTolerance) {
 
             // calculate midpoint
-            s = (a + b) * 0.5;
+            Real s = (a + b) * 0.5;
 
             // find f(midpoint)
             if (evaluate(strVar, a) * evaluate(strVar, s) > 0) {
@@ -182,8 +180,6 @@ namespace analytical {
         Real fb = evaluate(strVar, b);
 
         Real fc = 0.0;
-        Real s = 0.0;
-        Real fs = 0.0;
 
         // if f(a) f(b) >= 0 then error-exit
         if (fa * fb >= 0) {
@@ -210,7 +206,9 @@ namespace analytical {
 
         Integer i = 0;
 
-        while (!(fb == 0) && (fabs(a - b) > aTolerance)) {
+        while ((fb != 0) && (fabs(a - b) > aTolerance)) {
+
+            Real s;
 
             if ((fa != fc) && (fb != fc))
                 // Inverse quadratic interpolation
@@ -232,7 +230,7 @@ namespace analytical {
                     mflag = false;
             }
 
-            fs = evaluate(strVar, s);
+            Real fs = evaluate(strVar, s);
             d = c;
             c = b;
             fc = fb;

@@ -66,9 +66,9 @@ namespace stl {
 
             CStlFacet<Real> aFacet;
 
-            for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
+            for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
-                Integer aNodeId = anElement.nodeId(i);
+                Integer aNodeId = anElement.nodeId(j);
 
                 CGeoCoordinate<Real> aVertex = aTriMesh.node(aNodeId);
 
@@ -82,7 +82,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::load(std::string strFileName)
+    bool CStlUtils<Real>::load(const std::string& strFileName)
     {
 
         // Open the file
@@ -107,150 +107,159 @@ namespace stl {
             char chtest[256];
             fileSTL.read(chtest, sizeof(chtest));
 
-            m_stlFile.stats.type = FT_ASCII;
+            if (fileSTL)
+            {
+                m_stlFile.stats.type = FT_ASCII;
 
-            char* pch;
-            pch = strstr(chtest, "vertex");
+                char* pch;
+                pch = strstr(chtest, "vertex");
 
-            if (pch == NULL)
-                m_stlFile.stats.type = FT_BINARY;
-
-            fileSTL.seekg(0);
-
-            Integer numFacets = 0;
-
-            // Get the header and the number of facets in the .STL file
-            // If the .STL file is binary, then do the following
-            if (m_stlFile.stats.type == FT_BINARY) {
-                // Test if the STL file has the right size
-                if (((m_stlFile.stats.fileSize - HEADER_SIZE) % SIZEOF_STL_FACET != 0)
-                    || (m_stlFile.stats.fileSize < STL_MIN_FILE_SIZE))
-                    return false;
-
-                numFacets = static_cast<Integer>((m_stlFile.stats.fileSize - HEADER_SIZE) / SIZEOF_STL_FACET);
-
-                // Read the header
-                fileSTL.read(m_stlFile.stats.header, LABEL_SIZE);
-                m_stlFile.stats.header[80] = '\0';
-
-                // Read the int following the header.  This should contain # of facets
-                //Integer headerNumFacets = this->getInt(fileSTL);
-
-            } else {
-
-                // Otherwise, if the .STL file is ASCII, then do the following
-
-                // Get the header
-                std::getline(fileSTL, line);
-
-                char fhtest[5];
-
-                // Discard spaces
-                Integer i = 0;
-
-                while (i < 5) {
-
-                    char letter = fileSTL.get();
-
-                    if (letter != 32) {
-                        fhtest[i] = letter;
-                        i++;
-                    }
-                }
-
-#ifdef WIN32
-                if (strnicmp(fhtest, "facet", sizeof(fhtest)) != 0)
-                    return false;
-#else
-                if (strncasecmp(fhtest, "facet", sizeof(fhtest)) != 0)
-                    return false;
-#endif
+                if (pch == NULL)
+                    m_stlFile.stats.type = FT_BINARY;
 
                 fileSTL.seekg(0);
 
-                // Find the number of facets
-                Integer numLines = 1;
+                Integer numFacets = 0;
 
-                for (Integer i = 0, j = 0; i < m_stlFile.stats.fileSize; i++, ++j) {
-
-                    if (fileSTL.get() == '\n') {
-                        if (j > 4) // don't count short lines
-                            numLines++;
-
-                        j = 0;
-                    }
-                }
-
-                fileSTL.seekg(0);
-
-                // Read the header
-                for (Integer i = 0; (i < 80) && (m_stlFile.stats.header[i] = static_cast<char>(fileSTL.get())) != '\n'; ++i)
-                    ;
-                m_stlFile.stats.header[80] = '\0';
-
-                numFacets = numLines / ASCII_LINES_PER_FACET;
-            }
-
-            if (m_stlFile.stats.type == FT_BINARY) {
-                fileSTL.seekg(HEADER_SIZE);
-            } else {
-                fileSTL.seekg(0);
-                // Skip the first line of the file
-                std::getline(fileSTL, line);
-            }
-
-            m_stlFile.reset();
-
-            for (Integer i = 0; i < numFacets; ++i) {
-
-                CStlFacet<Real> aFacet;
-
+                // Get the header and the number of facets in the .STL file
+                // If the .STL file is binary, then do the following
                 if (m_stlFile.stats.type == FT_BINARY) {
-                    // Read a single facet from a binary .STL file
-                    aFacet.normal().x() = this->getFloat(fileSTL);
-                    aFacet.normal().y() = this->getFloat(fileSTL);
-                    aFacet.normal().z() = this->getFloat(fileSTL);
+                    // Test if the STL file has the right size
+                    if (((m_stlFile.stats.fileSize - HEADER_SIZE) % SIZEOF_STL_FACET != 0)
+                        || (m_stlFile.stats.fileSize < STL_MIN_FILE_SIZE))
+                        return false;
 
-                    for (Integer j = 0; j < 3; ++j) {
-                        CGeoCoordinate<Real> aVertex;
+                    numFacets = static_cast<Integer>((m_stlFile.stats.fileSize - HEADER_SIZE) / SIZEOF_STL_FACET);
 
-                        aVertex.x() = this->getFloat(fileSTL);
-                        aVertex.y() = this->getFloat(fileSTL);
-                        aVertex.z() = this->getFloat(fileSTL);
+                    // Read the header
+                    fileSTL.read(m_stlFile.stats.header, LABEL_SIZE);
 
-                        aFacet.addVertex(aVertex);
+                    if (fileSTL)
+                    {
+                        m_stlFile.stats.header[80] = '\0';
+
+                        // Read the int following the header.  This should contain # of facets
+                        //Integer headerNumFacets = this->getInt(fileSTL);
+                        //std::cout << headerNumFacets << std::endl;
                     }
-
-                    aFacet.extra[0] = static_cast<char>(fileSTL.get());
-                    aFacet.extra[1] = static_cast<char>(fileSTL.get());
 
                 } else {
 
-                    std::string strFacet, strNormal;
-                    std::string strOuter, strLoop;
-                    std::string strVertex;
-                    std::string strEndLoop;
-                    std::string strEndFacet;
+                    // Otherwise, if the .STL file is ASCII, then do the following
 
-                    // Read a single facet from an ASCII .STL file
-                    fileSTL >> strFacet >> strNormal >> aFacet.normal().x() >> aFacet.normal().y() >> aFacet.normal().z();
+                    // Get the header
+                    std::getline(fileSTL, line);
 
-                    fileSTL >> strOuter >> strLoop;
+                    char fhtest[5];
 
-                    for (Integer j = 0; j < 3; ++j) {
-                        CGeoCoordinate<Real> aVertex;
+                    // Discard spaces
+                    Integer c = 0;
 
-                        fileSTL >> strVertex >> aVertex.x() >> aVertex.y() >> aVertex.z();
+                    while (c < 5) {
 
-                        aFacet.addVertex(aVertex);
+                        char letter = fileSTL.get();
+
+                        if (letter != 32) {
+                            fhtest[c] = letter;
+                            c++;
+                        }
                     }
 
-                    fileSTL >> strEndLoop;
-                    fileSTL >> strEndFacet;
+#ifdef WIN32
+                    if (strnicmp(fhtest, "facet", sizeof(fhtest)) != 0)
+                        return false;
+#else
+                    if (strncasecmp(fhtest, "facet", sizeof(fhtest)) != 0)
+                        return false;
+#endif
+
+                    fileSTL.seekg(0);
+
+                    // Find the number of facets
+                    Integer numLines = 1;
+
+                    for (Integer i = 0, j = 0; i < m_stlFile.stats.fileSize; i++, ++j) {
+
+                        if (fileSTL.get() == '\n') {
+                            if (j > 4) // don't count short lines
+                                numLines++;
+
+                            j = 0;
+                        }
+                    }
+
+                    fileSTL.seekg(0);
+
+                    // Read the header
+                    for (Integer i = 0; (i < 80) && (m_stlFile.stats.header[i] = static_cast<char>(fileSTL.get())) != '\n'; ++i);
+                    
+                    m_stlFile.stats.header[80] = '\0';
+
+                    numFacets = numLines / ASCII_LINES_PER_FACET;
                 }
 
-                // Add the facet.
-                m_stlFile.addFacet(i, aFacet);
+                if (m_stlFile.stats.type == FT_BINARY) {
+                    fileSTL.seekg(HEADER_SIZE);
+                } else {
+                    fileSTL.seekg(0);
+                    // Skip the first line of the file
+                    std::getline(fileSTL, line);
+                }
+
+                m_stlFile.reset();
+
+                for (Integer i = 0; i < numFacets; ++i) {
+
+                    CStlFacet<Real> aFacet;
+
+                    if (m_stlFile.stats.type == FT_BINARY) {
+                        // Read a single facet from a binary .STL file
+                        aFacet.normal().x() = this->getFloat(fileSTL);
+                        aFacet.normal().y() = this->getFloat(fileSTL);
+                        aFacet.normal().z() = this->getFloat(fileSTL);
+
+                        for (Integer j = 0; j < 3; ++j) {
+                            CGeoCoordinate<Real> aVertex;
+
+                            aVertex.x() = this->getFloat(fileSTL);
+                            aVertex.y() = this->getFloat(fileSTL);
+                            aVertex.z() = this->getFloat(fileSTL);
+
+                            aFacet.addVertex(aVertex);
+                        }
+
+                        aFacet.extra[0] = static_cast<char>(fileSTL.get());
+                        aFacet.extra[1] = static_cast<char>(fileSTL.get());
+
+                    } else {
+
+                        std::string strFacet, strNormal;
+                        std::string strOuter, strLoop;
+                        std::string strVertex;
+                        std::string strEndLoop;
+                        std::string strEndFacet;
+
+                        // Read a single facet from an ASCII .STL file
+                        fileSTL >> strFacet >> strNormal >> aFacet.normal().x() >> aFacet.normal().y() >> aFacet.normal().z();
+
+                        fileSTL >> strOuter >> strLoop;
+
+                        for (Integer j = 0; j < 3; ++j) {
+                            CGeoCoordinate<Real> aVertex;
+
+                            fileSTL >> strVertex >> aVertex.x() >> aVertex.y() >> aVertex.z();
+
+                            aFacet.addVertex(aVertex);
+                        }
+
+                        fileSTL >> strEndLoop;
+                        fileSTL >> strEndFacet;
+                    }
+
+                    // Add the facet.
+                    m_stlFile.addFacet(i, aFacet);
+                }
+
             }
 
             fileSTL.close();
@@ -264,7 +273,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::saveAscii(std::string strFileName)
+    bool CStlUtils<Real>::saveAscii(const std::string& strFileName)
     {
 
         std::ofstream fileSTL;
@@ -345,7 +354,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::saveBinary(std::string strFileName)
+    bool CStlUtils<Real>::saveBinary(const std::string& strFileName)
     {
 
         std::ofstream fileSTL;
@@ -356,8 +365,6 @@ namespace stl {
 
             for (Integer i = 0; i < LABEL_SIZE; ++i)
                 fileSTL.put(0);
-
-            fileSTL.seekp(LABEL_SIZE);
 
             this->writeInt(fileSTL, m_stlFile.nbFacets());
 
@@ -386,7 +393,7 @@ namespace stl {
     }
 
     template <typename Real>
-    bool CStlUtils<Real>::save(std::string strFileName)
+    bool CStlUtils<Real>::save(const std::string& strFileName)
     {
 
         if (m_stlFile.stats.type == FT_ASCII)
@@ -756,10 +763,10 @@ namespace stl {
 
         p = (d0 + d1 + d2) * 0.5;
 
-        if (p > 0) {
+        if (p > std::numeric_limits<Real>::epsilon()) {
             e = (p - d0) * (p - d1) * (p - d2) / p;
 
-            if (dmax != 0 && e > 0)
+            if (dmax > std::numeric_limits<Real>::epsilon() && e > 0)
                 q = sqrt(12.0) * sqrt(e) / dmax;
             else
                 q = 0;
@@ -1115,9 +1122,9 @@ namespace stl {
                 Real ang = normal_i.angle(normal_j);
 
                 m_stlFile.facet(aFacetId).calculateArea();
-                Real areai = m_stlFile.facet(aFacetId).area();
+                Real area = m_stlFile.facet(aFacetId).area();
 
-                if (fabs(ang) < swapAngle || areai < std::numeric_limits<Real>::min()) {
+                if (fabs(ang) < swapAngle || area < std::numeric_limits<Real>::min()) {
 
                     Real dmin, dmax;
 
@@ -1298,7 +1305,6 @@ namespace stl {
                     aFacet_f.push_back(m_stlFile.facet(aNeighborId));
                     whichFacet.push_back(aNeighborId);
                     whichVertex.push_back((aVertexNot + 1) % 3);
-
                     n++;
 
                     if (n >= nMaxSize) {
@@ -1464,7 +1470,7 @@ namespace stl {
                 nbIntersections++;
         }
 
-        std::cout << nbIntersections << std::endl;
+        //std::cout << nbIntersections << std::endl;
 
         if (nbIntersections % 2 != 0)
             this->invertFacet(aFacetId, 0);

@@ -51,7 +51,8 @@ namespace integration {
             m_xi[1] = -0.7745966692;
             m_wxi[0] = +0.5555555555;
             m_xi[2] = +0.7745966692;
-            m_wxi[1] = +0.5555555555 break;
+            m_wxi[1] = +0.5555555555;
+            break;
 
         case 4:
 

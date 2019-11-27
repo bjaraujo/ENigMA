@@ -32,7 +32,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoOctreeNode<Real>::nbCoordinates()
+    Integer CGeoOctreeNode<Real>::nbCoordinates() const
     {
 
         return static_cast<Integer>(m_coordinateList.size());

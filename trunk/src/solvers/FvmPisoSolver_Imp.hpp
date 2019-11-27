@@ -161,7 +161,7 @@ namespace fvm {
             m_vf[aFaceId] = v;
             m_wf[aFaceId] = w;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 
@@ -175,7 +175,7 @@ namespace fvm {
 
             m_pf[aFaceId] = p;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 
@@ -243,9 +243,9 @@ namespace fvm {
                         area *= 0.5;
                         dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
 
-                        dens += m_dens[aNeighborId];
+                        dens += m_dens.at(aNeighborId);
                         dens *= 0.5;
-                        visc += m_visc[aNeighborId];
+                        visc += m_visc.at(aNeighborId);
                         visc *= 0.5;
 
                         Real xsi = 0.5; // CDS
@@ -312,7 +312,7 @@ namespace fvm {
 
         for (int k = 0; k < A.outerSize(); ++k) {
 
-            Integer aControlVolumeId = m_mapIndexToId[k];
+            Integer aControlVolumeId = m_mapIndexToId.at(k);
 
             CGeoVector<Real> gradp = this->gradient(m_p, m_pf, aControlVolumeId);
 
@@ -380,14 +380,14 @@ namespace fvm {
                         area *= 0.5;
                         dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
 
-                        apj += m_ap[aNeighborId];
+                        apj += m_ap.at(aNeighborId);
                         apj *= 0.5;
 
-                        Huj += m_Hu[aNeighborId];
+                        Huj += m_Hu.at(aNeighborId);
                         Huj *= 0.5;
-                        Hvj += m_Hv[aNeighborId];
+                        Hvj += m_Hv.at(aNeighborId);
                         Hvj *= 0.5;
-                        Hwj += m_Hw[aNeighborId];
+                        Hwj += m_Hw.at(aNeighborId);
                         Hwj *= 0.5;
 
                         Real Hf = Huj * aNormal.x() + Hvj * aNormal.y() + Hwj * aNormal.z();
@@ -461,7 +461,7 @@ namespace fvm {
 
         for (int i = 0; i < p.rows(); ++i) {
 
-            Integer aControlVolumeId = m_mapIndexToId[i];
+            Integer aControlVolumeId = m_mapIndexToId.at(i);
 
             m_p[aControlVolumeId] = p[i];
         }
@@ -494,7 +494,7 @@ namespace fvm {
                         area *= 0.5;
                         dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
 
-                        apj += m_ap[aNeighborId];
+                        apj += m_ap.at(aNeighborId);
                         apj *= 0.5;
 
                         if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)

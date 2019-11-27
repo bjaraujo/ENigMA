@@ -30,7 +30,7 @@ namespace geometry {
 
         std::vector<CGeoOctreeNode<Real>> nodes;
 
-        Integer nbCoordinates();
+        Integer nbCoordinates() const;
         void addCoordinate(Integer aCoordinateIndex);
         Integer coordinate(Integer aCoordinateIndex);
 

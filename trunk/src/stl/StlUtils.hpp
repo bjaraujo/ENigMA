@@ -50,8 +50,8 @@ namespace stl {
     private:
         CStlFile<Real> m_stlFile;
 
-        bool saveAscii(std::string strFileName);
-        bool saveBinary(std::string strFileName);
+        bool saveAscii(const std::string& strFileName);
+        bool saveBinary(const std::string& strFileName);
 
         bool writeFloat(std::ofstream& stream, const Real aValue);
         bool writeInt(std::ofstream& stream, const Integer aValue);
@@ -71,8 +71,8 @@ namespace stl {
 
         void set(ENigMA::mesh::CMshMesh<Real>& aTriMesh);
 
-        bool load(std::string strFileName);
-        bool save(std::string strFileName);
+        bool load(const std::string& strFileName);
+        bool save(const std::string& strFileName);
 
         bool add(CStlUtils<Real>& aStl);
 

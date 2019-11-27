@@ -195,7 +195,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoPolyhedron<Real>::nbPolygons()
+    Integer CGeoPolyhedron<Real>::nbPolygons() const
     {
 
         return static_cast<Integer>(m_polygonIds.size());
@@ -219,82 +219,75 @@ namespace geometry {
     void CGeoPolyhedron<Real>::close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, const Real aTolerance)
     {
 
-        try {
+        // Discover lines
+        CGeoLineList<Real> aLineList;
 
-            // Discover lines
-            CGeoLineList<Real> aLineList;
+        for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
 
-            for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
+            CGeoPolyline<Real> aPolyline = m_polygons[m_polygonIds[i]].polyline();
 
-                CGeoPolyline<Real> aPolyline = m_polygons[m_polygonIds[i]].polyline();
+            for (Integer j = 0; j < aPolyline.nbLines(); ++j) {
 
-                for (Integer j = 0; j < aPolyline.nbLines(); ++j) {
+                CGeoLine<Real> aLine = aPolyline.line(j);
 
-                    CGeoLine<Real> aLine = aPolyline.line(j);
+                aLine.calculateLength();
 
-                    aLine.calculateLength();
-
-                    if (aLine.length() > aTolerance)
-                        aLineList.addLine(aLine);
-                }
+                if (aLine.length() > aTolerance)
+                    aLineList.addLine(aLine);
             }
+        }
 
-            // Edges
-            CGeoLineList<Real> anEdgeList;
+        // Edges
+        CGeoLineList<Real> anEdgeList;
 
-            for (Integer i = 0; i < aLineList.nbLines(); ++i) {
+        for (Integer i = 0; i < aLineList.nbLines(); ++i) {
 
-                bool pair = false;
+            bool pair = false;
 
-                for (Integer j = 0; j < aLineList.nbLines(); ++j) {
+            for (Integer j = 0; j < aLineList.nbLines(); ++j) {
 
-                    if (i != j) {
+                if (i != j) {
 
-                        Real d1, d2;
+                    Real d1, d2;
 
-                        // Normal
-                        d1 = (aLineList.line(i).startPoint() - aLineList.line(j).startPoint()).norm();
-                        d2 = (aLineList.line(i).endPoint() - aLineList.line(j).endPoint()).norm();
+                    // Normal
+                    d1 = (aLineList.line(i).startPoint() - aLineList.line(j).startPoint()).norm();
+                    d2 = (aLineList.line(i).endPoint() - aLineList.line(j).endPoint()).norm();
 
-                        if (d1 <= aTolerance && d2 <= aTolerance) {
-                            pair = true;
-                            break;
-                        }
+                    if (d1 <= aTolerance && d2 <= aTolerance) {
+                        pair = true;
+                        break;
+                    }
 
-                        // Inverted
-                        d1 = (aLineList.line(i).startPoint() - aLineList.line(j).endPoint()).norm();
-                        d2 = (aLineList.line(i).endPoint() - aLineList.line(j).startPoint()).norm();
+                    // Inverted
+                    d1 = (aLineList.line(i).startPoint() - aLineList.line(j).endPoint()).norm();
+                    d2 = (aLineList.line(i).endPoint() - aLineList.line(j).startPoint()).norm();
 
-                        if (d1 <= aTolerance && d2 <= aTolerance) {
-                            pair = true;
-                            break;
-                        }
+                    if (d1 <= aTolerance && d2 <= aTolerance) {
+                        pair = true;
+                        break;
                     }
                 }
-
-                if (!pair) {
-                    anEdgeList.addLine(aLineList.line(i));
-                }
             }
 
-            // Add new polygon
-            if (anEdgeList.nbLines() > 2) {
-
-                CGeoPolyline<Real> aPolyline(anEdgeList, true, aTolerance);
-
-                aNewPolygon.setPolyline(aPolyline);
-
-                aNewPolygon.calculateNormal(true);
-
-                if (aNormal.dot(aNewPolygon.normal()) < 0)
-                    aNewPolygon.invert();
-
-                this->addPolygon(aNewPolygonId, aNewPolygon);
+            if (!pair) {
+                anEdgeList.addLine(aLineList.line(i));
             }
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+        }
+
+        // Add new polygon
+        if (anEdgeList.nbLines() > 2) {
+
+            CGeoPolyline<Real> aPolyline(anEdgeList, true, aTolerance);
+
+            aNewPolygon.setPolyline(aPolyline);
+
+            aNewPolygon.calculateNormal(true);
+
+            if (aNormal.dot(aNewPolygon.normal()) < 0)
+                aNewPolygon.invert();
+
+            this->addPolygon(aNewPolygonId, aNewPolygon);
         }
     }
 
@@ -341,39 +334,32 @@ namespace geometry {
     void CGeoPolyhedron<Real>::calculateVolume(bool bReCalculate)
     {
 
-        try {
+        if (!this->m_bVolume || bReCalculate) {
 
-            if (!this->m_bVolume || bReCalculate) {
+            // see: http://en.wikipedia.org/wiki/Polyhedron#Volume
+            // see: http://g3d.sourceforge.net/
 
-                // see: http://en.wikipedia.org/wiki/Polyhedron#Volume
-                // see: http://g3d.sourceforge.net/
+            CGeoVolume<Real>::volume() = 0.0;
 
-                CGeoVolume<Real>::volume() = 0.0;
+            if (m_polygons.size() >= 4) {
 
-                if (m_polygons.size() >= 4) {
+                if (m_polygons[m_polygonIds[0]].polyline().nbVertices() > 0) {
 
-                    if (m_polygons[m_polygonIds[0]].polyline().nbVertices() > 0) {
+                    CGeoCoordinate<Real> v0 = m_polygons[m_polygonIds[0]].polyline().vertex(0);
 
-                        CGeoCoordinate<Real> v0 = m_polygons[m_polygonIds[0]].polyline().vertex(0);
+                    for (Integer i = 1; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
 
-                        for (Integer i = 1; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
+                        m_polygons[m_polygonIds[i]].calculateArea();
 
-                            m_polygons[m_polygonIds[i]].calculateArea();
-
-                            if (m_polygons[m_polygonIds[i]].polyline().nbVertices() > 0)
-                                CGeoVolume<Real>::volume() += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
-                        }
+                        if (m_polygons[m_polygonIds[i]].polyline().nbVertices() > 0)
+                            CGeoVolume<Real>::volume() += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
                     }
                 }
-
-                CGeoVolume<Real>::volume() /= 3.0;
-
-                this->m_bVolume = true;
             }
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+
+            CGeoVolume<Real>::volume() /= 3.0;
+
+            this->m_bVolume = true;
         }
     }
 
@@ -381,26 +367,19 @@ namespace geometry {
     void CGeoPolyhedron<Real>::calculateBoundingBox(bool bReCalculate)
     {
 
-        try {
+        if (!this->m_bBoundingBox || bReCalculate) {
 
-            if (!this->m_bBoundingBox || bReCalculate) {
+            CGeoVolume<Real>::boundingBox().reset();
 
-                CGeoVolume<Real>::boundingBox().reset();
+            for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
 
-                for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
+                for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j) {
 
-                    for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j) {
-
-                        CGeoVolume<Real>::boundingBox().addCoordinate(m_polygons[m_polygonIds[i]].polyline().vertex(j));
-                    }
+                    CGeoVolume<Real>::boundingBox().addCoordinate(m_polygons[m_polygonIds[i]].polyline().vertex(j));
                 }
-
-                this->m_bBoundingBox = true;
             }
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+
+            this->m_bBoundingBox = true;
         }
     }
 
@@ -429,137 +408,128 @@ namespace geometry {
 
         CGeoPolyhedron<Real> aPolyhedron;
 
-        try {
+        if (volumeFractionReq <= 0.0) {
 
-            if (volumeFractionReq <= 0.0) {
+            nIterations = 0;
 
-                nIterations = 0;
+            volumeFractionAct = 0.0;
 
-                volumeFractionAct = 0.0;
+            return aPolyhedron;
+        }
 
-                return aPolyhedron;
-            }
+        if (volumeFractionReq >= 1.0) {
 
-            if (volumeFractionReq >= 1.0) {
+            nIterations = 0;
 
-                nIterations = 0;
-
-                // Copy this polyhedron
-                for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
-                    aPolyhedron.addPolygon(m_polygonIds[i], m_polygons[m_polygonIds[i]]);
-                }
-
-                volumeFractionAct = 1.0;
-
-                return aPolyhedron;
-            }
-
-            CGeoPlane<Real> aPlane(aNormal, 0.0);
-
-            // Find interval a, b
-
-            this->calculateVolume();
-            Real vt = CGeoVolume<Real>::volume();
-
-            Real a = +std::numeric_limits<Real>::max();
-            Real b = -std::numeric_limits<Real>::max();
-
+            // Copy this polyhedron
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
 
-                for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j) {
-
-                    d = m_polygons[m_polygonIds[i]].polyline().vertex(j).dot(aNormal);
-
-                    a = std::min(a, d);
-                    b = std::max(b, d);
-                }
+                aPolyhedron.addPolygon(m_polygonIds[i], m_polygons[m_polygonIds[i]]);
             }
 
-            // Solve using brent's method
+            volumeFractionAct = 1.0;
 
-            Real e = a;
-            Real f = std::numeric_limits<Real>::max();
-
-            Real fa = 0.0 - volumeFractionReq;
-            Real fb = 1.0 - volumeFractionReq;
-
-            Real fc = fa;
-            Real s = 0.0;
-            Real fs = 0.0;
-
-            Real vs = 0.0;
-
-            bool mflag = true;
-
-            nIterations = nMaxIterations;
-
-            for (Integer i = 0; i < nMaxIterations; ++i) {
-
-                if ((fb == 0) || (fabs(fa - fb) <= aTolerance)) {
-                    nIterations = i + 1;
-                    break;
-                }
-
-                if ((fa != fc) && (fb != fc))
-                    // Inverse quadratic interpolation
-                    s = a * fb * fc / (fa - fb) / (fa - fc) + b * fa * fc / (fb - fa) / (fb - fc) + e * fa * fb / (fc - fa) / (fc - fb);
-                else
-                    // Secant Rule
-                    s = b - fb * (b - a) / (fb - fa);
-
-                Real tmp2 = (3 * a + b) / 4;
-
-                if ((!(((s > tmp2) && (s < b)) || ((s < tmp2) && (s > b)))) || (mflag && (fabs(s - b) >= (fabs(b - e) / 2))) || (!mflag && (fabs(s - b) >= (fabs(e - f) / 2)))) {
-                    s = (a + b) * 0.5;
-                    mflag = true;
-                } else {
-                    if ((mflag && (fabs(b - e) < aTolerance)) || (!mflag && (fabs(e - f) < aTolerance))) {
-                        s = (a + b) / 2;
-                        mflag = true;
-                    } else
-                        mflag = false;
-                }
-
-                aPlane.setD(s);
-                aPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
-
-                aPolyhedron.calculateVolume(true);
-                vs = aPolyhedron.volume();
-                fs = vs / vt - volumeFractionReq;
-
-                f = e;
-                e = b;
-                fc = fb;
-
-                if (fa * fs < 0) {
-                    b = s;
-                    fb = fs;
-                } else {
-                    a = s;
-                    fa = fs;
-                }
-
-                // if |f(a)| < |f(b)| then swap (a,b) end if
-                if (fabs(fa) < fabs(fb)) {
-                    Real tmp = a;
-                    a = b;
-                    b = tmp;
-                    tmp = fa;
-                    fa = fb;
-                    fb = tmp;
-                }
-            }
-
-            volumeFractionAct = vs / vt;
-
-            d = s;
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+            return aPolyhedron;
         }
+
+        CGeoPlane<Real> aPlane(aNormal, 0.0);
+
+        // Find interval a, b
+
+        this->calculateVolume();
+        Real vt = CGeoVolume<Real>::volume();
+
+        Real a = +std::numeric_limits<Real>::max();
+        Real b = -std::numeric_limits<Real>::max();
+
+        for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
+
+            for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j) {
+
+                d = m_polygons[m_polygonIds[i]].polyline().vertex(j).dot(aNormal);
+
+                a = std::min(a, d);
+                b = std::max(b, d);
+            }
+        }
+
+        // Solve using brent's method
+
+        Real e = a;
+        Real f = std::numeric_limits<Real>::max();
+
+        Real fa = 0.0 - volumeFractionReq;
+        Real fb = 1.0 - volumeFractionReq;
+
+        Real fc = fa;
+        Real s = 0.0;
+
+        Real vs = 0.0;
+
+        bool mflag = true;
+
+        nIterations = nMaxIterations;
+
+        for (Integer i = 0; i < nMaxIterations; ++i) {
+
+            if ((fb == 0) || (fabs(fa - fb) <= aTolerance)) {
+                nIterations = i + 1;
+                break;
+            }
+
+            if ((fa != fc) && (fb != fc))
+                // Inverse quadratic interpolation
+                s = a * fb * fc / (fa - fb) / (fa - fc) + b * fa * fc / (fb - fa) / (fb - fc) + e * fa * fb / (fc - fa) / (fc - fb);
+            else
+                // Secant Rule
+                s = b - fb * (b - a) / (fb - fa);
+
+            Real tmp2 = (3 * a + b) / 4;
+
+            if ((!(((s > tmp2) && (s < b)) || ((s < tmp2) && (s > b)))) || (mflag && (fabs(s - b) >= (fabs(b - e) / 2))) || (!mflag && (fabs(s - b) >= (fabs(e - f) / 2)))) {
+                s = (a + b) * 0.5;
+                mflag = true;
+            } else {
+                if ((mflag && (fabs(b - e) < aTolerance)) || (!mflag && (fabs(e - f) < aTolerance))) {
+                    s = (a + b) / 2;
+                    mflag = true;
+                } else
+                    mflag = false;
+            }
+
+            aPlane.setD(s);
+            aPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
+
+            aPolyhedron.calculateVolume(true);
+            vs = aPolyhedron.volume();
+            Real fs = vs / vt - volumeFractionReq;
+
+            f = e;
+            e = b;
+            fc = fb;
+
+            if (fa * fs < 0) {
+                b = s;
+                fb = fs;
+            } else {
+                a = s;
+                fa = fs;
+            }
+
+            // if |f(a)| < |f(b)| then swap (a,b) end if
+            if (fabs(fa) < fabs(fb)) {
+                Real tmp = a;
+                a = b;
+                b = tmp;
+                tmp = fa;
+                fa = fb;
+                fb = tmp;
+            }
+        }
+
+        volumeFractionAct = vs / vt;
+
+        d = s;
 
         return aPolyhedron;
     }

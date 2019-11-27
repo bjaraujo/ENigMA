@@ -76,7 +76,7 @@ namespace fvm {
 
             m_Tf[aFaceId] = T;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(sFaceType);
+            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 

@@ -1,0 +1,11 @@
+exclude_paths:
+  - 'LICENSE.txt'
+  - 'README.md'
+  - 'BuildRelease.py'
+  - 'valgrind.log'
+  - 'images/**'
+  - 'trunk/cmake/modules/**'
+  - 'trunk/dependencies/**'
+  - 'trunk/examples/**'
+  - 'trunk/wrappers/**/*'
+

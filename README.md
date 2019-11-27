@@ -1,7 +1,8 @@
 [![License: GPL v3](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/bjaraujo/ENigMA.svg?branch=master)](https://travis-ci.org/bjaraujo/ENigMA/build)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4050d56f8c8a48a5a9008e9e49fec78a)](https://app.codacy.com/app/bjaraujo/ENigMA?utm_source=github.com&utm_medium=referral&utm_content=bjaraujo/ENigMA&utm_campaign=Badge_Grade_Dashboard)
-[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/bjaraujo/ENigMA.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bjaraujo/ENigMA/context:cpp)
+<!---
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/bjaraujo/ENigMA.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bjaraujo/ENigMA/context:cpp)-->
 
 # ENigMA - Extended Numerical Multiphysics Analysis #
 
@@ -86,8 +87,7 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 - cd ENigMA
 - cmake-gui&
 - setup source/build directory
-- download Eigen and GTest
-- set paths to Eigen, GTest, Exprtk  (dependencies folder), RTree (dependencies folder)
+- set paths to Exprtk  (dependencies folder), RTree (dependencies folder)
 - configure/generate
 - make
 

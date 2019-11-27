@@ -26,7 +26,7 @@ namespace geometry {
         CGeoLineList();
         virtual ~CGeoLineList();
 
-        Integer nbLines();
+        Integer nbLines() const;
 
         void reset();
 

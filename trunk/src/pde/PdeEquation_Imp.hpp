@@ -19,12 +19,11 @@ namespace ENigMA {
 namespace pde {
 
     template <typename Real>
-    CPdeEquation<Real>::CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem)
+    CPdeEquation<Real>::CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem) :
+        m_system(aSystem),
+        m_bDeleteIndex(),
+        m_eliminationMethod(false)
     {
-
-        m_system = aSystem;
-
-        m_eliminationMethod = false;
     }
 
     template <typename Real>

@@ -100,7 +100,7 @@ namespace analytical {
 
         Real m = sqrt(h * perimeter / (k * sectionArea));
 
-        Real c1 = -(exp(m * length) * Tb - exp(2 * m * length) * Ta + Tinf * exp(2 * m * length) - Tinf * exp(m * length)) / (exp(2 * m * length) - 1);
+        Real c1 = -(exp(m * length) * Tb - exp(2 * m * length) * Ta + Tinf * exp(2 * m * length) - Tinf * exp(m * length)) / expm1(2 * m * length);
         Real c2 = (Ta - Tinf) - c1;
 
         T = Tinf + c1 * exp(-m * x) + c2 * exp(m * x);

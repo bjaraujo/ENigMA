@@ -23,7 +23,7 @@ namespace post {
         CPosGnuplot();
         virtual ~CPosGnuplot();
 
-        bool save(CPdeField<Real>& aField, std::string strFileName);
+        bool save(CPdeField<Real>& aField, const std::string& strFileName);
     };
 }
 }

@@ -50,26 +50,19 @@ namespace geometry {
     void CGeoTriangularPrism<Real>::calculateVolume(bool bReCalculate)
     {
 
-        try {
+        if (!this->m_bVolume || bReCalculate) {
 
-            if (!this->m_bVolume || bReCalculate) {
+            CGeoVector<Real> v1, v2, v3;
 
-                CGeoVector<Real> v1, v2, v3;
+            v1 = this->m_vertices[1] - this->m_vertices[0];
+            v2 = this->m_vertices[2] - this->m_vertices[0];
+            v3 = this->m_vertices[3] - this->m_vertices[0];
 
-                v1 = this->m_vertices[1] - this->m_vertices[0];
-                v2 = this->m_vertices[2] - this->m_vertices[0];
-                v3 = this->m_vertices[3] - this->m_vertices[0];
+            CGeoVolume<Real>::volume() = 0.5 * v1.dot(v2.cross(v3));
 
-                CGeoVolume<Real>::volume() = 0.5 * v1.dot(v2.cross(v3));
-
-                this->m_bVolume = true;
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+            this->m_bVolume = true;
         }
+
     }
 
     template <typename Real>

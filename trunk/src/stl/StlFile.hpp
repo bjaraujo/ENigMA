@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <array>
 #include <map>
 
 #include "GeoLine.hpp"
@@ -26,11 +27,11 @@ namespace stl {
     template <typename Real>
     class CStlEdge : public ENigMA::geometry::CGeoLine<Real> {
     private:
-        bool m_outline;
-        bool m_naked;
-
         Integer m_neighbor;
         Integer m_whichVertexNot;
+
+        bool m_outline;
+        bool m_naked;
 
     public:
         CStlEdge();
@@ -58,7 +59,7 @@ namespace stl {
         CStlFacet();
         ~CStlFacet();
 
-        char extra[2];
+        std::array<char, 2> extra;
 
         CStlEdge<Real>& edge(const Integer anEdgeIndex);
     };
@@ -88,16 +89,16 @@ namespace stl {
 
         void reset();
 
-        Integer nbFacets();
+        Integer nbFacets() const;
 
-        Integer facetId(const Integer aFacetIndex);
+        Integer facetId(const Integer aFacetIndex) const;
 
         void addFacet(const Integer aFacetId, CStlFacet<Real>& aFacet);
         void removeFacet(const Integer aFacetId);
 
         CStlFacet<Real>& facet(const Integer aFacetId);
 
-        Integer nextFacetId();
+        Integer nextFacetId() const;
 
         CStlStats<Real> stats;
     };

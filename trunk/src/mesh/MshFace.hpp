@@ -42,7 +42,7 @@ namespace mesh {
         explicit CMshFace(EFaceType aFaceType);
         virtual ~CMshFace();
 
-        Integer nbNodeIds();
+        Integer nbNodeIds() const;
 
         void addNodeId(Integer aNodeId);
         Integer nodeId(Integer aNodeIndex);

@@ -435,9 +435,9 @@ TEST_F(CTestGeoLine, intersection4) {
 
     CGeoIntersectionType anIntersectionType;
 
-    EXPECT_TRUE(aLine1.intersects(aLine2, aPoint, anIntersectionType, 0.0));
-
-    EXPECT_TRUE(anIntersectionType == IT_INTERNAL);
+    EXPECT_FALSE(aLine1.intersects(aLine2, aPoint, anIntersectionType, 0.0));
+    
+    EXPECT_TRUE(anIntersectionType == IT_NONE);
 
 }
 

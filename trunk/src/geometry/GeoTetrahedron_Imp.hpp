@@ -120,83 +120,75 @@ namespace geometry {
     bool CGeoTetrahedron<Real>::contains(const CGeoCoordinate<Real>& aPoint, const Real aTolerance)
     {
 
-        try {
+        this->calculateBoundingBox();
 
-            this->calculateBoundingBox();
+        if (!this->boundingBox().contains(aPoint, aTolerance))
+            return false;
 
-            if (!this->boundingBox().contains(aPoint, aTolerance))
-                return false;
+        Eigen::Matrix<Real, 4, 4> d0, d1, d2, d3, d4;
 
-            Eigen::Matrix<Real, 4, 4> d0, d1, d2, d3, d4;
+        d0.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
+        d0.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
+        d0.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
+        d0.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
 
-            d0.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
-            d0.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
-            d0.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
-            d0.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
+        Real det0 = d0.determinant();
 
-            Real det0 = d0.determinant();
+        if (det0 <= 0.0)
+            return false;
 
-            if (det0 <= 0.0)
-                return false;
+        d1.col(0) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
+        d1.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
+        d1.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
+        d1.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
 
-            d1.col(0) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
-            d1.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
-            d1.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
-            d1.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
+        Real det1 = d1.determinant();
 
-            Real det1 = d1.determinant();
+        Real s = det1 / det0;
 
-            Real s = det1 / det0;
+        if (s < 0.0)
+            return false;
 
-            if (s < 0.0)
-                return false;
+        d2.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
+        d2.col(1) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
+        d2.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
+        d2.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
 
-            d2.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
-            d2.col(1) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
-            d2.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
-            d2.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
+        Real det2 = d2.determinant();
 
-            Real det2 = d2.determinant();
+        Real t = det2 / det0;
 
-            Real t = det2 / det0;
+        if (t < 0.0)
+            return false;
 
-            if (t < 0.0)
-                return false;
+        d3.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
+        d3.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
+        d3.col(2) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
+        d3.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
 
-            d3.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
-            d3.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
-            d3.col(2) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
-            d3.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
+        Real det3 = d3.determinant();
 
-            Real det3 = d3.determinant();
+        Real u = det3 / det0;
 
-            Real u = det3 / det0;
+        if (u < 0.0)
+            return false;
 
-            if (u < 0.0)
-                return false;
+        d4.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
+        d4.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
+        d4.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
+        d4.col(3) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
 
-            d4.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
-            d4.col(1) << this->m_vertices[1].x(), this->m_vertices[1].y(), this->m_vertices[1].z(), 1.0;
-            d4.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
-            d4.col(3) << aPoint.x(), aPoint.y(), aPoint.z(), 1.0;
+        Real det4 = d4.determinant();
 
-            Real det4 = d4.determinant();
+        Real v = det4 / det0;
 
-            Real v = det4 / det0;
+        if (v < 0.0)
+            return false;
 
-            if (v < 0.0)
-                return false;
+        Real x = s + t + u + v;
 
-            Real x = s + t + u + v;
-
-            if (x < -aTolerance || x > 1.0 + aTolerance)
-                return false;
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        }
+        if (x < -aTolerance || x > 1.0 + aTolerance)
+            return false;
 
         return true;
     }

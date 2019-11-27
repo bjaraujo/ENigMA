@@ -45,14 +45,14 @@ namespace material {
     }
 
     template <typename Real>
-    Real CMatMaterial<Real>::propertyValue(EPropertyType aPropertyType, const std::string aVariable1, Real& aValue1)
+    Real CMatMaterial<Real>::propertyValue(EPropertyType aPropertyType, const std::string& aVariable1, Real& aValue1)
     {
 
         return m_propertyFunc[aPropertyType].evaluate(aVariable1, aValue1);
     }
 
     template <typename Real>
-    Real CMatMaterial<Real>::propertyValue(EPropertyType aPropertyType, const std::string aVariable1, Real& aValue1, std::string aVariable2, Real& aValue2)
+    Real CMatMaterial<Real>::propertyValue(EPropertyType aPropertyType, const std::string& aVariable1, Real& aValue1, const std::string& aVariable2, Real& aValue2)
     {
 
         return m_propertyFunc[aPropertyType].evaluate(aVariable1, aValue1, aVariable2, aValue2);

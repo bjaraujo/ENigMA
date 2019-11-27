@@ -71,7 +71,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Integer CGeoPolyline<Real>::nbLines()
+    Integer CGeoPolyline<Real>::nbLines() const
     {
 
         if (CGeoVertexList<Real>::nbVertices() == 0)
@@ -175,31 +175,23 @@ namespace geometry {
     bool CGeoPolyline<Real>::intersects(CGeoPlane<Real>& aPlane)
     {
 
-        try {
+        CGeoCoordinate<Real> aPoint;
+        CGeoIntersectionType anIntersectionType;
 
-            CGeoCoordinate<Real> aPoint;
-            CGeoIntersectionType anIntersectionType;
+        for (Integer i = 0; i < CGeoVertexList<Real>::nbVertices() - 1; ++i) {
 
-            for (Integer i = 0; i < CGeoVertexList<Real>::nbVertices() - 1; ++i) {
+            CGeoLine<Real> aLine;
 
-                CGeoLine<Real> aLine;
+            CGeoCoordinate<Real> p1, p2;
 
-                CGeoCoordinate<Real> p1, p2;
+            p1 = CGeoVertexList<Real>::vertex(i);
+            p2 = CGeoVertexList<Real>::vertex(i + 1);
 
-                p1 = CGeoVertexList<Real>::vertex(i);
-                p2 = CGeoVertexList<Real>::vertex(i + 1);
+            aLine.setStartPoint(p1);
+            aLine.setEndPoint(p2);
 
-                aLine.setStartPoint(p1);
-                aLine.setEndPoint(p2);
-
-                if (aLine.intersects(aPlane, aPoint, anIntersectionType))
-                    return true;
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
+            if (aLine.intersects(aPlane, aPoint, anIntersectionType))
+                return true;
         }
 
         return false;

@@ -15,7 +15,11 @@ namespace pde {
 
     template <typename Real>
     CPdeField<Real>::CPdeField()
-        : m_nbDofs(0)
+        : m_nbDofs(0),
+        m_discretMethod(DM_NONE),
+        m_discretOrder(DO_LINEAR),
+        m_discretLocation(DL_NODE),
+        m_simulationType(ST_GENERIC)
     {
     }
 
@@ -35,7 +39,7 @@ namespace pde {
     }
 
     template <typename Real>
-    void CPdeField<Real>::setMesh(ENigMA::mesh::CMshMesh<Real>& aMesh)
+    void CPdeField<Real>::setMesh(const ENigMA::mesh::CMshMesh<Real>& aMesh)
     {
 
         m_mesh = aMesh;
@@ -70,7 +74,7 @@ namespace pde {
     }
 
     template <typename Real>
-    Integer CPdeField<Real>::nbDofs()
+    Integer CPdeField<Real>::nbDofs() const
     {
 
         return m_nbDofs;
@@ -256,7 +260,7 @@ namespace pde {
     }
 
     template <typename Real>
-    void CPdeField<Real>::addBCElement(const Integer anElementId, const Integer anIndex, ENigMA::pde::CPdeBoundaryCondition<Real> aBoundaryCondition)
+    void CPdeField<Real>::addBCElement(const Integer anElementId, const Integer anIndex, const ENigMA::pde::CPdeBoundaryCondition<Real>& aBoundaryCondition)
     {
 
         m_bcElement[std::make_pair(anElementId, anIndex)] = aBoundaryCondition;

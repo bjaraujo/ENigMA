@@ -296,279 +296,246 @@ namespace mesh {
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::adjustConnectivity(std::vector<Integer>& sEdges)
     {
+        for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
 
-        try {
+            Integer anAdvEdgeId = i;
 
-            for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
+            SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
-                Integer anAdvEdgeId = i;
+            if (anAdvEdge.remove)
+                continue;
 
-                SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+            if (anAdvEdge.nodeId[0] == anAdvEdge.nodeId[1]) {
+                anAdvEdge.remove = true;
+                continue;
+            }
 
-                if (anAdvEdge.remove)
-                    continue;
+            if (anAdvEdge.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvEdge.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size())) {
+                throw std::out_of_range("Connectivity is out of range!");
+            }
 
-                if (anAdvEdge.nodeId[0] == anAdvEdge.nodeId[1]) {
-                    anAdvEdge.remove = true;
-                    continue;
-                }
+            SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+            SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
-                if (anAdvEdge.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvEdge.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size())) {
-                    throw std::out_of_range("Connectivity is out of range!");
-                }
+            if (aPrevEdge.remove || aNextEdge.remove) {
 
-                SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-                SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+                for (Integer j = 0; j < static_cast<Integer>(sEdges.size()); ++j) {
 
-                if (aPrevEdge.remove || aNextEdge.remove) {
+                    Integer anotherEdgeId = sEdges[j];
 
-                    for (Integer j = 0; j < static_cast<Integer>(sEdges.size()); ++j) {
+                    // Discard same edge
+                    if (anotherEdgeId == anAdvEdge.id)
+                        continue;
 
-                        Integer anotherEdgeId = sEdges[j];
+                    SAdvancingFrontEdge& anotherEdge = m_anAdvFront[anotherEdgeId];
 
-                        // Discard same edge
-                        if (anotherEdgeId == anAdvEdge.id)
-                            continue;
+                    if (anotherEdge.remove)
+                        continue;
 
-                        SAdvancingFrontEdge& anotherEdge = m_anAdvFront[anotherEdgeId];
-
-                        if (anotherEdge.remove)
-                            continue;
-
-                        if (anAdvEdge.nodeId[0] == anotherEdge.nodeId[1]) {
-                            anAdvEdge.neighborId[0] = anotherEdgeId;
-                            anotherEdge.neighborId[1] = anAdvEdgeId;
-                        } else if (anAdvEdge.nodeId[1] == anotherEdge.nodeId[0]) {
-                            anAdvEdge.neighborId[1] = anotherEdgeId;
-                            anotherEdge.neighborId[0] = anAdvEdgeId;
-                        }
+                    if (anAdvEdge.nodeId[0] == anotherEdge.nodeId[1]) {
+                        anAdvEdge.neighborId[0] = anotherEdgeId;
+                        anotherEdge.neighborId[1] = anAdvEdgeId;
+                    } else if (anAdvEdge.nodeId[1] == anotherEdge.nodeId[0]) {
+                        anAdvEdge.neighborId[1] = anotherEdgeId;
+                        anotherEdge.neighborId[0] = anAdvEdgeId;
                     }
                 }
             }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
         }
     }
 
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::cleanDuplicateEdges(std::vector<Integer>& sEdges, const Real aTolerance)
     {
+        if (m_nextEdgeId < 3)
+            return;
 
-        try {
+        bool bAdjustConnectivity = false;
 
-            if (m_nextEdgeId < 3)
-                return;
+        // Check last three edges
+        for (Integer i = 0; i < 3; ++i) {
 
-            bool bAdjustConnectivity = false;
+            Integer anAdvEdgeId = m_nextEdgeId - i - 1;
 
-            // Check last three edges
-            for (Integer i = 0; i < 3; ++i) {
+            SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
-                Integer anAdvEdgeId = m_nextEdgeId - i - 1;
+            if (anAdvEdge.remove)
+                continue;
 
-                SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+            Integer aDuplicateEdgeId;
 
-                if (anAdvEdge.remove)
-                    continue;
+            if (edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges, aTolerance)) {
 
-                Integer aDuplicateEdgeId;
+                SAdvancingFrontEdge& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
 
-                if (edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges, aTolerance)) {
+                this->removeEdge(anAdvEdge, aTolerance);
+                this->removeEdge(aDuplicateEdge, aTolerance);
 
-                    SAdvancingFrontEdge& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
-
-                    this->removeEdge(anAdvEdge, aTolerance);
-                    this->removeEdge(aDuplicateEdge, aTolerance);
-
-                    bAdjustConnectivity = true;
-                }
+                bAdjustConnectivity = true;
             }
-
-            if (bAdjustConnectivity)
-                this->adjustConnectivity(sEdges);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
         }
+
+        if (bAdjustConnectivity)
+            this->adjustConnectivity(sEdges);
     }
 
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::addQuadrilateral(SAdvancingFrontEdge& anAdvEdge, const Integer aNodeId3, const Integer aNodeId4, std::vector<Integer>& sEdges, const Real aTolerance)
     {
+        Integer aNodeId1 = anAdvEdge.nodeId[0];
+        Integer aNodeId2 = anAdvEdge.nodeId[1];
 
-        try {
+        if (aNodeId3 == aNodeId1 || aNodeId3 == aNodeId2 || aNodeId4 == aNodeId1 || aNodeId4 == aNodeId2) {
+            std::cout << "Error: invalid quadrilateral!" << std::endl;
+            return;
+        }
 
-            Integer aNodeId1 = anAdvEdge.nodeId[0];
-            Integer aNodeId2 = anAdvEdge.nodeId[1];
+        if (aNodeId3 == aNodeId4) {
 
-            if (aNodeId3 == aNodeId1 || aNodeId3 == aNodeId2 || aNodeId4 == aNodeId1 || aNodeId4 == aNodeId2) {
-                std::cout << "Error: invalid quadrilateral!" << std::endl;
-                return;
-            }
+            // Add new triangle
+            CMshElement<Real> aNewElement(ET_TRIANGLE);
+            aNewElement.addNodeId(aNodeId1);
+            aNewElement.addNodeId(aNodeId2);
+            aNewElement.addNodeId(aNodeId3);
 
-            if (aNodeId3 == aNodeId4) {
+            Integer aNewElementId = m_surfaceMesh.nextElementId();
 
-                // Add new triangle
-                CMshElement<Real> aNewElement(ET_TRIANGLE);
-                aNewElement.addNodeId(aNodeId1);
-                aNewElement.addNodeId(aNodeId2);
-                aNewElement.addNodeId(aNodeId3);
+            m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-                Integer aNewElementId = m_surfaceMesh.nextElementId();
+            SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+            SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
-                m_surfaceMesh.addElement(aNewElementId, aNewElement);
+            Integer aNewEdgeId1 = m_nextEdgeId++;
+            Integer aNewEdgeId2 = m_nextEdgeId++;
 
-                SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-                SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+            // Add edge 1
+            SAdvancingFrontEdge aNewEdge1;
+            aNewEdge1.id = aNewEdgeId1;
+            aNewEdge1.remove = false;
+            aNewEdge1.boundary = false;
+            aNewEdge1.nodeId[0] = aNodeId1;
+            aNewEdge1.nodeId[1] = aNodeId3;
+            aNewEdge1.neighborId[0] = anAdvEdge.neighborId[0];
+            aNewEdge1.neighborId[1] = aNewEdgeId2;
+            aNewEdge1.quadrilateralId = aNewElementId;
 
-                Integer aNewEdgeId1 = m_nextEdgeId++;
-                Integer aNewEdgeId2 = m_nextEdgeId++;
+            aNewEdge1.build(m_surfaceMesh);
 
-                // Add edge 1
-                SAdvancingFrontEdge aNewEdge1;
-                aNewEdge1.id = aNewEdgeId1;
-                aNewEdge1.remove = false;
-                aNewEdge1.boundary = false;
-                aNewEdge1.nodeId[0] = aNodeId1;
-                aNewEdge1.nodeId[1] = aNodeId3;
-                aNewEdge1.neighborId[0] = anAdvEdge.neighborId[0];
-                aNewEdge1.neighborId[1] = aNewEdgeId2;
-                aNewEdge1.quadrilateralId = aNewElementId;
+            // Correct connectivity
+            aPrevEdge.neighborId[1] = aNewEdgeId1;
 
-                aNewEdge1.build(m_surfaceMesh);
+            // Add edge to rtree
+            addEdgeToRtree(aNewEdge1, aTolerance);
 
-                // Correct connectivity
-                aPrevEdge.neighborId[1] = aNewEdgeId1;
+            // Add edge 2
+            SAdvancingFrontEdge aNewEdge2;
+            aNewEdge2.id = aNewEdgeId2;
+            aNewEdge2.remove = false;
+            aNewEdge2.boundary = false;
+            aNewEdge2.nodeId[0] = aNodeId3;
+            aNewEdge2.nodeId[1] = aNodeId2;
+            aNewEdge2.neighborId[0] = aNewEdgeId1;
+            aNewEdge2.neighborId[1] = anAdvEdge.neighborId[1];
+            aNewEdge2.quadrilateralId = aNewElementId;
 
-                // Add edge to rtree
-                addEdgeToRtree(aNewEdge1, aTolerance);
+            aNewEdge2.build(m_surfaceMesh);
 
-                // Add edge 2
-                SAdvancingFrontEdge aNewEdge2;
-                aNewEdge2.id = aNewEdgeId2;
-                aNewEdge2.remove = false;
-                aNewEdge2.boundary = false;
-                aNewEdge2.nodeId[0] = aNodeId3;
-                aNewEdge2.nodeId[1] = aNodeId2;
-                aNewEdge2.neighborId[0] = aNewEdgeId1;
-                aNewEdge2.neighborId[1] = anAdvEdge.neighborId[1];
-                aNewEdge2.quadrilateralId = aNewElementId;
+            // Correct connectivity
+            aNextEdge.neighborId[0] = aNewEdgeId2;
 
-                aNewEdge2.build(m_surfaceMesh);
+            // Add edge to rtree
+            addEdgeToRtree(aNewEdge2, aTolerance);
 
-                // Correct connectivity
-                aNextEdge.neighborId[0] = aNewEdgeId2;
+            // Remove this edge
+            this->removeEdge(anAdvEdge, aTolerance);
 
-                // Add edge to rtree
-                addEdgeToRtree(aNewEdge2, aTolerance);
+            m_anAdvFront.push_back(aNewEdge1);
+            m_anAdvFront.push_back(aNewEdge2);
 
-                // Remove this edge
-                this->removeEdge(anAdvEdge, aTolerance);
+            this->cleanDuplicateEdges(sEdges, aTolerance);
 
-                m_anAdvFront.push_back(aNewEdge1);
-                m_anAdvFront.push_back(aNewEdge2);
+        } else {
 
-                this->cleanDuplicateEdges(sEdges, aTolerance);
+            // Add new quadrilateral
+            CMshElement<Real> aNewElement(ET_QUADRILATERAL);
+            aNewElement.addNodeId(aNodeId1);
+            aNewElement.addNodeId(aNodeId2);
+            aNewElement.addNodeId(aNodeId4);
+            aNewElement.addNodeId(aNodeId3);
 
-            } else {
+            Integer aNewElementId = m_surfaceMesh.nextElementId();
 
-                // Add new quadrilateral
-                CMshElement<Real> aNewElement(ET_QUADRILATERAL);
-                aNewElement.addNodeId(aNodeId1);
-                aNewElement.addNodeId(aNodeId2);
-                aNewElement.addNodeId(aNodeId4);
-                aNewElement.addNodeId(aNodeId3);
+            m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-                Integer aNewElementId = m_surfaceMesh.nextElementId();
+            SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+            SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
-                m_surfaceMesh.addElement(aNewElementId, aNewElement);
+            Integer aNewEdgeId1 = m_nextEdgeId++;
+            Integer aNewEdgeId2 = m_nextEdgeId++;
+            Integer aNewEdgeId3 = m_nextEdgeId++;
 
-                SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-                SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+            // Add edge 1
+            SAdvancingFrontEdge aNewEdge1;
+            aNewEdge1.id = aNewEdgeId1;
+            aNewEdge1.remove = false;
+            aNewEdge1.boundary = false;
+            aNewEdge1.nodeId[0] = aNodeId1;
+            aNewEdge1.nodeId[1] = aNodeId3;
+            aNewEdge1.neighborId[0] = anAdvEdge.neighborId[0];
+            aNewEdge1.neighborId[1] = aNewEdgeId2;
+            aNewEdge1.quadrilateralId = aNewElementId;
 
-                Integer aNewEdgeId1 = m_nextEdgeId++;
-                Integer aNewEdgeId2 = m_nextEdgeId++;
-                Integer aNewEdgeId3 = m_nextEdgeId++;
+            aNewEdge1.build(m_surfaceMesh);
 
-                // Add edge 1
-                SAdvancingFrontEdge aNewEdge1;
-                aNewEdge1.id = aNewEdgeId1;
-                aNewEdge1.remove = false;
-                aNewEdge1.boundary = false;
-                aNewEdge1.nodeId[0] = aNodeId1;
-                aNewEdge1.nodeId[1] = aNodeId3;
-                aNewEdge1.neighborId[0] = anAdvEdge.neighborId[0];
-                aNewEdge1.neighborId[1] = aNewEdgeId2;
-                aNewEdge1.quadrilateralId = aNewElementId;
+            // Correct connectivity
+            aPrevEdge.neighborId[1] = aNewEdgeId1;
 
-                aNewEdge1.build(m_surfaceMesh);
+            // Add edge to rtree
+            addEdgeToRtree(aNewEdge1, aTolerance);
 
-                // Correct connectivity
-                aPrevEdge.neighborId[1] = aNewEdgeId1;
+            // Add edge 2
+            SAdvancingFrontEdge aNewEdge2;
+            aNewEdge2.id = aNewEdgeId2;
+            aNewEdge2.remove = false;
+            aNewEdge2.boundary = false;
+            aNewEdge2.nodeId[0] = aNodeId3;
+            aNewEdge2.nodeId[1] = aNodeId4;
+            aNewEdge2.neighborId[0] = aNewEdgeId1;
+            aNewEdge2.neighborId[1] = aNewEdgeId3;
+            aNewEdge2.quadrilateralId = aNewElementId;
 
-                // Add edge to rtree
-                addEdgeToRtree(aNewEdge1, aTolerance);
+            aNewEdge2.build(m_surfaceMesh);
 
-                // Add edge 2
-                SAdvancingFrontEdge aNewEdge2;
-                aNewEdge2.id = aNewEdgeId2;
-                aNewEdge2.remove = false;
-                aNewEdge2.boundary = false;
-                aNewEdge2.nodeId[0] = aNodeId3;
-                aNewEdge2.nodeId[1] = aNodeId4;
-                aNewEdge2.neighborId[0] = aNewEdgeId1;
-                aNewEdge2.neighborId[1] = aNewEdgeId3;
-                aNewEdge2.quadrilateralId = aNewElementId;
+            // Add edge to rtree
+            addEdgeToRtree(aNewEdge2, aTolerance);
 
-                aNewEdge2.build(m_surfaceMesh);
+            // Add edge 3
+            SAdvancingFrontEdge aNewEdge3;
+            aNewEdge3.id = aNewEdgeId3;
+            aNewEdge3.remove = false;
+            aNewEdge3.boundary = false;
+            aNewEdge3.nodeId[0] = aNodeId4;
+            aNewEdge3.nodeId[1] = aNodeId2;
+            aNewEdge3.neighborId[0] = aNewEdgeId2;
+            aNewEdge3.neighborId[1] = anAdvEdge.neighborId[1];
+            aNewEdge3.quadrilateralId = aNewElementId;
 
-                // Add edge to rtree
-                addEdgeToRtree(aNewEdge2, aTolerance);
+            aNewEdge3.build(m_surfaceMesh);
 
-                // Add edge 3
-                SAdvancingFrontEdge aNewEdge3;
-                aNewEdge3.id = aNewEdgeId3;
-                aNewEdge3.remove = false;
-                aNewEdge3.boundary = false;
-                aNewEdge3.nodeId[0] = aNodeId4;
-                aNewEdge3.nodeId[1] = aNodeId2;
-                aNewEdge3.neighborId[0] = aNewEdgeId2;
-                aNewEdge3.neighborId[1] = anAdvEdge.neighborId[1];
-                aNewEdge3.quadrilateralId = aNewElementId;
+            // Correct connectivity
+            aNextEdge.neighborId[0] = aNewEdgeId3;
 
-                aNewEdge3.build(m_surfaceMesh);
+            // Add edge to rtree
+            addEdgeToRtree(aNewEdge3, aTolerance);
 
-                // Correct connectivity
-                aNextEdge.neighborId[0] = aNewEdgeId3;
+            // Remove this edge
+            this->removeEdge(anAdvEdge, aTolerance);
 
-                // Add edge to rtree
-                addEdgeToRtree(aNewEdge3, aTolerance);
+            m_anAdvFront.push_back(aNewEdge1);
+            m_anAdvFront.push_back(aNewEdge2);
+            m_anAdvFront.push_back(aNewEdge3);
 
-                // Remove this edge
-                this->removeEdge(anAdvEdge, aTolerance);
-
-                m_anAdvFront.push_back(aNewEdge1);
-                m_anAdvFront.push_back(aNewEdge2);
-                m_anAdvFront.push_back(aNewEdge3);
-
-                this->cleanDuplicateEdges(sEdges, aTolerance);
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+            this->cleanDuplicateEdges(sEdges, aTolerance);
         }
     }
 
@@ -665,15 +632,15 @@ namespace mesh {
                         std::vector<CMshFace<Real>> sFaces;
                         aNewElement.generateFaces(sFaces);
 
-                        for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
+                        for (Integer k = 0; k < static_cast<Integer>(sFaces.size()); ++k) {
 
-                            CMshFace<Real> aNewFace = sFaces[j];
+                            CMshFace<Real> aNewFace = sFaces[k];
 
                             Integer aNewFaceId = anEdgeMesh.nextFaceId();
 
                             aNewFace.setElementId(aNewElementId);
 
-                            if (j == 0)
+                            if (k == 0)
                                 aNewFace.setPairFaceId(aPrevFaceId);
                             else
                                 aNewFace.setPairFaceId(aNewFaceId + 1);
@@ -722,189 +689,155 @@ namespace mesh {
     template <typename Real>
     bool CMshQuadrilateralMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minQuality, const Real aTolerance)
     {
+        std::vector<CGeoCoordinate<Real>> sInteriorPoints;
 
-        try {
+        ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
+        aAnaFunction.set(meshSize);
 
-            std::vector<CGeoCoordinate<Real>> sInteriorPoints;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        }
+        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
     }
 
     template <typename Real>
     bool CMshQuadrilateralMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minQuality, const Real aTolerance)
     {
+        ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
+        aAnaFunction.set(meshSize);
 
-        try {
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        }
+        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
     }
 
     template <typename Real>
     bool CMshQuadrilateralMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minQuality, const Real aTolerance)
     {
+        m_previousNbElements = 0;
 
-        try {
+        m_bStop = false;
 
-            m_previousNbElements = 0;
+        // Add boundary nodes to surface mesh
+        m_surfaceMesh.reset();
+        m_boundingBox.reset();
 
-            m_bStop = false;
+        for (Integer i = 0; i < anEdgeMesh.nbNodes(); ++i) {
 
-            // Add boundary nodes to surface mesh
-            m_surfaceMesh.reset();
-            m_boundingBox.reset();
+            Integer aNodeId = anEdgeMesh.nodeId(i);
+            CMshNode<Real> aNode = anEdgeMesh.node(aNodeId);
 
-            for (Integer i = 0; i < anEdgeMesh.nbNodes(); ++i) {
+            m_surfaceMesh.addNode(aNodeId, aNode);
 
-                Integer aNodeId = anEdgeMesh.nodeId(i);
-                CMshNode<Real> aNode = anEdgeMesh.node(aNodeId);
+            // Add to bounding box
+            m_boundingBox.addCoordinate(aNode);
+        }
 
-                m_surfaceMesh.addNode(aNodeId, aNode);
+        m_boundingBox.grow(aTolerance);
 
-                // Add to bounding box
-                m_boundingBox.addCoordinate(aNode);
-            }
+        // Add boundary to advancing front and rtree
+        m_anAdvFront.clear();
 
-            m_boundingBox.grow(aTolerance);
+        m_tree.reset();
 
-            // Add boundary to advancing front and rtree
-            m_anAdvFront.clear();
+        m_nextEdgeId = 0;
 
-            m_tree.reset();
+        std::map<Integer, Integer> newEdgeIds;
 
-            m_nextEdgeId = 0;
+        for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
 
-            std::map<Integer, Integer> newEdgeIds;
+            Integer anAdvEdgeId = anEdgeMesh.elementId(i);
 
-            for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
+            newEdgeIds[anAdvEdgeId] = i;
+        }
 
-                Integer anAdvEdgeId = anEdgeMesh.elementId(i);
+        for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
 
-                newEdgeIds[anAdvEdgeId] = i;
-            }
+            Integer anAdvEdgeId = anEdgeMesh.elementId(i);
 
-            for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
+            CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
 
-                Integer anAdvEdgeId = anEdgeMesh.elementId(i);
+            if (anElement.elementType() == ET_BEAM) {
 
-                CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
+                SAdvancingFrontEdge anAdvEdge;
 
-                if (anElement.elementType() == ET_BEAM) {
+                anAdvEdge.id = m_nextEdgeId++;
+                anAdvEdge.remove = false;
+                anAdvEdge.boundary = true;
 
-                    SAdvancingFrontEdge anAdvEdge;
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                    anAdvEdge.nodeId[j] = anElement.nodeId(j);
 
-                    anAdvEdge.id = m_nextEdgeId++;
-                    anAdvEdge.remove = false;
-                    anAdvEdge.boundary = true;
+                anAdvEdge.quadrilateralId = std::numeric_limits<Integer>::max();
 
-                    for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                        anAdvEdge.nodeId[j] = anElement.nodeId(j);
+                anAdvEdge.build(anEdgeMesh);
 
-                    anAdvEdge.quadrilateralId = std::numeric_limits<Integer>::max();
+                for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
 
-                    anAdvEdge.build(anEdgeMesh);
+                    anAdvEdge.neighborId[j] = std::numeric_limits<Integer>::max();
 
-                    for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
+                    Integer aFaceId = anElement.faceId(j);
+                    CMshFace<Real> aFace = anEdgeMesh.face(aFaceId);
 
-                        anAdvEdge.neighborId[j] = std::numeric_limits<Integer>::max();
+                    if (aFace.hasPair()) {
+                        Integer aPairFaceId = aFace.pairFaceId();
+                        Integer anElementId = anEdgeMesh.face(aPairFaceId).elementId();
 
-                        Integer aFaceId = anElement.faceId(j);
-                        CMshFace<Real> aFace = anEdgeMesh.face(aFaceId);
+                        if (newEdgeIds.find(anElementId) != newEdgeIds.end()) {
+                            anAdvEdge.neighborId[j] = newEdgeIds.at(anElementId);
+                        } else
+                            std::cout << "Error: element id = " << anElementId << " not found!" << std::endl;
 
-                        if (aFace.hasPair()) {
-                            Integer aPairFaceId = aFace.pairFaceId();
-                            Integer anElementId = anEdgeMesh.face(aPairFaceId).elementId();
-
-                            if (newEdgeIds.find(anElementId) != newEdgeIds.end()) {
-                                anAdvEdge.neighborId[j] = newEdgeIds.at(anElementId);
-                            } else
-                                std::cout << "Error: element id = " << anElementId << " not found!" << std::endl;
-
-                        } else {
-                            throw std::runtime_error("Boundary is open!");
-                        }
+                    } else {
+                        throw std::runtime_error("Boundary is open!");
                     }
-
-                    m_anAdvFront.push_back(anAdvEdge);
-
-                    this->addEdgeToRtree(anAdvEdge, aTolerance);
                 }
+
+                m_anAdvFront.push_back(anAdvEdge);
+
+                this->addEdgeToRtree(anAdvEdge, aTolerance);
             }
+        }
 
-            // Add interior nodes
-            for (Integer i = 0; i < static_cast<Integer>(sInteriorPoints.size()); ++i) {
+        // Add interior nodes
+        for (Integer i = 0; i < static_cast<Integer>(sInteriorPoints.size()); ++i) {
 
-                Integer aNewNodeId = m_surfaceMesh.nextNodeId();
-                CMshNode<Real> aNewNode = sInteriorPoints[i];
+            Integer aNewNodeId = m_surfaceMesh.nextNodeId();
+            CMshNode<Real> aNewNode = sInteriorPoints[i];
 
-                m_surfaceMesh.addNode(aNewNodeId, aNewNode);
+            m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
-                SNode anInteriorNode;
+            SNode anInteriorNode;
 
-                anInteriorNode.id = i;
-                anInteriorNode.remove = false;
+            anInteriorNode.id = i;
+            anInteriorNode.remove = false;
 
-                anInteriorNode.nodeId = aNewNodeId;
+            anInteriorNode.nodeId = aNewNodeId;
 
-                m_interiorNodes.push_back(anInteriorNode);
-            }
+            m_interiorNodes.push_back(anInteriorNode);
+        }
 
-            // Start meshing interior
+        // Start meshing interior
 
-            Integer maxElem = maxNbElements;
+        Integer maxElem = maxNbElements;
 
-            bool res = true;
+        bool res = true;
 
-            res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
-            res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.05, false, 0, aTolerance) : res = false;
-            res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
-            res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 2.50, 0.00, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.05, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 2.50, 0.00, false, 0, aTolerance) : res = false;
 
-            m_surfaceMesh.removeDanglingNodes();
-            m_surfaceMesh.renumber();
+        m_surfaceMesh.removeDanglingNodes();
+        m_surfaceMesh.renumber();
 
-            if (this->frontSize() == 0) {
-                m_surfaceMesh.generateFaces(aTolerance);
-                return true;
-            } else {
-                std::cout << "Meshing error!" << std::endl;
-                return false;
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+        if (this->frontSize() == 0) {
+            m_surfaceMesh.generateFaces(aTolerance);
+            return true;
+        } else {
+            std::cout << "Meshing error!" << std::endl;
+            return false;
         }
     }
 
     template <typename Real>
     Integer CMshQuadrilateralMesher<Real>::frontSize()
     {
-
         Integer n = 0;
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
@@ -918,404 +851,392 @@ namespace mesh {
     template <typename Real>
     bool CMshQuadrilateralMesher<Real>::advancingFrontQuadMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
     {
-
         bool res = false;
 
-        try {
+        Real x, y;
 
-            Real x, y;
+        meshSizeFunc.removeAllVariables();
 
-            meshSizeFunc.removeAllVariables();
+        meshSizeFunc.defineVariable("x", x);
+        meshSizeFunc.defineVariable("y", y);
 
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
+        const Real pi = std::acos(-1.0);
 
-            const Real pi = std::acos(-1.0);
+        Real sumMeshSize = 0;
+        Integer nMeshSize = 0;
 
-            Real sumMeshSize = 0;
-            Real averageMeshSize = 0;
-            Integer nMeshSize = 0;
+        for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
 
-            for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
+            this->checkUpdate();
 
-                this->checkUpdate();
+            if (m_bStop)
+                return false;
 
-                if (m_bStop)
+            if (maxNbElements > 0) {
+                if (m_surfaceMesh.nbElements() >= maxNbElements) {
+                    std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
                     return false;
+                }
+            }
 
-                if (maxNbElements > 0) {
-                    if (m_surfaceMesh.nbElements() >= maxNbElements) {
-                        std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
-                        return false;
+            if (!m_anAdvFront[i].remove) {
+
+                Integer anAdvEdgeId = i;
+
+                SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+
+                Integer aNodeId1 = anAdvEdge.nodeId[0];
+                Integer aNodeId2 = anAdvEdge.nodeId[1];
+
+                CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
+                CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
+
+                Integer aNodeId3 = m_anAdvFront[anAdvEdge.neighborId[0]].nodeId[0];
+                Integer aNodeId4 = m_anAdvFront[anAdvEdge.neighborId[1]].nodeId[1];
+
+                Integer prevPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]].neighborId[0];
+                Integer nextNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]].neighborId[1];
+
+                Integer aNodeId5 = m_anAdvFront[prevPrevEdge].nodeId[0];
+                Integer aNodeId6 = m_anAdvFront[nextNextEdge].nodeId[1];
+
+                if ((aNodeId1 == aNodeId6 || aNodeId2 == aNodeId5) && anAdvEdge.neighborId[0] != nextNextEdge && anAdvEdge.neighborId[1] != prevPrevEdge)
+                    continue;
+
+                CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
+
+                x = aMidNode.x();
+                y = aMidNode.y();
+
+                // Rotate vector by 90�
+                CGeoVector<Real> v = aNode2 - aNode1;
+
+                Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
+
+                sumMeshSize += localMeshSize;
+                nMeshSize++;
+                Real averageMeshSize = sumMeshSize / nMeshSize;
+
+                if (averageMeshSize > localMeshSize)
+                    localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
+                else
+                    localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
+
+                v.normalize();
+
+                CMshNode<Real> aMidNode1 = aMidNode - v * localMeshSize * sizeFactor * 0.5;
+                CMshNode<Real> aMidNode2 = aMidNode + v * localMeshSize * sizeFactor * 0.5;
+
+                v.rotate(pi * 0.5);
+
+                // Add point to form rectangle with correct spacing
+                CMshNode<Real> aNewNode1 = aMidNode1 + v * localMeshSize * sizeFactor;
+                CMshNode<Real> aNewNode2 = aMidNode2 + v * localMeshSize * sizeFactor;
+
+                Integer aNewNodeId1 = m_surfaceMesh.nextNodeId() + 0;
+                Integer aNewNodeId2 = m_surfaceMesh.nextNodeId() + 1;
+
+                // Get closest edges
+                CGeoBoundingBox<Real> aBoundingBox;
+                aBoundingBox.addCoordinate(aNode1);
+                aBoundingBox.addCoordinate(aNode2);
+                aBoundingBox.addCoordinate(aNewNode1);
+                aBoundingBox.addCoordinate(aNewNode2);
+                aBoundingBox.grow(localMeshSize * sizeFactor * 0.5);
+
+                std::vector<Integer> sEdges;
+                m_tree.find(sEdges, aBoundingBox);
+
+                // Check if a node exists in proximity
+                std::vector<Integer> sNodes;
+                this->findClosestNodes(sEdges, sNodes);
+
+                // Meshing priority
+                // Priority = 1: close quadrilateral hole
+                // Priority = 2: close triangular hole
+                // Priority = 3: other nodes in vicinity (3, 4, other node)
+                // Priority = 4: new node forming correct spacing
+
+                if ((aNodeId3 == aNodeId5 && aNodeId4 == aNodeId6) || (aNodeId3 == aNodeId6 && aNodeId4 == aNodeId5)) {
+                    this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
+                    res = true;
+                    continue;
+                }
+
+                if (aNodeId3 == aNodeId4) {
+
+                    CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
+                    CMshNode<Real>& aNode4 = m_surfaceMesh.node(aNodeId4);
+
+                    CMshTriangle<Real> aNewTriangle;
+
+                    aNewTriangle.addVertex(aNode1);
+                    aNewTriangle.addVertex(aNode2);
+                    aNewTriangle.addVertex(aNode3);
+
+                    aNewTriangle.calculateArea();
+
+                    if (aNewTriangle.normal().z() > aTolerance) {
+
+                        Integer wNodeId;
+                        if (!this->quadrilateralContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance)) {
+
+                            this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
+                            res = true;
+                            continue;
+                        }
                     }
                 }
 
-                if (!m_anAdvFront[i].remove) {
+                Real q1max = 0.0;
 
-                    Integer anAdvEdgeId = i;
+                // If a node exists snap to that node
+                CMshNode<Real> anExistingNode1;
+                Integer anExistingNodeId1 = std::numeric_limits<Integer>::max();
 
-                    SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
 
-                    Integer aNodeId1 = anAdvEdge.nodeId[0];
-                    Integer aNodeId2 = anAdvEdge.nodeId[1];
+                    Integer aNodeId = sNodes[j];
 
-                    CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
-                    CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
-
-                    Integer aNodeId3 = m_anAdvFront[anAdvEdge.neighborId[0]].nodeId[0];
-                    Integer aNodeId4 = m_anAdvFront[anAdvEdge.neighborId[1]].nodeId[1];
-
-                    Integer prevPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]].neighborId[0];
-                    Integer nextNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]].neighborId[1];
-
-                    Integer aNodeId5 = m_anAdvFront[prevPrevEdge].nodeId[0];
-                    Integer aNodeId6 = m_anAdvFront[nextNextEdge].nodeId[1];
-
-                    if ((aNodeId1 == aNodeId6 || aNodeId2 == aNodeId5) && anAdvEdge.neighborId[0] != nextNextEdge && anAdvEdge.neighborId[1] != prevPrevEdge)
+                    if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
                         continue;
 
-                    CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
+                    CMshNode<Real>& aNode = m_surfaceMesh.node(aNodeId);
 
-                    x = aMidNode.x();
-                    y = aMidNode.y();
-
-                    // Rotate vector by 90�
-                    CGeoVector<Real> v = aNode2 - aNode1;
-
-                    Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
-
-                    sumMeshSize += localMeshSize;
-                    nMeshSize++;
-                    averageMeshSize = sumMeshSize / nMeshSize;
-
-                    if (averageMeshSize > localMeshSize)
-                        localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
-                    else
-                        localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
-
-                    v.normalize();
-
-                    CMshNode<Real> aMidNode1 = aMidNode - v * localMeshSize * sizeFactor * 0.5;
-                    CMshNode<Real> aMidNode2 = aMidNode + v * localMeshSize * sizeFactor * 0.5;
-
-                    v.rotate(pi * 0.5);
-
-                    // Add point to form rectangle with correct spacing
-                    CMshNode<Real> aNewNode1 = aMidNode1 + v * localMeshSize * sizeFactor;
-                    CMshNode<Real> aNewNode2 = aMidNode2 + v * localMeshSize * sizeFactor;
-
-                    Integer aNewNodeId1 = m_surfaceMesh.nextNodeId() + 0;
-                    Integer aNewNodeId2 = m_surfaceMesh.nextNodeId() + 1;
-
-                    // Get closest edges
-                    CGeoBoundingBox<Real> aBoundingBox;
-                    aBoundingBox.addCoordinate(aNode1);
-                    aBoundingBox.addCoordinate(aNode2);
-                    aBoundingBox.addCoordinate(aNewNode1);
-                    aBoundingBox.addCoordinate(aNewNode2);
-                    aBoundingBox.grow(localMeshSize * sizeFactor * 0.5);
-
-                    std::vector<Integer> sEdges;
-                    m_tree.find(sEdges, aBoundingBox);
-
-                    // Check if a node exists in proximity
-                    std::vector<Integer> sNodes;
-                    this->findClosestNodes(sEdges, sNodes);
-
-                    // Meshing priority
-                    // Priority = 1: close quadrilateral hole
-                    // Priority = 2: close triangular hole
-                    // Priority = 3: other nodes in vicinity (3, 4, other node)
-                    // Priority = 4: new node forming correct spacing
-
-                    if ((aNodeId3 == aNodeId5 && aNodeId4 == aNodeId6) || (aNodeId3 == aNodeId6 && aNodeId4 == aNodeId5)) {
-                        this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
-                        res = true;
+                    if (!aBoundingBox.contains(aNode, aTolerance))
                         continue;
+
+                    CMshTriangle<Real> aNewTriangle1;
+
+                    aNewTriangle1.addVertex(aNode1);
+                    aNewTriangle1.addVertex(aNode2);
+                    aNewTriangle1.addVertex(aNode);
+
+                    aNewTriangle1.calculateArea();
+
+                    if (aNewTriangle1.normal().z() > aTolerance) {
+
+                        CMshQuadrilateral<Real> aNewQuadrilateral1;
+
+                        aNewQuadrilateral1.addVertex(aNode1);
+                        aNewQuadrilateral1.addVertex(aNode2);
+                        aNewQuadrilateral1.addVertex(aNewNode2);
+                        aNewQuadrilateral1.addVertex(aNode);
+
+                        aNewQuadrilateral1.calculateArea();
+
+                        aNewQuadrilateral1.calculateQuality();
+
+                        Real q1 = aNewQuadrilateral1.quality();
+
+                        if (q1 > q1max)
+                            q1 += this->edgeOk(anAdvEdge, aNode1, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        Real d = (aNode - aNewNode1).norm();
+
+                        // Use closest node
+                        if (d < localMeshSize * sizeFactor * expandFactor * 0.75 && q1 > q1max) {
+                            q1max = q1;
+                            anExistingNodeId1 = aNodeId;
+                            anExistingNode1 = aNode;
+                        }
+                    }
+                }
+
+                if (q1max > minQuality) {
+                    aNewNode1 = anExistingNode1;
+                    aNewNodeId1 = anExistingNodeId1;
+                }
+
+                Real q2max = 0.0;
+
+                CMshNode<Real> anExistingNode2;
+                Integer anExistingNodeId2 = std::numeric_limits<Integer>::max();
+
+                for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
+
+                    Integer aNodeId = sNodes[j];
+
+                    if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
+                        continue;
+
+                    CMshNode<Real>& aNode = m_surfaceMesh.node(aNodeId);
+
+                    if (!aBoundingBox.contains(aNode, aTolerance))
+                        continue;
+
+                    CMshTriangle<Real> aNewTriangle2;
+
+                    aNewTriangle2.addVertex(aNode1);
+                    aNewTriangle2.addVertex(aNode2);
+                    aNewTriangle2.addVertex(aNode);
+
+                    aNewTriangle2.calculateArea();
+
+                    if (aNewTriangle2.normal().z() > aTolerance) {
+
+                        CMshQuadrilateral<Real> aNewQuadrilateral2;
+
+                        aNewQuadrilateral2.addVertex(aNode1);
+                        aNewQuadrilateral2.addVertex(aNode2);
+                        aNewQuadrilateral2.addVertex(aNode);
+                        aNewQuadrilateral2.addVertex(aNewNode1);
+
+                        aNewQuadrilateral2.calculateArea();
+
+                        aNewQuadrilateral2.calculateQuality();
+
+                        Real q2 = aNewQuadrilateral2.quality();
+
+                        if (q2 > q2max)
+                            q2 += this->edgeOk(anAdvEdge, aNode2, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        Real d = (aNode - aNewNode2).norm();
+
+                        // Use closest node
+                        if (d < localMeshSize * sizeFactor * expandFactor * 0.75 && q2 > q2max) {
+                            q2max = q2;
+                            anExistingNodeId2 = aNodeId;
+                            anExistingNode2 = aNode;
+                        }
+                    }
+                }
+
+                if (q2max > minQuality) {
+                    aNewNode2 = anExistingNode2;
+                    aNewNodeId2 = anExistingNodeId2;
+                }
+
+                Real q3max = 0.0;
+
+                CMshQuadrilateral<Real> aNewQuadrilateral3;
+
+                aNewQuadrilateral3.addVertex(aNode1);
+                aNewQuadrilateral3.addVertex(aNode2);
+                aNewQuadrilateral3.addVertex(aNewNode2);
+                aNewQuadrilateral3.addVertex(aNewNode1);
+
+                aNewQuadrilateral3.calculateArea();
+
+                if (aNewQuadrilateral3.normal().z() > aTolerance) {
+
+                    aNewQuadrilateral3.calculateQuality();
+
+                    Real q3 = aNewQuadrilateral3.quality();
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max) {
+                        Integer wNodeId;
+                        q3 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
                     }
 
-                    if (aNodeId3 == aNodeId4) {
+                    q3max = q3;
+                }
 
-                        CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
-                        CMshNode<Real>& aNode4 = m_surfaceMesh.node(aNodeId4);
+                if (q3max > minQuality) {
 
-                        CMshTriangle<Real> aNewTriangle;
+                    Integer aNextNodeId = m_surfaceMesh.nextNodeId();
 
-                        aNewTriangle.addVertex(aNode1);
-                        aNewTriangle.addVertex(aNode2);
-                        aNewTriangle.addVertex(aNode3);
+                    if (aNewNodeId1 == aNextNodeId + 0)
+                        m_surfaceMesh.addNode(aNewNodeId1, aNewNode1);
 
-                        aNewTriangle.calculateArea();
+                    if (aNewNodeId2 == aNextNodeId + 1)
+                        m_surfaceMesh.addNode(aNewNodeId2, aNewNode2);
 
-                        if (aNewTriangle.normal().z() > aTolerance) {
+                    for (Integer k = 0; k < static_cast<Integer>(m_interiorNodes.size()); ++k) {
 
+                        if (m_interiorNodes[k].remove)
+                            continue;
+
+                        if (m_interiorNodes[k].nodeId == aNewNodeId1)
+                            m_interiorNodes[k].remove = true;
+
+                        if (m_interiorNodes[k].nodeId == aNewNodeId2)
+                            m_interiorNodes[k].remove = true;
+                    }
+
+                    this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
+                    res = true;
+
+                } else {
+
+                    CGeoLine<Real> aLine1(aMidNode, aNewNode1);
+
+                    Real dmin1 = findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
+
+                    if (dmin1 > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < localMeshSize * sizeFactor * expandFactor)
+                        aNewNode1 = aNode1 + v * dmin1 * 0.5;
+
+                    CGeoLine<Real> aLine2(aMidNode, aNewNode2);
+
+                    Real dmin2 = findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
+
+                    if (dmin2 > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < localMeshSize * sizeFactor * expandFactor)
+                        aNewNode2 = aNode2 + v * dmin2 * 0.5;
+
+                    CMshQuadrilateral<Real> aNewQuadrilateral4;
+
+                    aNewQuadrilateral4.addVertex(aNode1);
+                    aNewQuadrilateral4.addVertex(aNode2);
+                    aNewQuadrilateral4.addVertex(aNewNode1);
+                    aNewQuadrilateral4.addVertex(aNewNode2);
+
+                    aNewQuadrilateral4.calculateArea();
+
+                    if (aNewQuadrilateral4.normal().z() > aTolerance) {
+
+                        aNewQuadrilateral4.calculateQuality();
+
+                        Real q4 = aNewQuadrilateral4.quality();
+
+                        if (q4 > 1.5 * minQuality)
+                            q4 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q4 > 1.5 * minQuality)
+                            q4 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q4 > 1.5 * minQuality)
+                            q4 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q4 > 1.5 * minQuality) {
                             Integer wNodeId;
-                            if (!this->quadrilateralContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance)) {
-
-                                this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
-                                res = true;
-                                continue;
-                            }
-                        }
-                    }
-
-                    Real q1max = 0.0;
-
-                    // If a node exists snap to that node
-                    CMshNode<Real> anExistingNode1;
-                    Integer anExistingNodeId1 = std::numeric_limits<Integer>::max();
-
-                    for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
-
-                        Integer aNodeId = sNodes[j];
-
-                        if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
-                            continue;
-
-                        CMshNode<Real>& aNode = m_surfaceMesh.node(aNodeId);
-
-                        if (!aBoundingBox.contains(aNode, aTolerance))
-                            continue;
-
-                        CMshTriangle<Real> aNewTriangle1;
-
-                        aNewTriangle1.addVertex(aNode1);
-                        aNewTriangle1.addVertex(aNode2);
-                        aNewTriangle1.addVertex(aNode);
-
-                        aNewTriangle1.calculateArea();
-
-                        if (aNewTriangle1.normal().z() > aTolerance) {
-
-                            CMshQuadrilateral<Real> aNewQuadrilateral1;
-
-                            aNewQuadrilateral1.addVertex(aNode1);
-                            aNewQuadrilateral1.addVertex(aNode2);
-                            aNewQuadrilateral1.addVertex(aNewNode2);
-                            aNewQuadrilateral1.addVertex(aNode);
-
-                            aNewQuadrilateral1.calculateArea();
-
-                            aNewQuadrilateral1.calculateQuality();
-
-                            Real q1 = aNewQuadrilateral1.quality();
-
-                            if (q1 > q1max)
-                                q1 += this->edgeOk(anAdvEdge, aNode1, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            Real d = (aNode - aNewNode1).norm();
-
-                            // Use closest node
-                            if (d < localMeshSize * sizeFactor * expandFactor * 0.75 && q1 > q1max) {
-                                q1max = q1;
-                                anExistingNodeId1 = aNodeId;
-                                anExistingNode1 = aNode;
-                            }
-                        }
-                    }
-
-                    if (q1max > minQuality) {
-                        aNewNode1 = anExistingNode1;
-                        aNewNodeId1 = anExistingNodeId1;
-                    }
-
-                    Real q2max = 0.0;
-
-                    CMshNode<Real> anExistingNode2;
-                    Integer anExistingNodeId2 = std::numeric_limits<Integer>::max();
-
-                    for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
-
-                        Integer aNodeId = sNodes[j];
-
-                        if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
-                            continue;
-
-                        CMshNode<Real>& aNode = m_surfaceMesh.node(aNodeId);
-
-                        if (!aBoundingBox.contains(aNode, aTolerance))
-                            continue;
-
-                        CMshTriangle<Real> aNewTriangle2;
-
-                        aNewTriangle2.addVertex(aNode1);
-                        aNewTriangle2.addVertex(aNode2);
-                        aNewTriangle2.addVertex(aNode);
-
-                        aNewTriangle2.calculateArea();
-
-                        if (aNewTriangle2.normal().z() > aTolerance) {
-
-                            CMshQuadrilateral<Real> aNewQuadrilateral2;
-
-                            aNewQuadrilateral2.addVertex(aNode1);
-                            aNewQuadrilateral2.addVertex(aNode2);
-                            aNewQuadrilateral2.addVertex(aNode);
-                            aNewQuadrilateral2.addVertex(aNewNode1);
-
-                            aNewQuadrilateral2.calculateArea();
-
-                            aNewQuadrilateral2.calculateQuality();
-
-                            Real q2 = aNewQuadrilateral2.quality();
-
-                            if (q2 > q2max)
-                                q2 += this->edgeOk(anAdvEdge, aNode2, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            Real d = (aNode - aNewNode2).norm();
-
-                            // Use closest node
-                            if (d < localMeshSize * sizeFactor * expandFactor * 0.75 && q2 > q2max) {
-                                q2max = q2;
-                                anExistingNodeId2 = aNodeId;
-                                anExistingNode2 = aNode;
-                            }
-                        }
-                    }
-
-                    if (q2max > minQuality) {
-                        aNewNode2 = anExistingNode2;
-                        aNewNodeId2 = anExistingNodeId2;
-                    }
-
-                    Real q3max = 0.0;
-
-                    CMshQuadrilateral<Real> aNewQuadrilateral3;
-
-                    aNewQuadrilateral3.addVertex(aNode1);
-                    aNewQuadrilateral3.addVertex(aNode2);
-                    aNewQuadrilateral3.addVertex(aNewNode2);
-                    aNewQuadrilateral3.addVertex(aNewNode1);
-
-                    aNewQuadrilateral3.calculateArea();
-
-                    if (aNewQuadrilateral3.normal().z() > aTolerance) {
-
-                        aNewQuadrilateral3.calculateQuality();
-
-                        Real q3 = aNewQuadrilateral3.quality();
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max) {
-                            Integer wNodeId;
-                            q3 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
+                            q4 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
                         }
 
-                        q3max = q3;
-                    }
+                        if (q4 > 1.5 * minQuality) {
 
-                    if (q3max > minQuality) {
-
-                        Integer aNextNodeId = m_surfaceMesh.nextNodeId();
-
-                        if (aNewNodeId1 == aNextNodeId + 0)
+                            // Create a new node
                             m_surfaceMesh.addNode(aNewNodeId1, aNewNode1);
-
-                        if (aNewNodeId2 == aNextNodeId + 1)
                             m_surfaceMesh.addNode(aNewNodeId2, aNewNode2);
 
-                        for (Integer k = 0; k < static_cast<Integer>(m_interiorNodes.size()); ++k) {
+                            this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
+                            res = true;
 
-                            if (m_interiorNodes[k].remove)
-                                continue;
-
-                            if (m_interiorNodes[k].nodeId == aNewNodeId1)
-                                m_interiorNodes[k].remove = true;
-
-                            if (m_interiorNodes[k].nodeId == aNewNodeId2)
-                                m_interiorNodes[k].remove = true;
-                        }
-
-                        this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
-                        res = true;
-
-                    } else {
-
-                        CGeoLine<Real> aLine1(aMidNode, aNewNode1);
-
-                        Real dmin1 = findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
-
-                        if (dmin1 > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < localMeshSize * sizeFactor * expandFactor)
-                            aNewNode1 = aNode1 + v * dmin1 * 0.5;
-
-                        CGeoLine<Real> aLine2(aMidNode, aNewNode2);
-
-                        Real dmin2 = findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
-
-                        if (dmin2 > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < localMeshSize * sizeFactor * expandFactor)
-                            aNewNode2 = aNode2 + v * dmin2 * 0.5;
-
-                        CMshQuadrilateral<Real> aNewQuadrilateral4;
-
-                        aNewQuadrilateral4.addVertex(aNode1);
-                        aNewQuadrilateral4.addVertex(aNode2);
-                        aNewQuadrilateral4.addVertex(aNewNode1);
-                        aNewQuadrilateral4.addVertex(aNewNode2);
-
-                        aNewQuadrilateral4.calculateArea();
-
-                        if (aNewQuadrilateral4.normal().z() > aTolerance) {
-
-                            aNewQuadrilateral4.calculateQuality();
-
-                            Real q4 = aNewQuadrilateral4.quality();
-
-                            if (q4 > 1.5 * minQuality)
-                                q4 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q4 > 1.5 * minQuality)
-                                q4 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q4 > 1.5 * minQuality)
-                                q4 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q4 > 1.5 * minQuality) {
-                                Integer wNodeId;
-                                q4 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
+                            if (!m_boundingBox.contains(aNewNode1, aTolerance)) {
+                                throw std::runtime_error("Node is outside boundary!");
                             }
 
-                            if (q4 > 1.5 * minQuality) {
-
-                                // Create a new node
-                                m_surfaceMesh.addNode(aNewNodeId1, aNewNode1);
-                                m_surfaceMesh.addNode(aNewNodeId2, aNewNode2);
-
-                                this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
-                                res = true;
-
-                                if (!m_boundingBox.contains(aNewNode1, aTolerance)) {
-                                    throw std::runtime_error("Node is outside boundary!");
-                                }
-
-                                if (!m_boundingBox.contains(aNewNode2, aTolerance)) {
-                                    throw std::runtime_error("Node is outside boundary!");
-                                }
+                            if (!m_boundingBox.contains(aNewNode2, aTolerance)) {
+                                throw std::runtime_error("Node is outside boundary!");
                             }
                         }
                     }
                 }
             }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
         }
 
         return res;
@@ -1324,14 +1245,12 @@ namespace mesh {
     template <typename Real>
     CMshMesh<Real>& CMshQuadrilateralMesher<Real>::mesh()
     {
-
         return m_surfaceMesh;
     }
 
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::setIntervals(const Integer timeInterval, const Integer dataInterval)
     {
-
         m_begin = clock();
 
         m_timeInterval = timeInterval;
@@ -1341,21 +1260,18 @@ namespace mesh {
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::stopMeshing()
     {
-
         m_bStop = true;
     }
 
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::applyFixedBoundary(CMshMesh<Real>& anEdgeMesh, const Real aTolerance)
     {
-
         // TODO:
     }
 
     template <typename Real>
     void CMshQuadrilateralMesher<Real>::flipEdges(const Real aTolerance)
     {
-
         std::map<Integer, bool> sFlipped;
 
         for (Integer i = 0; i < m_surfaceMesh.nbElements(); ++i) {

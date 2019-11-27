@@ -32,21 +32,17 @@ namespace geometry {
         EIntersectionType m_intersectionType;
 
     public:
-        CGeoIntersectionType()
-            : m_intersectionType(IT_NONE){};
-        CGeoIntersectionType(const EIntersectionType anIntersectionType)
-            : m_intersectionType(anIntersectionType){};
+        CGeoIntersectionType() : m_intersectionType(IT_NONE){};
+        explicit CGeoIntersectionType(const EIntersectionType anIntersectionType) : m_intersectionType(anIntersectionType){};
 
         CGeoIntersectionType& operator=(const EIntersectionType& anIntersectionType)
         {
-
             this->m_intersectionType = anIntersectionType;
             return *this;
         }
 
         bool operator==(const EIntersectionType& anIntersectionType) const
         {
-
             return this->m_intersectionType == anIntersectionType;
         }
     };

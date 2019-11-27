@@ -24,6 +24,8 @@ namespace mesh {
     CMshTetrahedronMesher<Real>::CMshTetrahedronMesher()
         : m_timeInterval(1)
         , m_dataInterval(100)
+        , m_begin(0)
+        , m_end(0)
         , m_bStop(false)
         , onUpdate(nullptr)
         , m_previousNbElements(0)
@@ -321,465 +323,399 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::adjustConnectivity(std::vector<Integer>& sTriangles)
     {
+        for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
 
-        try {
+            Integer anAdvTriangleId = i;
 
-            for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
+            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
-                Integer anAdvTriangleId = i;
+            if (anAdvTriangle.remove)
+                continue;
 
-                SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
-
-                if (anAdvTriangle.remove)
-                    continue;
-
-                if (anAdvTriangle.nodeId[0] == anAdvTriangle.nodeId[1] || anAdvTriangle.nodeId[1] == anAdvTriangle.nodeId[2] || anAdvTriangle.nodeId[2] == anAdvTriangle.nodeId[0]) {
-                    std::cout << "Error: invalid front triangle!" << std::endl;
-                    anAdvTriangle.remove = true;
-                    continue;
-                }
-
-                if (anAdvTriangle.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvTriangle.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvTriangle.neighborId[2] >= static_cast<Integer>(m_anAdvFront.size())) {
-                    throw std::out_of_range("Connectivity is out of range!");
-                }
-
-                if (m_anAdvFront[anAdvTriangle.neighborId[0]].remove || m_anAdvFront[anAdvTriangle.neighborId[1]].remove || m_anAdvFront[anAdvTriangle.neighborId[2]].remove) {
-
-                    for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
-                        Integer anotherAdvTriangleId = sTriangles[j];
-
-                        // Discard same triangle
-                        if (anotherAdvTriangleId == anAdvTriangle.id)
-                            continue;
-
-                        SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
-
-                        if (anotherAdvTriangle.remove)
-                            continue;
-
-                        this->pairEdges(anAdvTriangle, anotherAdvTriangle);
-                    }
-
-                    if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max()) {
-                        throw std::runtime_error("Boundary is open!");
-                    }
-                }
+            if (anAdvTriangle.nodeId[0] == anAdvTriangle.nodeId[1] || anAdvTriangle.nodeId[1] == anAdvTriangle.nodeId[2] || anAdvTriangle.nodeId[2] == anAdvTriangle.nodeId[0]) {
+                std::cout << "Error: invalid front triangle!" << std::endl;
+                anAdvTriangle.remove = true;
+                continue;
             }
 
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+            if (anAdvTriangle.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvTriangle.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvTriangle.neighborId[2] >= static_cast<Integer>(m_anAdvFront.size())) {
+                throw std::out_of_range("Connectivity is out of range!");
+            }
+
+            if (m_anAdvFront[anAdvTriangle.neighborId[0]].remove || m_anAdvFront[anAdvTriangle.neighborId[1]].remove || m_anAdvFront[anAdvTriangle.neighborId[2]].remove) {
+
+                for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
+
+                    Integer anotherAdvTriangleId = sTriangles[j];
+
+                    // Discard same triangle
+                    if (anotherAdvTriangleId == anAdvTriangle.id)
+                        continue;
+
+                    SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
+
+                    if (anotherAdvTriangle.remove)
+                        continue;
+
+                    this->pairEdges(anAdvTriangle, anotherAdvTriangle);
+                }
+
+                if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max()) {
+                    throw std::runtime_error("Boundary is open!");
+                }
+            }
         }
     }
 
     template <typename Real>
     void CMshTetrahedronMesher<Real>::cleanDuplicateTriangles(std::vector<Integer>& sTriangles, const Real aTolerance)
     {
+        if (m_nextTriangleId < 3)
+            return;
 
-        try {
+        bool bAdjustConnectivity = false;
 
-            if (m_nextTriangleId < 3)
-                return;
+        // Check last three triangles
+        for (Integer i = 0; i < 3; ++i) {
 
-            bool bAdjustConnectivity = false;
+            Integer anAdvTriangleId = m_nextTriangleId - i - 1;
 
-            // Check last three triangles
-            for (Integer i = 0; i < 3; ++i) {
+            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
-                Integer anAdvTriangleId = m_nextTriangleId - i - 1;
+            if (anAdvTriangle.remove)
+                continue;
 
-                SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            Integer aDuplicateTriangleId;
 
-                if (anAdvTriangle.remove)
-                    continue;
+            if (this->triangleExists(anAdvTriangle, aDuplicateTriangleId, sTriangles)) {
 
-                Integer aDuplicateTriangleId;
+                SAdvancingFrontTriangle& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
 
-                if (this->triangleExists(anAdvTriangle, aDuplicateTriangleId, sTriangles)) {
+                this->removeTriangle(anAdvTriangle, aTolerance);
+                this->removeTriangle(aDuplicateTriangle, aTolerance);
 
-                    SAdvancingFrontTriangle& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
-
-                    this->removeTriangle(anAdvTriangle, aTolerance);
-                    this->removeTriangle(aDuplicateTriangle, aTolerance);
-
-                    bAdjustConnectivity = true;
-                }
+                bAdjustConnectivity = true;
             }
-
-            if (bAdjustConnectivity)
-                this->adjustConnectivity(sTriangles);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
         }
+
+        if (bAdjustConnectivity)
+            this->adjustConnectivity(sTriangles);
     }
 
     template <typename Real>
     void CMshTetrahedronMesher<Real>::addTetrahedron(SAdvancingFrontTriangle& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance)
     {
+        Integer aNodeId1 = anAdvTriangle.nodeId[0];
+        Integer aNodeId2 = anAdvTriangle.nodeId[1];
+        Integer aNodeId3 = anAdvTriangle.nodeId[2];
+        Integer aNodeId4 = aNodeId;
 
-        try {
-
-            Integer aNodeId1 = anAdvTriangle.nodeId[0];
-            Integer aNodeId2 = anAdvTriangle.nodeId[1];
-            Integer aNodeId3 = anAdvTriangle.nodeId[2];
-            Integer aNodeId4 = aNodeId;
-
-            if (aNodeId4 == aNodeId1 || aNodeId4 == aNodeId2 || aNodeId4 == aNodeId3) {
-                std::cout << "Error: invalid tetrahedron!" << std::endl;
-                return;
-            }
-
-            CMshElement<Real> aNewElement(ET_TETRAHEDRON);
-            aNewElement.addNodeId(aNodeId1);
-            aNewElement.addNodeId(aNodeId2);
-            aNewElement.addNodeId(aNodeId3);
-            aNewElement.addNodeId(aNodeId4);
-
-            Integer aNewElementId = m_volumeMesh.nextElementId();
-
-            m_volumeMesh.addElement(aNewElementId, aNewElement);
-
-            SAdvancingFrontTriangle& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
-            SAdvancingFrontTriangle& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
-            SAdvancingFrontTriangle& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
-
-            Integer aNewTriangleId1 = m_nextTriangleId++;
-            Integer aNewTriangleId2 = m_nextTriangleId++;
-            Integer aNewTriangleId3 = m_nextTriangleId++;
-
-            // Add triangle 1
-            SAdvancingFrontTriangle aNewTriangle1;
-            aNewTriangle1.id = aNewTriangleId1;
-            aNewTriangle1.remove = false;
-            aNewTriangle1.boundary = false;
-            aNewTriangle1.nodeId[0] = aNodeId1;
-            aNewTriangle1.nodeId[1] = aNodeId2;
-            aNewTriangle1.nodeId[2] = aNodeId4;
-            aNewTriangle1.neighborId[0] = anAdvTriangle.neighborId[0];
-            aNewTriangle1.neighborId[1] = aNewTriangleId2;
-            aNewTriangle1.neighborId[2] = aNewTriangleId3;
-            aNewTriangle1.nodeNotId[0] = anAdvTriangle.nodeNotId[0];
-            aNewTriangle1.nodeNotId[1] = 1;
-            aNewTriangle1.nodeNotId[2] = 0;
-            aNewTriangle1.tetrahedronId = aNewElementId;
-            aNewTriangle1.nodeNotId4 = aNodeId3;
-
-            aNewTriangle1.build(m_volumeMesh);
-
-            // Correct connectivity
-            aTriangle1.neighborId[(anAdvTriangle.nodeNotId[0] + 1) % 3] = aNewTriangleId1;
-            aTriangle1.nodeNotId[(anAdvTriangle.nodeNotId[0] + 1) % 3] = 2;
-
-            // Add triangle to rtree
-            this->addTriangleToRtree(aNewTriangle1, aTolerance);
-
-            // Add triangle 2
-            SAdvancingFrontTriangle aNewTriangle2;
-            aNewTriangle2.id = aNewTriangleId2;
-            aNewTriangle2.remove = false;
-            aNewTriangle2.boundary = false;
-            aNewTriangle2.nodeId[0] = aNodeId2;
-            aNewTriangle2.nodeId[1] = aNodeId3;
-            aNewTriangle2.nodeId[2] = aNodeId4;
-            aNewTriangle2.neighborId[0] = anAdvTriangle.neighborId[1];
-            aNewTriangle2.neighborId[1] = aNewTriangleId3;
-            aNewTriangle2.neighborId[2] = aNewTriangleId1;
-            aNewTriangle2.nodeNotId[0] = anAdvTriangle.nodeNotId[1];
-            aNewTriangle2.nodeNotId[1] = 1;
-            aNewTriangle2.nodeNotId[2] = 0;
-            aNewTriangle2.tetrahedronId = aNewElementId;
-            aNewTriangle2.nodeNotId4 = aNodeId1;
-
-            aNewTriangle2.build(m_volumeMesh);
-
-            // Correct connectivity
-            aTriangle2.neighborId[(anAdvTriangle.nodeNotId[1] + 1) % 3] = aNewTriangleId2;
-            aTriangle2.nodeNotId[(anAdvTriangle.nodeNotId[1] + 1) % 3] = 2;
-
-            // Add triangle to rtree
-            this->addTriangleToRtree(aNewTriangle2, aTolerance);
-
-            // Add triangle 3
-            SAdvancingFrontTriangle aNewTriangle3;
-            aNewTriangle3.id = aNewTriangleId3;
-            aNewTriangle3.remove = false;
-            aNewTriangle3.boundary = false;
-            aNewTriangle3.nodeId[0] = aNodeId3;
-            aNewTriangle3.nodeId[1] = aNodeId1;
-            aNewTriangle3.nodeId[2] = aNodeId4;
-            aNewTriangle3.neighborId[0] = anAdvTriangle.neighborId[2];
-            aNewTriangle3.neighborId[1] = aNewTriangleId1;
-            aNewTriangle3.neighborId[2] = aNewTriangleId2;
-            aNewTriangle3.nodeNotId[0] = anAdvTriangle.nodeNotId[2];
-            aNewTriangle3.nodeNotId[1] = 1;
-            aNewTriangle3.nodeNotId[2] = 0;
-            aNewTriangle3.tetrahedronId = aNewElementId;
-            aNewTriangle3.nodeNotId4 = aNodeId2;
-
-            aNewTriangle3.build(m_volumeMesh);
-
-            // Correct connectivity
-            aTriangle3.neighborId[(anAdvTriangle.nodeNotId[2] + 1) % 3] = aNewTriangleId3;
-            aTriangle3.nodeNotId[(anAdvTriangle.nodeNotId[2] + 1) % 3] = 2;
-
-            // Add triangle to rtree
-            this->addTriangleToRtree(aNewTriangle3, aTolerance);
-
-            // Remove this triangle
-            this->removeTriangle(anAdvTriangle, aTolerance);
-
-            m_anAdvFront.push_back(aNewTriangle1);
-            m_anAdvFront.push_back(aNewTriangle2);
-            m_anAdvFront.push_back(aNewTriangle3);
-
-            this->cleanDuplicateTriangles(sTriangles, aTolerance);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+        if (aNodeId4 == aNodeId1 || aNodeId4 == aNodeId2 || aNodeId4 == aNodeId3) {
+            std::cout << "Error: invalid tetrahedron!" << std::endl;
+            return;
         }
+
+        CMshElement<Real> aNewElement(ET_TETRAHEDRON);
+        aNewElement.addNodeId(aNodeId1);
+        aNewElement.addNodeId(aNodeId2);
+        aNewElement.addNodeId(aNodeId3);
+        aNewElement.addNodeId(aNodeId4);
+
+        Integer aNewElementId = m_volumeMesh.nextElementId();
+
+        m_volumeMesh.addElement(aNewElementId, aNewElement);
+
+        SAdvancingFrontTriangle& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
+        SAdvancingFrontTriangle& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
+        SAdvancingFrontTriangle& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
+
+        Integer aNewTriangleId1 = m_nextTriangleId++;
+        Integer aNewTriangleId2 = m_nextTriangleId++;
+        Integer aNewTriangleId3 = m_nextTriangleId++;
+
+        // Add triangle 1
+        SAdvancingFrontTriangle aNewTriangle1;
+        aNewTriangle1.id = aNewTriangleId1;
+        aNewTriangle1.remove = false;
+        aNewTriangle1.boundary = false;
+        aNewTriangle1.nodeId[0] = aNodeId1;
+        aNewTriangle1.nodeId[1] = aNodeId2;
+        aNewTriangle1.nodeId[2] = aNodeId4;
+        aNewTriangle1.neighborId[0] = anAdvTriangle.neighborId[0];
+        aNewTriangle1.neighborId[1] = aNewTriangleId2;
+        aNewTriangle1.neighborId[2] = aNewTriangleId3;
+        aNewTriangle1.nodeNotId[0] = anAdvTriangle.nodeNotId[0];
+        aNewTriangle1.nodeNotId[1] = 1;
+        aNewTriangle1.nodeNotId[2] = 0;
+        aNewTriangle1.tetrahedronId = aNewElementId;
+        aNewTriangle1.nodeNotId4 = aNodeId3;
+
+        aNewTriangle1.build(m_volumeMesh);
+
+        // Correct connectivity
+        aTriangle1.neighborId[(anAdvTriangle.nodeNotId[0] + 1) % 3] = aNewTriangleId1;
+        aTriangle1.nodeNotId[(anAdvTriangle.nodeNotId[0] + 1) % 3] = 2;
+
+        // Add triangle to rtree
+        this->addTriangleToRtree(aNewTriangle1, aTolerance);
+
+        // Add triangle 2
+        SAdvancingFrontTriangle aNewTriangle2;
+        aNewTriangle2.id = aNewTriangleId2;
+        aNewTriangle2.remove = false;
+        aNewTriangle2.boundary = false;
+        aNewTriangle2.nodeId[0] = aNodeId2;
+        aNewTriangle2.nodeId[1] = aNodeId3;
+        aNewTriangle2.nodeId[2] = aNodeId4;
+        aNewTriangle2.neighborId[0] = anAdvTriangle.neighborId[1];
+        aNewTriangle2.neighborId[1] = aNewTriangleId3;
+        aNewTriangle2.neighborId[2] = aNewTriangleId1;
+        aNewTriangle2.nodeNotId[0] = anAdvTriangle.nodeNotId[1];
+        aNewTriangle2.nodeNotId[1] = 1;
+        aNewTriangle2.nodeNotId[2] = 0;
+        aNewTriangle2.tetrahedronId = aNewElementId;
+        aNewTriangle2.nodeNotId4 = aNodeId1;
+
+        aNewTriangle2.build(m_volumeMesh);
+
+        // Correct connectivity
+        aTriangle2.neighborId[(anAdvTriangle.nodeNotId[1] + 1) % 3] = aNewTriangleId2;
+        aTriangle2.nodeNotId[(anAdvTriangle.nodeNotId[1] + 1) % 3] = 2;
+
+        // Add triangle to rtree
+        this->addTriangleToRtree(aNewTriangle2, aTolerance);
+
+        // Add triangle 3
+        SAdvancingFrontTriangle aNewTriangle3;
+        aNewTriangle3.id = aNewTriangleId3;
+        aNewTriangle3.remove = false;
+        aNewTriangle3.boundary = false;
+        aNewTriangle3.nodeId[0] = aNodeId3;
+        aNewTriangle3.nodeId[1] = aNodeId1;
+        aNewTriangle3.nodeId[2] = aNodeId4;
+        aNewTriangle3.neighborId[0] = anAdvTriangle.neighborId[2];
+        aNewTriangle3.neighborId[1] = aNewTriangleId1;
+        aNewTriangle3.neighborId[2] = aNewTriangleId2;
+        aNewTriangle3.nodeNotId[0] = anAdvTriangle.nodeNotId[2];
+        aNewTriangle3.nodeNotId[1] = 1;
+        aNewTriangle3.nodeNotId[2] = 0;
+        aNewTriangle3.tetrahedronId = aNewElementId;
+        aNewTriangle3.nodeNotId4 = aNodeId2;
+
+        aNewTriangle3.build(m_volumeMesh);
+
+        // Correct connectivity
+        aTriangle3.neighborId[(anAdvTriangle.nodeNotId[2] + 1) % 3] = aNewTriangleId3;
+        aTriangle3.nodeNotId[(anAdvTriangle.nodeNotId[2] + 1) % 3] = 2;
+
+        // Add triangle to rtree
+        this->addTriangleToRtree(aNewTriangle3, aTolerance);
+
+        // Remove this triangle
+        this->removeTriangle(anAdvTriangle, aTolerance);
+
+        m_anAdvFront.push_back(aNewTriangle1);
+        m_anAdvFront.push_back(aNewTriangle2);
+        m_anAdvFront.push_back(aNewTriangle3);
+
+        this->cleanDuplicateTriangles(sTriangles, aTolerance);
     }
 
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minQuality, const Real aTolerance)
     {
+        std::vector<CGeoCoordinate<double>> sInteriorPoints;
 
-        try {
+        ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
+        aAnaFunction.set(meshSize);
 
-            std::vector<CGeoCoordinate<double>> sInteriorPoints;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        }
+        return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
     }
 
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minQuality, const Real aTolerance)
     {
+        ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
+        aAnaFunction.set(meshSize);
 
-        try {
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            return false;
-        }
+        return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
     }
 
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minQuality, const Real aTolerance)
     {
+        m_bStop = false;
 
-        try {
+        m_previousNbElements = 0;
 
-            m_bStop = false;
+        // Add boundary nodes to volume mesh
+        m_volumeMesh.reset();
+        m_boundingBox.reset();
 
-            m_previousNbElements = 0;
+        for (Integer i = 0; i < aSurfaceMesh.nbNodes(); ++i) {
 
-            // Add boundary nodes to volume mesh
-            m_volumeMesh.reset();
-            m_boundingBox.reset();
+            Integer aNodeId = aSurfaceMesh.nodeId(i);
+            CMshNode<Real>& aNode = aSurfaceMesh.node(aNodeId);
 
-            for (Integer i = 0; i < aSurfaceMesh.nbNodes(); ++i) {
+            m_volumeMesh.addNode(aNodeId, aNode);
 
-                Integer aNodeId = aSurfaceMesh.nodeId(i);
-                CMshNode<Real>& aNode = aSurfaceMesh.node(aNodeId);
+            // Add to bounding box
+            m_boundingBox.addCoordinate(aNode);
+        }
 
-                m_volumeMesh.addNode(aNodeId, aNode);
+        m_boundingBox.grow(aTolerance);
 
-                // Add to bounding box
-                m_boundingBox.addCoordinate(aNode);
-            }
+        // Add boundary to advancing front and rtree
+        m_anAdvFront.clear();
 
-            m_boundingBox.grow(aTolerance);
+        m_anAdvFront.reserve(aSurfaceMesh.nbElements() * 50);
 
-            // Add boundary to advancing front and rtree
-            m_anAdvFront.clear();
+        m_tree.reset();
 
-            m_anAdvFront.reserve(aSurfaceMesh.nbElements() * 50);
+        std::map<Integer, Integer> newTriangleIds;
 
-            m_tree.reset();
+        m_nextTriangleId = 0;
 
-            std::map<Integer, Integer> newTriangleIds;
+        for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
 
-            m_nextTriangleId = 0;
+            Integer anElementId = aSurfaceMesh.elementId(i);
 
-            for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
+            CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
 
-                Integer anElementId = aSurfaceMesh.elementId(i);
+            if (anElement.elementType() == ET_TRIANGLE)
+                newTriangleIds[anElementId] = m_nextTriangleId++;
+        }
 
-                CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
+        m_nextTriangleId = 0;
 
-                if (anElement.elementType() == ET_TRIANGLE)
-                    newTriangleIds[anElementId] = m_nextTriangleId++;
-            }
+        for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
 
-            m_nextTriangleId = 0;
+            Integer anElementId = aSurfaceMesh.elementId(i);
 
-            for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
+            CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
 
-                Integer anElementId = aSurfaceMesh.elementId(i);
+            if (anElement.elementType() == ET_TRIANGLE) {
 
-                CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
+                SAdvancingFrontTriangle anAdvTriangle;
 
-                if (anElement.elementType() == ET_TRIANGLE) {
+                anAdvTriangle.id = m_nextTriangleId++;
+                anAdvTriangle.remove = false;
+                anAdvTriangle.boundary = true;
 
-                    SAdvancingFrontTriangle anAdvTriangle;
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                    anAdvTriangle.nodeId[j] = anElement.nodeId(j);
 
-                    anAdvTriangle.id = m_nextTriangleId++;
-                    anAdvTriangle.remove = false;
-                    anAdvTriangle.boundary = true;
+                anAdvTriangle.tetrahedronId = std::numeric_limits<Integer>::max();
+                anAdvTriangle.nodeNotId4 = std::numeric_limits<Integer>::max();
 
-                    for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                        anAdvTriangle.nodeId[j] = anElement.nodeId(j);
+                anAdvTriangle.build(aSurfaceMesh);
 
-                    anAdvTriangle.tetrahedronId = std::numeric_limits<Integer>::max();
-                    anAdvTriangle.nodeNotId4 = std::numeric_limits<Integer>::max();
+                for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
 
-                    anAdvTriangle.build(aSurfaceMesh);
+                    anAdvTriangle.neighborId[j] = std::numeric_limits<Integer>::max();
 
-                    for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
+                    Integer aFaceId = anElement.faceId(j);
+                    CMshFace<Real>& aFace = aSurfaceMesh.face(aFaceId);
 
-                        anAdvTriangle.neighborId[j] = std::numeric_limits<Integer>::max();
+                    if (aFace.hasPair()) {
+                        Integer aPairFaceId = aFace.pairFaceId();
+                        Integer aNeighborId = aSurfaceMesh.face(aPairFaceId).elementId();
 
-                        Integer aFaceId = anElement.faceId(j);
-                        CMshFace<Real>& aFace = aSurfaceMesh.face(aFaceId);
+                        if (newTriangleIds.find(aNeighborId) != newTriangleIds.end()) {
 
-                        if (aFace.hasPair()) {
-                            Integer aPairFaceId = aFace.pairFaceId();
-                            Integer aNeighborId = aSurfaceMesh.face(aPairFaceId).elementId();
+                            anAdvTriangle.neighborId[j] = newTriangleIds.at(aNeighborId);
 
-                            if (newTriangleIds.find(aNeighborId) != newTriangleIds.end()) {
+                            CMshElement<Real>& aNeighbor = aSurfaceMesh.element(aNeighborId);
 
-                                anAdvTriangle.neighborId[j] = newTriangleIds[aNeighborId];
-
-                                CMshElement<Real>& aNeighbor = aSurfaceMesh.element(aNeighborId);
-
-                                for (Integer k = 0; k < aNeighbor.nbNodeIds(); ++k) {
-                                    if (aNeighbor.nodeId(k) != aFace.nodeId(0) && aNeighbor.nodeId(k) != aFace.nodeId(1)) {
-                                        anAdvTriangle.nodeNotId[j] = k;
-                                        break;
-                                    }
+                            for (Integer k = 0; k < aNeighbor.nbNodeIds(); ++k) {
+                                if (aNeighbor.nodeId(k) != aFace.nodeId(0) && aNeighbor.nodeId(k) != aFace.nodeId(1)) {
+                                    anAdvTriangle.nodeNotId[j] = k;
+                                    break;
                                 }
+                            }
 
-                            } else
-                                std::cout << "Error: element id = " << aNeighborId << " not found!" << std::endl;
+                        } else
+                            std::cout << "Error: element id = " << aNeighborId << " not found!" << std::endl;
 
-                        } else {
+                    } else {
 
-                            throw std::runtime_error("Boundary is open!");
-                        }
+                        throw std::runtime_error("Boundary is open!");
                     }
-
-                    m_anAdvFront.push_back(anAdvTriangle);
-
-                    this->addTriangleToRtree(anAdvTriangle, aTolerance);
                 }
+
+                m_anAdvFront.push_back(anAdvTriangle);
+
+                this->addTriangleToRtree(anAdvTriangle, aTolerance);
             }
+        }
 
-            // Add interior nodes
-            for (Integer i = 0; i < static_cast<Integer>(sInteriorPoints.size()); ++i) {
+        // Add interior nodes
+        for (Integer i = 0; i < static_cast<Integer>(sInteriorPoints.size()); ++i) {
 
-                Integer aNewNodeId = m_volumeMesh.nextNodeId();
-                CMshNode<Real> aNewNode = sInteriorPoints[i];
+            Integer aNewNodeId = m_volumeMesh.nextNodeId();
+            CMshNode<Real> aNewNode = sInteriorPoints[i];
 
-                m_volumeMesh.addNode(aNewNodeId, aNewNode);
+            m_volumeMesh.addNode(aNewNodeId, aNewNode);
 
-                SNode anInteriorNode;
+            SNode anInteriorNode;
 
-                anInteriorNode.id = static_cast<Integer>(m_innerNodes.size());
-                anInteriorNode.remove = false;
+            anInteriorNode.id = static_cast<Integer>(m_innerNodes.size());
+            anInteriorNode.remove = false;
 
-                anInteriorNode.nodeId = aNewNodeId;
+            anInteriorNode.nodeId = aNewNodeId;
 
-                m_innerNodes.push_back(anInteriorNode);
-            }
+            m_innerNodes.push_back(anInteriorNode);
+        }
 
-            // Start meshing interior
+        // Start meshing interior
 
-            Integer maxElem = maxNbElements;
+        Integer maxElem = maxNbElements;
 
-            bool res = true;
+        bool res = true;
 
-            res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.10, false, 0, aTolerance) : res = false;
-            res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.35, 0.01, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.10, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.35, 0.01, false, 0, aTolerance) : res = false;
 
-            if (res) {
+        if (res) {
 
-                for (Integer i = 0; i < 30; ++i) {
+            for (Integer i = 0; i < 30; ++i) {
 
-                    if (i < 10)
-                        res ? res = this->repair(meshSizeFunc, 0.90 + i * 0.05, 0.0, aTolerance) : res = false;
-                    else
-                        res ? res = this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance) : res = false;
+                if (i < 10)
+                    res ? res = this->repair(meshSizeFunc, 0.90 + i * 0.05, 0.0, aTolerance) : res = false;
+                else
+                    res ? res = this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance) : res = false;
 
-                    if (i < 4) {
-                        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
-                        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
-                    } else if (i < 8) {
-                        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
-                        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
-                    }
-
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, 0, aTolerance) : res = false;
-
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, 0, aTolerance) : res = false;
-
-                    if (!res)
-                        break;
-
-                    if (this->frontSize() == 0)
-                        break;
+                if (i < 4) {
+                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
+                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
+                } else if (i < 8) {
+                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
+                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
                 }
+
+                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
+                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, 0, aTolerance) : res = false;
+
+                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
+                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, 0, aTolerance) : res = false;
+
+                if (!res)
+                    break;
+
+                if (this->frontSize() == 0)
+                    break;
             }
+        }
 
-            m_volumeMesh.removeDanglingNodes();
-            m_volumeMesh.renumber();
+        m_volumeMesh.removeDanglingNodes();
+        m_volumeMesh.renumber();
 
-            if (this->frontSize() == 0) {
-                m_volumeMesh.generateFaces(aTolerance);
-                return true;
-            } else {
-                std::cout << "Meshing error!" << std::endl;
-                return false;
-            }
-
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+        if (this->frontSize() == 0) {
+            m_volumeMesh.generateFaces(aTolerance);
+            return true;
+        } else {
+            std::cout << "Meshing error!" << std::endl;
+            return false;
         }
     }
 
@@ -800,277 +736,265 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::advancingFrontMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
     {
-
         bool res = true;
 
-        try {
+        Real x, y, z;
 
-            Real x, y, z;
+        meshSizeFunc.removeAllVariables();
 
-            meshSizeFunc.removeAllVariables();
+        meshSizeFunc.defineVariable("x", x);
+        meshSizeFunc.defineVariable("y", y);
+        meshSizeFunc.defineVariable("z", z);
 
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
-            meshSizeFunc.defineVariable("z", z);
+        Real sumMeshSize = 0;
+        Integer nMeshSize = 0;
 
-            Real sumMeshSize = 0;
-            Real averageMeshSize = 0;
-            Integer nMeshSize = 0;
+        for (Integer i = firstIndex; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
 
-            for (Integer i = firstIndex; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
+            this->checkUpdate();
 
-                this->checkUpdate();
+            if (m_bStop)
+                return false;
 
-                if (m_bStop)
+            if (maxNbElements > 0) {
+                if (m_volumeMesh.nbElements() >= maxNbElements) {
+                    std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
                     return false;
-
-                if (maxNbElements > 0) {
-                    if (m_volumeMesh.nbElements() >= maxNbElements) {
-                        std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
-                        return false;
-                    }
                 }
+            }
 
-                Integer anAdvTriangleId = i;
+            Integer anAdvTriangleId = i;
 
-                if (m_anAdvFront[anAdvTriangleId].remove)
-                    continue;
+            if (m_anAdvFront[anAdvTriangleId].remove)
+                continue;
 
-                SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
-                if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max())
-                    continue;
+            if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max())
+                continue;
 
-                Integer aNodeId1 = anAdvTriangle.nodeId[0];
-                Integer aNodeId2 = anAdvTriangle.nodeId[1];
-                Integer aNodeId3 = anAdvTriangle.nodeId[2];
+            Integer aNodeId1 = anAdvTriangle.nodeId[0];
+            Integer aNodeId2 = anAdvTriangle.nodeId[1];
+            Integer aNodeId3 = anAdvTriangle.nodeId[2];
 
-                CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
-                CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
-                CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
+            CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
+            CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
+            CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
 
-                Integer aNodeId4 = m_anAdvFront[anAdvTriangle.neighborId[0]].nodeId[anAdvTriangle.nodeNotId[0]];
-                Integer aNodeId5 = m_anAdvFront[anAdvTriangle.neighborId[1]].nodeId[anAdvTriangle.nodeNotId[1]];
-                Integer aNodeId6 = m_anAdvFront[anAdvTriangle.neighborId[2]].nodeId[anAdvTriangle.nodeNotId[2]];
+            Integer aNodeId4 = m_anAdvFront[anAdvTriangle.neighborId[0]].nodeId[anAdvTriangle.nodeNotId[0]];
+            Integer aNodeId5 = m_anAdvFront[anAdvTriangle.neighborId[1]].nodeId[anAdvTriangle.nodeNotId[1]];
+            Integer aNodeId6 = m_anAdvFront[anAdvTriangle.neighborId[2]].nodeId[anAdvTriangle.nodeNotId[2]];
 
-                CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
+            CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
 
-                CMshNode<Real> aMidNode = (aNode1 + aNode2 + aNode3) / 3.0;
+            CMshNode<Real> aMidNode = (aNode1 + aNode2 + aNode3) / 3.0;
 
-                x = aMidNode.x();
-                y = aMidNode.y();
-                z = aMidNode.z();
+            x = aMidNode.x();
+            y = aMidNode.y();
+            z = aMidNode.z();
 
-                // Use inverse of normal vector
-                CGeoVector<Real> v = -((aNode2 - aNode1).cross(aNode3 - aNode1));
+            // Use inverse of normal vector
+            CGeoVector<Real> v = -((aNode2 - aNode1).cross(aNode3 - aNode1));
 
-                Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
+            Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
 
-                sumMeshSize += localMeshSize;
-                nMeshSize++;
-                averageMeshSize = sumMeshSize / nMeshSize;
+            sumMeshSize += localMeshSize;
+            nMeshSize++;
+            Real averageMeshSize = sumMeshSize / nMeshSize;
 
-                if (averageMeshSize > localMeshSize)
-                    localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
-                else
-                    localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
+            if (averageMeshSize > localMeshSize)
+                localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
+            else
+                localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
 
-                v.normalize();
+            v.normalize();
 
-                // Regular tetrahedron (height to edge ratio)
-                v *= sqrt(2.0 / 3.0);
+            // Regular tetrahedron (height to edge ratio)
+            v *= sqrt(2.0 / 3.0);
 
-                // Add point to form tetrahedra with correct spacing
-                CMshNode<Real> aNewNode = aMidNode + v * localMeshSize * sizeFactor;
-                Integer aNewNodeId = m_volumeMesh.nextNodeId();
+            // Add point to form tetrahedra with correct spacing
+            CMshNode<Real> aNewNode = aMidNode + v * localMeshSize * sizeFactor;
+            Integer aNewNodeId = m_volumeMesh.nextNodeId();
 
-                // Get closest triangles
-                CMshNode<Real> anAuxNode = aMidNode + v * localMeshSize * sizeFactor * 1.5;
+            // Get closest triangles
+            CMshNode<Real> anAuxNode = aMidNode + v * localMeshSize * sizeFactor * 1.5;
 
-                CGeoBoundingBox<Real> aBoundingBox;
-                aBoundingBox.addCoordinate(aNode1);
-                aBoundingBox.addCoordinate(aNode2);
-                aBoundingBox.addCoordinate(aNode3);
-                aBoundingBox.addCoordinate(anAuxNode);
-                aBoundingBox.grow(aTolerance);
+            CGeoBoundingBox<Real> aBoundingBox;
+            aBoundingBox.addCoordinate(aNode1);
+            aBoundingBox.addCoordinate(aNode2);
+            aBoundingBox.addCoordinate(aNode3);
+            aBoundingBox.addCoordinate(anAuxNode);
+            aBoundingBox.grow(aTolerance);
 
-                std::vector<Integer> sTriangles;
-                m_tree.find(sTriangles, aBoundingBox);
+            std::vector<Integer> sTriangles;
+            m_tree.find(sTriangles, aBoundingBox);
 
-                sTriangles.erase(std::remove(sTriangles.begin(), sTriangles.end(), anAdvTriangleId), sTriangles.end());
+            sTriangles.erase(std::remove(sTriangles.begin(), sTriangles.end(), anAdvTriangleId), sTriangles.end());
 
-                // Check if a node exists in proximity
-                std::vector<Integer> sNodes;
-                this->findClosestNodes(sTriangles, sNodes);
+            // Check if a node exists in proximity
+            std::vector<Integer> sNodes;
+            this->findClosestNodes(sTriangles, sNodes);
 
-                // Meshing priority
-                // Priority = 1: close hole
-                // Priority = 2: other nodes in vicinity (4, 5, 6, other node)
-                // Priority = 3: new node forming correct spacing
+            // Meshing priority
+            // Priority = 1: close hole
+            // Priority = 2: other nodes in vicinity (4, 5, 6, other node)
+            // Priority = 3: new node forming correct spacing
 
-                if (aNodeId4 == aNodeId5 && aNodeId5 == aNodeId6) {
+            if (aNodeId4 == aNodeId5 && aNodeId5 == aNodeId6) {
 
-                    CMshTetrahedron<Real> aNewTetrahedron;
+                CMshTetrahedron<Real> aNewTetrahedron;
 
-                    aNewTetrahedron.addVertex(aNode1);
-                    aNewTetrahedron.addVertex(aNode2);
-                    aNewTetrahedron.addVertex(aNode3);
-                    aNewTetrahedron.addVertex(aNode4);
+                aNewTetrahedron.addVertex(aNode1);
+                aNewTetrahedron.addVertex(aNode2);
+                aNewTetrahedron.addVertex(aNode3);
+                aNewTetrahedron.addVertex(aNode4);
 
-                    aNewTetrahedron.calculateVolume();
+                aNewTetrahedron.calculateVolume();
 
-                    if (aNewTetrahedron.volume() > aTolerance * aTolerance * aTolerance) {
+                if (aNewTetrahedron.volume() > aTolerance * aTolerance * aTolerance) {
 
-                        Integer wNodeId;
+                    Integer wNodeId;
 
-                        if (this->triangleOk(anAdvTriangle, aNode1, aNode2, aNode4, sTriangles, aTolerance) && this->triangleOk(anAdvTriangle, aNode2, aNode3, aNode4, sTriangles, aTolerance) && this->triangleOk(anAdvTriangle, aNode3, aNode1, aNode4, sTriangles, aTolerance) && !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance)) {
+                    if (this->triangleOk(anAdvTriangle, aNode1, aNode2, aNode4, sTriangles, aTolerance) && this->triangleOk(anAdvTriangle, aNode2, aNode3, aNode4, sTriangles, aTolerance) && this->triangleOk(anAdvTriangle, aNode3, aNode1, aNode4, sTriangles, aTolerance) && !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance)) {
 
-                            this->addTetrahedron(anAdvTriangle, aNodeId4, sTriangles, aTolerance);
-                            res = true;
-                            continue;
-                        }
-                    }
-                }
-
-                Real qmax = 0.0;
-
-                // If a node exists snap to that node
-                CMshNode<Real> anExistingNode;
-                Integer anExistingNodeId = std::numeric_limits<Integer>::max();
-
-                for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
-
-                    Integer aNodeId = sNodes[j];
-
-                    if (aNodeId == aNodeId1 || aNodeId == aNodeId2 || aNodeId == aNodeId3)
+                        this->addTetrahedron(anAdvTriangle, aNodeId4, sTriangles, aTolerance);
+                        res = true;
                         continue;
-
-                    CMshNode<Real>& aNode = m_volumeMesh.node(aNodeId);
-
-                    Real d = (aNode - aNewNode).norm();
-
-                    // Use closest node
-                    if (d < localMeshSize * sizeFactor * expandFactor) {
-
-                        CMshTetrahedron<Real> aNewTetrahedron1;
-
-                        aNewTetrahedron1.addVertex(aNode1);
-                        aNewTetrahedron1.addVertex(aNode2);
-                        aNewTetrahedron1.addVertex(aNode3);
-                        aNewTetrahedron1.addVertex(aNode);
-
-                        aNewTetrahedron1.calculateVolume();
-
-                        if (aNewTetrahedron1.volume() > aTolerance * aTolerance * aTolerance) {
-
-                            aNewTetrahedron1.calculateQuality();
-
-                            Real q1 = aNewTetrahedron1.quality();
-
-                            if (q1 > qmax)
-                                q1 += this->triangleOk(anAdvTriangle, aNode1, aNode2, aNode, sTriangles, aTolerance) ? 0.0 : -2.0;
-
-                            if (q1 > qmax)
-                                q1 += this->triangleOk(anAdvTriangle, aNode2, aNode3, aNode, sTriangles, aTolerance) ? 0.0 : -2.0;
-
-                            if (q1 > qmax)
-                                q1 += this->triangleOk(anAdvTriangle, aNode3, aNode1, aNode, sTriangles, aTolerance) ? 0.0 : -2.0;
-
-                            if (q1 > qmax) {
-                                Integer wNodeId;
-                                q1 += !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNode, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
-                            }
-
-                            if (q1 > qmax) {
-                                qmax = q1;
-                                anExistingNodeId = aNodeId;
-                                anExistingNode = aNode;
-                            }
-                        }
                     }
                 }
+            }
 
-                if (qmax > minQuality) {
+            Real qmax = 0.0;
 
-                    for (Integer k = 0; k < static_cast<Integer>(m_innerNodes.size()); ++k) {
+            // If a node exists snap to that node
+            CMshNode<Real> anExistingNode;
+            Integer anExistingNodeId = std::numeric_limits<Integer>::max();
 
-                        if (m_innerNodes[k].remove)
-                            continue;
+            for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
 
-                        if (m_innerNodes[k].nodeId == anExistingNodeId)
-                            m_innerNodes[k].remove = true;
-                    }
+                Integer aNodeId = sNodes[j];
 
-                    this->addTetrahedron(anAdvTriangle, anExistingNodeId, sTriangles, aTolerance);
-                    res = true;
+                if (aNodeId == aNodeId1 || aNodeId == aNodeId2 || aNodeId == aNodeId3)
+                    continue;
 
-                } else {
+                CMshNode<Real>& aNode = m_volumeMesh.node(aNodeId);
 
-                    CGeoLine<Real> aLine(aMidNode, aNewNode);
+                Real d = (aNode - aNewNode).norm();
 
-                    Real dmin = findShortestDistance(sTriangles, aLine, anAdvTriangleId, aTolerance);
+                // Use closest node
+                if (d < localMeshSize * sizeFactor * expandFactor) {
 
-                    if (dmin > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin < localMeshSize * sizeFactor * expandFactor)
-                        aNewNode = aMidNode + v * dmin * 0.5;
+                    CMshTetrahedron<Real> aNewTetrahedron1;
 
-                    CMshTetrahedron<Real> aNewTetrahedron2;
+                    aNewTetrahedron1.addVertex(aNode1);
+                    aNewTetrahedron1.addVertex(aNode2);
+                    aNewTetrahedron1.addVertex(aNode3);
+                    aNewTetrahedron1.addVertex(aNode);
 
-                    aNewTetrahedron2.addVertex(aNode1);
-                    aNewTetrahedron2.addVertex(aNode2);
-                    aNewTetrahedron2.addVertex(aNode3);
-                    aNewTetrahedron2.addVertex(aNewNode);
+                    aNewTetrahedron1.calculateVolume();
 
-                    aNewTetrahedron2.calculateVolume();
+                    if (aNewTetrahedron1.volume() > aTolerance * aTolerance * aTolerance) {
 
-                    if (aNewTetrahedron2.volume() > aTolerance * aTolerance * aTolerance) {
+                        aNewTetrahedron1.calculateQuality();
 
-                        aNewTetrahedron2.calculateQuality();
+                        Real q1 = aNewTetrahedron1.quality();
 
-                        Real q2 = aNewTetrahedron2.quality();
+                        if (q1 > qmax)
+                            q1 += this->triangleOk(anAdvTriangle, aNode1, aNode2, aNode, sTriangles, aTolerance) ? 0.0 : -2.0;
 
-                        if (q2 > 1.5 * minQuality)
-                            q2 += this->triangleOk(anAdvTriangle, aNode1, aNode2, aNewNode, sTriangles, aTolerance) ? 0.0 : -2.0;
+                        if (q1 > qmax)
+                            q1 += this->triangleOk(anAdvTriangle, aNode2, aNode3, aNode, sTriangles, aTolerance) ? 0.0 : -2.0;
 
-                        if (q2 > 1.5 * minQuality)
-                            q2 += this->triangleOk(anAdvTriangle, aNode2, aNode3, aNewNode, sTriangles, aTolerance) ? 0.0 : -2.0;
+                        if (q1 > qmax)
+                            q1 += this->triangleOk(anAdvTriangle, aNode3, aNode1, aNode, sTriangles, aTolerance) ? 0.0 : -2.0;
 
-                        if (q2 > 1.5 * minQuality)
-                            q2 += this->triangleOk(anAdvTriangle, aNode3, aNode1, aNewNode, sTriangles, aTolerance) ? 0.0 : -2.0;
-
-                        if (q2 > 1.5 * minQuality) {
+                        if (q1 > qmax) {
                             Integer wNodeId;
-                            q2 += !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNewNode, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
+                            q1 += !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNode, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
                         }
 
-                        if (q2 > 1.5 * minQuality && bCheckDelaunay)
-                            q2 += this->checkDelaunay(aNewNode, aTolerance) ? 0.0 : -2.0;
-
-                        if (q2 > 1.5 * minQuality) {
-
-                            // Create a new node
-                            m_volumeMesh.addNode(aNewNodeId, aNewNode);
-
-                            this->addTetrahedron(anAdvTriangle, aNewNodeId, sTriangles, aTolerance);
-                            res = true;
-
-                            if (!m_boundingBox.contains(aNewNode, aTolerance)) {
-                                throw std::runtime_error("Node is outside boundary!");
-                            }
+                        if (q1 > qmax) {
+                            qmax = q1;
+                            anExistingNodeId = aNodeId;
+                            anExistingNode = aNode;
                         }
                     }
                 }
             }
 
-            if (onUpdate != nullptr)
-                onUpdate(0);
+            if (qmax > minQuality) {
 
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+                for (Integer k = 0; k < static_cast<Integer>(m_innerNodes.size()); ++k) {
+
+                    if (m_innerNodes[k].remove)
+                        continue;
+
+                    if (m_innerNodes[k].nodeId == anExistingNodeId)
+                        m_innerNodes[k].remove = true;
+                }
+
+                this->addTetrahedron(anAdvTriangle, anExistingNodeId, sTriangles, aTolerance);
+                res = true;
+
+            } else {
+
+                CGeoLine<Real> aLine(aMidNode, aNewNode);
+
+                Real dmin = findShortestDistance(sTriangles, aLine, anAdvTriangleId, aTolerance);
+
+                if (dmin > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin < localMeshSize * sizeFactor * expandFactor)
+                    aNewNode = aMidNode + v * dmin * 0.5;
+
+                CMshTetrahedron<Real> aNewTetrahedron2;
+
+                aNewTetrahedron2.addVertex(aNode1);
+                aNewTetrahedron2.addVertex(aNode2);
+                aNewTetrahedron2.addVertex(aNode3);
+                aNewTetrahedron2.addVertex(aNewNode);
+
+                aNewTetrahedron2.calculateVolume();
+
+                if (aNewTetrahedron2.volume() > aTolerance * aTolerance * aTolerance) {
+
+                    aNewTetrahedron2.calculateQuality();
+
+                    Real q2 = aNewTetrahedron2.quality();
+
+                    if (q2 > 1.5 * minQuality)
+                        q2 += this->triangleOk(anAdvTriangle, aNode1, aNode2, aNewNode, sTriangles, aTolerance) ? 0.0 : -2.0;
+
+                    if (q2 > 1.5 * minQuality)
+                        q2 += this->triangleOk(anAdvTriangle, aNode2, aNode3, aNewNode, sTriangles, aTolerance) ? 0.0 : -2.0;
+
+                    if (q2 > 1.5 * minQuality)
+                        q2 += this->triangleOk(anAdvTriangle, aNode3, aNode1, aNewNode, sTriangles, aTolerance) ? 0.0 : -2.0;
+
+                    if (q2 > 1.5 * minQuality) {
+                        Integer wNodeId;
+                        q2 += !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNewNode, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
+                    }
+
+                    if (q2 > 1.5 * minQuality && bCheckDelaunay)
+                        q2 += this->checkDelaunay(aNewNode, aTolerance) ? 0.0 : -2.0;
+
+                    if (q2 > 1.5 * minQuality) {
+
+                        // Create a new node
+                        m_volumeMesh.addNode(aNewNodeId, aNewNode);
+
+                        this->addTetrahedron(anAdvTriangle, aNewNodeId, sTriangles, aTolerance);
+                        res = true;
+
+                        if (!m_boundingBox.contains(aNewNode, aTolerance)) {
+                            throw std::runtime_error("Node is outside boundary!");
+                        }
+                    }
+                }
+            }
         }
+
+        if (onUpdate != nullptr)
+            onUpdate(0);
 
         return res;
     }
@@ -1078,69 +1002,58 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::rebuildConnectivity(const Real aTolerance)
     {
+        CGeoBoundingBox<Real> aBoundingBox;
 
-        try {
+        // Build connectivity
+        for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
 
-            CGeoBoundingBox<Real> aBoundingBox;
+            Integer anAdvTriangleId = i;
 
-            // Build connectivity
-            for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
+            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
-                Integer anAdvTriangleId = i;
+            if (anAdvTriangle.remove)
+                continue;
 
-                SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            Integer aNodeId1 = anAdvTriangle.nodeId[0];
+            Integer aNodeId2 = anAdvTriangle.nodeId[1];
+            Integer aNodeId3 = anAdvTriangle.nodeId[2];
 
-                if (anAdvTriangle.remove)
+            CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
+            CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
+            CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
+
+            aBoundingBox.reset();
+
+            aBoundingBox.addCoordinate(aNode1);
+            aBoundingBox.addCoordinate(aNode2);
+            aBoundingBox.addCoordinate(aNode3);
+
+            aBoundingBox.grow(aTolerance);
+
+            std::vector<Integer> sTriangles;
+            m_tree.find(sTriangles, aBoundingBox);
+
+            for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
+
+                Integer anotherTriangleId = sTriangles[j];
+
+                // Discard same triangle
+                if (anotherTriangleId == anAdvTriangle.id)
                     continue;
 
-                Integer aNodeId1 = anAdvTriangle.nodeId[0];
-                Integer aNodeId2 = anAdvTriangle.nodeId[1];
-                Integer aNodeId3 = anAdvTriangle.nodeId[2];
+                SAdvancingFrontTriangle& anotherTriangle = m_anAdvFront[anotherTriangleId];
 
-                CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
-                CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
-                CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
+                if (anotherTriangle.remove)
+                    continue;
 
-                aBoundingBox.reset();
-
-                aBoundingBox.addCoordinate(aNode1);
-                aBoundingBox.addCoordinate(aNode2);
-                aBoundingBox.addCoordinate(aNode3);
-
-                aBoundingBox.grow(aTolerance);
-
-                std::vector<Integer> sTriangles;
-                m_tree.find(sTriangles, aBoundingBox);
-
-                for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
-                    Integer anotherTriangleId = sTriangles[j];
-
-                    // Discard same triangle
-                    if (anotherTriangleId == anAdvTriangle.id)
-                        continue;
-
-                    SAdvancingFrontTriangle& anotherTriangle = m_anAdvFront[anotherTriangleId];
-
-                    if (anotherTriangle.remove)
-                        continue;
-
-                    this->pairEdges(anAdvTriangle, anotherTriangle);
-                }
-
-                if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max()) {
-                    throw std::runtime_error("Boundary is open!");
-                }
+                this->pairEdges(anAdvTriangle, anotherTriangle);
             }
 
-        } catch (const std::exception& e) {
-            std::cout << "Error: std exception: " << e.what() << " in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
-        } catch (...) {
-            std::cout << "Error: unknown exception in function: " << ENIGMA_CURRENT_FUNCTION << std::endl;
-            throw;
+            if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max()) {
+                throw std::runtime_error("Boundary is open!");
+            }
         }
-
+        
         return true;
     }
 
@@ -1205,10 +1118,10 @@ namespace mesh {
 
             SAdvancingFrontTriangle& anAdvTriangle = aReducedAdvFront[i];
 
-            anAdvTriangle.id = aAdvFrontMapId[anAdvTriangle.id];
-            anAdvTriangle.neighborId[0] = aAdvFrontMapId[anAdvTriangle.neighborId[0]];
-            anAdvTriangle.neighborId[1] = aAdvFrontMapId[anAdvTriangle.neighborId[1]];
-            anAdvTriangle.neighborId[2] = aAdvFrontMapId[anAdvTriangle.neighborId[2]];
+            anAdvTriangle.id = aAdvFrontMapId.at(anAdvTriangle.id);
+            anAdvTriangle.neighborId[0] = aAdvFrontMapId.at(anAdvTriangle.neighborId[0]);
+            anAdvTriangle.neighborId[1] = aAdvFrontMapId.at(anAdvTriangle.neighborId[1]);
+            anAdvTriangle.neighborId[2] = aAdvFrontMapId.at(anAdvTriangle.neighborId[2]);
 
             m_anAdvFront.push_back(anAdvTriangle);
 

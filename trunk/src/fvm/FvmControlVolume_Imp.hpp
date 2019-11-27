@@ -18,17 +18,16 @@ namespace fvm {
     template <typename Real>
     CFvmControlVolume<Real>::CFvmControlVolume()
         : m_clipped(false)
+        , m_clippedFaceId(-1)
         , m_controlVolumeId(0)
     {
-
-        m_clippedFaceId = -1;
     }
 
     template <typename Real>
     CFvmControlVolume<Real>::CFvmControlVolume(CGeoPolyhedron<Real>& aPolyhedron)
         : m_clipped(false)
+        , m_clippedFaceId(-1)
         , m_controlVolumeId(0)
-        , m_clippedFaceId(0)
     {
     }
 

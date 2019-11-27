@@ -26,7 +26,6 @@ namespace pde {
     class CPdeEquation {
     private:
         ENigMA::sle::CSleSystem<Real> m_system;
-
         std::vector<bool> m_bDeleteIndex;
         bool m_eliminationMethod;
 

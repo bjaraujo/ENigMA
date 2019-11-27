@@ -18,14 +18,14 @@ namespace post {
     template <typename Real>
     class CPosGmsh {
     private:
-        bool findSection(std::ifstream& fileStream, std::string sectionName);
+        bool findSection(std::ifstream& fileStream, const std::string& sectionName);
 
     public:
         CPosGmsh();
         virtual ~CPosGmsh();
 
-        bool load(ENigMA::pde::CPdeField<Real>& aField, const std::string strFileName);
-        bool save(ENigMA::pde::CPdeField<Real>& aField, const std::string strFileName, const std::string strViewName);
+        bool load(ENigMA::pde::CPdeField<Real>& aField, const std::string& strFileName);
+        bool save(ENigMA::pde::CPdeField<Real>& aField, const std::string& strFileName, const std::string& strViewName);
     };
 }
 }

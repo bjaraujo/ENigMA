@@ -75,11 +75,11 @@ namespace pde {
 
         void init();
 
-        void setMesh(ENigMA::mesh::CMshMesh<Real>& aMesh);
+        void setMesh(const ENigMA::mesh::CMshMesh<Real>& aMesh);
         ENigMA::mesh::CMshMesh<Real>& mesh();
 
         void setNbDofs(const Integer nbDofs);
-        Integer nbDofs();
+        Integer nbDofs() const;
 
         void setDiscretMethod(EDiscretMethod aDiscretMethod);
         EDiscretMethod discretMethod();
@@ -118,7 +118,7 @@ namespace pde {
         bool faceHasBC(const Integer aFaceId);
         ENigMA::pde::CPdeBoundaryCondition<Real>& faceBC(const Integer aFaceId);
 
-        void addBCElement(const Integer anElementId, const Integer anIndex, ENigMA::pde::CPdeBoundaryCondition<Real> aBoundaryCondition);
+        void addBCElement(const Integer anElementId, const Integer anIndex, const ENigMA::pde::CPdeBoundaryCondition<Real>& aBoundaryCondition);
         bool elementHasBC(const Integer anElementId, const Integer anIndex);
         ENigMA::pde::CPdeBoundaryCondition<Real>& elementBC(const Integer anElementId, const Integer anIndex);
     };

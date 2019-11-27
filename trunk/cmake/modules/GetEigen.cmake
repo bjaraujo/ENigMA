@@ -2,8 +2,8 @@ include(ExternalProject)
 
 ExternalProject_Add(
     eigen
-    URL http://bitbucket.org/eigen/eigen/get/3.3.4.tar.gz
-    URL_HASH SHA1=c507baf81050b447ed00e972728170938a36d5b0
+    URL http://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz
+    URL_HASH SHA1=743c1dc00c6680229d8cc87d44debe5a71d15c01
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     UPDATE_COMMAND ""

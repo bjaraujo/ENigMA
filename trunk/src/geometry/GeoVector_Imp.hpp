@@ -13,11 +13,13 @@ namespace ENigMA {
 
 namespace geometry {
 
-    template <typename Real>
-    inline Real CGeoVector<Real>::angle(const CGeoVector<Real>& vec)
+    template <typename Real> inline Real CGeoVector<Real>::angle(const CGeoVector<Real>& vec)
     {
+        Real rad = 0.0;
 
-        Real rad = this->dot(vec) / std::sqrt(this->squaredNorm() * vec.squaredNorm());
+        if (this->squaredNorm() > std::numeric_limits<Real>::epsilon() && vec.squaredNorm() > std::numeric_limits<Real>::epsilon()) {
+            rad = this->dot(vec) / std::sqrt(this->squaredNorm() * vec.squaredNorm());
+        }
 
         if (rad < -1.0)
             rad = -1.0;
@@ -27,10 +29,8 @@ namespace geometry {
         return (acos(rad));
     }
 
-    template <typename Real>
-    inline void CGeoVector<Real>::rotate(const Real angle)
+    template <typename Real> inline void CGeoVector<Real>::rotate(const Real angle)
     {
-
         Real r;
         Real theta;
 
@@ -40,12 +40,9 @@ namespace geometry {
         this->y() = r * std::sin(theta + angle);
     }
 
-    template <typename Real>
-    std::ostream& operator<<(std::ostream& output, CGeoVector<Real>& aVector)
+    template <typename Real> std::ostream& operator<<(std::ostream& output, CGeoVector<Real>& aVector)
     {
-
         output << aVector.x() << ", " << aVector.y() << ", " << aVector.z();
-
         return output;
     }
 }

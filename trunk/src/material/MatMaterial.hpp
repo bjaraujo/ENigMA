@@ -40,8 +40,8 @@ namespace material {
         void addProperty(EPropertyType aPropertyType, CAnaFunction<Real>& aPropertyFunction);
 
         Real propertyValue(EPropertyType aPropertyType);
-        Real propertyValue(EPropertyType aPropertyType, const std::string aVariable1, Real& aValue1);
-        Real propertyValue(EPropertyType aPropertyType, const std::string aVariable1, Real& aValue1, std::string aVariable2, Real& aValue2);
+        Real propertyValue(EPropertyType aPropertyType, const std::string& aVariable1, Real& aValue1);
+        Real propertyValue(EPropertyType aPropertyType, const std::string& aVariable1, Real& aValue1, const std::string& aVariable2, Real& aValue2);
     };
 }
 }

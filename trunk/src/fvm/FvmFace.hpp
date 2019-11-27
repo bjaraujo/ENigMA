@@ -34,10 +34,8 @@ namespace fvm {
         EBoundaryType m_boundaryType;
 
     public:
-        CFvmBoundaryType()
-            : m_boundaryType(BT_NONE){};
-        CFvmBoundaryType(const EBoundaryType aBoundaryType)
-            : m_boundaryType(aBoundaryType){};
+        CFvmBoundaryType() : m_boundaryType(BT_NONE){};
+        explicit CFvmBoundaryType(const EBoundaryType aBoundaryType) : m_boundaryType(aBoundaryType){};
 
         CFvmBoundaryType& operator=(const EBoundaryType& aBoundaryType)
         {

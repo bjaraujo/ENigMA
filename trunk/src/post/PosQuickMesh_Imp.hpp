@@ -26,7 +26,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosQuickMesh<Real>::load(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosQuickMesh<Real>::load(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ifstream fileQuickMesh;
@@ -47,7 +47,8 @@ namespace post {
                     Integer id;
                     Real x, y, z;
 
-                    std::sscanf(line, "%s %d %f %f %f", &desc, &id, &x, &y, &z);
+                    desc.reserve(50);
+                    std::sscanf(line, "%25s %d %f %f %f", &desc[0], &id, &x, &y, &z);
 
                     CMshNode<Real> aNode(x, y, z);
 
@@ -61,7 +62,8 @@ namespace post {
                     Integer p1, p2, p3, p4;
                     Real v;
 
-                    std::sscanf(line, "%s %d %d %d %d %d %d %d %d %d %f", &desc, &id, &n1, &n2, &n3, &n4, &p1, &p2, &p3, &p4, &v);
+                    desc.reserve(50);
+                    std::sscanf(line, "%25s %d %d %d %d %d %d %d %d %d %f", &desc[0], &id, &n1, &n2, &n3, &n4, &p1, &p2, &p3, &p4, &v);
 
                     CMshElement<Real> anElement;
 
@@ -85,7 +87,7 @@ namespace post {
     }
 
     template <typename Real>
-    bool CPosQuickMesh<Real>::save(CPdeField<Real>& aField, std::string strFileName)
+    bool CPosQuickMesh<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
 
         std::ofstream fileQuickMesh;
