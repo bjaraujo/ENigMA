@@ -9,6 +9,8 @@ endif()
 
 project(ENigMA CXX)
 
+set (CMAKE_CXX_STANDARD 11)
+
 #Configure options
 set(EXPRTK_DIR "${CMAKE_SOURCE_DIR}/dependencies/exprtk/exprtk-2019")
 set(RTREE_DIR "${CMAKE_SOURCE_DIR}/dependencies/RTree/RTree-2011")

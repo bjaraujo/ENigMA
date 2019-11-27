@@ -614,7 +614,7 @@ namespace mesh {
     bool CMshTriangleMesher<Real>::generate(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minQuality, const Real aTolerance)
     {
 
-        std::vector<CGeoCoordinate<double>> sInteriorPoints;
+        std::vector<CGeoCoordinate<Real>> sInteriorPoints;
 
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
