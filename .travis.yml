@@ -7,18 +7,15 @@ matrix:
       sudo: true
       env: 
         - CMAKE_GENERATOR="Unix Makefiles"
-        - RUN_TESTS="./UnitTests"
 
     - os: osx
       sudo: true
       env: 
         - CMAKE_GENERATOR="Unix Makefiles"
-        - RUN_TESTS="./UnitTests"
 
     - os: windows
       env: 
         - CMAKE_GENERATOR="Visual Studio 15 2017"
-        - RUN_TESTS="UnitTests.exe"
 
 script:
     - mkdir build
@@ -26,7 +23,7 @@ script:
     - cmake ../trunk -G "${CMAKE_GENERATOR}"
     - cmake --build . --target UnitTests --config Release
     - cd bin
-    - ${RUN_TESTS}
+    - ./UnitTests
 
 notifications:
   email: false
