@@ -5,7 +5,8 @@ language:
 
 matrix:
     include:
-        - os: linux
+        - name: "Linux"
+            os: linux
             script:
                 - mkdir build
                 - cd build
@@ -14,7 +15,8 @@ matrix:
                 - cd tests
                 - ./UnitTests
 
-        - os: windows
+        - name: "MSVC 2019"
+            os: windows
             script:
                 - mkdir build
                 - cd build
@@ -22,6 +24,6 @@ matrix:
                 - cmake --build . --target ALL_BUILD --config Release
                 - cd tests\Release
                 - UnitTests.exe
-        
+
 notifications:
   email: false
