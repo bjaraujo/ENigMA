@@ -3,19 +3,19 @@ language:
 
 matrix:
     include:
-        - os: windows
-            sudo: true
-            env: 
-                - CMAKE_CONFIG="cmake ../trunk -G \"Unix Makefiles""
-                - TEST_DIR="./tests"
-                - RUN_TESTS="./UnitTests"
+    - os: windows
+      sudo: true
+      env: 
+        - CMAKE_CONFIG="cmake ../trunk -G \"Unix Makefiles""
+        - TEST_DIR="./tests"
+        - RUN_TESTS="./UnitTests"
 
-        - os: windows
-            env: 
-                - MATRIX_EVAL="choco install visualstudio2019community"
-                - CMAKE_CONFIG="cmake ../trunk -G \"Visual Studio 16 2019\""
-                - TEST_DIR="tests\\Release"
-                - RUN_TESTS="UnitTests.exe"
+    - os: windows
+      env: 
+        - MATRIX_EVAL="choco install visualstudio2019community"
+        - CMAKE_CONFIG="cmake ../trunk -G \"Visual Studio 16 2019\""
+        - TEST_DIR="tests\\Release"
+        - RUN_TESTS="UnitTests.exe"
 
 script:
     - mkdir build
