@@ -3,7 +3,7 @@ language:
 
 matrix:
     include:
-    - os: windows
+    - os: linux
       sudo: true
       env: 
         - INSTALL_DEP=""
