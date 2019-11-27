@@ -11,6 +11,14 @@ matrix:
         - TEST_DIR="./tests"
         - RUN_TESTS="./UnitTests"
 
+    - os: osx
+      sudo: true
+      env: 
+        - INSTALL_DEP=""
+        - CMAKE_GENERATOR="Unix Makefiles"
+        - TEST_DIR="./tests"
+        - RUN_TESTS="./UnitTests"
+        
     - os: windows
       env: 
         - INSTALL_DEP="choco install visualstudio2019community"
