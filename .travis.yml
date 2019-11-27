@@ -5,25 +5,23 @@ language:
 
 matrix:
     include:
-        - name: "Linux"
-            os: linux
-            script:
-                - mkdir build
-                - cd build
-                - cmake ../trunk -G Ninja
-                - cmake --build . --target ALL_BUILD --config Release
-                - cd tests
-                - ./UnitTests
+        os: linux
+        script:
+            - "mkdir build"
+            - "cd build"
+            - "cmake ../trunk -G \"Ninja\""
+            - "cmake --build . --target ALL_BUILD --config Release"
+            - "cd tests"
+            - "./UnitTests"
 
-        - name: "MSVC 2019"
-            os: windows
-            script:
-                - mkdir build
-                - cd build
-                - cmake ../trunk -G "Visual Studio 16 2019"
-                - cmake --build . --target ALL_BUILD --config Release
-                - cd tests\Release
-                - UnitTests.exe
+        os: windows
+        script:
+            - "mkdir build"
+            - "cd build"
+            - "cmake ../trunk -G \"Visual Studio 16 2019\""
+            - "cmake --build . --target ALL_BUILD --config Release"
+            - "cd tests\\Release"
+            - "UnitTests.exe"
 
 notifications:
   email: false
