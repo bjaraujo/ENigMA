@@ -26,7 +26,7 @@ before_install:
 script:
     - mkdir build
     - cd build
-    - "${CMAKE_CONFIG}"
+    - ${CMAKE_CONFIG}
     - cmake --build . --target ALL_BUILD --config Release
     - cd "${TEST_DIR}"
     - ${RUN_TESTS}
