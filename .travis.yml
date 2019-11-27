@@ -28,7 +28,7 @@ matrix:
 
 before_install:
     - ${INSTALL_DEP}
-  
+
 script:
     - mkdir build
     - cd build
