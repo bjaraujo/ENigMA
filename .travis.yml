@@ -23,7 +23,7 @@ matrix:
                 - cd build
                 - cmake ../trunk -G "Visual Studio 16 2019"
                 - cmake --build . --target ALL_BUILD --config Release
-                - cd tests
+                - cd tests\Release
                 - UnitTests.exe
         
 notifications:
