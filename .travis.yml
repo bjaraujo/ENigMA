@@ -1,27 +1,29 @@
-sudo: true
-
 language:
   - cpp
 
 matrix:
     include:
-        os: linux
-        script:
-            - mkdir build
-            - cd build
-            - cmake ../trunk -G "Unix Makefiles"
-            - cmake --build . --target ALL_BUILD --config Release
-            - cd tests
-            - ./UnitTests
+        - os: windows
+            sudo: true
+            env: 
+                - CMAKE_CONFIG="cmake ../trunk -G \"Unix Makefiles""
+                - TEST_DIR="./tests"
+                - RUN_TESTS="./UnitTests"
 
-        os: windows
-        script:
-            - mkdir build
-            - cd build
-            - cmake ../trunk -G "Visual Studio 16 2019"
-            - cmake --build . --target ALL_BUILD --config Release
-            - cd tests\\Release
-            - UnitTests.exe
-            
+        - os: windows
+            env: 
+                - MATRIX_EVAL="choco install visualstudio2019community"
+                - CMAKE_CONFIG="cmake ../trunk -G \"Visual Studio 16 2019\""
+                - TEST_DIR="tests\\Release"
+                - RUN_TESTS="UnitTests.exe"
+
+script:
+    - mkdir build
+    - cd build
+    - "$CMAKE_CONFIG"
+    - cmake --build . --target ALL_BUILD --config Release
+    - cd "$TEST_DIR"
+    - $RUN_TESTS
+
 notifications:
   email: false
