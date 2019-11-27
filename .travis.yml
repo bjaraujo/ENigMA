@@ -13,18 +13,16 @@ matrix:
                 - mkdir build
                 - cd build
                 - cmake ../trunk -G Ninja
-                - ninja
+                - cmake --build . --target ALL_BUILD --config Release
                 - cd tests
                 - ./UnitTests
 
         - os: windows
-            env:
-                - MSBUILD_EXE="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\16.0\Bin\MSBuild.exe"
             script:
                 - mkdir build
                 - cd build
                 - cmake ../trunk -G "Visual Studio 16 2019"
-                - MSBUILD_EXE ENigMA.sln
+                - cmake --build . --target ALL_BUILD --config Release
                 - cd tests
                 - UnitTests.exe
         
