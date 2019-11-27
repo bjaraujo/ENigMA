@@ -5,15 +5,6 @@ language:
 
 matrix:
     include:
-        os: linux
-        script:
-            - "mkdir build"
-            - "cd build"
-            - "cmake ../trunk -G \"Ninja\""
-            - "cmake --build . --target ALL_BUILD --config Release"
-            - "cd tests"
-            - "./UnitTests"
-
         os: windows
         script:
             - "mkdir build"
@@ -22,6 +13,15 @@ matrix:
             - "cmake --build . --target ALL_BUILD --config Release"
             - "cd tests\\Release"
             - "UnitTests.exe"
+
+        os: linux
+        script:
+            - "mkdir build"
+            - "cd build"
+            - "cmake ../trunk -G \"Ninja\""
+            - "cmake --build . --target ALL_BUILD --config Release"
+            - "cd tests"
+            - "./UnitTests"
 
 notifications:
   email: false
