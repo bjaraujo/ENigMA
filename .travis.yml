@@ -3,15 +3,30 @@ sudo: true
 language:
   - cpp
 
-before_install:
+matrix:
+    include:
+        - os: linux
+    
+            before_install:
 
-script:
-  - mkdir build
-  - cd build
-  - cmake ../trunk
-  - make -j 2
-  - cd tests
-  - ./UnitTests
+            script:
+                - mkdir build
+                - cd build
+                - cmake ../trunk -G Ninja
+                - ninja
+                - cd tests
+                - ./UnitTests
 
+        - os: windows
+            env:
+                - MSBUILD_EXE="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\16.0\Bin\MSBuild.exe"
+            script:
+                - mkdir build
+                - cd build
+                - cmake ../trunk -G "Visual Studio 16 2019"
+                - MSBUILD_EXE ENigMA.sln
+                - cd tests
+                - UnitTests.exe
+        
 notifications:
   email: false
