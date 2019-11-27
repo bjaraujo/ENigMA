@@ -19,12 +19,12 @@ matrix:
         - TEST_DIR="./tests"
         - RUN_TESTS="./UnitTests"
         
-#    - os: windows
-#      env: 
-#        - INSTALL_DEP="choco install visualstudio2019community"
-#        - CMAKE_GENERATOR="Visual Studio 16 2019"
-#        - TEST_DIR="tests\\Release"
-#        - RUN_TESTS="UnitTests.exe"
+    - os: windows
+      env: 
+        - INSTALL_DEP="choco install visualstudio2019community"
+        - CMAKE_GENERATOR="Visual Studio 16 2019"
+        - TEST_DIR="tests\\Release"
+        - RUN_TESTS="UnitTests.exe"
 
 before_install:
     - ${INSTALL_DEP}
