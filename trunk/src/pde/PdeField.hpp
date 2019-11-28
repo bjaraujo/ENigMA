@@ -14,9 +14,7 @@
 #include "PdeBoundaryCondition.hpp"
 
 namespace ENigMA {
-
 namespace pde {
-
     enum EDiscretMethod {
         DM_NONE = 0,
         DM_FDM,

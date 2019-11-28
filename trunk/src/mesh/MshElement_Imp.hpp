@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshElement<Real>::CMshElement()
         : m_elementType(ET_NONE)
@@ -34,77 +32,66 @@ namespace mesh {
     template <typename Real>
     Integer CMshElement<Real>::nbNodeIds() const
     {
-
         return static_cast<Integer>(m_nodeIds.size());
     }
 
     template <typename Real>
     void CMshElement<Real>::addNodeId(const Integer aNodeId)
     {
-
         m_nodeIds.push_back(aNodeId);
     }
 
     template <typename Real>
     void CMshElement<Real>::setNodeId(const Integer aNodeIndex, const Integer aNodeId)
     {
-
         m_nodeIds[aNodeIndex] = aNodeId;
     }
 
     template <typename Real>
     Integer CMshElement<Real>::nodeId(const Integer aNodeIndex)
     {
-
         return m_nodeIds.at(aNodeIndex);
     }
 
     template <typename Real>
     Integer CMshElement<Real>::nbFaceIds() const
     {
-
         return static_cast<Integer>(m_faceIds.size());
     }
 
     template <typename Real>
     void CMshElement<Real>::addFaceId(const Integer aFaceId)
     {
-
         m_faceIds.push_back(aFaceId);
     }
 
     template <typename Real>
     void CMshElement<Real>::setFaceId(const Integer aFaceIndex, const Integer aFaceId)
     {
-
         m_faceIds[aFaceIndex] = aFaceId;
     }
 
     template <typename Real>
     Integer CMshElement<Real>::faceId(const Integer aFaceIndex)
     {
-
         return m_faceIds.at(aFaceIndex);
     }
 
     template <typename Real>
     void CMshElement<Real>::setElementType(EElementType anElementType)
     {
-
         m_elementType = anElementType;
     }
 
     template <typename Real>
     EElementType CMshElement<Real>::elementType()
     {
-
         return m_elementType;
     }
 
     template <typename Real>
     void CMshElement<Real>::reset()
     {
-
         m_elementType = ET_NONE;
         m_nodeIds.clear();
     }
@@ -112,7 +99,6 @@ namespace mesh {
     template <typename Real>
     void CMshElement<Real>::generateFaces(std::vector<ENigMA::mesh::CMshFace<Real>>& sFaces)
     {
-
         CMshFace<Real> aFace;
 
         switch (m_elementType) {
@@ -364,7 +350,6 @@ namespace mesh {
     template <typename Real>
     void CMshElement<Real>::invert()
     {
-
         Integer idAux;
 
         switch (m_elementType) {
@@ -406,21 +391,18 @@ namespace mesh {
     template <typename Real>
     void CMshElement<Real>::setThickness(Real aThickness)
     {
-
         m_thickness = aThickness;
     }
 
     template <typename Real>
     Real CMshElement<Real>::thickness()
     {
-
         return m_thickness;
     }
 
     template <typename Real>
     std::ostream& operator<<(std::ostream& output, CMshElement<Real>& anElement)
     {
-
         for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
             output << anElement.nodeId(i) << " ";
 

@@ -16,9 +16,7 @@
 #include "GeoTriangle.hpp"
 
 namespace ENigMA {
-
 namespace stl {
-
     enum EStlFileType {
         FT_BINARY = 0,
         FT_ASCII

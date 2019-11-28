@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshFace<Real>::CMshFace()
         : m_faceType(FT_NONE)
@@ -39,35 +37,30 @@ namespace mesh {
     template <typename Real>
     Integer CMshFace<Real>::nbNodeIds() const
     {
-
         return static_cast<Integer>(m_nodeIds.size());
     }
 
     template <typename Real>
     void CMshFace<Real>::addNodeId(const Integer aNodeId)
     {
-
         m_nodeIds.push_back(aNodeId);
     }
 
     template <typename Real>
     Integer CMshFace<Real>::nodeId(const Integer aNodeIndex)
     {
-
         return m_nodeIds.at(aNodeIndex);
     }
 
     template <typename Real>
     void CMshFace<Real>::setNodeId(const Integer aNodeIndex, const Integer aNodeId)
     {
-
         m_nodeIds[aNodeIndex] = aNodeId;
     }
 
     template <typename Real>
     void CMshFace<Real>::setPairFaceId(const Integer aPairFaceId)
     {
-
         m_pairFaceId = aPairFaceId;
         m_hasPair = true;
     }
@@ -75,63 +68,54 @@ namespace mesh {
     template <typename Real>
     Integer CMshFace<Real>::pairFaceId()
     {
-
         return m_pairFaceId;
     }
 
     template <typename Real>
     bool CMshFace<Real>::hasPair()
     {
-
         return m_hasPair;
     }
 
     template <typename Real>
     void CMshFace<Real>::setHasPair(bool hasPair)
     {
-
         m_hasPair = hasPair;
     }
 
     template <typename Real>
     void CMshFace<Real>::setElementId(const Integer anElementId)
     {
-
         m_elementId = anElementId;
     }
 
     template <typename Real>
     Integer CMshFace<Real>::elementId()
     {
-
         return m_elementId;
     }
 
     template <typename Real>
     void CMshFace<Real>::setFaceType(EFaceType aFaceType)
     {
-
         m_faceType = aFaceType;
     }
 
     template <typename Real>
     EFaceType CMshFace<Real>::faceType()
     {
-
         return m_faceType;
     }
 
     template <typename Real>
     void CMshFace<Real>::reset()
     {
-
         m_nodeIds.clear();
     }
 
     template <typename Real>
     std::ostream& operator<<(std::ostream& output, CMshFace<Real>& aFace)
     {
-
         for (Integer i = 0; i < aFace.nbNodeIds(); ++i)
             output << aFace.nodeId(i) << " ";
 

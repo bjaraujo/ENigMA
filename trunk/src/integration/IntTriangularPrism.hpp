@@ -12,9 +12,7 @@
 #include "IntGaussIntegration.hpp"
 
 namespace ENigMA {
-
 namespace integration {
-
     template <typename Real>
     class CIntTriangularPrism : public CIntGaussIntegration<Real> {
     protected:
@@ -29,5 +27,4 @@ namespace integration {
     };
 }
 }
-
 #include "IntTriangularPrism_Imp.hpp"

@@ -13,9 +13,7 @@
 #include "StlFile.hpp"
 
 namespace ENigMA {
-
 namespace stl {
-
 #define LABEL_SIZE 80
 #define NUM_FACET_SIZE 4
 #define HEADER_SIZE 84
@@ -26,7 +24,6 @@ namespace stl {
 
     template <typename Real>
     struct CDisjointPoint {
-
         ENigMA::geometry::CGeoCoordinate<Real> aStartPoint;
         ENigMA::geometry::CGeoCoordinate<Real> aPoint;
 

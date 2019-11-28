@@ -8,14 +8,12 @@
 // *****************************************************************************
 
 namespace ENigMA {
-
 namespace integration {
-
     template <typename Real>
     CIntTriangularPrism<Real>::CIntTriangularPrism()
     {
     }
-
+    
     template <typename Real>
     CIntTriangularPrism<Real>::~CIntTriangularPrism()
     {
@@ -24,7 +22,6 @@ namespace integration {
     template <typename Real>
     void CIntTriangularPrism<Real>::setGaussPoints()
     {
-
         m_xi.resize(CIntGaussIntegration<Real>::m_integPoints);
         m_eta.resize(CIntGaussIntegration<Real>::m_integPoints);
         m_zeta.resize(CIntGaussIntegration<Real>::m_integPoints);

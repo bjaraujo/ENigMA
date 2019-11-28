@@ -12,17 +12,12 @@
 using namespace ENigMA::fvm;
 
 namespace ENigMA {
-
 namespace pde {
-
     namespace fvm {
-
         namespace flow {
-
             template <typename Real>
             void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());
@@ -37,13 +32,11 @@ namespace pde {
                 isFixed.resize(aField.mesh().nbNodes(), false);
 
                 for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                     Integer anIndex = itr->first;
                     isFixed[anIndex] = true;
                 }
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     aSystem.matrixA.coeffRef(el, el) += 1.0;
 
                     if (isFixed[el])
@@ -58,7 +51,6 @@ namespace pde {
             template <typename Real>
             void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());
@@ -69,7 +61,6 @@ namespace pde {
                 aSystem.vectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     Integer anElementId = aField.mesh().elementId(el);
 
                     CMshElement<Real> anElement = aField.mesh().element(anElementId);
@@ -77,13 +68,11 @@ namespace pde {
                     CFvmControlVolume<Real> aControlVolume;
 
                     for (Integer i = 0; i < anElement.nbFaceIds(); i++) {
-
                         Integer aFaceId = anElement.faceId(i);
 
                         CFvmFace<Real> aFace;
 
                         for (Integer j = 0; j < aField.mesh().face(aFaceId).nbNodeIds(); j++) {
-
                             Integer aNodeId = aField.mesh().face(aFaceId).nodeId(j);
 
                             aFace.addNode(CFvmNode<Real>(aField.mesh().node(aNodeId)));
@@ -98,7 +87,6 @@ namespace pde {
                     Real Vp = aControlVolume.volume();
 
                     for (Integer i = 0; i < aControlVolume.nbFaces(); i++) {
-
                         Integer aFaceId = aControlVolume.faceId(i);
 
                         aControlVolume.calculateFaceArea(aFaceId);
@@ -107,7 +95,6 @@ namespace pde {
                         CGeoNormal<Real> nf = aControlVolume.faceNormal(aFaceId);
 
                         if (aField.mesh().face(aFaceId).hasPair()) {
-
                             Integer aPairFaceId = aField.mesh().face(aFaceId).pairFaceId();
                             Integer aNeighborId = aField.mesh().face(aPairFaceId).elementId();
 
@@ -119,14 +106,11 @@ namespace pde {
                             aSystem.matrixA.coeffRef(el, nl) += +Af / df / Vp;
 
                         } else {
-
                             // Check if it has boundary condition
                             if (aField.faceHasBC(aFaceId)) {
-
                                 CPdeBoundaryCondition<Real> aCondition = aField.faceBC(aFaceId);
 
                                 if (aCondition.boundaryConditionType() == BT_GENERIC_FIXED_VALUE) {
-
                                     Real df = (aField.mesh().faceCentroid(aFaceId) - aField.mesh().elementCentroid(anElementId)).norm();
 
                                     aSystem.matrixA.coeffRef(el, el) += -Af / df / Vp;
@@ -143,7 +127,6 @@ namespace pde {
             template <typename Real>
             void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());
@@ -154,7 +137,6 @@ namespace pde {
                 aSystem.vectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     Integer anElementId = aField.mesh().elementId(el);
 
                     CMshElement<Real> anElement = aField.mesh().element(anElementId);
@@ -162,13 +144,11 @@ namespace pde {
                     CFvmControlVolume<Real> aControlVolume;
 
                     for (Integer i = 0; i < anElement.nbFaceIds(); i++) {
-
                         Integer aFaceId = anElement.faceId(i);
 
                         CFvmFace<Real> aFace;
 
                         for (Integer j = 0; j < aField.mesh().face(aFaceId).nbNodeIds(); j++) {
-
                             Integer aNodeId = aField.mesh().face(aFaceId).nodeId(j);
 
                             aFace.addNode(CFvmNode<Real>(aField.mesh().node(aNodeId)));
@@ -183,7 +163,6 @@ namespace pde {
                     Real Vp = aControlVolume.volume();
 
                     for (Integer i = 0; i < aControlVolume.nbFaces(); i++) {
-
                         Integer aFaceId = aControlVolume.faceId(i);
 
                         aControlVolume.calculateFaceArea(aFaceId);
@@ -192,7 +171,6 @@ namespace pde {
                         CGeoNormal<Real> nf = aControlVolume.faceNormal(aFaceId);
 
                         if (aField.mesh().face(aFaceId).hasPair()) {
-
                             Integer aPairFaceId = aField.mesh().face(aFaceId).pairFaceId();
                             Integer aNeighborId = aField.mesh().face(aPairFaceId).elementId();
 
@@ -202,14 +180,11 @@ namespace pde {
                             aSystem.matrixA.coeffRef(el, nl) += +0.5 * Af / Vp * (nf.x() + nf.y() + nf.z()) * aField.u[el];
 
                         } else {
-
                             // Check if it has boundary condition
                             if (aField.faceHasBC(aFaceId)) {
-
                                 CPdeBoundaryCondition<Real> aCondition = aField.faceBC(aFaceId);
 
                                 if (aCondition.boundaryConditionType() == BT_GENERIC_FIXED_VALUE) {
-
                                     aSystem.vectorB[el] += Af / Vp * (nf.x() + nf.y() + nf.z()) * aField.u[el] * aCondition.conditionValue(CT_GENERIC_FIXED_VALUE);
                                 }
                             }

@@ -14,9 +14,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     CSphGaussian<Real>::CSphGaussian(const Integer nDimension)
         : CSphKernel<Real>(nDimension)
@@ -37,14 +35,12 @@ namespace sph {
     template <typename Real>
     void CSphGaussian<Real>::setDimension(const Integer nDimension)
     {
-
         CSphKernel<Real>::m_dim = nDimension;
     }
 
     template <typename Real>
     Real CSphGaussian<Real>::W(const CGeoVector<Real> r, const Real h)
     {
-
         Real q = r.norm() / h;
 
         if (q > 3.0)
@@ -63,7 +59,6 @@ namespace sph {
     template <typename Real>
     CGeoVector<Real> CSphGaussian<Real>::gradientW(const CGeoVector<Real> r, const Real h, const Real aTolerance)
     {
-
         Real q = r.norm() / h;
 
         if (q < aTolerance)
@@ -85,7 +80,6 @@ namespace sph {
     template <typename Real>
     Real CSphGaussian<Real>::laplacianW(const CGeoVector<Real> r, const Real h)
     {
-
         Real q = r.norm() / h;
 
         if (q > 3.0)

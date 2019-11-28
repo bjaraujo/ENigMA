@@ -10,17 +10,12 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace pde {
-
     namespace fdm {
-
         namespace generic {
-
             template <typename Real>
             void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
@@ -35,13 +30,11 @@ namespace pde {
                 isFixed.resize(aField.mesh().nbNodes(), false);
 
                 for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                     Integer anIndex = itr->first;
                     isFixed[anIndex] = true;
                 }
 
                 for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii) {
-
                     aSystem.matrixA.coeffRef(ii, ii) += 1.0;
 
                     if (isFixed[ii])
@@ -56,7 +49,6 @@ namespace pde {
             template <typename Real>
             void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
@@ -71,7 +63,6 @@ namespace pde {
                 isFixed.resize(aField.mesh().nbNodes(), false);
 
                 for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                     Integer anIndex = itr->first;
                     isFixed[anIndex] = true;
                 }
@@ -80,9 +71,7 @@ namespace pde {
                 Real dx = aField.mesh().dx();
 
                 for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii) {
-
                     if (ii == 0) {
-
                         Integer ip;
 
                         ip = ii + 1;
@@ -99,7 +88,6 @@ namespace pde {
                         }
 
                     } else if (ii < aField.mesh().nbNodes() - 1) {
-
                         Integer im, ip;
 
                         im = ii - 1;
@@ -110,7 +98,6 @@ namespace pde {
                         aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (dx * dx);
 
                     } else if (ii == aField.mesh().nbNodes() - 1) {
-
                         Integer im;
 
                         im = ii - 1;
@@ -134,7 +121,6 @@ namespace pde {
             template <typename Real>
             void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
@@ -149,7 +135,6 @@ namespace pde {
                 isFixed.resize(aField.mesh().nbNodes(), false);
 
                 for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                     Integer anIndex = itr->first;
                     isFixed[anIndex] = true;
                 }
@@ -158,9 +143,7 @@ namespace pde {
                 Real dx = aField.mesh().dx();
 
                 for (Integer ii = 0; ii < aField.mesh().nbNodes(); ++ii) {
-
                     if (ii == 0) {
-
                         Integer ip;
 
                         ip = ii + 1;
@@ -171,7 +154,6 @@ namespace pde {
                             aSystem.vectorB[ii] += -(aField.u(ip) - aField.uFixed[ii]) / dx;
 
                     } else if (ii < aField.mesh().nbNodes() - 1) {
-
                         Integer im, ip;
 
                         im = ii - 1;
@@ -181,7 +163,6 @@ namespace pde {
                         aSystem.matrixA.coeffRef(ii, ip) += +1.0 / (2.0 * dx);
 
                     } else if (ii == aField.mesh().nbNodes() - 1) {
-
                         Integer im;
 
                         im = ii - 1;
@@ -199,7 +180,6 @@ namespace pde {
             template <typename Real>
             void source(Eigen::Matrix<Real, Eigen::Dynamic, 1>& aVectorB, CPdeField<Real>& aField, Real aSource)
             {
-
                 // TODO:
             }
         }

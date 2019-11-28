@@ -14,9 +14,7 @@
 #include "GeoArea.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     enum EFaceType {
         FT_NONE = 0,
         FT_POINT,

@@ -21,12 +21,9 @@
 #include "SphSpiky.hpp"
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     struct CSphParticle {
-
         ENigMA::geometry::CGeoVector<Real> velocity;
         Real conductivity;
         Real mass;

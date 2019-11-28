@@ -12,9 +12,7 @@
 #include "MshFace.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     enum EElementType {
         ET_NONE = 0,
         ET_BEAM,

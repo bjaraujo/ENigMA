@@ -13,9 +13,7 @@
 #include "SleSystem.hpp"
 
 namespace ENigMA {
-
 namespace pde {
-
     enum EComponent {
         CP_X = 0,
         CP_Y = 1,

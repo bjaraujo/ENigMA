@@ -16,11 +16,8 @@ using namespace ENigMA::pde;
 using namespace ENigMA::sle;
 
 namespace ENigMA {
-
 namespace pde {
-
     namespace bem {
-
         template <typename Real>
         void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField);
 

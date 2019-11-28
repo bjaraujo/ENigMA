@@ -44,10 +44,9 @@ namespace bem {
             sPoints.push_back(aPoint);
             sWeights.push_back(CIntTriangle<Real>::m_wbeta[k]);
         }
-
         return true;
     }
-
+    
     template <typename Real>
     void CBemTriangle<Real>::laplacianCoeff(const Integer i, const Integer j, CBemTriangle<Real>& aBemTriangle, Real& h, Real& g)
     {
@@ -120,7 +119,6 @@ namespace bem {
                 g_sum += 2.0 * area * wk / sqrt((xk - xi) * (xk - xi) + (yk - yi) * (yk - yi) + (zk - zi) * (zk - zi));
             }
         }
-
         const Real pi = std::acos(-1.0);
 
         h = -1.0 / (4.0 * pi) * h_sum;

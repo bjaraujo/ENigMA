@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshCheckMesh<Real>::CMshCheckMesh()
     {
@@ -26,15 +24,12 @@ namespace mesh {
     template <typename Real>
     bool CMshCheckMesh<Real>::checkOpen(CMshMesh<Real>& aMesh)
     {
-
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-
             Integer anElementId = aMesh.elementId(i);
 
             CMshElement<Real>& anElement = aMesh.element(anElementId);
 
             for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
-
                 Integer aFaceId = anElement.faceId(j);
                 CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
@@ -49,11 +44,9 @@ namespace mesh {
     template <typename Real>
     bool CMshCheckMesh<Real>::checkIntersections(CMshMesh<Real>& aMesh, const Real aTolerance)
     {
-
         CGeoRtree<Real> aRtree;
 
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-
             Integer anElementId = aMesh.elementId(i);
 
             aRtree.addGeometricObject(anElementId, aMesh.boundingBox(anElementId));
@@ -62,7 +55,6 @@ namespace mesh {
         std::vector<Integer> sElements;
 
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-
             Integer anElementId = aMesh.elementId(i);
 
             CMshElement<Real> anElement = aMesh.element(anElementId);
@@ -74,13 +66,11 @@ namespace mesh {
             CGeoTriangle<Real> aTriangle1;
 
             if (anElement.elementType() == ET_BEAM) {
-
                 aLine1.setStartPoint(aMesh.node(anElement.nodeId(0)));
                 aLine1.setEndPoint(aMesh.node(anElement.nodeId(1)));
                 nLines++;
 
             } else if (anElement.elementType() == ET_TRIANGLE) {
-
                 aTriangle1.addVertex(aMesh.node(anElement.nodeId(0)));
                 aTriangle1.addVertex(aMesh.node(anElement.nodeId(1)));
                 aTriangle1.addVertex(aMesh.node(anElement.nodeId(2)));
@@ -90,7 +80,6 @@ namespace mesh {
             aRtree.find(sElements, aMesh.boundingBox(anElementId));
 
             for (Integer j = 0; j < sElements.size(); ++j) {
-
                 Integer anotherElementId = sElements[j];
 
                 if (anElementId == anotherElementId)
@@ -102,13 +91,11 @@ namespace mesh {
                 CGeoTriangle<Real> aTriangle2;
 
                 if (anotherElement.elementType() == ET_BEAM) {
-
                     aLine2.setStartPoint(aMesh.node(anotherElement.nodeId(0)));
                     aLine2.setEndPoint(aMesh.node(anotherElement.nodeId(1)));
                     nLines++;
 
                 } else if (anotherElement.elementType() == ET_TRIANGLE) {
-
                     aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(0)));
                     aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(1)));
                     aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(2)));

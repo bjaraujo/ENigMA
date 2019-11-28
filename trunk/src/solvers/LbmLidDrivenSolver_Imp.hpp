@@ -10,16 +10,13 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace lbm {
-
     template <typename Real>
     CLbmLidDrivenSolver<Real, 2, 9>::CLbmLidDrivenSolver(Integer nx, Integer ny, Integer nz)
         : m_nx(nx)
         , m_ny(ny)
         , m_nz(nz)
     {
-
         m_e.resize(9);
         for (Integer i = 0; i < 9; ++i)
             m_e[i].resize(2);
@@ -89,11 +86,9 @@ namespace lbm {
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::resizeMatrix(std::vector<std::vector<Integer>>& mat)
     {
-
         mat.resize(m_nx + 1);
 
         for (Integer i = 0; i <= m_nx; ++i) {
-
             mat[i].resize(m_ny + 1);
         }
     }
@@ -101,11 +96,9 @@ namespace lbm {
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::resizeMatrix(std::vector<std::vector<Real>>& mat)
     {
-
         mat.resize(m_nx + 1);
 
         for (Integer i = 0; i <= m_nx; ++i) {
-
             mat[i].resize(m_ny + 1);
         }
     }
@@ -113,11 +106,9 @@ namespace lbm {
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::resizeMatrix(std::vector<std::vector<std::vector<Real>>>& mat, Integer n)
     {
-
         mat.resize(m_nx + 1);
 
         for (Integer i = 0; i <= m_nx; ++i) {
-
             mat[i].resize(m_ny + 1);
 
             for (Integer j = 0; j <= m_ny; ++j)
@@ -128,7 +119,6 @@ namespace lbm {
     template <typename Real>
     Real CLbmLidDrivenSolver<Real, 2, 9>::feq2(Integer k, Real rho, std::vector<Real>& u)
     {
-
         Real eu = m_e[k][0] * u[0] + m_e[k][1] * u[1];
         Real uv = u[0] * u[0] + u[1] * u[1];
 
@@ -138,12 +128,10 @@ namespace lbm {
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::evolve(Real tau_f)
     {
-
         // Evolution: streaming and collision
         for (Integer i = 1; i < m_nx; ++i) {
             for (Integer j = 1; j < m_ny; ++j) {
                 for (Integer k = 0; k < 9; ++k) {
-
                     int ip = i - m_e[k][0];
                     int jp = j - m_e[k][1];
                     m_F[i][j][k] = m_f[ip][jp][k] + (this->feq2(k, m_rho[ip][jp], m_u[ip][jp]) - m_f[ip][jp][k]) / tau_f;
@@ -156,9 +144,7 @@ namespace lbm {
 
         for (Integer i = 0; i <= m_nx; ++i) {
             for (Integer j = 0; j <= m_ny; ++j) {
-
                 if (m_B[i][j] == 1) {
-
                     for (Integer k = 0; k < 9; ++k)
                         Ft[k] = m_F[i][j][k];
 
@@ -171,7 +157,6 @@ namespace lbm {
         // Calculation of macroscopic quantities
         for (Integer i = 1; i < m_nx; ++i) {
             for (Integer j = 1; j < m_ny; ++j) {
-
                 m_u0[i][j][0] = m_u[i][j][0];
                 m_u0[i][j][1] = m_u[i][j][1];
 
@@ -203,46 +188,38 @@ namespace lbm {
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::setDensity(Integer i, Integer j, Real aValue)
     {
-
         m_rho[i][j] = aValue;
     }
 
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::setVelocity(Integer i, Integer j, Integer d, Real aValue)
     {
-
         m_u[i][j][d] = aValue;
     }
 
     template <typename Real>
     Real CLbmLidDrivenSolver<Real, 2, 9>::getVelocity(Integer i, Integer j, Integer d)
     {
-
         return m_u[i][j][d];
     }
 
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::setBoundary(Integer i, Integer j, Integer aValue)
     {
-
         m_B[i][j] = aValue;
     }
 
     template <typename Real>
     Integer CLbmLidDrivenSolver<Real, 2, 9>::getBoundary(Integer i, Integer j)
     {
-
         return m_B[i][j];
     }
 
     template <typename Real>
     void CLbmLidDrivenSolver<Real, 2, 9>::init()
     {
-
         for (Integer i = 0; i <= m_nx; ++i) {
-
             for (Integer j = 0; j <= m_ny; ++j) {
-
                 m_u[i][j][0] = 0;
                 m_u[i][j][1] = 0;
                 m_rho[i][j] = 1.0;

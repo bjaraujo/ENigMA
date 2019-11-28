@@ -12,9 +12,7 @@
 #include "SphKernel.hpp"
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     class CSphConvex : public CSphKernel<Real> {
     public:

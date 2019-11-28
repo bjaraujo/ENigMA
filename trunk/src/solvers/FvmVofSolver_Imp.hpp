@@ -14,23 +14,18 @@
 #include <Eigen/Sparse>
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     CFvmVofSolver<Real>::CFvmVofSolver(CFvmMesh<Real>& aFvmMesh)
         : CFvmPisoSolver(aFvmMesh)
     {
-
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             m_s0[aControlVolumeId] = m_s[aControlVolumeId] = 0.0;
         }
 
         for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i) {
-
             Integer aFaceId = m_fvmMesh.faceId(i);
 
             m_sf[aFaceId] = 0.0;
@@ -45,7 +40,6 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::storePreviousQuantities()
     {
-
         CFvmPisoSolver::storePreviousQuantities();
 
         m_s0 = m_s;
@@ -54,7 +48,6 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::setMaterialProperties(const Real aDensity0, const Real aViscosity0, const Real aDensity1, const Real aViscosity1)
     {
-
         m_dens0 = aDensity0;
         m_visc0 = aViscosity0;
 
@@ -67,14 +60,12 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::setInitialGamma(const Integer aControlVolumeId, const Real s)
     {
-
         m_s[aControlVolumeId] = s;
     }
 
     template <typename Real>
     void CFvmVofSolver<Real>::setBoundaryGamma(const Integer aFaceId, const EBoundaryType sFaceType, const Real s)
     {
-
         m_sf[aFaceId] = s;
         m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
     }
@@ -82,9 +73,7 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::setBoundaryGamma(const std::vector<Integer>& sFaceIds, const EBoundaryType sFaceType, const Real s)
     {
-
         for (Integer i = 0; i < static_cast<Integer>(sFaceIds.size()); ++i) {
-
             Integer aFaceId = sFaceIds[i];
 
             m_sf[aFaceId] = s;
@@ -96,11 +85,9 @@ namespace fvm {
     template <typename Real>
     Real CFvmVofSolver<Real>::calculateCourant(double dt, bool bInterface)
     {
-
         Real maxCp = 0.0;
 
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
@@ -115,7 +102,6 @@ namespace fvm {
             Real Cpp = 0.0;
 
             for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j) {
-
                 Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                 Real flux;
@@ -142,14 +128,12 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::predictBeta(const Real aTolerance)
     {
-
         Integer anAcceptor, aDonor;
         CGeoVector<Real> grads;
         Real dot;
         Real l1, l2;
 
         for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i) {
-
             Real betaj = 1.0;
 
             Integer aFaceId = m_fvmMesh.faceId(i);
@@ -157,7 +141,6 @@ namespace fvm {
             Integer aControlVolumeId = m_fvmMesh.face(aFaceId).controlVolumeId();
 
             if (m_fvmMesh.face(aFaceId).hasPair()) {
-
                 Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                 Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
@@ -171,7 +154,6 @@ namespace fvm {
                     flux = -m_flux.at(aFaceId);
 
                 if (flux < 0.0) {
-
                     anAcceptor = aNeighborId;
                     aDonor = aControlVolumeId;
 
@@ -183,7 +165,6 @@ namespace fvm {
                     l2 = dist;
 
                 } else {
-
                     anAcceptor = aControlVolumeId;
                     aDonor = aNeighborId;
 
@@ -200,7 +181,6 @@ namespace fvm {
                 Real Cod = std::min(m_Co[aDonor], 1.0);
 
                 if (fabs(m_s[anAcceptor] - su) > aTolerance) {
-
                     Real sdn = (m_s[aDonor] - su) / (m_s[anAcceptor] - su);
 
                     Real sjnCBC = 0.0;
@@ -247,11 +227,9 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::correctBeta(double dt, const Real aTolerance)
     {
-
         Integer anAcceptor, aDonor;
 
         for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i) {
-
             Integer aFaceId = m_fvmMesh.faceId(i);
 
             Integer aControlVolumeId = m_fvmMesh.face(aFaceId).controlVolumeId();
@@ -266,7 +244,6 @@ namespace fvm {
             Real cbetaj = 0.0;
 
             if (m_fvmMesh.face(aFaceId).hasPair()) {
-
                 Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                 Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
@@ -279,7 +256,6 @@ namespace fvm {
                     flux = -m_flux.at(aFaceId);
 
                 if (flux != 0.0) {
-
                     if (flux < 0.0) {
                         anAcceptor = aNeighborId;
                         aDonor = aControlVolumeId;
@@ -306,7 +282,6 @@ namespace fvm {
                     }
 
                     if (m_s[aDonor] > 1.0) {
-
                         Real Ep = std::max(m_s[aDonor] - 1.0, 0.0);
 
                         // Donor value > 1.0 Ex: sd = 1.1 -> Ep = +0.1
@@ -332,9 +307,7 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::updateProperties()
     {
-
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             m_dens[aControlVolumeId] = m_dens0 * (1.0 - m_s.at(aControlVolumeId)) + m_dens1 * m_s.at(aControlVolumeId);
@@ -345,7 +318,6 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::calculateGammaField()
     {
-
         Eigen::SparseMatrix<Real> A;
         Eigen::Matrix<Real, Eigen::Dynamic, 1> b;
 
@@ -357,7 +329,6 @@ namespace fvm {
 
         // Assemble gamma matrix
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
@@ -365,7 +336,6 @@ namespace fvm {
             Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
 
             for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j) {
-
                 Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                 Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
@@ -379,13 +349,11 @@ namespace fvm {
                     flux = -m_flux.at(aFaceId);
 
                 if (m_fvmMesh.face(aFaceId).hasPair()) {
-
                     Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                     Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                     if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId)) {
-
                         Real beta = 0.0;
 
                         if (flux < 0.0)
@@ -402,14 +370,12 @@ namespace fvm {
                     }
 
                 } else {
-
                     // Convection
                     b[anIndexP] += -1.0 * flux * m_sf.at(aFaceId);
                 }
             }
 
             if (m_dt > 0) {
-
                 // Unsteady term - Euler
                 A.coeffRef(anIndexP, anIndexP) += volume / m_dt;
                 b[anIndexP] += volume / m_dt * m_s0.at(aControlVolumeId);
@@ -424,7 +390,6 @@ namespace fvm {
         Eigen::Matrix<Real, Eigen::Dynamic, 1> s = solver.solve(b);
 
         for (int i = 0; i < s.rows(); ++i) {
-
             Integer aControlVolumeId = m_mapIndexToId.at(i);
 
             m_s[aControlVolumeId] = std::min(std::max(s[i], 0.0), 1.0);
@@ -434,7 +399,6 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::iterate(const Real dt, const bool bInit)
     {
-
         this->updateProperties();
 
         CFvmPisoSolver::iterate(dt, bInit);
@@ -444,7 +408,6 @@ namespace fvm {
         Integer n = std::min((Integer)(maxCp * 2) + 1, 100);
 
         for (Integer j = 0; j < n; ++j) {
-
             // Currant number
             //maxCp = this->calculateCourant(dt / n, false);
 
@@ -454,7 +417,6 @@ namespace fvm {
             Integer m = 2;
 
             for (Integer l = 0; l < m; ++l) {
-
                 this->calculateCourant(dt / m, false);
 
                 this->calculateGammaField();
@@ -467,7 +429,6 @@ namespace fvm {
     template <typename Real>
     void CFvmVofSolver<Real>::residual(Real& ru, Real& rv, Real& rw, Real& rp, Real& rs)
     {
-
         ru = 0;
         rv = 0;
         rw = 0;
@@ -475,7 +436,6 @@ namespace fvm {
         rs = 0;
 
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             ru += (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId)) * (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId));
@@ -489,21 +449,18 @@ namespace fvm {
     template <typename Real>
     Real CFvmVofSolver<Real>::s(const Integer aControlVolumeId)
     {
-
         return m_s.at(aControlVolumeId);
     }
 
     template <typename Real>
     Real CFvmVofSolver<Real>::sf(const Integer aFaceId)
     {
-
         return m_sf.at(aFaceId);
     }
 
     template <typename Real>
     CGeoVector<Real> CFvmVofSolver<Real>::grads(const Integer aControlVolumeId)
     {
-
         return this->gradient(m_s, m_sf, aControlVolumeId);
     }
 }

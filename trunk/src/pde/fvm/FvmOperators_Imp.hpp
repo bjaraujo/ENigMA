@@ -18,15 +18,11 @@
 using namespace ENigMA::fvm;
 
 namespace ENigMA {
-
 namespace pde {
-
     namespace fvm {
-
         template <typename Real>
         void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
         {
-
             if (aField.simulationType() == ST_GENERIC)
                 generic::ddt(aSystem, aField);
             else if (aField.simulationType() == ST_THERMAL)
@@ -38,7 +34,6 @@ namespace pde {
         template <typename Real>
         void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
         {
-
             if (aField.simulationType() == ST_GENERIC)
                 generic::laplacian(aSystem, aField);
             else if (aField.simulationType() == ST_THERMAL)
@@ -50,7 +45,6 @@ namespace pde {
         template <typename Real>
         void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
         {
-
             if (aField.simulationType() == ST_GENERIC)
                 generic::divergence(aSystem, aField);
             else if (aField.simulationType() == ST_THERMAL)
@@ -62,7 +56,6 @@ namespace pde {
         template <typename Real>
         void source(Eigen::Matrix<Real, Eigen::Dynamic, 1>& aVectorB, CPdeField<Real>& aField, Real aSource)
         {
-
             if (aField.simulationType() == ST_GENERIC)
                 generic::source(aVectorB, aField, aSource);
             else if (aField.simulationType() == ST_THERMAL)

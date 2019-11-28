@@ -12,9 +12,7 @@
 #include "SphKernel.hpp"
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     class CSphGaussian : public CSphKernel<Real> {
     public:

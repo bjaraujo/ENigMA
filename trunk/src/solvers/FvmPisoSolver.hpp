@@ -17,9 +17,7 @@
 #include "FvmMesh.hpp"
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     class CFvmPisoSolver {
     protected:

@@ -14,9 +14,7 @@
 #include "CmnTypes.hpp"
 
 namespace ENigMA {
-
 namespace lbm {
-
     template <typename Real, Integer nDim, Integer nSpeeds>
     class CLbmLidDrivenSolver {
     };

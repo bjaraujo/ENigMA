@@ -16,13 +16,9 @@ using namespace ENigMA::bem;
 using namespace ENigMA::mesh;
 
 namespace ENigMA {
-
 namespace pde {
-
     namespace bem {
-
         namespace thermal {
-
             template <typename Real>
             void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
@@ -31,7 +27,6 @@ namespace pde {
             template <typename Real>
             void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_DENSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());
@@ -45,13 +40,11 @@ namespace pde {
                 isFixed.resize(aField.mesh().nbElements(), false);
 
                 for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                     Integer anIndex = itr->first;
                     isFixed[anIndex] = true;
                 }
 
                 for (Integer eli = 0; eli < aField.mesh().nbElements(); ++eli) {
-
                     CMshElement<Real>& anElementi = aField.mesh().element(eli);
 
                     if (anElementi.elementType() != ET_TRIANGLE)
@@ -60,13 +53,11 @@ namespace pde {
                     CBemTriangle<Real> aTrianglei;
 
                     for (Integer i = 0; i < anElementi.nbNodeIds(); ++i) {
-
                         CGeoCoordinate<Real> aVertex(aField.mesh().node(anElementi.nodeId(i)));
                         aTrianglei.addVertex(aVertex);
                     }
 
                     for (Integer elj = 0; elj < aField.mesh().nbElements(); ++elj) {
-
                         CMshElement<Real>& anElementj = aField.mesh().element(elj);
 
                         if (anElementj.elementType() != ET_TRIANGLE)
@@ -75,7 +66,6 @@ namespace pde {
                         CBemTriangle<Real> aTrianglej;
 
                         for (Integer j = 0; j < anElementj.nbNodeIds(); ++j) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElementj.nodeId(j)));
                             aTrianglej.addVertex(aVertex);
                         }
@@ -105,7 +95,6 @@ namespace pde {
             template <typename Real>
             void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 // TODO:
             }
 

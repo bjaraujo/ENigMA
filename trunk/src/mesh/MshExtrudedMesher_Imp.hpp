@@ -8,9 +8,7 @@
 // *****************************************************************************
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshExtrudedMesher<Real>::CMshExtrudedMesher()
     {
@@ -24,16 +22,13 @@ namespace mesh {
     template <typename Real>
     bool CMshExtrudedMesher<Real>::generate(CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance)
     {
-
         for (Integer k = 0; k < nw; k++) {
-
             // Extrude elements
             for (Integer i = 0; i < aPlanarMesh.nbElements(); i++) {
                 Integer anElementId = aPlanarMesh.elementId(i);
                 CMshElement<Real>& aPlanarElement = aPlanarMesh.element(anElementId);
 
                 if (aPlanarElement.elementType() == ET_TRIANGLE) {
-
                     // Bottom
                     CMshNode<Real> aNode1 = aPlanarMesh.node(aPlanarElement.nodeId(0));
                     Integer aNodeId1 = m_mesh.nextNodeId();
@@ -78,7 +73,6 @@ namespace mesh {
                     m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
 
                 } else if (aPlanarElement.elementType() == ET_QUADRILATERAL) {
-
                     // Bottom
                     CMshNode<Real> aNode1 = aPlanarMesh.node(aPlanarElement.nodeId(0));
                     Integer aNodeId1 = m_mesh.nextNodeId();
@@ -148,7 +142,6 @@ namespace mesh {
     template <typename Real>
     CMshMesh<Real>& CMshExtrudedMesher<Real>::mesh()
     {
-
         return m_mesh;
     }
 }

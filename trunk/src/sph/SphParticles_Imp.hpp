@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     CSphParticles<Real>::CSphParticles(CSphKernel<Real>& kernel)
     {
-
         m_kernel = &kernel;
     }
 
@@ -30,7 +27,6 @@ namespace sph {
     template <typename Real>
     void CSphParticles<Real>::init(CPdeField<Real>& aField, Real mass, Real rho, Real diff, Real h, Real dt, bool bCyclic)
     {
-
         m_particles.resize(aField.mesh().nbNodes());
 
         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
@@ -50,14 +46,12 @@ namespace sph {
     template <typename Real>
     void CSphParticles<Real>::setBoundary(const CGeoBoundingBox<Real>& aBoundary)
     {
-
         m_boundary = aBoundary;
     }
 
     template <typename Real>
     void CSphParticles<Real>::setInitialVelocity(CPdeField<Real>& aField, const CGeoVector<Real>& aVelocity)
     {
-
         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
             m_particles[i].velocity = aVelocity;
         }
@@ -66,7 +60,6 @@ namespace sph {
     template <typename Real>
     void CSphParticles<Real>::buildHashGrid(CPdeField<Real>& aField, CGeoHashGrid<Real>& aHashGrid)
     {
-
         // Build node hash grid
         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
             Integer aNodeId = aField.mesh().nodeId(i);
@@ -81,9 +74,7 @@ namespace sph {
     template <typename Real>
     void CSphParticles<Real>::advectParticles(CPdeField<Real>& aField)
     {
-
         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
             Integer aNodeId1 = aField.mesh().nodeId(i);
             CMshNode<Real>& aNode1 = aField.mesh().node(aNodeId1);
 
@@ -92,7 +83,6 @@ namespace sph {
             aNode1.z() += m_particles[i].velocity.y() * m_dt;
 
             if (m_bCyclic) {
-
                 if (aNode1.x() >= m_boundary.max().x())
                     aNode1.x() = m_boundary.min().x();
                 else if (aNode1.x() <= m_boundary.min().x())
@@ -114,21 +104,17 @@ namespace sph {
     template <typename Real>
     void CSphParticles<Real>::addDiffusion(CPdeField<Real>& aField, CGeoHashGrid<Real>& aHashGrid)
     {
-
         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
             Integer aNodeId1 = aField.mesh().nodeId(i);
             CMshNode<Real>& aNode1 = aField.mesh().node(aNodeId1);
 
             if (aField.uFixed.find(i) == aField.uFixed.end()) {
-
                 Real fd = 0.0;
 
                 std::vector<Integer> sNodeIds;
                 aHashGrid.find(sNodeIds, aNode1, m_h);
 
                 for (Integer n = 0; n < static_cast<Integer>(sNodeIds.size()); ++n) {
-
                     Integer aNodeId2 = sNodeIds[n];
                     CMshNode<Real>& aNode2 = aField.mesh().node(aNodeId2);
 
@@ -150,7 +136,6 @@ namespace sph {
     template <typename Real>
     void CSphParticles<Real>::solve(CPdeField<Real>& aField)
     {
-
         this->advectParticles(aField);
 
         CGeoHashGrid<Real> aHashGrid;

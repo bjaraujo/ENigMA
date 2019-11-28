@@ -19,17 +19,12 @@
 using namespace ENigMA::fem;
 
 namespace ENigMA {
-
 namespace pde {
-
     namespace fem {
-
         namespace generic {
-
             template <typename Real>
             void ddt(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE_SYMMETRIC;
 
                 aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
@@ -40,11 +35,9 @@ namespace pde {
                 aSystem.vectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     CMshElement<Real> anElement = aField.mesh().element(el);
 
                     if (anElement.elementType() == ET_BEAM && anElement.nbNodeIds() == 2) {
-
                         CFemBeam<Real, 2, 1, 1> aBeam;
 
                         CGeoCoordinate<Real> p1(aField.mesh().node(anElement.nodeId(0)));
@@ -61,7 +54,6 @@ namespace pde {
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
                             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                                 aSystem.matrixA.coeffRef(
                                     aField.mesh().nodeIndex(anElement.nodeId(i)),
                                     aField.mesh().nodeIndex(anElement.nodeId(j)))
@@ -72,11 +64,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TRIANGLE && anElement.nbNodeIds() == 3) {
-
                         CFemTriangle<Real, 3, 1, 1> aTriangle;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTriangle.addVertex(aVertex);
                         }
@@ -89,7 +79,6 @@ namespace pde {
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
                             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                                 aSystem.matrixA.coeffRef(
                                     aField.mesh().nodeIndex(anElement.nodeId(i)),
                                     aField.mesh().nodeIndex(anElement.nodeId(j)))
@@ -100,11 +89,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_QUADRILATERAL && anElement.nbNodeIds() == 4) {
-
                         CFemQuadrilateral<Real, 4, 1, 1> aQuadrilateral;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aQuadrilateral.addVertex(aVertex);
                         }
@@ -117,7 +104,6 @@ namespace pde {
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
                             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                                 aSystem.matrixA.coeffRef(
                                     aField.mesh().nodeIndex(anElement.nodeId(i)),
                                     aField.mesh().nodeIndex(anElement.nodeId(j)))
@@ -128,11 +114,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TETRAHEDRON && anElement.nbNodeIds() == 4) {
-
                         CFemTetrahedron<Real, 4, 1, 1> aTetrahedron;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTetrahedron.addVertex(aVertex);
                         }
@@ -145,7 +129,6 @@ namespace pde {
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
                             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                                 aSystem.matrixA.coeffRef(
                                     aField.mesh().nodeIndex(anElement.nodeId(i)),
                                     aField.mesh().nodeIndex(anElement.nodeId(j)))
@@ -156,11 +139,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_HEXAHEDRON && anElement.nbNodeIds() == 8) {
-
                         CFemHexahedron<Real, 8, 1, 1> aHexahedron;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aHexahedron.addVertex(aVertex);
                         }
@@ -173,7 +154,6 @@ namespace pde {
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
                             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                                 aSystem.matrixA.coeffRef(
                                     aField.mesh().nodeIndex(anElement.nodeId(i)),
                                     aField.mesh().nodeIndex(anElement.nodeId(j)))
@@ -193,7 +173,6 @@ namespace pde {
             template <typename Real>
             void laplacian(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE_SYMMETRIC;
 
                 aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
@@ -204,13 +183,11 @@ namespace pde {
                 aSystem.vectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     Integer anElementId = aField.mesh().elementId(el);
 
                     CMshElement<Real> anElement = aField.mesh().element(anElementId);
 
                     if (anElement.elementType() == ET_BEAM && anElement.nbNodeIds() == 2) {
-
                         CFemBeam<Real, 2, 1, 1> aBeam;
 
                         CGeoCoordinate<Real> p1(aField.mesh().node(anElement.nodeId(0)));
@@ -229,7 +206,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -242,11 +218,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TRIANGLE && anElement.nbNodeIds() == 3) {
-
                         CFemTriangle<Real, 3, 1, 1> aTriangle;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTriangle.addVertex(aVertex);
                         }
@@ -261,7 +235,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -274,11 +247,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_QUADRILATERAL && anElement.nbNodeIds() == 4) {
-
                         CFemQuadrilateral<Real, 4, 1, 1> aQuadrilateral;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aQuadrilateral.addVertex(aVertex);
                         }
@@ -293,7 +264,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -306,11 +276,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TETRAHEDRON && anElement.nbNodeIds() == 4) {
-
                         CFemTetrahedron<Real, 4, 1, 1> aTetrahedron;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTetrahedron.addVertex(aVertex);
                         }
@@ -325,7 +293,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -338,11 +305,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TRIANGULAR_PRISM && anElement.nbNodeIds() == 6) {
-
                         CFemTriangularPrism<Real, 6, 1, 1> aTriangularPrism;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTriangularPrism.addVertex(aVertex);
                         }
@@ -357,7 +322,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -370,11 +334,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_HEXAHEDRON && anElement.nbNodeIds() == 8) {
-
                         CFemHexahedron<Real, 8, 1, 1> aHexahedron;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aHexahedron.addVertex(aVertex);
                         }
@@ -389,7 +351,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -409,7 +370,6 @@ namespace pde {
             template <typename Real>
             void divergence(CSleSystem<Real>& aSystem, CPdeField<Real>& aField)
             {
-
                 aSystem.matrixType = MT_SPARSE;
 
                 aSystem.matrixA.resize(aField.mesh().nbNodes(), aField.mesh().nbNodes());
@@ -420,13 +380,11 @@ namespace pde {
                 aSystem.vectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     Integer anElementId = aField.mesh().elementId(el);
 
                     CMshElement<Real> anElement = aField.mesh().element(anElementId);
 
                     if (anElement.elementType() == ET_BEAM && anElement.nbNodeIds() == 2) {
-
                         CFemBeam<Real, 2, 1, 1> aBeam;
 
                         CGeoCoordinate<Real> p1(aField.mesh().node(anElement.nodeId(0)));
@@ -445,7 +403,6 @@ namespace pde {
                             for (Integer k = 0; k < aField.nbDofs(); ++k) {
                                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                                     for (Integer l = 0; l < aField.nbDofs(); l++) {
-
                                         aSystem.matrixA.coeffRef(
                                             aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
                                             aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
@@ -458,23 +415,18 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TRIANGLE && anElement.nbNodeIds() == 3) {
-
                         // TODO:
 
                     } else if (anElement.elementType() == ET_QUADRILATERAL && anElement.nbNodeIds() == 4) {
-
                         // TODO:
 
                     } else if (anElement.elementType() == ET_TETRAHEDRON && anElement.nbNodeIds() == 4) {
-
                         // TODO:
 
                     } else if (anElement.elementType() == ET_TRIANGULAR_PRISM && anElement.nbNodeIds() == 6) {
-
                         // TODO:
 
                     } else if (anElement.elementType() == ET_HEXAHEDRON && anElement.nbNodeIds() == 8) {
-
                         // TODO:
                     }
                 }
@@ -485,18 +437,15 @@ namespace pde {
             template <typename Real>
             void source(Eigen::Matrix<Real, Eigen::Dynamic, 1>& aVectorB, CPdeField<Real>& aField, const Real aSource)
             {
-
                 aVectorB.resize(aField.mesh().nbNodes());
                 aVectorB.setZero();
 
                 for (Integer el = 0; el < aField.mesh().nbElements(); el++) {
-
                     Integer anElementId = aField.mesh().elementId(el);
 
                     CMshElement<Real> anElement = aField.mesh().element(anElementId);
 
                     if (anElement.elementType() == ET_BEAM && anElement.nbNodeIds() == 2) {
-
                         CFemBeam<Real, 2, 1, 1> aBeam;
 
                         CGeoCoordinate<Real> p1(aField.mesh().node(anElement.nodeId(0)));
@@ -519,11 +468,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TRIANGLE && anElement.nbNodeIds() == 3) {
-
                         CFemTriangle<Real, 3, 1, 1> aTriangle;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTriangle.addVertex(aVertex);
                         }
@@ -542,11 +489,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_QUADRILATERAL && anElement.nbNodeIds() == 4) {
-
                         CFemQuadrilateral<Real, 4, 1, 1> aQuadrilateral;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aQuadrilateral.addVertex(aVertex);
                         }
@@ -565,11 +510,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_TETRAHEDRON && anElement.nbNodeIds() == 4) {
-
                         CFemTetrahedron<Real, 4, 1, 1> aTetrahedron;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aTetrahedron.addVertex(aVertex);
                         }
@@ -588,11 +531,9 @@ namespace pde {
                         }
 
                     } else if (anElement.elementType() == ET_HEXAHEDRON && anElement.nbNodeIds() == 8) {
-
                         CFemHexahedron<Real, 8, 1, 1> aHexahedron;
 
                         for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
-
                             CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
                             aHexahedron.addVertex(aVertex);
                         }

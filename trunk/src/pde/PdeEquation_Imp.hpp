@@ -15,9 +15,7 @@
 #include "fvm/FvmOperators.hpp"
 
 namespace ENigMA {
-
 namespace pde {
-
     template <typename Real>
     CPdeEquation<Real>::CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem) :
         m_system(aSystem),
@@ -34,19 +32,15 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real>& CPdeEquation<Real>::system()
     {
-
         return m_system;
     }
 
     template <typename Real>
     void CPdeEquation<Real>::setPenaltyFactor(ENigMA::pde::CPdeField<Real>& aField, Real aPenaltyFactor)
     {
-
         if (aField.discretMethod() == DM_FEM || aField.discretMethod() == DM_FDM) {
-
             // Penalty
             for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                 Integer anIndex = itr->first;
                 Real aValue = itr->second;
 
@@ -60,14 +54,11 @@ namespace pde {
     template <typename Real>
     void CPdeEquation<Real>::setElimination(ENigMA::pde::CPdeField<Real>& aField)
     {
-
         if (aField.discretMethod() == DM_FEM) {
-
             m_bDeleteIndex.resize(m_system.vectorB.size(), false);
 
             // Elimination
             for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                 Integer anIndex = itr->first;
                 Real aValue = itr->second;
 
@@ -81,7 +72,6 @@ namespace pde {
             std::vector<Integer> oldToNewIndex;
 
             for (int i = 0; i < m_system.vectorB.size(); ++i) {
-
                 oldToNewIndex.push_back(newIndex);
 
                 if (!m_bDeleteIndex[i])
@@ -97,7 +87,6 @@ namespace pde {
             aNewSystem.vectorB.resize(newIndex);
 
             for (int i = 0; i < m_system.vectorB.size(); ++i) {
-
                 if (!m_bDeleteIndex[i]) {
                     aNewSystem.vectorB(oldToNewIndex[i]) = m_system.vectorB(i);
                 }
@@ -106,7 +95,6 @@ namespace pde {
             for (int k = 0; k < m_system.matrixA.outerSize(); ++k) {
                 for (typename Eigen::SparseMatrix<Real>::InnerIterator it(m_system.matrixA, k); it; ++it) {
                     if (!m_bDeleteIndex[it.row()] && !m_bDeleteIndex[it.col()]) {
-
                         int r = oldToNewIndex[it.row()];
                         int c = oldToNewIndex[it.col()];
 
@@ -124,9 +112,7 @@ namespace pde {
     template <typename Real>
     void CPdeEquation<Real>::setSources(ENigMA::pde::CPdeField<Real>& aField)
     {
-
         for (typename std::map<Integer, Real>::const_iterator itr = aField.uSource.begin(); itr != aField.uSource.end(); ++itr) {
-
             Integer anIndex = itr->first;
             Real aValue = itr->second;
 
@@ -137,14 +123,11 @@ namespace pde {
     template <typename Real>
     void CPdeEquation<Real>::solve(ENigMA::pde::CPdeField<Real>& aField)
     {
-
         if (m_eliminationMethod) {
-
             Integer newIndex = 0;
             std::map<Integer, Integer> newToOldIndex;
 
             for (Integer i = 0; i < static_cast<Integer>(m_bDeleteIndex.size()); ++i) {
-
                 if (!m_bDeleteIndex[i]) {
                     newToOldIndex[newIndex] = i;
                     newIndex++;
@@ -156,12 +139,10 @@ namespace pde {
             Eigen::Matrix<Real, Eigen::Dynamic, 1> x = m_system.solve();
 
             for (int i = 0; i < x.size(); ++i) {
-
                 aField.u(newToOldIndex[i]) = x(i);
             }
 
             for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                 Integer anIndex = itr->first;
                 Real aValue = itr->second;
 
@@ -169,12 +150,10 @@ namespace pde {
             }
 
         } else {
-
             aField.u = m_system.solve();
 
             // Set fixed
             for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr) {
-
                 Integer anIndex = itr->first;
                 Real aValue = itr->second;
 
@@ -187,7 +166,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> operator*(const Real left, const ENigMA::pde::CPdeField<Real>& right)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         aSystem.matrixA.resize(right.u.size(), right.u.size());
@@ -207,7 +185,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> ddt(ENigMA::pde::CPdeField<Real>& aField)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         if (aField.discretMethod() == DM_BEM)
@@ -225,7 +202,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> laplacian(ENigMA::pde::CPdeField<Real>& aField)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         if (aField.discretMethod() == DM_BEM)
@@ -243,7 +219,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> divergence(ENigMA::pde::CPdeField<Real>& aField)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         if (aField.discretMethod() == DM_BEM)
@@ -261,7 +236,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> divergence(ENigMA::pde::CPdeField<Real>& aField1, ENigMA::pde::CPdeField<Real>& aField2, Real dt)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         if (aField1.discretMethod() == DM_FEM)
@@ -273,7 +247,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> divergence(ENigMA::pde::CPdeField<Real>& aField1, ENigMA::pde::CPdeField<Real>& aField2, ENigMA::pde::CPdeField<Real>& aField3, Real dt)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         if (aField1.discretMethod() == DM_FEM)
@@ -285,7 +258,6 @@ namespace pde {
     template <typename Real>
     ENigMA::sle::CSleSystem<Real> gradient(ENigMA::pde::CPdeField<Real>& aField, const EComponent aComponent)
     {
-
         ENigMA::sle::CSleSystem<Real> aSystem;
 
         if (aField.discretMethod() == DM_FEM)
@@ -297,7 +269,6 @@ namespace pde {
     template <typename Real>
     Eigen::Matrix<Real, Eigen::Dynamic, 1> source(ENigMA::pde::CPdeField<Real>& aField, const Real aSource)
     {
-
         Eigen::Matrix<Real, Eigen::Dynamic, 1> aVectorB;
 
         if (aField.discretMethod() == DM_BEM)

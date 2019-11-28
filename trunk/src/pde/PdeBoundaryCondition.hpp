@@ -14,9 +14,7 @@
 using namespace ENigMA::analytical;
 
 namespace ENigMA {
-
 namespace pde {
-
     enum EBoundaryConditionType {
         BT_GENERIC_FIXED_VALUE = 0,
         BT_GENERIC_ZERO_GRADIENT,

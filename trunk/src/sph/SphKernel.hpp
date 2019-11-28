@@ -13,9 +13,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     class CSphKernel {
     protected:
