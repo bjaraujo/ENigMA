@@ -30,7 +30,7 @@ namespace ENigMA
         public:
 
             CCsgBoolean(const Real aTolerance = 0.0);
-            CCsgBoolean(std::vector<ENigMA::geometry::CGeoPolygon<Real> >& sPolygons, const Real aTolerance = 0.0);
+            explicit CCsgBoolean(std::vector<ENigMA::geometry::CGeoPolygon<Real> >& sPolygons, const Real aTolerance = 0.0);
             
             ~CCsgBoolean();
 
