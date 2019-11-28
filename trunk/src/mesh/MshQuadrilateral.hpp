@@ -12,9 +12,7 @@
 #include "GeoQuadrilateral.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshQuadrilateral : public ENigMA::geometry::CGeoQuadrilateral<Real> {
     private:

@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoOctree<Real>::CGeoOctree()
     {
@@ -26,14 +24,12 @@ namespace geometry {
     template <typename Real>
     void CGeoOctree<Real>::reset()
     {
-
         CGeoContainer<CGeoCoordinate<Real>, Real>::reset();
     }
 
     template <typename Real>
     void CGeoOctree<Real>::createNode(CGeoOctreeNode<Real>& anOctreeNode, const CGeoOctreeNode<Real>& anOctreeParent, Integer i)
     {
-
         double xmin = anOctreeParent.xmin;
         double ymin = anOctreeParent.ymin;
         double zmin = anOctreeParent.zmin;
@@ -120,7 +116,6 @@ namespace geometry {
     template <typename Real>
     EOctreeLocation CGeoOctree<Real>::dispatch(CGeoOctreeNode<Real>& anOctreeNode, Real x, Real y, Real z)
     {
-
         Real xmid = anOctreeNode.xmid;
         Real ymid = anOctreeNode.ymid;
         Real zmid = anOctreeNode.zmid;
@@ -155,7 +150,6 @@ namespace geometry {
     template <typename Real>
     void CGeoOctree<Real>::createRecursive(CGeoOctreeNode<Real>& anOctreeNode)
     {
-
         int ok[8];
 
         Integer numberOfTheNode;
@@ -166,7 +160,6 @@ namespace geometry {
         }
 
         for (Integer k = 0; k < anOctreeNode.nbCoordinates(); ++k) {
-
             for (Integer l = 0; l < 8; l++)
                 ok[l] = 0;
 
@@ -223,7 +216,6 @@ namespace geometry {
         }
 
         for (Integer i = 0; i < 8; ++i) {
-
             if (anOctreeNode.nodes[i].nbCoordinates() != anOctreeNode.nbCoordinates()) {
                 if (anOctreeNode.nodes[i].nbCoordinates() > MAX_NB_ELEMENTS_PER_NODE) {
                     // Then we need to construct another node starting from this one
@@ -238,7 +230,6 @@ namespace geometry {
     template <typename Real>
     void CGeoOctree<Real>::build()
     {
-
         // Get bounding box
         for (Integer i = 0; i < static_cast<Integer>(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects.size()); ++i)
             m_boundingBox.addCoordinate(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[i]);
@@ -269,7 +260,6 @@ namespace geometry {
     template <typename Real>
     CGeoOctreeNode<Real>& CGeoOctree<Real>::findRecursive(CGeoOctreeNode<Real>& anOctreeNode, CGeoCoordinate<Real>& aCoordinate)
     {
-
         Integer octreeLocation = static_cast<Integer>(dispatch(anOctreeNode, aCoordinate.x(), aCoordinate.y(), aCoordinate.z()));
 
         if (!anOctreeNode.isLeaf())
@@ -281,11 +271,9 @@ namespace geometry {
     template <typename Real>
     void CGeoOctree<Real>::find(std::vector<Integer>& coordinateIds, CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
     {
-
         CGeoOctreeNode<Real> anOctreeNode = findRecursive(m_root, aCoordinate);
 
         for (Integer i = 0; i < anOctreeNode.nbCoordinates(); ++i) {
-
             Integer aCoordinateIndex = anOctreeNode.coordinate(i);
 
             Real dist = (CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[aCoordinateIndex] - aCoordinate).norm();

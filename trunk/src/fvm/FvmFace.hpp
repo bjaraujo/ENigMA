@@ -16,9 +16,7 @@
 #include "MshFace.hpp"
 
 namespace ENigMA {
-
 namespace fvm {
-
     enum EBoundaryType {
         BT_NONE = 0,
         BT_INTERIOR_FACE,
@@ -39,20 +37,17 @@ namespace fvm {
 
         CFvmBoundaryType& operator=(const EBoundaryType& aBoundaryType)
         {
-
             this->m_boundaryType = aBoundaryType;
             return *this;
         }
 
         bool operator==(const EBoundaryType& aBoundaryType) const
         {
-
             return this->m_boundaryType == aBoundaryType;
         }
 
         bool operator!=(const EBoundaryType& aBoundaryType) const
         {
-
             return this->m_boundaryType != aBoundaryType;
         }
     };

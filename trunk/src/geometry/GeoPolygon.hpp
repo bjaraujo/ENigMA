@@ -15,9 +15,7 @@
 #include "GeoTriangle.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     // Represents a convex polygon. The vertices used to initialize
     // a polygon must be coplanar and form a convex loop.
 

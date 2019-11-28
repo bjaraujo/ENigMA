@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoLength<Real>::CGeoLength()
         : m_length(0.0)
@@ -29,14 +27,12 @@ namespace geometry {
     template <typename Real>
     Real CGeoLength<Real>::length()
     {
-
         return this->m_length;
     }
 
     template <typename Real>
     CGeoBoundingBox<Real>& CGeoLength<Real>::boundingBox()
     {
-
         return this->m_boundingBox;
     }
 }

@@ -10,11 +10,8 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real>
         CFemThermalElement<Real>::CFemThermalElement() :
             m_specificHeat(1.0),
@@ -31,21 +28,18 @@ namespace fem {
         template <typename Real>
         Real& CFemThermalElement<Real>::specificHeat()
         {
-
             return m_specificHeat;
         }
 
         template <typename Real>
         Real& CFemThermalElement<Real>::density()
         {
-
             return m_density;
         }
 
         template <typename Real>
         Real& CFemThermalElement<Real>::thermalConductivity()
         {
-
             return m_thermalConductivity;
         }
     }

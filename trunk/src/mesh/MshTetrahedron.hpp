@@ -12,9 +12,7 @@
 #include "GeoTetrahedron.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshTetrahedron : public ENigMA::geometry::CGeoTetrahedron<Real> {
     private:

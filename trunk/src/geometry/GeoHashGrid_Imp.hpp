@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoHashGrid<Real>::CGeoHashGrid()
         : m_nbCellsX(0)
@@ -20,7 +18,6 @@ namespace geometry {
         , m_nbCellsZ(0)
         , m_nbCellsXY(0)
     {
-
         m_adOrig.resize(3);
         m_adDelta.resize(3);
     }
@@ -33,7 +30,6 @@ namespace geometry {
     template <typename Real>
     void CGeoHashGrid<Real>::reset()
     {
-
         CGeoContainer<CGeoCoordinate<Real>, Real>::reset();
 
         m_coordinateList.clear();
@@ -43,7 +39,6 @@ namespace geometry {
     template <typename Real>
     void CGeoHashGrid<Real>::build()
     {
-
         // Get bounding box
         for (Integer i = 0; i < static_cast<Integer>(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects.size()); ++i)
             m_boundingBox.addCoordinate(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[i]);
@@ -87,11 +82,9 @@ namespace geometry {
         Real dRm1DeltaZ = 1.0 / m_adDelta[2];
 
         for (Integer ipass = 0; ipass < 2; ipass++) {
-
             // Loop over pts - storing ahead
 
             for (Integer i = 0; i < static_cast<Integer>(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects.size()); ++i) {
-
                 // Find in which bucket this point falls
                 Real x = CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[i].x();
                 Real y = CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[i].y();
@@ -113,7 +106,6 @@ namespace geometry {
                     // Increment count of pt falling into this cell - store ahead
                     m_coordinateListPtr[indx + 1]++;
                 } else {
-
                     // pointer to location where to store this pt
                     Integer istor = m_coordinateListPtr[indx];
 
@@ -126,7 +118,6 @@ namespace geometry {
             }
 
             if (ipass == 0) {
-
                 // 1st PASS
                 // reshuffle  iptr_nodelist - Accumulate count
                 // iptr_nodelist[ie] : pts at the location where first entry
@@ -142,7 +133,6 @@ namespace geometry {
                 m_coordinateList.resize(nstor);
 
             } else {
-
                 // 2nd PASS
                 // Finally reorder iptr_nodelist
                 for (Integer ie = m_nbCells; ie > 0; ie--) {
@@ -159,7 +149,6 @@ namespace geometry {
     template <typename Real>
     void CGeoHashGrid<Real>::find(std::vector<Integer>& coordinateIds, CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
     {
-
         Real dRm1DeltaX = 1.0 / m_adDelta[0];
         Real dRm1DeltaY = 1.0 / m_adDelta[1];
         Real dRm1DeltaZ = 1.0 / m_adDelta[2];
@@ -195,13 +184,10 @@ namespace geometry {
 
         // Loop over cells Intersecting node Bounding Box
         for (int i = imin; i <= imax; ++i) {
-
             for (int j = jmin; j <= jmax; ++j) {
-
                 Integer j_off = j * m_nbCellsX;
 
                 for (int k = kmin; k <= kmax; ++k) {
-
                     Integer ie = i + j_off + k * m_nbCellsXY;
 
                     // Ptrs to start and end nodes in this cell
@@ -210,7 +196,6 @@ namespace geometry {
 
                     // Loop over points in these cells
                     for (Integer iptr = ip_start; iptr < ip_end; iptr++) {
-
                         Integer aCoordinateIndex = m_coordinateList[iptr];
 
                         Real dist = (CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[aCoordinateIndex] - aCoordinate).norm();

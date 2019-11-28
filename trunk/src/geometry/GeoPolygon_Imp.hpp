@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoPolygon<Real>::CGeoPolygon()
     {
@@ -21,41 +19,34 @@ namespace geometry {
     template <typename Real>
     CGeoPolygon<Real>::~CGeoPolygon()
     {
-
         reset();
     }
 
     template <typename Real>
     void CGeoPolygon<Real>::reset()
     {
-
         m_polyline.reset();
     }
 
     template <typename Real>
     CGeoPolyline<Real>& CGeoPolygon<Real>::polyline()
     {
-
         return m_polyline;
     }
 
     template <typename Real>
     void CGeoPolygon<Real>::setPolyline(CGeoPolyline<Real>& aPolyline)
     {
-
         m_polyline = aPolyline;
     }
 
     template <typename Real>
     void CGeoPolygon<Real>::calculateCentroid(bool bReCalculate)
     {
-
         if (!this->m_bCentroid || bReCalculate) {
-
             CGeoArea<Real>::centroid() << 0.0, 0.0, 0.0;
 
             for (Integer i = 1; i < m_polyline.nbVertices(); ++i) {
-
                 CGeoArea<Real>::centroid() += m_polyline.vertex(i);
             }
 
@@ -69,9 +60,7 @@ namespace geometry {
     template <typename Real>
     void CGeoPolygon<Real>::calculateNormal(bool bReCalculate)
     {
-
         if (!this->m_bNormal || bReCalculate) {
-
             CGeoVector<Real> v0, v1;
             CGeoNormal<Real> aNormal;
 
@@ -97,13 +86,10 @@ namespace geometry {
     template <typename Real>
     void CGeoPolygon<Real>::calculateArea(bool bReCalculate)
     {
-
         if (!this->m_bArea || bReCalculate) {
-
             CGeoArea<Real>::area() = 0.0;
 
             if (m_polyline.nbVertices() > 1) {
-
                 this->calculateNormal(bReCalculate);
 
                 Integer coord = 3;
@@ -118,7 +104,6 @@ namespace geometry {
                 Real _parea = 0.0;
 
                 for (Integer i = 1; i <= m_polyline.nbVertices(); ++i) {
-
                     switch (coord) {
                     case 1:
                         _parea += (m_polyline.vertex(i).y() * (m_polyline.vertex(i + 1).z() - m_polyline.vertex(i - 1).z()));
@@ -153,14 +138,12 @@ namespace geometry {
     template <typename Real>
     void CGeoPolygon<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         // TODO:
     }
 
     template <typename Real>
     CGeoPolygon<Real> CGeoPolygon<Real>::clip(CGeoPlane<Real>& aPlane, const Real aTolerance)
     {
-
         CGeoPolygon<Real> aPolygon;
 
         CGeoLineList<Real> aLineList = m_polyline.clip(aPlane);
@@ -177,7 +160,6 @@ namespace geometry {
     template <typename Real>
     void CGeoPolygon<Real>::invert()
     {
-
         m_polyline.invert();
 
         CGeoArea<Real>::normal() *= -1;
@@ -186,28 +168,24 @@ namespace geometry {
     template <typename Real>
     void CGeoPolygon<Real>::close()
     {
-
         m_polyline.close();
     }
 
     template <typename Real>
     bool CGeoPolygon<Real>::isClosed()
     {
-
         return m_polyline.isClosed();
     }
 
     template <typename Real>
     bool CGeoPolygon<Real>::intersects(CGeoPlane<Real>& aPlane)
     {
-
         return m_polyline.intersects(aPlane);
     }
 
     template <typename Real>
     std::vector<CGeoTriangle<Real>> CGeoPolygon<Real>::triangulate()
     {
-
         std::vector<CGeoTriangle<Real>> sTriangles;
         std::vector<Integer> chain;
 
@@ -219,13 +197,11 @@ namespace geometry {
         Integer p3 = 2;
 
         while (chain.size() > 2) {
-
             Real minAngle = +2 * 3.142;
 
             Integer wi = 0;
 
             for (Integer i = 0; i < static_cast<Integer>(chain.size()); ++i) {
-
                 Integer im, ip, ii;
 
                 if (i == 0) {

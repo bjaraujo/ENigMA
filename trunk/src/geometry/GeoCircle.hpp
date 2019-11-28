@@ -13,9 +13,7 @@
 #include "GeoCoordinate.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoCircle : public CGeoArea<Real> {
     private:

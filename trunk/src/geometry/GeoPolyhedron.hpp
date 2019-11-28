@@ -20,9 +20,7 @@
 #include "GeoTriangularPrism.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     // Represents a convex polyhedron.
 
     template <typename Real>

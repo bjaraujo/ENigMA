@@ -12,9 +12,7 @@
 #include "PdeField.hpp"
 
 namespace ENigMA {
-
 namespace post {
-
     template <typename Real>
     class CPosGmsh {
     private:

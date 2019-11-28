@@ -14,9 +14,7 @@
 #include "GeoPolyhedron.hpp"
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     class CFvmControlVolume : public CFvmCell<Real>, public ENigMA::geometry::CGeoVolume<Real> {
     private:

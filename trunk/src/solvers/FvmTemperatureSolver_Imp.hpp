@@ -12,25 +12,20 @@
 #include <Eigen/Sparse>
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     CFvmTemperatureSolver<Real>::CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh)
         : CFvmPisoSolver(aFvmMesh)
     {
-
         m_bthcond = 1.0;
 
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             m_T0[aControlVolumeId] = m_T[aControlVolumeId] = 0.0;
         }
 
         for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i) {
-
             Integer aFaceId = m_fvmMesh.faceId(i);
 
             m_Tf[aFaceId] = 0.0;
@@ -45,7 +40,6 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::storePreviousQuantities()
     {
-
         CFvmPisoSolver::storePreviousQuantities();
 
         m_T0 = m_T;
@@ -54,9 +48,7 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::setMaterialProperties(const Real aDensity, const Real aViscosity, const Real aThermalConductivity, const Real aSpecificHeat)
     {
-
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             m_dens[aControlVolumeId] = aDensity;
@@ -69,9 +61,7 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::setBoundaryTemperature(const std::vector<Integer>& sFaceIds, const EBoundaryType sFaceType, const Real T)
     {
-
         for (Integer i = 0; i < static_cast<Integer>(sFaceIds.size()); ++i) {
-
             Integer aFaceId = sFaceIds[i];
 
             m_Tf[aFaceId] = T;
@@ -83,7 +73,6 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::calculateTemperatureField()
     {
-
         Eigen::SparseMatrix<Real> A;
         Eigen::Matrix<Real, Eigen::Dynamic, 1> b;
 
@@ -95,7 +84,6 @@ namespace fvm {
 
         // Assemble temperature matrix
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
@@ -108,7 +96,6 @@ namespace fvm {
             Real spheat = m_spheat.at(aControlVolumeId);
 
             for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j) {
-
                 Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                 Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
@@ -122,13 +109,11 @@ namespace fvm {
                     flux = -m_flux.at(aFaceId);
 
                 if (m_fvmMesh.face(aFaceId).hasPair()) {
-
                     Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                     Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                     if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId)) {
-
                         area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                         area *= 0.5;
                         dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
@@ -156,7 +141,6 @@ namespace fvm {
                     }
 
                 } else {
-
                     thcond += m_bthcond;
                     thcond *= 0.5;
 
@@ -177,7 +161,6 @@ namespace fvm {
             }
 
             if (m_dt > 0) {
-
                 // Unsteady term - Euler
                 A.coeffRef(anIndexP, anIndexP) += volume * spheat * dens / m_dt;
                 b[anIndexP] += volume * spheat * dens / m_dt * m_T0.at(aControlVolumeId);
@@ -192,7 +175,6 @@ namespace fvm {
         Eigen::Matrix<Real, Eigen::Dynamic, 1> T = solver.solve(b);
 
         for (int i = 0; i < T.rows(); ++i) {
-
             Integer aControlVolumeId = m_mapIndexToId[i];
 
             m_T[aControlVolumeId] = T[i];
@@ -202,7 +184,6 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::iterate(const Real dt, const bool bInit)
     {
-
         CFvmPisoSolver::iterate(dt, bInit);
 
         this->calculateTemperatureField();
@@ -211,7 +192,6 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::residual(Real& ru, Real& rv, Real& rw, Real& rp, Real& rT)
     {
-
         ru = 0;
         rv = 0;
         rw = 0;
@@ -219,7 +199,6 @@ namespace fvm {
         rT = 0;
 
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
             ru += (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId)) * (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId));
@@ -233,21 +212,18 @@ namespace fvm {
     template <typename Real>
     Real CFvmTemperatureSolver<Real>::T(const Integer aControlVolumeId)
     {
-
         return m_T.at(aControlVolumeId);
     }
 
     template <typename Real>
     Real CFvmTemperatureSolver<Real>::Tf(const Integer aFaceId)
     {
-
         return m_Tf.at(aFaceId);
     }
 
     template <typename Real>
     CGeoVector<Real> CFvmTemperatureSolver<Real>::gradT(const Integer aControlVolumeId)
     {
-
         return this->gradient(m_T, m_Tf, aControlVolumeId);
     }
 }

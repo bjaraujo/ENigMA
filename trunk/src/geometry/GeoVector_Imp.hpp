@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real> inline Real CGeoVector<Real>::angle(const CGeoVector<Real>& vec)
     {
         Real rad = 0.0;

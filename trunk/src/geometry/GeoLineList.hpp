@@ -14,9 +14,7 @@
 #include "GeoLine.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoLineList : public CGeoLength<Real> {
     protected:

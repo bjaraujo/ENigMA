@@ -14,9 +14,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace sph {
-
     template <typename Real>
     CSphConvex<Real>::CSphConvex(const Integer nDimension)
         : CSphKernel<Real>(nDimension)
@@ -37,14 +35,12 @@ namespace sph {
     template <typename Real>
     void CSphConvex<Real>::setDimension(const Integer nDimension)
     {
-
         CSphKernel<Real>::m_dim = nDimension;
     }
 
     template <typename Real>
     Real CSphConvex<Real>::W(const CGeoVector<Real> r, const Real h)
     {
-
         Real q = r.norm() / h;
 
         if (q > 2.0)
@@ -63,7 +59,6 @@ namespace sph {
     template <typename Real>
     CGeoVector<Real> CSphConvex<Real>::gradientW(const CGeoVector<Real> r, const Real h, const Real aTolerance)
     {
-
         Real q = r.norm() / h;
 
         if (q < aTolerance)
@@ -85,7 +80,6 @@ namespace sph {
     template <typename Real>
     Real CSphConvex<Real>::laplacianW(const CGeoVector<Real> r, const Real h)
     {
-
         Real q = r.norm() / h;
 
         if (q > 2.0)

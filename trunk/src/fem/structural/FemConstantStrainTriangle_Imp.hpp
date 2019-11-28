@@ -12,15 +12,11 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace structural {
-
         template <typename Real>
         CFemConstantStrainTriangle<Real, 3, 2, 1>::CFemConstantStrainTriangle()
         {
-
             this->source.resize(3);
             this->source.setZero();
 
@@ -40,7 +36,6 @@ namespace fem {
         template <typename Real>
         void CFemConstantStrainTriangle<Real, 3, 2, 1>::setDiffusionTerm()
         {
-
             this->laplacian.resize(6, 6);
 
             Eigen::Matrix<Real, 3, 6> B;
@@ -74,7 +69,6 @@ namespace fem {
         template <typename Real>
         void CFemConstantStrainTriangle<Real, 3, 2, 1>::update()
         {
-
             // Calculate geometrical properties
             CFemTriangle<Real, 3, 2, 1>::rebuild();
 

@@ -12,9 +12,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoTriangularPrism<Real>::CGeoTriangularPrism()
     {
@@ -28,30 +26,25 @@ namespace geometry {
     template <typename Real>
     void CGeoTriangularPrism<Real>::reset()
     {
-
         // TODO:
     }
 
     template <typename Real>
     void CGeoTriangularPrism<Real>::calculateCentroid(bool bReCalculate)
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoTriangularPrism<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoTriangularPrism<Real>::calculateVolume(bool bReCalculate)
     {
-
         if (!this->m_bVolume || bReCalculate) {
-
             CGeoVector<Real> v1, v2, v3;
 
             v1 = this->m_vertices[1] - this->m_vertices[0];
@@ -68,7 +61,6 @@ namespace geometry {
     template <typename Real>
     void CGeoTriangularPrism<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         // TODO:
     }
 }

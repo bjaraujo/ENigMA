@@ -15,9 +15,7 @@
 #include "MshMesh.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshMeshQuery {
     private:

@@ -13,11 +13,8 @@
 #include "FemTriangularPrism.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemLinearTemperatureTriangularPrism : public CFemThermalElement<Real>, public CFemTriangularPrism<Real, NbNodes, Dof, Order> {
         };

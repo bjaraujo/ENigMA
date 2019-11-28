@@ -26,13 +26,10 @@
 #endif
 
 namespace ENigMA {
-
 namespace sle {
-
     template <typename Real>
     CSleSystem<Real>::CSleSystem()
     {
-
         matrixType = MT_UNKNOWN;
     }
 
@@ -44,11 +41,9 @@ namespace sle {
     template <typename Real>
     Eigen::Matrix<Real, Eigen::Dynamic, 1> CSleSystem<Real>::solve()
     {
-
         Eigen::Matrix<Real, Eigen::Dynamic, 1> x;
 
         if (matrixType == MT_SPARSE_SYMMETRIC) {
-
 #ifdef USE_VIENNACL
 
             x = viennacl::linalg::solve(matrixA, vectorB, viennacl::linalg::cg_tag());
@@ -62,7 +57,6 @@ namespace sle {
 #endif
 
         } else if (matrixType == MT_SPARSE) {
-
 #ifdef USE_VIENNACL
 
             x = viennacl::linalg::solve(matrixA, vectorB, viennacl::linalg::bicgstab_tag());
@@ -76,7 +70,6 @@ namespace sle {
 #endif
 
         } else if (matrixType == MT_DENSE) {
-
             Eigen::SparseLU<Eigen::SparseMatrix<Real, Eigen::ColMajor>, Eigen::COLAMDOrdering<Integer>> solver;
 
             solver.analyzePattern(matrixA);
@@ -90,7 +83,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real>& CSleSystem<Real>::operator=(const Real right)
     {
-
         vectorB.array() += right;
         return *this;
     }
@@ -98,7 +90,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real>& CSleSystem<Real>::operator=(Eigen::Matrix<Real, Eigen::Dynamic, 1> right)
     {
-
         vectorB += right;
         return *this;
     }
@@ -106,7 +97,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real> operator-(const CSleSystem<Real>& left, const Real right)
     {
-
         CSleSystem<Real> aSystem;
 
         aSystem.matrixType = left.matrixType;
@@ -125,7 +115,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real> operator+(const CSleSystem<Real>& left, const Real right)
     {
-
         CSleSystem<Real> aSystem;
 
         aSystem.matrixType = left.matrixType;
@@ -144,7 +133,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real> operator+(const CSleSystem<Real>& left, const CSleSystem<Real>& right)
     {
-
         CSleSystem<Real> aSystem;
 
         if (left.matrixType > right.matrixType)
@@ -161,7 +149,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real> operator-(const CSleSystem<Real>& left, const CSleSystem<Real>& right)
     {
-
         CSleSystem<Real> aSystem;
 
         if (left.matrixType > right.matrixType)
@@ -178,7 +165,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real> operator*(const Real left, const CSleSystem<Real>& right)
     {
-
         CSleSystem<Real> aSystem;
 
         aSystem.matrixType = right.matrixType;
@@ -192,7 +178,6 @@ namespace sle {
     template <typename Real>
     CSleSystem<Real> operator*(const Eigen::Matrix<Real, Eigen::Dynamic, 1>& left, const CSleSystem<Real>& right)
     {
-
         CSleSystem<Real> aSystem;
 
         aSystem.matrixType = right.matrixType;

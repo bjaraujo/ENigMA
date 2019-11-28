@@ -13,11 +13,8 @@
 #include "FemTetrahedron.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace flow {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemFlowTetrahedron : public CFemFlowElement<Real>, public CFemTetrahedron<Real, NbNodes, Dof, Order> {
         };

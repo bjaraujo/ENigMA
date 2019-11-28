@@ -19,9 +19,7 @@ using namespace ENigMA::mesh;
 using namespace ENigMA::pde;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real, Integer Dof>
     class CFemCbsSolver {
     };

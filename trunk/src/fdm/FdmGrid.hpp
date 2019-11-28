@@ -10,7 +10,6 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fdm {
 }
 }

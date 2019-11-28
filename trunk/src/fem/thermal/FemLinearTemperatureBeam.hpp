@@ -13,11 +13,8 @@
 #include "FemThermalElement.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemLinearTemperatureBeam : public CFemThermalElement<Real>, public CFemBeam<Real, NbNodes, Dof, Order> {
         };

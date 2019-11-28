@@ -16,9 +16,7 @@
 #include "GeoCoordinate.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoHashGrid : public CGeoContainer<CGeoCoordinate<Real>, Real> {
     private:

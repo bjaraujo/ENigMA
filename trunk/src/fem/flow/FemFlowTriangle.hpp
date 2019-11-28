@@ -13,11 +13,8 @@
 #include "FemTriangle.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace flow {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemFlowTriangle : public CFemFlowElement<Real>, public CFemTriangle<Real, NbNodes, Dof, Order> {
         };

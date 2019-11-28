@@ -10,9 +10,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshTriangle<Real>::CMshTriangle()
         : m_quality(0.0)
@@ -27,7 +25,6 @@ namespace mesh {
     template <typename Real>
     void CMshTriangle<Real>::calculateQuality()
     {
-
         CGeoVector<Real> v0 = this->m_vertices[1] - this->m_vertices[0];
         CGeoVector<Real> v1 = this->m_vertices[2] - this->m_vertices[1];
         CGeoVector<Real> v2 = this->m_vertices[0] - this->m_vertices[2];
@@ -47,7 +44,6 @@ namespace mesh {
     template <typename Real>
     Real CMshTriangle<Real>::quality()
     {
-
         return m_quality;
     }
 }

@@ -12,9 +12,7 @@
 #include "GeoBoundingBox.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoLine<Real>::CGeoLine()
     {
@@ -23,7 +21,6 @@ namespace geometry {
     template <typename Real>
     CGeoLine<Real>::CGeoLine(CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2)
     {
-
         this->m_startPoint = aPoint1;
         this->m_endPoint = aPoint2;
         this->m_vector = aPoint2 - aPoint1;
@@ -37,21 +34,18 @@ namespace geometry {
     template <typename Real>
     void CGeoLine<Real>::reset()
     {
-
         this->m_bLength = false;
     }
 
     template <typename Real>
     void CGeoLine<Real>::setStartPoint(CGeoCoordinate<Real>& aPoint1)
     {
-
         this->m_startPoint = aPoint1;
     }
 
     template <typename Real>
     void CGeoLine<Real>::setEndPoint(CGeoCoordinate<Real>& aPoint2)
     {
-
         this->m_endPoint = aPoint2;
         this->m_vector = aPoint2 - m_startPoint;
     }
@@ -59,37 +53,31 @@ namespace geometry {
     template <typename Real>
     CGeoCoordinate<Real>& CGeoLine<Real>::startPoint()
     {
-
         return this->m_startPoint;
     }
 
     template <typename Real>
     CGeoCoordinate<Real>& CGeoLine<Real>::endPoint()
     {
-
         return this->m_endPoint;
     }
 
     template <typename Real>
     CGeoVector<Real>& CGeoLine<Real>::vector()
     {
-
         return this->m_vector;
     }
 
     template <typename Real>
     CGeoCoordinate<Real> CGeoLine<Real>::midPoint(Real factor)
     {
-
         return this->m_startPoint + this->m_vector * factor;
     }
 
     template <typename Real>
     void CGeoLine<Real>::calculateLength(bool bReCalculate)
     {
-
         if (!this->m_bLength || bReCalculate) {
-
             this->m_length = m_vector.norm();
 
             this->m_bLength = true;
@@ -99,9 +87,7 @@ namespace geometry {
     template <typename Real>
     void CGeoLine<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         if (!this->m_bBoundingBox || bReCalculate) {
-
             this->m_boundingBox.reset();
 
             this->m_boundingBox.addCoordinate(this->m_startPoint);
@@ -114,7 +100,6 @@ namespace geometry {
     template <typename Real>
     CGeoLine<Real> CGeoLine<Real>::clip(CGeoPlane<Real>& aPlane)
     {
-
         CGeoLine<Real> aLine;
         CGeoCoordinate<Real> p1, p2;
 
@@ -126,11 +111,9 @@ namespace geometry {
         Real num = aPlane.normal().dot(m_startPoint);
 
         if (std::fabs(den) > std::numeric_limits<Real>::epsilon()) {
-
             Real alpha = (aPlane.d() - num) / den;
 
             if (alpha >= 0 && alpha <= 1) {
-
                 if (den > 0) {
                     // Partial line
                     p1 = this->m_startPoint;
@@ -142,7 +125,6 @@ namespace geometry {
                 }
 
             } else {
-
                 if (num < aPlane.d()) {
                     // Original line
                     p1 = this->m_startPoint;
@@ -151,7 +133,6 @@ namespace geometry {
             }
 
         } else {
-
             if (num < aPlane.d()) {
                 // Original line
                 p1 = this->m_startPoint;
@@ -168,7 +149,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoLine<Real>::intersects(CGeoPlane<Real>& aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         anIntersectionType = IT_NONE;
 
         CGeoCoordinate<Real> p3 = aPlane.normal() * aPlane.d();
@@ -184,7 +164,6 @@ namespace geometry {
         Real s = aPlane.normal().dot(u) / d;
 
         if (s >= -aTolerance && s <= 1.0 + aTolerance) {
-
             aPoint = this->m_startPoint + s * this->m_vector;
 
             if (s <= aTolerance || s >= 1.0 - aTolerance)
@@ -201,7 +180,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         CGeoCoordinate<Real> aPoint;
 
         return this->intersects(aLine, aPoint, anIntersectionType, aTolerance);
@@ -210,7 +188,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
     {
-
         CGeoIntersectionType anIntersectionType;
 
         return this->intersects(aLine, aPoint, anIntersectionType, aTolerance);
@@ -219,7 +196,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         // http://mathworld.wolfram.com/Line-LineIntersection.html
         // in 3d; will also work in 2d if z components are 0
 
@@ -264,9 +240,7 @@ namespace geometry {
         Real d = dd.squaredNorm();
 
         if (d <= aTolerance * aTolerance) {
-
             if (d1 <= aTolerance || d2 <= aTolerance) {
-
                 aPoint = this->m_startPoint;
 
                 if (+db.dot(da) >= aTolerance * aTolerance) {
@@ -282,7 +256,6 @@ namespace geometry {
             }
 
             if (d3 <= aTolerance || d4 <= aTolerance) {
-
                 aPoint = this->m_startPoint;
 
                 if (-db.dot(da) >= aTolerance * aTolerance) {
@@ -322,7 +295,6 @@ namespace geometry {
             }
 
         } else {
-
             if (d1 <= aTolerance || d2 <= aTolerance) {
                 aPoint = this->m_startPoint;
 
@@ -346,11 +318,9 @@ namespace geometry {
             Real s = dc.cross(db).dot(dd) / d;
 
             if (s >= -aTolerance && s <= 1.0 + aTolerance) {
-
                 aPoint = this->m_startPoint + s * this->m_vector;
 
                 if (aLine.contains(aPoint, anIntersectionType, aTolerance)) {
-
                     if (s > aTolerance && s < 1.0 - aTolerance)
                         anIntersectionType = IT_INTERNAL;
 
@@ -365,7 +335,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoLine<Real>::contains(const CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         anIntersectionType = IT_NONE;
 
         CGeoVector<Real> v = aPoint - m_startPoint;
@@ -381,7 +350,6 @@ namespace geometry {
         Real s = n.dot(v) / m_vector.norm();
 
         if (s >= -aTolerance && s <= 1.0 + aTolerance) {
-
             if (s <= aTolerance || s >= 1.0 - aTolerance)
                 anIntersectionType = IT_VERTEX;
             else
@@ -396,14 +364,12 @@ namespace geometry {
     template <typename Real>
     inline bool CGeoLine<Real>::distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance)
     {
-
         CGeoVector<Real> v = this->m_vector;
         CGeoVector<Real> w = aPoint - this->startPoint();
 
         Real d = v.dot(v);
 
         if (fabs(d) > aTolerance * aTolerance) {
-
             Real n = w.dot(v);
             Real s = n / d;
 
@@ -425,7 +391,6 @@ namespace geometry {
     template <typename Real>
     inline bool CGeoLine<Real>::distance(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance)
     {
-
         // http://paulbourke.net/geometry/pointlineplane/
 
         CGeoVector<Real>& v21 = this->vector();
@@ -467,7 +432,6 @@ namespace geometry {
     template <typename Real>
     void CGeoLine<Real>::invert()
     {
-
         m_startPoint += m_vector;
         m_endPoint -= m_vector;
 

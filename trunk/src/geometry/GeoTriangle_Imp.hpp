@@ -12,9 +12,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoTriangle<Real>::CGeoTriangle()
     {
@@ -28,7 +26,6 @@ namespace geometry {
     template <typename Real>
     void CGeoTriangle<Real>::reset()
     {
-
         CGeoVertexList<Real>::reset();
 
         this->m_bCentroid = false;
@@ -40,7 +37,6 @@ namespace geometry {
     template <typename Real>
     CGeoPlane<Real> CGeoTriangle<Real>::getPlane()
     {
-
         Real d = this->normal().dot(this->vertex(0));
 
         CGeoPlane<Real> aPlane(this->normal(), d);
@@ -51,9 +47,7 @@ namespace geometry {
     template <typename Real>
     void CGeoTriangle<Real>::calculateCentroid(bool bReCalculate)
     {
-
         if (!this->m_bCentroid || bReCalculate) {
-
             this->m_centroid = this->m_vertices[0];
             this->m_centroid += this->m_vertices[1];
             this->m_centroid += this->m_vertices[2];
@@ -67,9 +61,7 @@ namespace geometry {
     template <typename Real>
     void CGeoTriangle<Real>::calculateNormal(bool bReCalculate)
     {
-
         if (!this->m_bNormal || bReCalculate) {
-
             this->m_normal = (this->m_vertices[1] - this->m_vertices[0]).cross(this->m_vertices[2] - this->m_vertices[0]);
 
             this->m_area = this->m_normal.norm() * 0.5;
@@ -85,16 +77,13 @@ namespace geometry {
     template <typename Real>
     void CGeoTriangle<Real>::calculateArea(bool bReCalculate)
     {
-
         this->calculateNormal(bReCalculate);
     }
 
     template <typename Real>
     void CGeoTriangle<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         if (!this->m_bBoundingBox || bReCalculate) {
-
             this->m_boundingBox.reset();
 
             for (Integer k = 0; k < 3; ++k)
@@ -145,9 +134,7 @@ namespace geometry {
         Integer nVertex = 0;
 
         for (Integer i = 0; i < 3; ++i) {
-
             for (Integer j = 0; j < 3; ++j) {
-
                 Real d = (this->vertex(i) - aTriangle.vertex(j)).norm();
 
                 if (d < aTolerance)
@@ -163,22 +150,17 @@ namespace geometry {
         Real c = this->normal().cross(aTriangle.normal()).norm();
 
         if (c <= aTolerance && fabs(d1 - d2) <= aTolerance) {
-
             // Triangles are co-planar
             for (Integer k = 0; k < 3; ++k) {
-
                 CGeoLine<Real> aLine1(this->vertex((k + 0) % 3), this->vertex((k + 1) % 3));
 
                 for (Integer l = 0; l < 3; l++) {
-
                     CGeoLine<Real> aLine2(aTriangle.vertex((l + 0) % 3), aTriangle.vertex((l + 1) % 3));
 
                     CGeoIntersectionType aLineIntersectionType;
 
                     if (aLine1.intersects(aLine2, aLineIntersectionType, aTolerance)) {
-
                         if (aLineIntersectionType == IT_INTERNAL) {
-
                             if (nVertex == 2)
                                 anIntersectionType = IT_SWAP;
                             else
@@ -196,7 +178,6 @@ namespace geometry {
             }
 
         } else {
-
             if (nVertex == 2) {
                 anIntersectionType = IT_EDGE;
                 return true;
@@ -207,17 +188,14 @@ namespace geometry {
             CGeoPlane<Real> aPlane1(this->normal(), d1);
 
             for (Integer k = 0; k < 3; ++k) {
-
                 CGeoLine<Real> aLine(aTriangle.vertex((k + 0) % 3), aTriangle.vertex((k + 1) % 3));
 
                 CGeoIntersectionType aLineIntersectionType1;
 
                 if (aLine.intersects(aPlane1, aPoint, aLineIntersectionType1, aTolerance)) {
-
                     CGeoIntersectionType aLineIntersectionType2(IT_NONE);
 
                     if (this->contains(aPoint, aLineIntersectionType2, aTolerance)) {
-
                         if (aLineIntersectionType2 == IT_INTERNAL || aLineIntersectionType2 == IT_EDGE) {
                             anIntersectionType = IT_INTERNAL;
                             return true;
@@ -229,17 +207,14 @@ namespace geometry {
             CGeoPlane<Real> aPlane2(aTriangle.normal(), d2);
 
             for (Integer k = 0; k < 3; ++k) {
-
                 CGeoLine<Real> aLine(this->vertex((k + 0) % 3), this->vertex((k + 1) % 3));
 
                 CGeoIntersectionType aLineIntersectionType1;
 
                 if (aLine.intersects(aPlane2, aPoint, aLineIntersectionType1, aTolerance)) {
-
                     CGeoIntersectionType aLineIntersectionType2;
 
                     if (aTriangle.contains(aPoint, aLineIntersectionType2, aTolerance)) {
-
                         if (aLineIntersectionType2 == IT_INTERNAL || aLineIntersectionType2 == IT_EDGE) {
                             anIntersectionType = IT_INTERNAL;
                             return true;
@@ -267,11 +242,9 @@ namespace geometry {
     template <typename Real>
     bool CGeoTriangle<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aNewPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         CGeoPlane<Real> aPlane(this->normal(), this->normal().dot(this->vertex(0)));
 
         if (aLine.intersects(aPlane, aNewPoint, anIntersectionType, aTolerance)) {
-
             if (this->contains(aNewPoint, anIntersectionType, aTolerance))
                 return true;
         }
@@ -282,7 +255,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoTriangle<Real>::contains(const CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         anIntersectionType = IT_NONE;
 
         this->calculateBoundingBox();
@@ -299,7 +271,6 @@ namespace geometry {
         Real s[3];
 
         for (Integer k = 0; k < 3; ++k) {
-
             CGeoVector<Real> v = aPoint - this->m_vertices[(k + 0) % 3];
 
             if (v.norm() <= aTolerance) {
@@ -329,7 +300,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoTriangle<Real>::distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance)
     {
-
         this->calculateNormal();
 
         CGeoPlane<Real> aPlane(this->normal(), this->normal().dot(this->vertex(0)));
@@ -339,12 +309,10 @@ namespace geometry {
         CGeoIntersectionType anIntersectionType;
 
         if (!this->contains(aNewPoint, anIntersectionType, aTolerance)) {
-
             aDistance = std::numeric_limits<Real>::max();
 
             // Get shortest distance
             for (Integer i = 0; i < 3; ++i) {
-
                 CGeoCoordinate<Real> aVertex = this->vertex(i);
 
                 Real dist = (aPoint - aVertex).norm();

@@ -12,9 +12,7 @@
 #include <Eigen/Sparse>
 
 namespace ENigMA {
-
 namespace sle {
-
     enum EMatrixType {
         MT_UNKNOWN = -1,
         MT_SPARSE_SYMMETRIC,

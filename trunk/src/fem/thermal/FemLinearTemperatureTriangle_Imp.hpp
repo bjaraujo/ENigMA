@@ -12,11 +12,8 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real>
         CFemLinearTemperatureTriangle<Real, 3, 1, 1>::CFemLinearTemperatureTriangle()
         {
@@ -30,7 +27,6 @@ namespace fem {
         template <typename Real>
         void CFemLinearTemperatureTriangle<Real, 3, 1, 1>::setDiffusionTerm()
         {
-
             CFemTriangle<Real, 3, 1, 1>::setDiffusionTerm();
 
             CFemElement<Real>::laplacian *= CFemThermalElement<Real>::thermalConductivity();
@@ -39,7 +35,6 @@ namespace fem {
         template <typename Real>
         void CFemLinearTemperatureTriangle<Real, 3, 1, 1>::setConvectionOnEdge(const Integer anEdgeIndex, const Real h, const Real Tinf)
         {
-
             Integer aNodeIndex1 = (anEdgeIndex + 0) % 3;
             Integer aNodeIndex2 = (anEdgeIndex + 1) % 3;
 
@@ -63,7 +58,6 @@ namespace fem {
         template <typename Real>
         void CFemLinearTemperatureTriangle<Real, 3, 1, 1>::setConvectionOnEdge(const Integer anEdgeIndex, const Real e, const Real teta, const Real Tinf)
         {
-
             // Stefan-boltzmann constant
             Real sigma = 5.6704E-8;
 

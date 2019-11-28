@@ -16,9 +16,7 @@
 #include "CmnTypes.hpp"
 
 namespace ENigMA {
-
 namespace analytical {
-
     template <typename Real>
     class CAnaFunction {
     private:

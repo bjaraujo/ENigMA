@@ -12,11 +12,8 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real>
         CFemLinearTemperatureQuadrilateral<Real, 4, 1, 1>::CFemLinearTemperatureQuadrilateral()
         {
@@ -30,7 +27,6 @@ namespace fem {
         template <typename Real>
         void CFemLinearTemperatureQuadrilateral<Real, 4, 1, 1>::setConvectionOnEdge(const Integer anEdgeIndex, const Real h, const Real Tinf)
         {
-
             Integer aNodeIndex1 = (anEdgeIndex + 0) % 4;
             Integer aNodeIndex2 = (anEdgeIndex + 1) % 4;
 
@@ -54,7 +50,6 @@ namespace fem {
         template <typename Real>
         void CFemLinearTemperatureQuadrilateral<Real, 4, 1, 1>::setConvectionOnEdge(const Integer anEdgeIndex, const Real e, const Real teta, const Real Tinf)
         {
-
             // Stefan-boltzmann constant
             Real sigma = 5.6704E-8;
 

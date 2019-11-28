@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     CFvmCell<Real>::CFvmCell()
     {

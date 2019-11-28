@@ -14,9 +14,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoHexahedron<Real>::CGeoHexahedron()
     {
@@ -30,35 +28,30 @@ namespace geometry {
     template <typename Real>
     void CGeoHexahedron<Real>::reset()
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoHexahedron<Real>::calculateCentroid(bool bReCalculate)
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoHexahedron<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoHexahedron<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoHexahedron<Real>::calculateVolume(bool bReCalculate)
     {
-
         if (!this->m_bVolume || bReCalculate) {
             CGeoVector<Real> v1, v2, v3;
 
@@ -75,7 +68,6 @@ namespace geometry {
     template <typename Real>
     void CGeoHexahedron<Real>::decimate(std::vector<CGeoTetrahedron<Real>>& sTetrahedrons)
     {
-
         // Tetra 1
         CGeoTetrahedron<Real> aTetrahedron;
 

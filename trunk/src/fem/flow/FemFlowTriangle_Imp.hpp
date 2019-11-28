@@ -12,11 +12,8 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace flow {
-
         template <typename Real>
         CFemFlowTriangle<Real, 3, 1, 1>::CFemFlowTriangle()
         {
@@ -30,14 +27,12 @@ namespace fem {
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::setDiffusionTerm()
         {
-
             CFemTriangle<Real, 3, 1, 1>::setDiffusionTerm();
         }
 
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::setConvectiveTerm(Real u[3], Real v[3])
         {
-
             Eigen::Matrix<Real, 2, 3> B;
 
             CFemTriangle<Real, 3, 1, 1>::calculateB(B);
@@ -96,7 +91,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::setGradientTerm(const Integer aComponent)
         {
-
             Eigen::Matrix<Real, 2, 3> B;
 
             CFemTriangle<Real, 3, 1, 1>::calculateB(B);
@@ -110,7 +104,6 @@ namespace fem {
             Real ck = B(1, 2);
 
             if (aComponent == 0) {
-
                 Eigen::Matrix<Real, 3, 3> G1;
 
                 G1 << bi, bj, bk,
@@ -122,7 +115,6 @@ namespace fem {
                 CFemElement<Real>::gradient = G1;
 
             } else if (aComponent == 1) {
-
                 Eigen::Matrix<Real, 3, 3> G2;
 
                 G2 << ci, cj, ck,
@@ -138,7 +130,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::calculateTransientTerm()
         {
-
             // Calculate geometrical properties
             CFemTriangle<Real, 3, 1, 1>::rebuild();
 
@@ -149,7 +140,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::calculateDiffusiveTerm()
         {
-
             // Calculate geometrical properties
             CFemTriangle<Real, 3, 1, 1>::rebuild();
 
@@ -160,7 +150,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::calculateConvectiveTerm(Real u[3], Real v[3])
         {
-
             // Calculate geometrical properties
             CFemTriangle<Real, 3, 1, 1>::rebuild();
 
@@ -171,7 +160,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTriangle<Real, 3, 1, 1>::calculateGradientTerm(const Integer aComponent)
         {
-
             // Calculate geometrical properties
             CFemTriangle<Real, 3, 1, 1>::rebuild();
 

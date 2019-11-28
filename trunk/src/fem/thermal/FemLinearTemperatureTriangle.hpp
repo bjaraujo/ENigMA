@@ -13,11 +13,8 @@
 #include "FemTriangle.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemLinearTemperatureTriangle : public CFemThermalElement<Real>, public CFemTriangle<Real, NbNodes, Dof, Order> {
         };

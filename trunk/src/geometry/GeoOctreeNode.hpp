@@ -12,9 +12,7 @@
 #include "GeoContainer.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoOctreeNode {
     private:

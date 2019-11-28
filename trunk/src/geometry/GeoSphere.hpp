@@ -13,9 +13,7 @@
 #include "GeoVolume.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoSphere : public CGeoVolume<Real> {
     private:

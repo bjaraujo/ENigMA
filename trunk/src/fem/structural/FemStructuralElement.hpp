@@ -10,11 +10,8 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace structural {
-
         template <typename Real>
         class CFemStructuralElement {
         private:

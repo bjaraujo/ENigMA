@@ -12,9 +12,7 @@
 #include "FvmPisoSolver.hpp"
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     class CFvmTemperatureSolver : public CFvmPisoSolver<Real> {
     protected:

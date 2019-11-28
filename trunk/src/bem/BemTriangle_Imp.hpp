@@ -13,13 +13,10 @@ using namespace ENigMA::geometry;
 using namespace ENigMA::integration;
 
 namespace ENigMA {
-
 namespace bem {
-
     template <typename Real>
     CBemTriangle<Real>::CBemTriangle()
     {
-
         CIntGaussIntegration<Real>::m_integPoints = 20;
 
         CBemTriangle<Real>::setBarycentricGaussPoints();
@@ -33,13 +30,11 @@ namespace bem {
     template <typename Real>
     bool CBemTriangle<Real>::getIntegrationPoints(std::vector<CGeoCoordinate<Real>>& sPoints, std::vector<Real>& sWeights)
     {
-
         CGeoCoordinate<Real> n1 = this->m_vertices[0];
         CGeoCoordinate<Real> n2 = this->m_vertices[1];
         CGeoCoordinate<Real> n3 = this->m_vertices[2];
 
         for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k) {
-
             CGeoCoordinate<Real> aPoint;
 
             aPoint.x() = CIntTriangle<Real>::m_beta1[k] * n1.x() + CIntTriangle<Real>::m_beta2[k] * n2.x() + CIntTriangle<Real>::m_beta3[k] * n3.x();
@@ -56,7 +51,6 @@ namespace bem {
     template <typename Real>
     void CBemTriangle<Real>::laplacianCoeff(const Integer i, const Integer j, CBemTriangle<Real>& aBemTriangle, Real& h, Real& g)
     {
-
         CGeoTriangle<Real>::calculateCentroid();
         CGeoCoordinate<Real> ci = CGeoTriangle<Real>::centroid();
 
@@ -74,7 +68,6 @@ namespace bem {
         Real area = aBemTriangle.area();
 
         if (i == j) {
-
             CGeoCoordinate<Real> n1 = aBemTriangle.vertex(0);
             CGeoCoordinate<Real> n2 = aBemTriangle.vertex(1);
             CGeoCoordinate<Real> n3 = aBemTriangle.vertex(2);
@@ -102,7 +95,6 @@ namespace bem {
             g_sum = 2.0 / 3.0 * area * (1.0 / r32.norm() * log(tan((teta1 + alpha2) / 2.0) / tan(alpha2 / 2.0)) + 1.0 / r13.norm() * log(tan((teta2 + alpha3) / 2.0) / tan(alpha3 / 2.0)) + 1.0 / r21.norm() * log(tan((teta3 + alpha1) / 2.0) / tan(alpha1 / 2.0)));
 
         } else {
-
             std::vector<CGeoCoordinate<Real>> sPoints;
             std::vector<Real> sWeights;
 
@@ -118,7 +110,6 @@ namespace bem {
             g_sum = 0.0f;
 
             for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k) {
-
                 Real xk = sPoints[k].x();
                 Real yk = sPoints[k].y();
                 Real zk = sPoints[k].z();

@@ -21,9 +21,7 @@
 using namespace ENigMA::mesh;
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     class CFvmMesh {
     private:

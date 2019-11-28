@@ -12,9 +12,7 @@
 #include <map>
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <class T, typename Real>
     class CGeoContainer {
     protected:

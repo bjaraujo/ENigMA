@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoPolyhedron<Real>::CGeoPolyhedron()
     {
@@ -21,7 +19,6 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real>::CGeoPolyhedron(CGeoTetrahedron<Real>& aTetrahedron)
     {
-
         CGeoPolyline<Real> aPolyline;
         CGeoPolygon<Real> aPolygon;
 
@@ -73,14 +70,12 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real>::CGeoPolyhedron(CGeoTriangularPrism<Real>& aTriangularPrism)
     {
-
         // TODO:
     }
 
     template <typename Real>
     CGeoPolyhedron<Real>::CGeoPolyhedron(CGeoHexahedron<Real>& aHexahedron)
     {
-
         CGeoPolyline<Real> aPolyline;
         CGeoPolygon<Real> aPolygon;
 
@@ -160,14 +155,12 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real>::~CGeoPolyhedron()
     {
-
         reset();
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::reset()
     {
-
         m_polygons.clear();
         m_polygonIds.clear();
     }
@@ -175,21 +168,18 @@ namespace geometry {
     template <typename Real>
     Integer CGeoPolyhedron<Real>::polygonId(const Integer aPolygonIndex)
     {
-
         return m_polygonIds[aPolygonIndex];
     }
 
     template <typename Real>
     CGeoPolygon<Real>& CGeoPolyhedron<Real>::polygon(const Integer aPolygonId)
     {
-
         return m_polygons[aPolygonId];
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::addPolygon(const Integer aPolygonId, CGeoPolygon<Real>& aPolygon)
     {
-
         m_polygons[aPolygonId] = aPolygon;
         m_polygonIds.push_back(aPolygonId);
     }
@@ -197,37 +187,31 @@ namespace geometry {
     template <typename Real>
     Integer CGeoPolyhedron<Real>::nbPolygons() const
     {
-
         return static_cast<Integer>(m_polygonIds.size());
     }
 
     template <typename Real>
     bool CGeoPolyhedron<Real>::containsPolygon(const Integer aPolygonId)
     {
-
         return std::find(m_polygonIds.begin(), m_polygonIds.end(), aPolygonId) != m_polygonIds.end();
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::triangulate()
     {
-
         // TODO
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, const Real aTolerance)
     {
-
         // Discover lines
         CGeoLineList<Real> aLineList;
 
         for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
             CGeoPolyline<Real> aPolyline = m_polygons[m_polygonIds[i]].polyline();
 
             for (Integer j = 0; j < aPolyline.nbLines(); ++j) {
-
                 CGeoLine<Real> aLine = aPolyline.line(j);
 
                 aLine.calculateLength();
@@ -241,13 +225,10 @@ namespace geometry {
         CGeoLineList<Real> anEdgeList;
 
         for (Integer i = 0; i < aLineList.nbLines(); ++i) {
-
             bool pair = false;
 
             for (Integer j = 0; j < aLineList.nbLines(); ++j) {
-
                 if (i != j) {
-
                     Real d1, d2;
 
                     // Normal
@@ -277,7 +258,6 @@ namespace geometry {
 
         // Add new polygon
         if (anEdgeList.nbLines() > 2) {
-
             CGeoPolyline<Real> aPolyline(anEdgeList, true, aTolerance);
 
             aNewPolygon.setPolyline(aPolyline);
@@ -294,13 +274,10 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateCentroid(bool bReCalculate)
     {
-
         if (!this->m_bCentroid || bReCalculate) {
-
             CGeoVolume<Real>::centroid() << 0.0, 0.0, 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
                 m_polygons[m_polygonIds[i]].calculateCentroid();
                 CGeoVolume<Real>::centroid() += m_polygons[m_polygonIds[i]].centroid();
             }
@@ -315,13 +292,10 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-
         if (!this->m_bSurfaceArea || bReCalculate) {
-
             CGeoVolume<Real>::surfaceArea() = 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
                 m_polygons[m_polygonIds[i]].calculateArea();
                 CGeoVolume<Real>::surfaceArea() += m_polygons[m_polygonIds[i]].area();
             }
@@ -333,22 +307,17 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateVolume(bool bReCalculate)
     {
-
         if (!this->m_bVolume || bReCalculate) {
-
             // see: http://en.wikipedia.org/wiki/Polyhedron#Volume
             // see: http://g3d.sourceforge.net/
 
             CGeoVolume<Real>::volume() = 0.0;
 
             if (m_polygons.size() >= 4) {
-
                 if (m_polygons[m_polygonIds[0]].polyline().nbVertices() > 0) {
-
                     CGeoCoordinate<Real> v0 = m_polygons[m_polygonIds[0]].polyline().vertex(0);
 
                     for (Integer i = 1; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
                         m_polygons[m_polygonIds[i]].calculateArea();
 
                         if (m_polygons[m_polygonIds[i]].polyline().nbVertices() > 0)
@@ -366,15 +335,11 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         if (!this->m_bBoundingBox || bReCalculate) {
-
             CGeoVolume<Real>::boundingBox().reset();
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
                 for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j) {
-
                     CGeoVolume<Real>::boundingBox().addCoordinate(m_polygons[m_polygonIds[i]].polyline().vertex(j));
                 }
             }
@@ -386,11 +351,9 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, const Real aTolerance)
     {
-
         CGeoPolyhedron<Real> aPolyhedron;
 
         for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
             CGeoPolygon<Real> aPolygon = m_polygons[m_polygonIds[i]].clip(aPlane, aTolerance);
 
             if (aPolygon.polyline().nbVertices() > 3)
@@ -405,11 +368,9 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
-
         CGeoPolyhedron<Real> aPolyhedron;
 
         if (volumeFractionReq <= 0.0) {
-
             nIterations = 0;
 
             volumeFractionAct = 0.0;
@@ -418,12 +379,10 @@ namespace geometry {
         }
 
         if (volumeFractionReq >= 1.0) {
-
             nIterations = 0;
 
             // Copy this polyhedron
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
                 aPolyhedron.addPolygon(m_polygonIds[i], m_polygons[m_polygonIds[i]]);
             }
 
@@ -443,9 +402,7 @@ namespace geometry {
         Real b = -std::numeric_limits<Real>::max();
 
         for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
-
             for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j) {
-
                 d = m_polygons[m_polygonIds[i]].polyline().vertex(j).dot(aNormal);
 
                 a = std::min(a, d);
@@ -471,7 +428,6 @@ namespace geometry {
         nIterations = nMaxIterations;
 
         for (Integer i = 0; i < nMaxIterations; ++i) {
-
             if ((fb == 0) || (fabs(fa - fb) <= aTolerance)) {
                 nIterations = i + 1;
                 break;
@@ -537,7 +493,6 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, const Real aTolerance)
     {
-
         CGeoPlane<Real> aPlaneInv = aPlane;
         aPlaneInv.normal() = -aPlane.normal();
         aPlaneInv.setD(aPlane.d());
@@ -549,7 +504,6 @@ namespace geometry {
     template <typename Real>
     CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
-
         CGeoNormal<Real> aNormalInv = -aNormal;
         aNewPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aNormalInv, d, 1.0 - volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aTolerance);
         return this->clip(aNewPolygon, aNewPolygonId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aTolerance);
@@ -558,11 +512,9 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::set(CGeoPolyhedron<Real>& aPolyhedron)
     {
-
         this->reset();
 
         for (Integer i = 0; i < aPolyhedron.nbPolygons(); ++i) {
-
             Integer aPolygonId = aPolyhedron.polygonId(i);
 
             this->addPolygon(aPolygonId, aPolyhedron.polygon(aPolygonId));

@@ -15,9 +15,7 @@
 #include "GeoOctreeNode.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
 #define MAX_NB_ELEMENTS_PER_NODE 1000
 
     enum EOctreeLocation {

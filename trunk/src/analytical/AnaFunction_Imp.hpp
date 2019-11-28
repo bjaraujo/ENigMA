@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace analytical {
-
     template <typename Real>
     CAnaFunction<Real>::CAnaFunction()
         : m_constant(false)
@@ -22,14 +20,12 @@ namespace analytical {
     template <typename Real>
     CAnaFunction<Real>::CAnaFunction(Real aConstant)
     {
-
         this->set(aConstant);
     }
 
     template <typename Real>
     CAnaFunction<Real>::CAnaFunction(const std::string& anExpression)
     {
-
         this->set(anExpression);
     }
 
@@ -41,7 +37,6 @@ namespace analytical {
     template <typename Real>
     void CAnaFunction<Real>::set(Real aConstant)
     {
-
         m_value = aConstant;
         m_constant = true;
     }
@@ -49,7 +44,6 @@ namespace analytical {
     template <typename Real>
     void CAnaFunction<Real>::set(const std::string& anExpression)
     {
-
         m_expressionString = anExpression;
         m_constant = false;
     }
@@ -57,28 +51,24 @@ namespace analytical {
     template <typename Real>
     void CAnaFunction<Real>::defineVariable(const std::string& aVariable, Real& aValue)
     {
-
         m_symbolTable.add_variable(aVariable, aValue);
     }
 
     template <typename Real>
     void CAnaFunction<Real>::undefineVariable(const std::string& aVariable)
     {
-
         m_symbolTable.remove_variable(aVariable);
     }
 
     template <typename Real>
     void CAnaFunction<Real>::removeAllVariables()
     {
-
         m_symbolTable.clear();
     }
 
     template <typename Real>
     Real CAnaFunction<Real>::evaluate()
     {
-
         if (m_constant)
             return m_value;
 
@@ -96,7 +86,6 @@ namespace analytical {
     template <typename Real>
     Real CAnaFunction<Real>::evaluate(const std::string& aVariable, Real& aValue)
     {
-
         exprtk::expression<Real> expression;
         exprtk::parser<Real> parser;
 
@@ -114,7 +103,6 @@ namespace analytical {
     template <typename Real>
     Real CAnaFunction<Real>::evaluate(const std::string& aVariable1, Real& aValue1, const std::string& aVariable2, Real& aValue2)
     {
-
         exprtk::expression<Real> expression;
         exprtk::parser<Real> parser;
 
@@ -133,7 +121,6 @@ namespace analytical {
     template <typename Real>
     Real CAnaFunction<Real>::bisection(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
-
         Real a = lowerBnd;
         Real b = upperBnd;
 
@@ -141,7 +128,6 @@ namespace analytical {
 
         // Start loop
         while (fabs(b - a) > aTolerance) {
-
             // calculate midpoint
             Real s = (a + b) * 0.5;
 
@@ -168,7 +154,6 @@ namespace analytical {
     template <typename Real>
     Real CAnaFunction<Real>::brent(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
-
         // http://en.wikipedia.org/wiki/Brent's_method
 
         Real a = lowerBnd;
@@ -207,7 +192,6 @@ namespace analytical {
         Integer i = 0;
 
         while ((fb != 0) && (fabs(a - b) > aTolerance)) {
-
             Real s;
 
             if ((fa != fc) && (fb != fc))
@@ -267,7 +251,6 @@ namespace analytical {
     template <typename Real>
     Real CAnaFunction<Real>::root(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
-
         return bisection(strVar, lowerBnd, upperBnd, nIterations, nMaxIterations, aTolerance);
     }
 }

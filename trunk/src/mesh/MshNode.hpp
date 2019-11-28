@@ -12,9 +12,7 @@
 #include "GeoCoordinate.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     struct CMshNode : public ENigMA::geometry::CGeoCoordinate<Real> {
     public:

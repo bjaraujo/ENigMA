@@ -8,13 +8,10 @@
 // *****************************************************************************
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoSphere<Real>::CGeoSphere(const CGeoCoordinate<Real>& aPoint1, const CGeoCoordinate<Real>& aPoint2, const CGeoCoordinate<Real>& aPoint3, const CGeoCoordinate<Real>& aPoint4, const Real aTolerance)
     {
-
         std::vector<CGeoCoordinate<Real>> sPoints;
 
         sPoints.push_back(aPoint1);
@@ -61,7 +58,6 @@ namespace geometry {
     template <typename Real>
     CGeoSphere<Real>::CGeoSphere(const CGeoCoordinate<Real>& aCenter, const Real aRadius)
     {
-
         this->m_center = aCenter;
         this->m_radius = aRadius;
     }
@@ -74,23 +70,19 @@ namespace geometry {
     template <typename Real>
     CGeoCoordinate<Real>& CGeoSphere<Real>::center()
     {
-
         return this->m_center;
     }
 
     template <typename Real>
     Real CGeoSphere<Real>::radius()
     {
-
         return this->m_radius;
     }
 
     template <typename Real>
     void CGeoSphere<Real>::calculateCentroid(bool bReCalculate)
     {
-
         if (!this->m_bCentroid || bReCalculate) {
-
             CGeoVolume<Real>::centroid() = this->m_center;
 
             this->m_bCentroid = true;
@@ -100,9 +92,7 @@ namespace geometry {
     template <typename Real>
     void CGeoSphere<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-
         if (!this->m_bSurfaceArea || bReCalculate) {
-
             const Real pi = std::acos(-1.0);
             CGeoVolume<Real>::surfaceArea() += 4.0 * pi * this->m_radius * this->m_radius;
 
@@ -113,9 +103,7 @@ namespace geometry {
     template <typename Real>
     void CGeoSphere<Real>::calculateVolume(bool bReCalculate)
     {
-
         if (!this->m_bVolume || bReCalculate) {
-
             const Real pi = std::acos(-1.0);
             CGeoVolume<Real>::volume() = 4.0 / 3.0 * pi * this->m_radius * this->m_radius * this->m_radius;
 
@@ -126,9 +114,7 @@ namespace geometry {
     template <typename Real>
     void CGeoSphere<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         if (!this->m_bBoundingBox || bReCalculate) {
-
             CGeoVolume<Real>::boundingBox().reset();
 
             CGeoCoordinate<Real> aCoordinate1(-this->m_radius, -this->m_radius, -this->m_radius);
@@ -144,7 +130,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoSphere<Real>::contains(const CGeoCoordinate<Real>& aPoint, const Real aTolerance)
     {
-
         Real aDistance = (aPoint - this->m_center).norm();
 
         if (aDistance <= this->m_radius + aTolerance)

@@ -14,9 +14,7 @@
 #include "GeoVertexList.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoQuadrilateral : public CGeoArea<Real>, public CGeoVertexList<Real> {
     public:

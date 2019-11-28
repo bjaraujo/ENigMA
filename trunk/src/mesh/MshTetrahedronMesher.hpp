@@ -18,9 +18,7 @@
 #include "MshMesh.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshTetrahedronMesher {
     private:
@@ -53,7 +51,6 @@ namespace mesh {
 
             void build(CMshMesh<Real>& aMesh)
             {
-
                 this->triangle.reset();
                 this->triangle.addVertex(aMesh.node(this->nodeId[0]));
                 this->triangle.addVertex(aMesh.node(this->nodeId[1]));

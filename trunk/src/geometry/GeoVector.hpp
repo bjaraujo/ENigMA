@@ -12,9 +12,7 @@
 #include <Eigen/Dense>
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     struct CGeoVector : public Eigen::Matrix<Real, 3, 1> {
     public:

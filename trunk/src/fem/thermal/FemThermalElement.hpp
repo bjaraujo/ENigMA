@@ -10,11 +10,8 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real>
         class CFemThermalElement {
         private:

@@ -15,9 +15,7 @@
 #include "GeoVertexList.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoPolyline : public CGeoLength<Real>, public CGeoVertexList<Real> {
     public:

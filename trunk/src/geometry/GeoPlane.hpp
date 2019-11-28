@@ -13,9 +13,7 @@
 #include "GeoNormal.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoPlane {
     private:

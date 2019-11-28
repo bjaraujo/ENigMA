@@ -14,9 +14,7 @@
 #include "GeoNormal.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoArea : public CGeoCentroid<Real> {
     protected:

@@ -15,9 +15,7 @@
 #include "RTree.h"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoRtree : public CGeoContainer<CGeoBoundingBox<Real>, Real> {
     private:

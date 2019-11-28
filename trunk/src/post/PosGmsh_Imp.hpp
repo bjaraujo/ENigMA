@@ -13,9 +13,7 @@
 #include <iomanip>
 
 namespace ENigMA {
-
 namespace post {
-
     template <typename Real>
     CPosGmsh<Real>::CPosGmsh()
     {
@@ -29,9 +27,7 @@ namespace post {
     template <typename Real>
     bool CPosGmsh<Real>::findSection(std::ifstream& fileStream, const std::string& sectionName)
     {
-
         while (!fileStream.eof()) {
-
             std::string line;
 
             std::getline(fileStream, line);
@@ -47,13 +43,11 @@ namespace post {
     template <typename Real>
     bool CPosGmsh<Real>::load(ENigMA::pde::CPdeField<Real>& aField, const std::string& strFileName)
     {
-
         std::ifstream fileGmsh;
 
         fileGmsh.open(strFileName.c_str(), std::ios_base::in);
 
         if (fileGmsh.is_open()) {
-
             if (findSection(fileGmsh, "$MeshFormat")) {
                 findSection(fileGmsh, "$EndMeshFormat");
             }
@@ -61,13 +55,11 @@ namespace post {
             aField.mesh().reset();
 
             if (findSection(fileGmsh, "$Nodes")) {
-
                 Integer nbNodes;
 
                 fileGmsh >> nbNodes;
 
                 for (Integer i = 0; i < nbNodes; ++i) {
-
                     Integer id;
                     Real x, y, z;
 
@@ -82,13 +74,11 @@ namespace post {
             }
 
             if (findSection(fileGmsh, "$Elements")) {
-
                 Integer nbElements;
 
                 fileGmsh >> nbElements;
 
                 for (Integer i = 0; i < nbElements; ++i) {
-
                     Integer id, nType, nTags, nAux;
 
                     Integer nbNodeIds = 0;
@@ -144,7 +134,6 @@ namespace post {
                     Integer aNodeId;
 
                     for (Integer j = 0; j < nbNodeIds; ++j) {
-
                         fileGmsh >> aNodeId;
 
                         anElement.addNodeId(aNodeId - 1);
@@ -170,13 +159,11 @@ namespace post {
     template <typename Real>
     bool CPosGmsh<Real>::save(ENigMA::pde::CPdeField<Real>& aField, const std::string& strFileName, const std::string& strViewName)
     {
-
         std::ofstream fileGmsh;
 
         fileGmsh.open(strFileName.c_str(), std::ios_base::out | std::ios_base::trunc);
 
         if (fileGmsh.is_open()) {
-
             fileGmsh << "$MeshFormat" << std::endl;
             fileGmsh << "2.2 0 8" << std::endl;
             fileGmsh << "$EndMeshFormat" << std::endl;
@@ -185,7 +172,6 @@ namespace post {
             fileGmsh << aField.mesh().nbNodes() << std::endl;
 
             for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
                 Integer id = aField.mesh().nodeId(i);
                 Integer index = aField.mesh().nodeIndex(id);
 
@@ -198,7 +184,6 @@ namespace post {
             fileGmsh << aField.mesh().nbElements() << std::endl;
 
             for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                 Integer id = aField.mesh().elementId(i);
                 Integer index = aField.mesh().elementIndex(id);
 
@@ -246,9 +231,7 @@ namespace post {
             fileGmsh << "$EndElements" << std::endl;
 
             if (aField.u.size() > 0) {
-
                 if (aField.discretLocation() == ENigMA::pde::DL_NODE) {
-
                     fileGmsh << "$NodeData" << std::endl;
                     fileGmsh << "1" << std::endl;
                     fileGmsh << ""
@@ -268,7 +251,6 @@ namespace post {
                     fileGmsh << aField.mesh().nbNodes() << std::endl;
 
                     for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
                         Integer index = aField.mesh().nodeIndex(i);
 
                         if (aField.nbDofs() == 1)
@@ -282,7 +264,6 @@ namespace post {
                     fileGmsh << "$EndNodeData" << std::endl;
 
                 } else if (aField.discretLocation() == ENigMA::pde::DL_ELEMENT_CENTER) {
-
                     fileGmsh << "$ElementData" << std::endl;
                     fileGmsh << "1" << std::endl;
                     fileGmsh << ""
@@ -302,7 +283,6 @@ namespace post {
                     fileGmsh << aField.mesh().nbElements() << std::endl;
 
                     for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                         Integer index = aField.mesh().elementIndex(i);
 
                         if (aField.nbDofs() == 1)

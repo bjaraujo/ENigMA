@@ -13,9 +13,7 @@
 #include <iomanip>
 
 namespace ENigMA {
-
 namespace post {
-
     template <typename Real>
     CPosVtk<Real>::CPosVtk()
     {
@@ -29,13 +27,11 @@ namespace post {
     template <typename Real>
     bool CPosVtk<Real>::load(CPdeField<Real>& aField, const std::string& strFileName)
     {
-
         std::ifstream fileVtk;
 
         fileVtk.open(strFileName.c_str(), std::ios_base::in);
 
         if (fileVtk.is_open()) {
-
             // TODO:
 
             fileVtk.close();
@@ -49,13 +45,11 @@ namespace post {
     template <typename Real>
     bool CPosVtk<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
-
         std::ofstream fileVtk;
 
         fileVtk.open(strFileName.c_str(), std::ios_base::out | std::ios_base::trunc);
 
         if (fileVtk.is_open()) {
-
             fileVtk << "# vtk DataFile Version 2.0" << std::endl;
             fileVtk << " . " << std::endl;
             fileVtk << "ASCII" << std::endl;
@@ -64,7 +58,6 @@ namespace post {
             fileVtk << "POINTS " << aField.mesh().nbNodes() << " float" << std::endl;
 
             for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
                 Integer id = aField.mesh().nodeId(i);
 
                 fileVtk << aField.mesh().node(id).x() << std::setprecision(16) << " " << aField.mesh().node(id).y() << " " << aField.mesh().node(id).z() << std::endl;
@@ -73,7 +66,6 @@ namespace post {
             Integer nSize = 0;
 
             for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                 Integer nElemSize = 0;
 
                 Integer id = aField.mesh().elementId(i);
@@ -108,7 +100,6 @@ namespace post {
             fileVtk << "CELLS " << aField.mesh().nbElements() << " " << nSize << std::endl;
 
             for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                 Integer nElemSize = 0;
 
                 Integer id = aField.mesh().elementId(i);
@@ -171,7 +162,6 @@ namespace post {
             fileVtk << "CELL_TYPES " << aField.mesh().nbElements() << std::endl;
 
             for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                 Integer id = aField.mesh().elementId(i);
 
                 Integer nElemType;
@@ -204,15 +194,12 @@ namespace post {
             }
 
             if (aField.u.size() > 0) {
-
                 if (aField.discretLocation() == DL_NODE) {
-
                     fileVtk << "POINT_DATA " << aField.mesh().nbNodes() << std::endl;
                     fileVtk << "SCALARS fixed float" << std::endl;
                     fileVtk << "LOOKUP_TABLE default" << std::endl;
 
                     for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
                         Integer index = aField.mesh().nodeIndex(i);
 
                         if (aField.nbDofs() == 1)

@@ -15,9 +15,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     enum EIntersectionType {
         IT_NONE = 0,
         IT_VERTEX,

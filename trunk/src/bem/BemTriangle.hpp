@@ -14,9 +14,7 @@
 #include "IntTriangle.hpp"
 
 namespace ENigMA {
-
 namespace bem {
-
     template <typename Real>
     class CBemTriangle : public ENigMA::integration::CIntTriangle<Real>, public ENigMA::geometry::CGeoTriangle<Real> {
     private:

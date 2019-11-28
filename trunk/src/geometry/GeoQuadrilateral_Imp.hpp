@@ -13,9 +13,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoQuadrilateral<Real>::CGeoQuadrilateral()
     {
@@ -29,7 +27,6 @@ namespace geometry {
     template <typename Real>
     void CGeoQuadrilateral<Real>::reset()
     {
-
         CGeoVertexList<Real>::reset();
 
         this->m_bCentroid = false;
@@ -41,9 +38,7 @@ namespace geometry {
     template <typename Real>
     void CGeoQuadrilateral<Real>::calculateCentroid(bool bReCalculate)
     {
-
         if (!this->m_bCentroid || bReCalculate) {
-
             this->m_centroid = this->m_vertices[0];
             this->m_centroid += this->m_vertices[1];
             this->m_centroid += this->m_vertices[2];
@@ -58,9 +53,7 @@ namespace geometry {
     template <typename Real>
     void CGeoQuadrilateral<Real>::calculateNormal(bool bReCalculate)
     {
-
         if (!this->m_bNormal || bReCalculate) {
-
             CGeoVector<Real> v0 = this->m_vertices[2] - this->m_vertices[0];
             CGeoVector<Real> v1 = this->m_vertices[3] - this->m_vertices[1];
 
@@ -79,16 +72,13 @@ namespace geometry {
     template <typename Real>
     void CGeoQuadrilateral<Real>::calculateArea(bool bReCalculate)
     {
-
         this->calculateNormal(bReCalculate);
     }
 
     template <typename Real>
     void CGeoQuadrilateral<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         if (!this->m_bBoundingBox || bReCalculate) {
-
             this->m_boundingBox.reset();
 
             for (Integer k = 0; k < 4; ++k)
@@ -101,7 +91,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoQuadrilateral<Real>::contains(const CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
-
         CGeoTriangle<Real> aTriangle1;
 
         aTriangle1.addVertex(this->m_vertices[0]);
@@ -126,7 +115,6 @@ namespace geometry {
     template <typename Real>
     void CGeoQuadrilateral<Real>::decimate(std::vector<CGeoTriangle<Real>>& sTriangles)
     {
-
         CGeoTriangle<Real> aTriangle;
 
         aTriangle.reset();

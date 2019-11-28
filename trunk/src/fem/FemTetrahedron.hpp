@@ -16,9 +16,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     /*
         Tetrahedral element.
 

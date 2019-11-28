@@ -12,9 +12,7 @@
 #include "GeoBoundingBox.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoLength {
     protected:

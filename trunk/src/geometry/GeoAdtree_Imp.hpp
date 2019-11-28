@@ -12,9 +12,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoAdtreeNode6<Real>::CGeoAdtreeNode6()
     {
@@ -51,7 +49,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree6<Real>::set(const Real acmin[6], const Real acmax[6])
     {
-
         memcpy(m_cmin, acmin, 6 * sizeof(Real));
         memcpy(m_cmax, acmax, 6 * sizeof(Real));
 
@@ -62,7 +59,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree6<Real>::reset()
     {
-
         m_root->deleteChildren();
         delete m_root;
         m_root = new CGeoAdtreeNode6<Real>();
@@ -73,7 +69,6 @@ namespace geometry {
     template <typename Real>
     CGeoAdtree6<Real>::~CGeoAdtree6()
     {
-
         m_root->deleteChildren();
         delete m_root;
     }
@@ -81,7 +76,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree6<Real>::insert(const Real p[6], const Integer anId)
     {
-
         CGeoAdtreeNode6<Real>* node;
         CGeoAdtreeNode6<Real>* next;
 
@@ -98,11 +92,9 @@ namespace geometry {
         dir = 0;
 
         while (next) {
-
             node = next;
 
             if (node->id == -1) {
-
                 memcpy(node->data, p, 6 * sizeof(Real));
                 node->id = static_cast<Integer>(anId);
 
@@ -151,7 +143,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree6<Real>::remove(Integer anId)
     {
-
         CGeoAdtreeNode6<Real>* node = m_nodes[anId];
 
         node->id = -1;
@@ -168,7 +159,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree6<Real>::getIntersecting(const Real bmin[6], const Real bmax[6], std::vector<Integer>& sIds)
     {
-
         const int maxDepth = 1024;
 
         struct node_dir {
@@ -184,14 +174,12 @@ namespace geometry {
         Integer stacks = 0;
 
         while (stacks >= 0) {
-
             node_dir a_node_dir = nodes.at(stacks);
 
             CGeoAdtreeNode6<Real>* node = a_node_dir.node;
             Integer dir = a_node_dir.dir;
 
             if (node->id != -1) {
-
                 if (node->data[0] <= bmax[0] && node->data[1] <= bmax[1] && node->data[2] <= bmax[2] && node->data[3] >= bmin[3] && node->data[4] >= bmin[4] && node->data[5] >= bmin[5]) {
                     sIds.push_back(node->id);
                 }
@@ -241,7 +229,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree<Real>::set(CGeoBoundingBox<Real>& aBoundingBox)
     {
-
         m_boundingBox = aBoundingBox;
 
         Real acmin[6];
@@ -260,7 +247,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree<Real>::reset()
     {
-
         CGeoContainer<CGeoBoundingBox<Real>, Real>::reset();
         m_tree.reset();
     }
@@ -268,7 +254,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree<Real>::addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
     {
-
         Real b[6];
 
         b[0] = aBoundingBox.min().x();
@@ -285,7 +270,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree<Real>::removeGeometricObject(const Integer aBoundingBoxId)
     {
-
         m_tree.remove(aBoundingBoxId);
     }
 
@@ -297,7 +281,6 @@ namespace geometry {
     template <typename Real>
     void CGeoAdtree<Real>::find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
     {
-
         Real b_min[6];
         Real b_max[6];
 

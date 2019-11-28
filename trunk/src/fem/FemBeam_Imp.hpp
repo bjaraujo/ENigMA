@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemBeam<Real, 2, 1, 1>::CFemBeam()
     {
-
         this->ddt.resize(2, 2);
         this->laplacian.resize(2, 2);
         this->divergence.resize(2, 2);
@@ -38,7 +35,6 @@ namespace fem {
     template <typename Real>
     inline void CFemBeam<Real, 2, 1, 1>::setTransientTerm()
     {
-
         this->ddt << 1.0 / 3.0, 1.0 / 6.0,
             1.0 / 6.0, 1.0 / 3.0;
 
@@ -51,7 +47,6 @@ namespace fem {
     template <typename Real>
     inline void CFemBeam<Real, 2, 1, 1>::setDiffusionTerm()
     {
-
         CFemElement<Real>::laplacian << -1, +1,
             +1, -1;
 
@@ -62,7 +57,6 @@ namespace fem {
     template <typename Real>
     void CFemBeam<Real, 2, 1, 1>::setConvectiveTerm()
     {
-
         CFemElement<Real>::divergence << -1, +1,
             -1, +1;
 
@@ -77,7 +71,6 @@ namespace fem {
     template <typename Real>
     void CFemBeam<Real, 2, 1, 1>::update()
     {
-
         // Calculate geometrical properties
         rebuild();
 
@@ -95,7 +88,6 @@ namespace fem {
     template <typename Real>
     void CFemBeam<Real, 2, 1, 1>::setSourceOnNode(const Integer aNodeIndex, const Real aValue)
     {
-
         CFemElement<Real>::source(aNodeIndex) += aValue;
     }
 }

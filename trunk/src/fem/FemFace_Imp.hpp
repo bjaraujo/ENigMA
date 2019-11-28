@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemFace<Real>::CFemFace()
     {
@@ -26,14 +24,12 @@ namespace fem {
     template <typename Real>
     void CFemFace<Real>::setThickness(const Real aValue)
     {
-
         m_thickness = aValue;
     }
 
     template <typename Real>
     Real CFemFace<Real>::thickness() const
     {
-
         return m_thickness;
     }
 }

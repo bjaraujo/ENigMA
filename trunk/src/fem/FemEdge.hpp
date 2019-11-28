@@ -12,9 +12,7 @@
 #include "CmnTypes.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     class CFemEdge {
     protected:

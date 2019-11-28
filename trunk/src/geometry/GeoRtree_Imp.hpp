@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoRtree<Real>::CGeoRtree()
     {
@@ -26,7 +24,6 @@ namespace geometry {
     template <typename Real>
     void CGeoRtree<Real>::reset()
     {
-
         m_tree.RemoveAll();
         CGeoContainer<CGeoBoundingBox<Real>, Real>::reset();
     }
@@ -34,7 +31,6 @@ namespace geometry {
     template <typename Real>
     void CGeoRtree<Real>::addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
     {
-
         Real b_min[3];
         Real b_max[3];
 
@@ -53,7 +49,6 @@ namespace geometry {
     template <typename Real>
     void CGeoRtree<Real>::removeGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
     {
-
         Real b_min[3];
         Real b_max[3];
 

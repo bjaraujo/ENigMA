@@ -10,20 +10,16 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoBoundingBox<Real>::CGeoBoundingBox()
     {
-
         this->reset();
     }
 
     template <typename Real>
     CGeoBoundingBox<Real>::CGeoBoundingBox(const Real aMinX, const Real aMinY, const Real aMinZ, const Real aMaxX, const Real aMaxY, const Real aMaxZ)
     {
-
         m_min.x() = aMinX;
         m_min.y() = aMinY;
         m_min.z() = aMinZ;
@@ -44,7 +40,6 @@ namespace geometry {
     template <typename Real>
     void CGeoBoundingBox<Real>::reset()
     {
-
         m_min.x() = +std::numeric_limits<Real>::max();
         m_min.y() = +std::numeric_limits<Real>::max();
         m_min.z() = +std::numeric_limits<Real>::max();
@@ -59,7 +54,6 @@ namespace geometry {
     template <typename Real>
     void CGeoBoundingBox<Real>::addCoordinate(CGeoCoordinate<Real>& aCoordinate)
     {
-
         m_min.x() = std::min(m_min.x(), aCoordinate.x());
         m_min.y() = std::min(m_min.y(), aCoordinate.y());
         m_min.z() = std::min(m_min.z(), aCoordinate.z());
@@ -75,21 +69,18 @@ namespace geometry {
     template <typename Real>
     CGeoVector<Real>& CGeoBoundingBox<Real>::min()
     {
-
         return m_min;
     }
 
     template <typename Real>
     CGeoVector<Real>& CGeoBoundingBox<Real>::max()
     {
-
         return m_max;
     }
 
     template <typename Real>
     bool CGeoBoundingBox<Real>::intersects(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
     {
-
         //http://www.miguelcasillas.com/?p=30
 
         return (aBoundingBox.max().x() >= this->m_min.x() - aTolerance && aBoundingBox.min().x() <= this->m_max.x() + aTolerance && aBoundingBox.max().y() >= this->m_min.y() - aTolerance && aBoundingBox.min().y() <= this->m_max.y() + aTolerance && aBoundingBox.max().z() >= this->m_min.z() - aTolerance && aBoundingBox.min().z() <= this->m_max.z() + aTolerance);
@@ -98,21 +89,18 @@ namespace geometry {
     template <typename Real>
     bool CGeoBoundingBox<Real>::contains(const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
     {
-
         return (aCoordinate.x() >= this->m_min.x() - aTolerance && aCoordinate.x() <= this->m_max.x() + aTolerance && aCoordinate.y() >= this->m_min.y() - aTolerance && aCoordinate.y() <= this->m_max.y() + aTolerance && aCoordinate.z() >= this->m_min.z() - aTolerance && aCoordinate.z() <= this->m_max.z() + aTolerance);
     }
 
     template <typename Real>
     bool CGeoBoundingBox<Real>::contains(CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
     {
-
         return (this->m_min.x() - aTolerance <= aBoundingBox.min().x() && this->m_max.x() + aTolerance >= aBoundingBox.max().x() && this->m_min.y() - aTolerance <= aBoundingBox.min().y() && this->m_max.y() + aTolerance >= aBoundingBox.max().y() && this->m_min.z() - aTolerance <= aBoundingBox.min().z() && this->m_max.z() + aTolerance >= aBoundingBox.max().z());
     }
 
     template <typename Real>
     void CGeoBoundingBox<Real>::grow(const Real anAmount)
     {
-
         m_min.array() -= anAmount;
         m_max.array() += anAmount;
     }
@@ -120,7 +108,6 @@ namespace geometry {
     template <typename Real>
     void CGeoBoundingBox<Real>::grow(const Real anAmountX, const Real anAmountY, const Real anAmountZ)
     {
-
         this->m_min.x() -= anAmountX;
         this->m_max.x() += anAmountX;
 
@@ -134,7 +121,6 @@ namespace geometry {
     template <typename Real>
     void CGeoBoundingBox<Real>::shrink(const Real anAmount)
     {
-
         m_min.array() += anAmount;
         m_max.array() -= anAmount;
     }

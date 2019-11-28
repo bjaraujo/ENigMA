@@ -14,9 +14,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshBasicMesher<Real>::CMshBasicMesher()
     {
@@ -30,7 +28,6 @@ namespace mesh {
     template <typename Real>
     bool CMshBasicMesher<Real>::generate(CGeoLine<Real>& aLine, const Integer nu)
     {
-
         Real du;
 
         CGeoVector<Real> aVectorU = aLine.vector();
@@ -49,7 +46,6 @@ namespace mesh {
         Integer nn = 0;
 
         for (Integer i = 0; i < nu + 1; ++i) {
-
             CMshNode<Real> aNode;
 
             aNode = aLine.startPoint() + aNormalU * du * static_cast<Real>(i);
@@ -61,7 +57,6 @@ namespace mesh {
         Integer ne = 0;
 
         for (Integer i = 0; i < nu; ++i) {
-
             CMshElement<Real> anElement;
 
             anElement.addNodeId(i);
@@ -79,7 +74,6 @@ namespace mesh {
     template <typename Real>
     bool CMshBasicMesher<Real>::generate(CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate)
     {
-
         Real du, dv;
 
         CGeoVector<Real> aVectorU = aQuadrilateral.vertex(1) - aQuadrilateral.vertex(0);
@@ -108,9 +102,7 @@ namespace mesh {
         Integer nn = 0;
 
         for (Integer j = 0; j < nv + 1; ++j) {
-
             for (Integer i = 0; i < nu + 1; ++i) {
-
                 CMshNode<Real> aNode;
 
                 aNode = aQuadrilateral.vertex(0) + aNormalU * du * static_cast<Real>(i) + aNormalV * dv * static_cast<Real>(j);
@@ -123,11 +115,8 @@ namespace mesh {
         Integer ne = 0;
 
         for (Integer j = 0; j < nv; ++j) {
-
             for (Integer i = 0; i < nu; ++i) {
-
                 if (decimate) {
-
                     CMshElement<Real> anElement;
 
                     // Triangle 1
@@ -153,7 +142,6 @@ namespace mesh {
                     ne++;
 
                 } else {
-
                     // Quadrilateral
                     CMshElement<Real> anElement;
 
@@ -176,7 +164,6 @@ namespace mesh {
     template <typename Real>
     bool CMshBasicMesher<Real>::generate(CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate)
     {
-
         CGeoVector<Real> aVectorU = aHexahedron.vertex(1) - aHexahedron.vertex(0);
         CGeoNormal<Real> aNormalU = aVectorU;
         aNormalU.normalize();
@@ -211,11 +198,8 @@ namespace mesh {
         Integer nn = 0;
 
         for (Integer k = 0; k < nw + 1; ++k) {
-
             for (Integer j = 0; j < nv + 1; ++j) {
-
                 for (Integer i = 0; i < nu + 1; ++i) {
-
                     CMshNode<Real> aNode;
 
                     aNode = aHexahedron.vertex(0) + aNormalU * du * static_cast<Real>(i) + aNormalV * dv * static_cast<Real>(j) + aNormalW * dw * static_cast<Real>(k);
@@ -229,11 +213,8 @@ namespace mesh {
         Integer ne = 0;
 
         for (Integer k = 0; k < nw; ++k) {
-
             for (Integer j = 0; j < nv; ++j) {
-
                 for (Integer i = 0; i < nu; ++i) {
-
                     Integer nodeId[8];
 
                     nodeId[0] = (nu + 1) * (nv + 1) * k + (nu + 1) * j + i;
@@ -246,7 +227,6 @@ namespace mesh {
                     nodeId[7] = (nu + 1) * (nv + 1) * (k + 1) + (nu + 1) * (j + 1) + i;
 
                     if (decimate) {
-
                         CMshElement<Real> anElement;
 
                         // Tetrahedron 1
@@ -322,7 +302,6 @@ namespace mesh {
                         ne++;
 
                     } else {
-
                         // Hexahedron
                         CMshElement<Real> anElement;
 
@@ -350,7 +329,6 @@ namespace mesh {
     template <typename Real>
     bool CMshBasicMesher<Real>::generate(CGeoBoundingBox<Real>& aBoundingBox, const Real meshSize, bool decimate)
     {
-
         CGeoVector<Real> aVector = aBoundingBox.max() - aBoundingBox.min();
 
         CGeoVector<Real> aVectorU = CGeoVector<Real>(aVector.x(), 0.0, 0.0);
@@ -380,11 +358,8 @@ namespace mesh {
         Integer nn = 0;
 
         for (Integer k = 0; k < nw + 1; ++k) {
-
             for (Integer j = 0; j < nv + 1; ++j) {
-
                 for (Integer i = 0; i < nu + 1; ++i) {
-
                     CMshNode<Real> aNode;
 
                     aNode = aBoundingBox.min() + aNormalU * meshSize * static_cast<Real>(i) + aNormalV * meshSize * static_cast<Real>(j) + aNormalW * meshSize * static_cast<Real>(k);
@@ -398,11 +373,8 @@ namespace mesh {
         Integer ne = 0;
 
         for (Integer k = 0; k < nw; ++k) {
-
             for (Integer j = 0; j < nv; ++j) {
-
                 for (Integer i = 0; i < nu; ++i) {
-
                     Integer nodeId[8];
 
                     nodeId[0] = (nu + 1) * (nv + 1) * k + (nu + 1) * j + i;
@@ -415,7 +387,6 @@ namespace mesh {
                     nodeId[7] = (nu + 1) * (nv + 1) * (k + 1) + (nu + 1) * (j + 1) + i;
 
                     if (decimate) {
-
                         CMshElement<Real> anElement;
 
                         // Tetrahedron 1
@@ -491,7 +462,6 @@ namespace mesh {
                         ne++;
 
                     } else {
-
                         // Hexahedron
                         CMshElement<Real> anElement;
 
@@ -519,7 +489,6 @@ namespace mesh {
     template <typename Real>
     CMshMesh<Real>& CMshBasicMesher<Real>::mesh()
     {
-
         return m_mesh;
     }
 }

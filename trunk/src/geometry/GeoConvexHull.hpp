@@ -15,9 +15,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     struct SVertex {
         CGeoCoordinate<Real> v2D;

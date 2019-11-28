@@ -16,9 +16,7 @@
 #include "GeoVolume.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoHexahedron : public CGeoVolume<Real>, public CGeoVertexList<Real> {
     public:

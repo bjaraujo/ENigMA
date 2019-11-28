@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemTriangularPrism<Real, 6, 1, 1>::CFemTriangularPrism()
     {
-
         this->source.resize(6);
         this->source.setZero();
 
@@ -33,7 +30,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangularPrism<Real, 6, 1, 1>::rebuild()
     {
-
         CGeoCoordinate<Real> n1 = this->m_vertices[0];
         CGeoCoordinate<Real> n2 = this->m_vertices[1];
         CGeoCoordinate<Real> n3 = this->m_vertices[2];
@@ -66,7 +62,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangularPrism<Real, 6, 1, 1>::setTransientTerm()
     {
-
         Real N[6];
 
         Eigen::Matrix<Real, 3, 3> J;
@@ -76,7 +71,6 @@ namespace fem {
         this->ddt.setZero();
 
         for (Integer p = 0; p < CIntGaussIntegration<Real>::m_integPoints; p++) {
-
             Real xi = this->m_xi[p];
             Real eta = this->m_eta[p];
             Real zeta = this->m_zeta[p];
@@ -109,9 +103,7 @@ namespace fem {
             Ji.setZero();
 
             for (Integer i = 0; i < 6; ++i) {
-
                 for (Integer j = 0; j < 6; ++j) {
-
                     Ji(i, j) = N[i] * N[j];
                 }
             }
@@ -128,7 +120,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangularPrism<Real, 6, 1, 1>::setDiffusionTerm()
     {
-
         Eigen::Matrix<Real, 3, 3> J;
         Eigen::Matrix<Real, 3, 6> G;
         Eigen::Matrix<Real, 3, 6> B;
@@ -138,7 +129,6 @@ namespace fem {
         this->laplacian.setZero();
 
         for (Integer p = 0; p < this->m_integPoints; p++) {
-
             Real xi = this->m_xi[p];
             Real eta = this->m_eta[p];
             Real zeta = this->m_zeta[p];
@@ -189,7 +179,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangularPrism<Real, 6, 1, 1>::update()
     {
-
         // Calculate geometrical properties
         rebuild();
 
@@ -207,14 +196,12 @@ namespace fem {
     template <typename Real>
     void CFemTriangularPrism<Real, 6, 1, 1>::setSourceOnNode(const Integer aNodeIndex, const Real aValue)
     {
-
         this->source(aNodeIndex) += aValue;
     }
 
     template <typename Real>
     void CFemTriangularPrism<Real, 6, 1, 1>::setSourceOnEdge(const Integer anEdgeIndex, const Real aValue)
     {
-
         this->source((anEdgeIndex + 0) % 6) += aValue * 0.5;
         this->source((anEdgeIndex + 1) % 6) += aValue * 0.5;
     }

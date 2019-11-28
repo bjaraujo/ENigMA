@@ -12,9 +12,7 @@
 #include "GeoTriangle.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoTetrahedron<Real>::CGeoTetrahedron()
     {
@@ -28,16 +26,13 @@ namespace geometry {
     template <typename Real>
     void CGeoTetrahedron<Real>::reset()
     {
-
         // TODO:
     }
 
     template <typename Real>
     void CGeoTetrahedron<Real>::calculateCentroid(bool bReCalculate)
     {
-
         if (!this->m_bCentroid || bReCalculate) {
-
             this->m_centroid = this->m_vertices[0];
             this->m_centroid += this->m_vertices[1];
             this->m_centroid += this->m_vertices[2];
@@ -51,9 +46,7 @@ namespace geometry {
     template <typename Real>
     void CGeoTetrahedron<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-
         if (!this->m_bSurfaceArea || bReCalculate) {
-
             CGeoTriangle<Real> aTriangle;
 
             aTriangle.addVertex(this->m_vertices[0]);
@@ -65,7 +58,6 @@ namespace geometry {
             this->m_surfaceArea = aTriangle.area();
 
             for (Integer i = 0; i < 3; ++i) {
-
                 aTriangle.reset();
                 aTriangle.addVertex(this->m_vertices[(i + 0) % 3]);
                 aTriangle.addVertex(this->m_vertices[(i + 1) % 3]);
@@ -83,9 +75,7 @@ namespace geometry {
     template <typename Real>
     void CGeoTetrahedron<Real>::calculateVolume(bool bReCalculate)
     {
-
         if (!this->m_bVolume || bReCalculate) {
-
             Eigen::Matrix<Real, 4, 4> matrix;
 
             matrix.col(0) << this->m_vertices[0].x(), this->m_vertices[0].y(), this->m_vertices[0].z(), 1.0;
@@ -102,9 +92,7 @@ namespace geometry {
     template <typename Real>
     void CGeoTetrahedron<Real>::calculateBoundingBox(bool bReCalculate)
     {
-
         if (!this->m_bBoundingBox || bReCalculate) {
-
             this->m_boundingBox.reset();
 
             this->m_boundingBox.addCoordinate(this->m_vertices[0]);
@@ -119,7 +107,6 @@ namespace geometry {
     template <typename Real>
     bool CGeoTetrahedron<Real>::contains(const CGeoCoordinate<Real>& aPoint, const Real aTolerance)
     {
-
         this->calculateBoundingBox();
 
         if (!this->boundingBox().contains(aPoint, aTolerance))
@@ -196,7 +183,6 @@ namespace geometry {
     template <typename Real>
     void CGeoTetrahedron<Real>::invert()
     {
-
         // TODO:
     }
 }

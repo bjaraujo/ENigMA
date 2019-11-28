@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     CFvmMesh<Real>::CFvmMesh()
         : m_faceIndex(0)
@@ -25,7 +23,6 @@ namespace fvm {
         : m_faceIndex(0)
         , m_controlVolumeIndex(0)
     {
-
         this->set(aMesh);
     }
 
@@ -37,7 +34,6 @@ namespace fvm {
     template <typename Real>
     void CFvmMesh<Real>::set(CMshMesh<Real>& aMesh)
     {
-
         this->reset();
 
         m_mesh = aMesh;
@@ -53,7 +49,6 @@ namespace fvm {
 
         // MshFaces->FvmFaces
         for (Integer i = 0; i < aMesh.nbFaces(); ++i) {
-
             if (faceAdded.at(aMesh.faceId(i)))
                 continue;
 
@@ -62,7 +57,6 @@ namespace fvm {
             CFvmFace<Real> aFvmFace;
 
             for (Integer j = 0; j < aMshFace.nbNodeIds(); ++j) {
-
                 Integer aNodeId = aMshFace.nodeId(j);
 
                 aFvmFace.addNode(CFvmNode<Real>(aMesh.node(aNodeId)));
@@ -92,7 +86,6 @@ namespace fvm {
 
         // MshElements->FvmControlVolumes
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-
             Integer anElementId = aMesh.elementId(i);
 
             CMshElement<Real> aMshElement = aMesh.element(anElementId);
@@ -104,7 +97,6 @@ namespace fvm {
             aControlVolume.setControlVolumeId(aMesh.elementId(i));
 
             for (Integer j = 0; j < aMshElement.nbFaceIds(); ++j) {
-
                 Integer aFaceId = newFaceIds.at(aMshElement.faceId(j));
 
                 CFvmFace<Real> aFace = m_faces.at(aFaceId);
@@ -124,14 +116,12 @@ namespace fvm {
     template <typename Real>
     CMshMesh<Real>& CFvmMesh<Real>::mesh()
     {
-
         return m_mesh;
     }
 
     template <typename Real>
     void CFvmMesh<Real>::reset()
     {
-
         m_faceIds.clear();
         m_faces.clear();
 
@@ -142,49 +132,42 @@ namespace fvm {
     template <typename Real>
     Integer CFvmMesh<Real>::nbFaces()
     {
-
         return static_cast<Integer>(m_faceIds.size());
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::nbControlVolumes()
     {
-
         return static_cast<Integer>(m_controlVolumeIds.size());
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::faceId(const Integer aFaceIndex)
     {
-
         return m_faceIds.at(aFaceIndex);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::faceIndex(const Integer aFaceId)
     {
-
         return m_faceIndices.at(aFaceId);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::controlVolumeId(const Integer aControlVolumeIndex)
     {
-
         return m_controlVolumeIds.at(aControlVolumeIndex);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::controlVolumeIndex(const Integer aControlVolumeId)
     {
-
         return m_controlVolumeIndices.at(aControlVolumeId);
     }
 
     template <typename Real>
     void CFvmMesh<Real>::addFace(const Integer aFaceId, const CFvmFace<Real>& aFace)
     {
-
         m_faces[aFaceId] = aFace;
         m_faceIds.push_back(aFaceId);
 
@@ -195,14 +178,12 @@ namespace fvm {
     template <typename Real>
     void CFvmMesh<Real>::setFace(const Integer aFaceId, const CFvmFace<Real>& aFace)
     {
-
         m_faces[aFaceId] = aFace;
     }
 
     template <typename Real>
     void CFvmMesh<Real>::removeFace(const Integer aFaceId)
     {
-
         m_faces.erase(aFaceId);
 
         std::vector<Integer>::iterator it = std::find(m_faceIds.begin(), m_faceIds.end(), aFaceId);
@@ -214,7 +195,6 @@ namespace fvm {
     template <typename Real>
     void CFvmMesh<Real>::addControlVolume(const Integer aControlVolumeId, const CFvmControlVolume<Real>& aControlVolume)
     {
-
         m_controlVolumes[aControlVolumeId] = aControlVolume;
         m_controlVolumeIds.push_back(aControlVolumeId);
 
@@ -225,21 +205,18 @@ namespace fvm {
     template <typename Real>
     CFvmFace<Real>& CFvmMesh<Real>::face(const Integer aFaceId)
     {
-
         return m_faces.at(aFaceId);
     }
 
     template <typename Real>
     CFvmControlVolume<Real>& CFvmMesh<Real>::controlVolume(const Integer aControlVolumeId)
     {
-
         return m_controlVolumes.at(aControlVolumeId);
     }
 
     template <typename Real>
     Integer CFvmMesh<Real>::nextFaceId()
     {
-
         if (m_faces.size() > 0)
             return m_faces.rbegin()->first + 1;
         else
@@ -249,7 +226,6 @@ namespace fvm {
     template <typename Real>
     Integer CFvmMesh<Real>::nextControlVolumeId()
     {
-
         if (m_controlVolumes.size() > 0)
             return m_controlVolumes.rbegin()->first + 1;
         else
@@ -259,11 +235,9 @@ namespace fvm {
     template <typename Real>
     Real CFvmMesh<Real>::volume()
     {
-
         Real volume = 0.0;
 
         for (Integer i = 0; i < static_cast<Integer>(m_controlVolumeIds.size()); ++i) {
-
             Integer aControlVolumeId = m_controlVolumeIds.at(i);
 
             m_controlVolumes.at(aControlVolumeId).calculateVolume();

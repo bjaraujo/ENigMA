@@ -18,9 +18,7 @@ using namespace ENigMA::geometry;
 using namespace ENigMA::integration;
 
 namespace ENigMA {
-
 namespace fem {
-
     /*
         Triangle element.
 

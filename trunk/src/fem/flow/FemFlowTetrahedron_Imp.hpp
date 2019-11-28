@@ -12,11 +12,8 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace flow {
-
         template <typename Real>
         CFemFlowTetrahedron<Real, 4, 1, 1>::CFemFlowTetrahedron()
         {
@@ -30,14 +27,12 @@ namespace fem {
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::setDiffusionTerm()
         {
-
             CFemTetrahedron<Real, 4, 1, 1>::setDiffusionTerm();
         }
 
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::setConvectiveTerm(Real u[4], Real v[4], Real w[4])
         {
-
             Eigen::Matrix<Real, 3, 4> B;
 
             CFemTetrahedron<Real, 4, 1, 1>::calculateB(B);
@@ -145,7 +140,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::setGradientTerm(const Integer aComponent)
         {
-
             Eigen::Matrix<Real, 3, 4> B;
 
             CFemTetrahedron<Real, 4, 1, 1>::calculateB(B);
@@ -166,7 +160,6 @@ namespace fem {
             Real dl = B(2, 3);
 
             if (aComponent == 0) {
-
                 Eigen::Matrix<Real, 4, 4> G1;
 
                 G1 << bi, bj, bk, bl,
@@ -179,7 +172,6 @@ namespace fem {
                 CFemElement<Real>::gradient = G1;
 
             } else if (aComponent == 1) {
-
                 Eigen::Matrix<Real, 4, 4> G2;
 
                 G2 << ci, cj, ck, cl,
@@ -192,7 +184,6 @@ namespace fem {
                 CFemElement<Real>::gradient = G2;
 
             } else if (aComponent == 2) {
-
                 Eigen::Matrix<Real, 4, 4> G3;
 
                 G3 << di, dj, dk, dl,
@@ -209,7 +200,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::calculateTransientTerm()
         {
-
             // Calculate geometrical properties
             CFemTetrahedron<Real, 4, 1, 1>::rebuild();
 
@@ -220,7 +210,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::calculateDiffusiveTerm()
         {
-
             // Calculate geometrical properties
             CFemTetrahedron<Real, 4, 1, 1>::rebuild();
 
@@ -231,7 +220,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::calculateConvectiveTerm(Real u[3], Real v[3], Real w[3])
         {
-
             // Calculate geometrical properties
             CFemTetrahedron<Real, 4, 1, 1>::rebuild();
 
@@ -242,7 +230,6 @@ namespace fem {
         template <typename Real>
         void CFemFlowTetrahedron<Real, 4, 1, 1>::calculateGradientTerm(const Integer aComponent)
         {
-
             // Calculate geometrical properties
             CFemTetrahedron<Real, 4, 1, 1>::rebuild();
 

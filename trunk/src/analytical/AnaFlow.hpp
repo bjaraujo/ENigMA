@@ -12,9 +12,7 @@
 #include "AnaFunction.hpp"
 
 namespace ENigMA {
-
 namespace analytical {
-
     template <typename Real>
     class CAnaFlow : public CAnaFunction<Real> {
     private:

@@ -12,9 +12,7 @@
 #include "GeoTriangle.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshTriangle : public ENigMA::geometry::CGeoTriangle<Real> {
     private:

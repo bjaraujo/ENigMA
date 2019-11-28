@@ -14,13 +14,10 @@
 #include "PdeEquation.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemCbsSolver<Real, 2>::CFemCbsSolver(CMshMesh<Real>& aMesh)
     {
-
         m_mesh = aMesh;
 
         m_u.setMesh(aMesh);
@@ -59,7 +56,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 2>::setGravity(const Real gx, const Real gy)
     {
-
         m_gx = gx;
         m_gy = gy;
     }
@@ -67,7 +63,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 2>::setMaterialProperties(const Real aDensity, const Real aViscosity)
     {
-
         m_dens = aDensity;
         m_visc = aViscosity;
     }
@@ -75,14 +70,12 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 2>::setTimeInterval(const Real dt)
     {
-
         m_dt = dt;
     }
 
     template <typename Real>
     void CFemCbsSolver<Real, 2>::calculateVelocityField()
     {
-
         Real nu = m_visc / m_dens;
 
         CPdeEquation<Real> aPdeEquationU(1.0 / m_dt * ddt<Real>(m_u) - nu * laplacian<Real>(m_u) + divergence<Real>(m_u, m_v, m_dt) = m_gx);
@@ -97,7 +90,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 2>::calculatePressureField()
     {
-
         // Pressure calculation
         CPdeEquation<Real> aPdeEquationP(laplacian<Real>(m_p) = 1.0 / m_dt * (m_G1 * m_u.u + m_G2 * m_v.u));
         aPdeEquationP.setElimination(m_p);
@@ -107,7 +99,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 2>::correctVelocityField()
     {
-
         CPdeEquation<Real> aPdeEquationUCor(ddt<Real>(m_u) = -m_dt / m_dens * m_G1 * m_p.u);
         CPdeEquation<Real> aPdeEquationVCor(ddt<Real>(m_v) = -m_dt / m_dens * m_G2 * m_p.u);
 
@@ -121,7 +112,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 2>::iterate(const Real dt, const bool bInit)
     {
-
         this->setTimeInterval(dt);
 
         this->calculateVelocityField();
@@ -133,21 +123,18 @@ namespace fem {
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 2>::u()
     {
-
         return m_u;
     }
 
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 2>::v()
     {
-
         return m_v;
     }
 
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 2>::p()
     {
-
         return m_p;
     }
 
@@ -156,7 +143,6 @@ namespace fem {
     CFemCbsSolver<Real, 3>::CFemCbsSolver(CMshMesh<Real>& aMesh)
         : CFemCbsSolver<Real, 2>(aMesh)
     {
-
         m_mesh = aMesh;
 
         m_u.setMesh(aMesh);
@@ -204,7 +190,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 3>::setGravity(const Real gx, const Real gy, const Real gz)
     {
-
         m_gx = gx;
         m_gy = gx;
         m_gz = gz;
@@ -213,7 +198,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 3>::setMaterialProperties(const Real aDensity, const Real aViscosity)
     {
-
         m_dens = aDensity;
         m_visc = aViscosity;
     }
@@ -221,14 +205,12 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 3>::setTimeInterval(const Real dt)
     {
-
         m_dt = dt;
     }
 
     template <typename Real>
     void CFemCbsSolver<Real, 3>::calculateVelocityField()
     {
-
         Real nu = m_visc / m_dens;
 
         CPdeEquation<Real> aPdeEquationU(1.0 / m_dt * ddt<Real>(m_u) - nu * laplacian<Real>(m_u) + divergence<Real>(m_u, m_v, m_w, m_dt) = m_gx / m_dens);
@@ -247,7 +229,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 3>::calculatePressureField()
     {
-
         // Pressure calculation
         CPdeEquation<Real> aPdeEquationP(laplacian<Real>(m_p) = 1.0 / m_dt * (m_G1 * m_u.u + m_G2 * m_v.u + m_G3 * m_w.u));
         aPdeEquationP.setElimination(m_p);
@@ -257,7 +238,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 3>::correctVelocityField()
     {
-
         CPdeEquation<Real> aPdeEquationUCor(ddt<Real>(m_u) = -m_dt / m_dens * m_G1 * m_p.u);
         CPdeEquation<Real> aPdeEquationVCor(ddt<Real>(m_v) = -m_dt / m_dens * m_G2 * m_p.u);
         CPdeEquation<Real> aPdeEquationWCor(ddt<Real>(m_w) = -m_dt / m_dens * m_G3 * m_p.u);
@@ -274,7 +254,6 @@ namespace fem {
     template <typename Real>
     void CFemCbsSolver<Real, 3>::iterate(const Real dt, const bool bInit)
     {
-
         this->setTimeInterval(dt);
 
         this->calculateVelocityField();
@@ -286,28 +265,24 @@ namespace fem {
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 3>::u()
     {
-
         return m_u;
     }
 
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 3>::v()
     {
-
         return m_v;
     }
 
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 3>::w()
     {
-
         return m_w;
     }
 
     template <typename Real>
     CPdeField<Real>& CFemCbsSolver<Real, 3>::p()
     {
-
         return m_p;
     }
 }

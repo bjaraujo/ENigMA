@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemQuadrilateral<Real, 4, 1, 1>::CFemQuadrilateral()
     {
-
         this->source.resize(4);
         this->source.setZero();
 
@@ -35,14 +32,12 @@ namespace fem {
     template <typename Real>
     void CFemQuadrilateral<Real, 4, 1, 1>::rebuild()
     {
-
         CGeoCoordinate<Real> n1 = this->m_vertices[0];
         CGeoCoordinate<Real> n2 = this->m_vertices[1];
         CGeoCoordinate<Real> n3 = this->m_vertices[2];
         CGeoCoordinate<Real> n4 = this->m_vertices[3];
 
         if (n1.z() != 0.0 || n2.z() != 0.0 || n3.z() != 0.0) {
-
             CGeoVector<Real> v1 = n2 - n1;
             CGeoVector<Real> v2 = n3 - n1;
 
@@ -94,7 +89,6 @@ namespace fem {
     template <typename Real>
     void CFemQuadrilateral<Real, 4, 1, 1>::setTransientTerm()
     {
-
         Real N[4];
 
         Eigen::Matrix<Real, 2, 2> J;
@@ -104,7 +98,6 @@ namespace fem {
         this->ddt.setZero();
 
         for (Integer p = 0; p < this->m_integPoints; p++) {
-
             Real xi = this->m_xi[p];
             Real eta = this->m_eta[p];
 
@@ -134,7 +127,6 @@ namespace fem {
 
             for (Integer i = 0; i < 4; ++i) {
                 for (Integer j = 0; j < 4; ++j) {
-
                     Ji(i, j) = N[i] * N[j];
                 }
             }
@@ -153,7 +145,6 @@ namespace fem {
     template <typename Real>
     void CFemQuadrilateral<Real, 4, 1, 1>::setDiffusionTerm()
     {
-
         Eigen::Matrix<Real, 2, 2> J;
         Eigen::Matrix<Real, 2, 4> G;
         Eigen::Matrix<Real, 2, 4> B;
@@ -163,7 +154,6 @@ namespace fem {
         this->laplacian.setZero();
 
         for (Integer p = 0; p < this->m_integPoints; p++) {
-
             Real xi = this->m_xi[p];
             Real eta = this->m_eta[p];
 
@@ -209,7 +199,6 @@ namespace fem {
     template <typename Real>
     void CFemQuadrilateral<Real, 4, 1, 1>::update()
     {
-
         // Calculate geometrical properties
         this->rebuild();
 
@@ -227,14 +216,12 @@ namespace fem {
     template <typename Real>
     void CFemQuadrilateral<Real, 4, 1, 1>::setSourceOnNode(const Integer aNodeIndex, const Real aValue)
     {
-
         this->source(aNodeIndex) += aValue;
     }
 
     template <typename Real>
     void CFemQuadrilateral<Real, 4, 1, 1>::setSourceOnEdge(const Integer anEdgeIndex, const Real aValue)
     {
-
         this->source((anEdgeIndex + 0) % 4) += aValue * 0.5;
         this->source((anEdgeIndex + 1) % 4) += aValue * 0.5;
     }

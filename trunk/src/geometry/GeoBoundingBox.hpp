@@ -13,9 +13,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     class CGeoBoundingBox : public CGeoCoordinate<Real> {
     private:

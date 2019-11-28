@@ -8,9 +8,7 @@
 // *****************************************************************************
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshQuadrilateral<Real>::CMshQuadrilateral()
         : m_quality(0.0)
@@ -25,7 +23,6 @@ namespace mesh {
     template <typename Real>
     void CMshQuadrilateral<Real>::calculateQuality()
     {
-
         this->calculateArea();
 
         Real Ai = CGeoQuadrilateral<Real>::area();
@@ -41,7 +38,6 @@ namespace mesh {
     template <typename Real>
     Real CMshQuadrilateral<Real>::quality()
     {
-
         return m_quality;
     }
 }

@@ -13,11 +13,8 @@
 #include "FemTetrahedron.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace structural {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemConstantStrainTetrahedron : public CFemStructuralElement<Real>, public CFemTetrahedron<Real, 4, 1, 1> {
         };

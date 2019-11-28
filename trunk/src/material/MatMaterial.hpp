@@ -14,9 +14,7 @@
 using namespace ENigMA::analytical;
 
 namespace ENigMA {
-
 namespace material {
-
     enum EPropertyType {
         PT_DENSITY = 0,
         PT_VISCOSITY,

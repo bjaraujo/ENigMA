@@ -12,9 +12,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     struct CGeoNormal : public CGeoVector<Real> {
     public:

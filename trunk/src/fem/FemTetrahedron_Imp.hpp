@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemTetrahedron<Real, 4, 1, 1>::CFemTetrahedron()
     {
-
         this->source.resize(4);
         this->source.setZero();
     }
@@ -31,7 +28,6 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::rebuild()
     {
-
         CGeoCoordinate<Real> n1 = this->m_vertices[0];
         CGeoCoordinate<Real> n2 = this->m_vertices[1];
         CGeoCoordinate<Real> n3 = this->m_vertices[2];
@@ -68,7 +64,6 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::setTransientTerm()
     {
-
         this->ddt.resize(4, 4);
 
         this->ddt << 0.10, 0.05, 0.05, 0.05,
@@ -85,7 +80,6 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::setDiffusionTerm()
     {
-
         this->laplacian.resize(4, 4);
 
         Real bi = m_y24 * m_z34 - m_y34 * m_z24;
@@ -125,7 +119,6 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::update()
     {
-
         // Calculate geometrical properties
         rebuild();
 
@@ -140,14 +133,12 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::setSourceOnNode(const Integer aNodeIndex, const Real aValue)
     {
-
         this->source(aNodeIndex) += aValue;
     }
 
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::setSourceOnEdge(const Integer anEdgeIndex, const Real aValue)
     {
-
         this->source((anEdgeIndex + 0) % 4) += aValue * 0.5;
         this->source((anEdgeIndex + 1) % 4) += aValue * 0.5;
     }
@@ -160,7 +151,6 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 1, 1>::calculateB(Eigen::Matrix<Real, 3, 4>& B)
     {
-
         Real bi = m_y24 * m_z34 - m_y34 * m_z24;
         Real bj = m_y34 * m_z14 - m_y14 * m_z34;
         Real bk = m_y14 * m_z24 - m_y24 * m_z14;
@@ -184,7 +174,6 @@ namespace fem {
     template <typename Real>
     void CFemTetrahedron<Real, 4, 3, 1>::calculateB(Eigen::Matrix<Real, 6, 12>& B)
     {
-
         Real x14 = this->m_x14;
         Real x24 = this->m_x24;
         Real x34 = this->m_x34;

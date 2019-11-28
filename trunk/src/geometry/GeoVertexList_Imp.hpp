@@ -12,9 +12,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoVertexList<Real>::CGeoVertexList()
     {
@@ -84,7 +82,6 @@ namespace geometry {
         Integer j = 1;
 
         for (Integer i = 1; i < static_cast<Integer>(m_vertices.size()) - 1; ++i) {
-
             CGeoVector<Real> v1, v2;
 
             v1 = m_vertices[(i + 1) % m_vertices.size()] - m_vertices[(i + 0) % m_vertices.size()];

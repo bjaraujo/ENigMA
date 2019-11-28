@@ -8,9 +8,7 @@
 // *****************************************************************************
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshTetrahedron<Real>::CMshTetrahedron()
         : m_quality(0.0)
@@ -25,7 +23,6 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedron<Real>::calculateQuality()
     {
-
         this->calculateSurfaceArea();
         this->calculateVolume();
 
@@ -50,7 +47,6 @@ namespace mesh {
     template <typename Real>
     Real CMshTetrahedron<Real>::quality()
     {
-
         return m_quality;
     }
 }

@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoConvexHull<Real>::CGeoConvexHull()
     {
@@ -21,14 +19,12 @@ namespace geometry {
     template <typename Real>
     CGeoConvexHull<Real>::CGeoConvexHull(std::vector<CGeoCoordinate<Real>>& sVertices)
     {
-
         this->set(sVertices);
     }
 
     template <typename Real>
     void CGeoConvexHull<Real>::set(std::vector<CGeoCoordinate<Real>>& sVertices)
     {
-
         if (sVertices.size() < 3)
             return;
 
@@ -53,7 +49,6 @@ namespace geometry {
         std::vector<SVertex<Real>> sExtVertices;
 
         for (Integer i = 0; i < static_cast<Integer>(sVertices.size()); ++i) {
-
             SVertex<Real> aVertex;
 
             aVertex.v2D = sVertices.at(i);
@@ -75,7 +70,6 @@ namespace geometry {
         // Build lower hull
         for (Integer i = 0; i < n; ++i) {
             while (k >= 2) {
-
                 Real c = (sNewExtVertices[k - 2].v2D - sNewExtVertices[k - 1].v2D).cross(sNewExtVertices[k - 2].v2D - sExtVertices[i].v2D).z();
 
                 if (c <= 0)
@@ -90,7 +84,6 @@ namespace geometry {
         // Build upper hull
         for (Integer i = n - 2, t = k + 1; i >= 0; i--) {
             while (k >= t) {
-
                 Real c = (sNewExtVertices[k - 2].v2D - sNewExtVertices[k - 1].v2D).cross(sNewExtVertices[k - 2].v2D - sExtVertices[i].v2D).z();
 
                 if (c <= 0)
@@ -112,35 +105,30 @@ namespace geometry {
     template <typename Real>
     CGeoConvexHull<Real>::~CGeoConvexHull()
     {
-
         reset();
     }
 
     template <typename Real>
     void CGeoConvexHull<Real>::reset()
     {
-
         m_vertices.clear();
     }
 
     template <typename Real>
     Integer CGeoConvexHull<Real>::nbVertices() const
     {
-
         return static_cast<Integer>(m_vertices.size());
     }
 
     template <typename Real>
     void CGeoConvexHull<Real>::addVertex(CGeoCoordinate<Real>& aVertex)
     {
-
         m_vertices.push_back(aVertex);
     }
 
     template <typename Real>
     CGeoCoordinate<Real>& CGeoConvexHull<Real>::vertex(const Integer aVertexIndex)
     {
-
         return m_vertices[aVertexIndex % m_vertices.size()];
     }
 }

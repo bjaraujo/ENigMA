@@ -12,9 +12,7 @@
 #include <fstream>
 
 namespace ENigMA {
-
 namespace post {
-
     template <typename Real>
     CPosQuickMesh<Real>::CPosQuickMesh()
     {
@@ -28,21 +26,17 @@ namespace post {
     template <typename Real>
     bool CPosQuickMesh<Real>::load(CPdeField<Real>& aField, const std::string& strFileName)
     {
-
         std::ifstream fileQuickMesh;
 
         fileQuickMesh.open(strFileName.c_str(), std::ios_base::in);
 
         if (fileQuickMesh.is_open()) {
-
             while (!fileQuickMesh.eof()) {
-
                 std::string line;
 
                 std::getline(fileQuickMesh, line);
 
                 if (line.find("C") != std::string::npos) {
-
                     std::string desc;
                     Integer id;
                     Real x, y, z;
@@ -55,7 +49,6 @@ namespace post {
                     aField.mesh().addNode(id - 1, aNode);
 
                 } else if (line.find("t") != std::string::npos) {
-
                     std::string desc;
                     Integer id;
                     Integer n1, n2, n3, n4;
@@ -89,18 +82,15 @@ namespace post {
     template <typename Real>
     bool CPosQuickMesh<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
-
         std::ofstream fileQuickMesh;
 
         fileQuickMesh.open(strFileName.c_str(), std::ios_base::out | std::ios_base::trunc);
 
         if (fileQuickMesh.is_open()) {
-
             fileQuickMesh << "P " << aField.mesh().nbNodes() << std::endl;
             fileQuickMesh << "T " << aField.mesh().nbElements() << std::endl;
 
             for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
                 Integer id = aField.mesh().nodeId(i);
                 Integer index = aField.mesh().nodeIndex(id);
 
@@ -108,7 +98,6 @@ namespace post {
             }
 
             for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                 Integer id = aField.mesh().elementId(i);
                 Integer index = aField.mesh().elementIndex(id);
 

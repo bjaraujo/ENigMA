@@ -18,9 +18,7 @@
 #include "MshNode.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshMesh {
     private:

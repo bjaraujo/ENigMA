@@ -13,11 +13,8 @@
 #include "FemThermalElement.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace thermal {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemLinearTemperatureTetrahedron : public CFemThermalElement<Real>, public CFemTetrahedron<Real, NbNodes, Dof, Order> {
         };

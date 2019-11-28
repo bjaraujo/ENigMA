@@ -12,9 +12,7 @@
 #include <fstream>
 
 namespace ENigMA {
-
 namespace post {
-
     template <typename Real>
     CPosGnuplot<Real>::CPosGnuplot()
     {
@@ -28,19 +26,15 @@ namespace post {
     template <typename Real>
     bool CPosGnuplot<Real>::save(CPdeField<Real>& aField, const std::string& strFileName)
     {
-
         std::ofstream fileGnuplot;
 
         fileGnuplot.open(strFileName.c_str(), std::ios_base::out | std::ios_base::trunc);
 
         if (fileGnuplot.is_open()) {
-
             fileGnuplot << "# id x y z u" << std::endl;
 
             if (aField.discretLocation() == DL_NODE) {
-
                 for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-
                     Integer id = aField.mesh().nodeIndex(i);
                     CMshNode<Real> aNode = aField.mesh().node(id);
 
@@ -53,9 +47,7 @@ namespace post {
             }
 
             if (aField.discretLocation() == DL_ELEMENT_CENTER) {
-
                 for (Integer i = 0; i < aField.mesh().nbElements(); ++i) {
-
                     Integer id = aField.mesh().elementIndex(i);
                     CGeoCoordinate<Real> aCentroid = aField.mesh().elementCentroid(id);
 

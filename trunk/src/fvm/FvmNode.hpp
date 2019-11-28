@@ -14,9 +14,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     class CFvmNode : public CGeoCoordinate<Real> {
     public:

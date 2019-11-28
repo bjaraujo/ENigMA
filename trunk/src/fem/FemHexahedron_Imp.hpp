@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemHexahedron<Real, 8, 1, 1>::CFemHexahedron()
     {
-
         this->source.resize(8);
         this->source.setZero();
 
@@ -33,7 +30,6 @@ namespace fem {
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::rebuild()
     {
-
         CGeoCoordinate<Real> n1 = this->m_vertices[0];
         CGeoCoordinate<Real> n2 = this->m_vertices[1];
         CGeoCoordinate<Real> n3 = this->m_vertices[2];
@@ -74,7 +70,6 @@ namespace fem {
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::setTransientTerm()
     {
-
         Real N[8];
 
         Eigen::Matrix<Real, 3, 3> J;
@@ -84,7 +79,6 @@ namespace fem {
         this->ddt.setZero();
 
         for (Integer p = 0; p < CIntGaussIntegration<Real>::m_integPoints; p++) {
-
             Real xi = this->m_xi[p];
             Real eta = this->m_eta[p];
             Real zeta = this->m_zeta[p];
@@ -128,9 +122,7 @@ namespace fem {
             Ji.setZero();
 
             for (Integer i = 0; i < 8; ++i) {
-
                 for (Integer j = 0; j < 8; ++j) {
-
                     Ji(i, j) = N[i] * N[j];
                 }
             }
@@ -147,7 +139,6 @@ namespace fem {
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::setDiffusionTerm()
     {
-
         Eigen::Matrix<Real, 3, 3> J;
         Eigen::Matrix<Real, 3, 8> G;
         Eigen::Matrix<Real, 3, 8> B;
@@ -157,7 +148,6 @@ namespace fem {
         this->laplacian.setZero();
 
         for (Integer p = 0; p < CIntGaussIntegration<Real>::m_integPoints; p++) {
-
             Real xi = this->m_xi[p];
             Real eta = this->m_eta[p];
             Real zeta = this->m_zeta[p];
@@ -213,7 +203,6 @@ namespace fem {
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::update()
     {
-
         // Calculate geometrical properties
         rebuild();
 
@@ -231,14 +220,12 @@ namespace fem {
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::setSourceOnNode(Integer aNodeIndex, Real aValue)
     {
-
         this->source(aNodeIndex) += aValue;
     }
 
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::setSourceOnEdge(const Integer anEdgeIndex, const Real aValue)
     {
-
         this->source((anEdgeIndex + 0) % 8) += aValue * 0.5;
         this->source((anEdgeIndex + 1) % 8) += aValue * 0.5;
     }
@@ -246,7 +233,6 @@ namespace fem {
     template <typename Real>
     void CFemHexahedron<Real, 8, 1, 1>::setSourceOnFace(const Integer aFaceIndex, const Real aValue)
     {
-
         //this->m_source += (aValue * 0.5);
     }
 }

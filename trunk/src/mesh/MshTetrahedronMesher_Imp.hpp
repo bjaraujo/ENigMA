@@ -17,9 +17,7 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     CMshTetrahedronMesher<Real>::CMshTetrahedronMesher()
         : m_timeInterval(1)
@@ -40,7 +38,6 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::checkUpdate()
     {
-
         if (onUpdate != nullptr) {
             m_end = clock();
 
@@ -59,7 +56,6 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::removeTriangle(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance)
     {
-
         anAdvTriangle.remove = true;
         this->removeTriangleFromRtree(anAdvTriangle, aTolerance);
     }
@@ -67,7 +63,6 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::addTriangleToRtree(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance)
     {
-
         Integer aNodeId1 = anAdvTriangle.nodeId[0];
         Integer aNodeId2 = anAdvTriangle.nodeId[1];
         Integer aNodeId3 = anAdvTriangle.nodeId[2];
@@ -90,7 +85,6 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::removeTriangleFromRtree(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance)
     {
-
         Integer aNodeId1 = anAdvTriangle.nodeId[0];
         Integer aNodeId2 = anAdvTriangle.nodeId[1];
         Integer aNodeId3 = anAdvTriangle.nodeId[2];
@@ -109,7 +103,6 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::triangleExists(SAdvancingFrontTriangle& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles)
     {
-
         std::vector<Integer> sNodeIds;
 
         sNodeIds.push_back(anAdvTriangle.nodeId[0]);
@@ -119,7 +112,6 @@ namespace mesh {
         std::sort(sNodeIds.begin(), sNodeIds.end());
 
         for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
             // Discard same triangle
             if (sTriangles[j] == anAdvTriangle.id)
                 continue;
@@ -135,7 +127,6 @@ namespace mesh {
             std::sort(sOtherNodeIds.begin(), sOtherNodeIds.end());
 
             if (sOtherNodeIds[0] == sNodeIds[0] && sOtherNodeIds[1] == sNodeIds[1] && sOtherNodeIds[2] == sNodeIds[2]) {
-
                 aDuplicateTriangleId = sTriangles[j];
                 return true;
             }
@@ -147,7 +138,6 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::triangleOk(SAdvancingFrontTriangle& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance)
     {
-
         CGeoTriangle<Real> aTriangle1;
 
         aTriangle1.addVertex(aNode1);
@@ -155,7 +145,6 @@ namespace mesh {
         aTriangle1.addVertex(aNode3);
 
         for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
             // Exclude current triangle
             if (sTriangles[j] == anAdvTriangle.id)
                 continue;
@@ -170,7 +159,6 @@ namespace mesh {
             CGeoIntersectionType anIntersectionType;
 
             if (aTriangle1.intersects(aTriangle2, anIntersectionType, aTolerance)) {
-
                 if (anIntersectionType == IT_INTERNAL || anIntersectionType == IT_SWAP)
                     return false;
             }
@@ -182,14 +170,11 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::findClosestNodes(std::vector<Integer>& sTriangles, std::vector<Integer>& sNodes)
     {
-
         for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
             if (m_anAdvFront[sTriangles[j]].remove)
                 continue;
 
             for (Integer k = 0; k < 3; ++k) {
-
                 Integer aNodeId = m_anAdvFront[sTriangles[j]].nodeId[k];
 
                 if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
@@ -198,7 +183,6 @@ namespace mesh {
         }
 
         for (Integer j = 0; j < static_cast<Integer>(m_innerNodes.size()); ++j) {
-
             if (m_innerNodes[j].remove)
                 continue;
 
@@ -212,11 +196,9 @@ namespace mesh {
     template <typename Real>
     Real CMshTetrahedronMesher<Real>::findShortestDistance(std::vector<Integer>& sTriangles, CGeoLine<Real>& aLine, Integer anAdvTriangleId, const Real aTolerance)
     {
-
         Real dmin = std::numeric_limits<Real>::max();
 
         for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
             if (sTriangles[j] == anAdvTriangleId)
                 continue;
 
@@ -228,7 +210,6 @@ namespace mesh {
             CGeoIntersectionType anIntersectionType;
 
             if (m_anAdvFront[sTriangles[j]].triangle.intersects(aLine, aNewPoint, anIntersectionType, aTolerance)) {
-
                 Real distance = (aNewPoint - aLine.startPoint()).norm();
 
                 if (distance < dmin)
@@ -242,7 +223,6 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::tetrahedronContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance)
     {
-
         CMshTetrahedron<Real> aTetrahedron;
 
         aTetrahedron.addVertex(aNode1);
@@ -251,7 +231,6 @@ namespace mesh {
         aTetrahedron.addVertex(aNode4);
 
         for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
-
             aNodeId = sNodes[j];
 
             CMshNode<Real>& aNode = m_volumeMesh.node(aNodeId);
@@ -269,9 +248,7 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance)
     {
-
         for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i) {
-
             Integer anElementId = m_volumeMesh.elementId(i);
 
             CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
@@ -301,11 +278,8 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::pairEdges(SAdvancingFrontTriangle& anAdvTriangle1, SAdvancingFrontTriangle& anAdvTriangle2)
     {
-
         for (Integer k = 0; k < 3; ++k) {
-
             for (Integer l = 0; l < 3; l++) {
-
                 if ((anAdvTriangle1.nodeId[(k + 0) % 3] == anAdvTriangle2.nodeId[(l + 0) % 3] && anAdvTriangle1.nodeId[(k + 1) % 3] == anAdvTriangle2.nodeId[(l + 1) % 3]) || (anAdvTriangle1.nodeId[(k + 0) % 3] == anAdvTriangle2.nodeId[(l + 1) % 3] && anAdvTriangle1.nodeId[(k + 1) % 3] == anAdvTriangle2.nodeId[(l + 0) % 3])) {
                     anAdvTriangle1.neighborId[k] = anAdvTriangle2.id;
                     anAdvTriangle1.nodeNotId[k] = (l + 2) % 3;
@@ -324,7 +298,6 @@ namespace mesh {
     void CMshTetrahedronMesher<Real>::adjustConnectivity(std::vector<Integer>& sTriangles)
     {
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-
             Integer anAdvTriangleId = i;
 
             SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
@@ -343,9 +316,7 @@ namespace mesh {
             }
 
             if (m_anAdvFront[anAdvTriangle.neighborId[0]].remove || m_anAdvFront[anAdvTriangle.neighborId[1]].remove || m_anAdvFront[anAdvTriangle.neighborId[2]].remove) {
-
                 for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
                     Integer anotherAdvTriangleId = sTriangles[j];
 
                     // Discard same triangle
@@ -377,7 +348,6 @@ namespace mesh {
 
         // Check last three triangles
         for (Integer i = 0; i < 3; ++i) {
-
             Integer anAdvTriangleId = m_nextTriangleId - i - 1;
 
             SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
@@ -388,7 +358,6 @@ namespace mesh {
             Integer aDuplicateTriangleId;
 
             if (this->triangleExists(anAdvTriangle, aDuplicateTriangleId, sTriangles)) {
-
                 SAdvancingFrontTriangle& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
 
                 this->removeTriangle(anAdvTriangle, aTolerance);
@@ -553,7 +522,6 @@ namespace mesh {
         m_boundingBox.reset();
 
         for (Integer i = 0; i < aSurfaceMesh.nbNodes(); ++i) {
-
             Integer aNodeId = aSurfaceMesh.nodeId(i);
             CMshNode<Real>& aNode = aSurfaceMesh.node(aNodeId);
 
@@ -577,7 +545,6 @@ namespace mesh {
         m_nextTriangleId = 0;
 
         for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
-
             Integer anElementId = aSurfaceMesh.elementId(i);
 
             CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
@@ -589,13 +556,11 @@ namespace mesh {
         m_nextTriangleId = 0;
 
         for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
-
             Integer anElementId = aSurfaceMesh.elementId(i);
 
             CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
 
             if (anElement.elementType() == ET_TRIANGLE) {
-
                 SAdvancingFrontTriangle anAdvTriangle;
 
                 anAdvTriangle.id = m_nextTriangleId++;
@@ -611,7 +576,6 @@ namespace mesh {
                 anAdvTriangle.build(aSurfaceMesh);
 
                 for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
-
                     anAdvTriangle.neighborId[j] = std::numeric_limits<Integer>::max();
 
                     Integer aFaceId = anElement.faceId(j);
@@ -622,7 +586,6 @@ namespace mesh {
                         Integer aNeighborId = aSurfaceMesh.face(aPairFaceId).elementId();
 
                         if (newTriangleIds.find(aNeighborId) != newTriangleIds.end()) {
-
                             anAdvTriangle.neighborId[j] = newTriangleIds.at(aNeighborId);
 
                             CMshElement<Real>& aNeighbor = aSurfaceMesh.element(aNeighborId);
@@ -638,7 +601,6 @@ namespace mesh {
                             std::cout << "Error: element id = " << aNeighborId << " not found!" << std::endl;
 
                     } else {
-
                         throw std::runtime_error("Boundary is open!");
                     }
                 }
@@ -651,7 +613,6 @@ namespace mesh {
 
         // Add interior nodes
         for (Integer i = 0; i < static_cast<Integer>(sInteriorPoints.size()); ++i) {
-
             Integer aNewNodeId = m_volumeMesh.nextNodeId();
             CMshNode<Real> aNewNode = sInteriorPoints[i];
 
@@ -677,9 +638,7 @@ namespace mesh {
         res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.35, 0.01, false, 0, aTolerance) : res = false;
 
         if (res) {
-
             for (Integer i = 0; i < 30; ++i) {
-
                 if (i < 10)
                     res ? res = this->repair(meshSizeFunc, 0.90 + i * 0.05, 0.0, aTolerance) : res = false;
                 else
@@ -722,7 +681,6 @@ namespace mesh {
     template <typename Real>
     Integer CMshTetrahedronMesher<Real>::frontSize()
     {
-
         Integer n = 0;
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
@@ -750,7 +708,6 @@ namespace mesh {
         Integer nMeshSize = 0;
 
         for (Integer i = firstIndex; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-
             this->checkUpdate();
 
             if (m_bStop)
@@ -841,7 +798,6 @@ namespace mesh {
             // Priority = 3: new node forming correct spacing
 
             if (aNodeId4 == aNodeId5 && aNodeId5 == aNodeId6) {
-
                 CMshTetrahedron<Real> aNewTetrahedron;
 
                 aNewTetrahedron.addVertex(aNode1);
@@ -852,11 +808,9 @@ namespace mesh {
                 aNewTetrahedron.calculateVolume();
 
                 if (aNewTetrahedron.volume() > aTolerance * aTolerance * aTolerance) {
-
                     Integer wNodeId;
 
                     if (this->triangleOk(anAdvTriangle, aNode1, aNode2, aNode4, sTriangles, aTolerance) && this->triangleOk(anAdvTriangle, aNode2, aNode3, aNode4, sTriangles, aTolerance) && this->triangleOk(anAdvTriangle, aNode3, aNode1, aNode4, sTriangles, aTolerance) && !this->tetrahedronContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance)) {
-
                         this->addTetrahedron(anAdvTriangle, aNodeId4, sTriangles, aTolerance);
                         res = true;
                         continue;
@@ -871,7 +825,6 @@ namespace mesh {
             Integer anExistingNodeId = std::numeric_limits<Integer>::max();
 
             for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j) {
-
                 Integer aNodeId = sNodes[j];
 
                 if (aNodeId == aNodeId1 || aNodeId == aNodeId2 || aNodeId == aNodeId3)
@@ -883,7 +836,6 @@ namespace mesh {
 
                 // Use closest node
                 if (d < localMeshSize * sizeFactor * expandFactor) {
-
                     CMshTetrahedron<Real> aNewTetrahedron1;
 
                     aNewTetrahedron1.addVertex(aNode1);
@@ -894,7 +846,6 @@ namespace mesh {
                     aNewTetrahedron1.calculateVolume();
 
                     if (aNewTetrahedron1.volume() > aTolerance * aTolerance * aTolerance) {
-
                         aNewTetrahedron1.calculateQuality();
 
                         Real q1 = aNewTetrahedron1.quality();
@@ -923,9 +874,7 @@ namespace mesh {
             }
 
             if (qmax > minQuality) {
-
                 for (Integer k = 0; k < static_cast<Integer>(m_innerNodes.size()); ++k) {
-
                     if (m_innerNodes[k].remove)
                         continue;
 
@@ -937,7 +886,6 @@ namespace mesh {
                 res = true;
 
             } else {
-
                 CGeoLine<Real> aLine(aMidNode, aNewNode);
 
                 Real dmin = findShortestDistance(sTriangles, aLine, anAdvTriangleId, aTolerance);
@@ -955,7 +903,6 @@ namespace mesh {
                 aNewTetrahedron2.calculateVolume();
 
                 if (aNewTetrahedron2.volume() > aTolerance * aTolerance * aTolerance) {
-
                     aNewTetrahedron2.calculateQuality();
 
                     Real q2 = aNewTetrahedron2.quality();
@@ -978,7 +925,6 @@ namespace mesh {
                         q2 += this->checkDelaunay(aNewNode, aTolerance) ? 0.0 : -2.0;
 
                     if (q2 > 1.5 * minQuality) {
-
                         // Create a new node
                         m_volumeMesh.addNode(aNewNodeId, aNewNode);
 
@@ -1006,7 +952,6 @@ namespace mesh {
 
         // Build connectivity
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-
             Integer anAdvTriangleId = i;
 
             SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
@@ -1034,7 +979,6 @@ namespace mesh {
             m_tree.find(sTriangles, aBoundingBox);
 
             for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j) {
-
                 Integer anotherTriangleId = sTriangles[j];
 
                 // Discard same triangle
@@ -1060,13 +1004,11 @@ namespace mesh {
     template <typename Real>
     Integer CMshTetrahedronMesher<Real>::getFirstIndex()
     {
-
         Integer aFirstIndex = 0;
 
         Real minArea = std::numeric_limits<Real>::max();
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-
             SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[i];
 
             if (anAdvTriangle.remove)
@@ -1088,7 +1030,6 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::reduceFront(const Real aTolerance)
     {
-
         std::vector<SAdvancingFrontTriangle> aReducedAdvFront;
 
         std::map<Integer, Integer> aAdvFrontMapId;
@@ -1096,7 +1037,6 @@ namespace mesh {
         Integer aNewAdvFrontId = 0;
 
         for (Integer i = 0; i < m_anAdvFront.size(); ++i) {
-
             SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[i];
 
             if (anAdvTriangle.remove)
@@ -1115,7 +1055,6 @@ namespace mesh {
         m_anAdvFront.clear();
 
         for (Integer i = 0; i < aReducedAdvFront.size(); ++i) {
-
             SAdvancingFrontTriangle& anAdvTriangle = aReducedAdvFront[i];
 
             anAdvTriangle.id = aAdvFrontMapId.at(anAdvTriangle.id);
@@ -1132,7 +1071,6 @@ namespace mesh {
     template <typename Real>
     bool CMshTetrahedronMesher<Real>::repair(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real sizeFactor, const Real minQuality, const Real aTolerance)
     {
-
         Real x, y, z;
 
         meshSizeFunc.removeAllVariables();
@@ -1146,7 +1084,6 @@ namespace mesh {
         std::vector<Integer> sElementsToRemove;
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-
             this->checkUpdate();
 
             if (m_bStop)
@@ -1161,7 +1098,6 @@ namespace mesh {
                 continue;
 
             for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j) {
-
                 SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[j];
 
                 if (anotherAdvTriangle.remove)
@@ -1177,7 +1113,6 @@ namespace mesh {
                     sElementsToRemove.push_back(anotherAdvTriangle.tetrahedronId);
 
                 for (Integer k = 0; k < 3; ++k) {
-
                     Integer aNodeId1 = anAdvTriangle.nodeId[(k + 0) % 3];
                     Integer aNodeId2 = anAdvTriangle.nodeId[(k + 1) % 3];
 
@@ -1187,7 +1122,6 @@ namespace mesh {
                     CGeoLine<Real> aLine1(aNode1, aNode2);
 
                     for (Integer l = 0; l < 3; l++) {
-
                         Integer aNodeId3 = anotherAdvTriangle.nodeId[(l + 0) % 3];
                         Integer aNodeId4 = anotherAdvTriangle.nodeId[(l + 1) % 3];
 
@@ -1205,20 +1139,17 @@ namespace mesh {
                         Real aDistance = 0.0;
 
                         if (aLine1.distance(aLine2, aPoint5, aPoint6, aDistance, aTolerance)) {
-
                             aLine1.calculateLength();
                             aLine2.calculateLength();
 
                             Real aLength = (aLine1.length() + aLine2.length()) * 0.5;
 
                             if (aDistance < aLength * 0.20) {
-
                                 CGeoCoordinate<Real> aNewPoint = (aPoint6 + aPoint5) * 0.5;
 
                                 bool bAddNode = true;
 
                                 for (Integer m = 0; m < static_cast<Integer>(sSteinerPoints.size()); m++) {
-
                                     if ((sSteinerPoints[m] - aNewPoint).norm() < aLength * 0.50) {
                                         bAddNode = false;
                                         break;
@@ -1235,7 +1166,6 @@ namespace mesh {
         }
 
         for (Integer i = 0; i < static_cast<Integer>(sSteinerPoints.size()); ++i) {
-
             this->checkUpdate();
 
             if (m_bStop)
@@ -1250,19 +1180,16 @@ namespace mesh {
             CGeoSphere<Real> aSphere(sSteinerPoints[i], localMeshSize * sizeFactor);
 
             for (Integer j = 0; j < m_volumeMesh.nbElements(); ++j) {
-
                 Integer anElementId = m_volumeMesh.elementId(j);
 
                 CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
 
                 for (Integer k = 0; k < anElement.nbNodeIds(); ++k) {
-
                     Integer aNodeId = anElement.nodeId(k);
 
                     CMshNode<Real>& aNode = m_volumeMesh.node(aNodeId);
 
                     if (aSphere.contains(aNode, aTolerance)) {
-
                         if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anElementId) == sElementsToRemove.end())
                             sElementsToRemove.push_back(anElementId);
                     }
@@ -1271,7 +1198,6 @@ namespace mesh {
         }
 
         for (Integer i = 0; i < static_cast<Integer>(sElementsToRemove.size()); ++i) {
-
             this->checkUpdate();
 
             if (m_bStop)
@@ -1286,7 +1212,6 @@ namespace mesh {
             anElement.generateFaces(sFaces);
 
             for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
-
                 SAdvancingFrontTriangle anAdvTriangle;
 
                 anAdvTriangle.id = m_nextTriangleId++;
@@ -1313,7 +1238,6 @@ namespace mesh {
         }
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-
             this->checkUpdate();
 
             if (m_bStop)
@@ -1333,7 +1257,6 @@ namespace mesh {
             std::sort(sNodeIds.begin(), sNodeIds.end());
 
             for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j) {
-
                 SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[j];
 
                 if (anotherAdvTriangle.remove)
@@ -1348,7 +1271,6 @@ namespace mesh {
                 std::sort(sOtherNodeIds.begin(), sOtherNodeIds.end());
 
                 if (sNodeIds == sOtherNodeIds) {
-
                     this->removeTriangle(anAdvTriangle, aTolerance);
                     this->removeTriangle(anotherAdvTriangle, aTolerance);
                 }
@@ -1366,14 +1288,12 @@ namespace mesh {
     template <typename Real>
     CMshMesh<Real>& CMshTetrahedronMesher<Real>::mesh()
     {
-
         return m_volumeMesh;
     }
 
     template <typename Real>
     void CMshTetrahedronMesher<Real>::setIntervals(const Integer timeInterval, const Integer dataInterval)
     {
-
         m_begin = clock();
 
         m_timeInterval = timeInterval;
@@ -1383,24 +1303,20 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::stopMeshing()
     {
-
         m_bStop = true;
     }
 
     template <typename Real>
     void CMshTetrahedronMesher<Real>::relaxNodes(const Real aFactor, const Real aTolerance)
     {
-
         std::map<Integer, bool> bBoundaryNode;
 
         for (Integer i = 0; i < m_volumeMesh.nbNodes(); ++i) {
-
             Integer aNodeId = m_volumeMesh.nodeId(i);
             bBoundaryNode[aNodeId] = false;
         }
 
         for (Integer i = 0; i < m_volumeMesh.nbFaces(); ++i) {
-
             Integer aFaceId = m_volumeMesh.faceId(i);
             CMshFace<Real>& aFace = m_volumeMesh.face(aFaceId);
 
@@ -1408,7 +1324,6 @@ namespace mesh {
                 continue;
 
             for (Integer j = 0; j < aFace.nbNodeIds(); ++j) {
-
                 Integer aNodeId = aFace.nodeId(j);
                 bBoundaryNode[aNodeId] = true;
             }
@@ -1419,7 +1334,6 @@ namespace mesh {
         std::vector<Integer> sElementIds;
 
         for (Integer i = 0; i < m_volumeMesh.nbNodes(); ++i) {
-
             Integer aMovingNodeId = m_volumeMesh.nodeId(i);
             CMshNode<Real>& aMovingNode = m_volumeMesh.node(aMovingNodeId);
 
@@ -1436,7 +1350,6 @@ namespace mesh {
             CMshNode<Real> aNewNode(0.0, 0.0, 0.0);
 
             for (Integer j = 0; j < static_cast<Integer>(sElementIds.size()); ++j) {
-
                 Integer anElementId = sElementIds[j];
 
                 CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
@@ -1479,7 +1392,6 @@ namespace mesh {
             sNewNodes.push_back(aMovingNode - v * aFactor);
 
             for (Integer n = 0; n < static_cast<Integer>(sNewNodes.size()); n++) {
-
                 aNewNode = sNewNodes[n];
 
                 Real minq1 = 1.0;
@@ -1488,7 +1400,6 @@ namespace mesh {
                 bool bMoveNode = true;
 
                 for (Integer k = 0; k < static_cast<Integer>(sElementIds.size()); ++k) {
-
                     CMshElement<Real>& aModElement = m_volumeMesh.element(sElementIds[k]);
 
                     if (aModElement.elementType() != ET_TETRAHEDRON)
@@ -1564,17 +1475,14 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::flipEdges23(const Real aTolerance)
     {
-
         std::map<Integer, bool> sFlipped;
 
         for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i) {
-
             Integer anElementId = m_volumeMesh.elementId(i);
             sFlipped[anElementId] = false;
         }
 
         for (Integer i = 0; i < m_volumeMesh.nbFaces(); ++i) {
-
             Integer aFaceId = m_volumeMesh.faceId(i);
             CMshFace<Real> aFace = m_volumeMesh.face(aFaceId);
 
@@ -1600,7 +1508,6 @@ namespace mesh {
             bool bNodeId4 = false;
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                 if (anElement.nodeId(j) != aNodeId1 && anElement.nodeId(j) != aNodeId2 && anElement.nodeId(j) != aNodeId3) {
                     aNodeId4 = anElement.nodeId(j);
                     bNodeId4 = true;
@@ -1612,7 +1519,6 @@ namespace mesh {
                 continue;
 
             if (aFace.hasPair()) {
-
                 Integer pairFaceId = aFace.pairFaceId();
                 CMshFace<Real> aPairFace = m_volumeMesh.face(pairFaceId);
 
@@ -1631,7 +1537,6 @@ namespace mesh {
                 bool bNodeId5 = false;
 
                 for (Integer j = 0; j < aNeighbor.nbNodeIds(); ++j) {
-
                     if (aNeighbor.nodeId(j) != aNodeId1 && aNeighbor.nodeId(j) != aNodeId2 && aNeighbor.nodeId(j) != aNodeId3) {
                         aNodeId5 = aNeighbor.nodeId(j);
                         bNodeId5 = true;
@@ -1699,7 +1604,6 @@ namespace mesh {
                 Real q5 = aTetrahedron5.quality();
 
                 if (std::min(q3, std::min(q4, q5)) > std::min(q1, q2) && aTetrahedron3.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron4.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron5.volume() > aTolerance * aTolerance * aTolerance) {
-
                     // Do flip
                     m_volumeMesh.element(anElementId).setNodeId(0, aNodeId1);
                     m_volumeMesh.element(anElementId).setNodeId(1, aNodeId2);
@@ -1738,20 +1642,17 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::flipEdges32(const Real aTolerance)
     {
-
         std::map<Integer, bool> sFlipped;
         std::map<Integer, bool> bDeleteElement;
 
         std::map<Integer, bool> bBoundaryNode;
 
         for (Integer i = 0; i < m_volumeMesh.nbNodes(); ++i) {
-
             Integer aNodeId = m_volumeMesh.nodeId(i);
             bBoundaryNode[aNodeId] = false;
         }
 
         for (Integer i = 0; i < m_volumeMesh.nbFaces(); ++i) {
-
             Integer aFaceId = m_volumeMesh.faceId(i);
             CMshFace<Real>& aFace = m_volumeMesh.face(aFaceId);
 
@@ -1759,14 +1660,12 @@ namespace mesh {
                 continue;
 
             for (Integer j = 0; j < aFace.nbNodeIds(); ++j) {
-
                 Integer aNodeId = aFace.nodeId(j);
                 bBoundaryNode[aNodeId] = true;
             }
         }
 
         for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i) {
-
             Integer anElementId = m_volumeMesh.elementId(i);
             sFlipped[anElementId] = false;
 
@@ -1776,7 +1675,6 @@ namespace mesh {
         CMshMeshQuery<Real> aMeshQuery(m_volumeMesh);
 
         for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i) {
-
             Integer anElementId = m_volumeMesh.elementId(i);
             CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
 
@@ -1792,7 +1690,6 @@ namespace mesh {
             Integer aNodeId4 = anElement.nodeId(3);
 
             for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
-
                 if (sFlipped.at(anElementId))
                     continue;
 
@@ -1806,7 +1703,6 @@ namespace mesh {
                 std::vector<Integer> sElementIds;
 
                 for (Integer k = 0; k < aFace.nbNodeIds(); ++k) {
-
                     if (sFlipped.at(anElementId))
                         continue;
 
@@ -1816,13 +1712,11 @@ namespace mesh {
                     aMeshQuery.elementsSharingNodes(aFace.nodeId((k + 0) % 3), aFace.nodeId((k + 1) % 3), sElementIds);
 
                     if (sElementIds.size() == 3) {
-
                         Integer aNodeId5;
 
                         bool bNodeFound = false;
 
                         for (Integer l = 0; l < static_cast<Integer>(sElementIds.size()); l++) {
-
                             Integer anOtherElementId = sElementIds[l];
                             CMshElement<Real>& anOtherElement = m_volumeMesh.element(anOtherElementId);
 
@@ -1830,7 +1724,6 @@ namespace mesh {
                                 continue;
 
                             for (Integer m = 0; m < anOtherElement.nbNodeIds(); m++) {
-
                                 Integer aNodeId = anOtherElement.nodeId(m);
 
                                 if (aNodeId != aNodeId1 && aNodeId != aNodeId2 && aNodeId != aNodeId3 && aNodeId != aNodeId4) {
@@ -1903,7 +1796,6 @@ namespace mesh {
                         Real q5 = aTetrahedron5.quality();
 
                         if (std::min(q4, q5) > std::min(q1, std::min(q2, q3)) && aTetrahedron4.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron5.volume() > aTolerance * aTolerance * aTolerance) {
-
                             Integer anElementId1 = sElementIds[0];
                             Integer anElementId2 = sElementIds[1];
                             Integer anElementId3 = sElementIds[2];
@@ -1937,7 +1829,6 @@ namespace mesh {
         }
 
         for (typename std::map<Integer, bool>::const_iterator itr = bDeleteElement.begin(); itr != bDeleteElement.end(); ++itr) {
-
             Integer anElementId = itr->first;
 
             if (itr->second)

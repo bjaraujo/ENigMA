@@ -15,9 +15,7 @@
 #include "GeoCoordinateSystem.hpp"
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     struct CGeoCoordinate : public Eigen::Matrix<Real, 3, 1> {
     public:

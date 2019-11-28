@@ -12,9 +12,7 @@
 #include <Eigen/Dense>
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     class CFemElement {
     protected:

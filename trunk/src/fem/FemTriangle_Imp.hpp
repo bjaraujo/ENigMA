@@ -12,13 +12,10 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace fem {
-
     template <typename Real>
     CFemTriangle<Real, 3, 1, 1>::CFemTriangle()
     {
-
         this->source.resize(3);
         this->source.setZero();
 
@@ -33,13 +30,11 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::rebuild()
     {
-
         CGeoCoordinate<Real> n1 = this->m_vertices[0];
         CGeoCoordinate<Real> n2 = this->m_vertices[1];
         CGeoCoordinate<Real> n3 = this->m_vertices[2];
 
         if (n1.z() != 0.0 || n2.z() != 0.0 || n3.z() != 0.0) {
-
             CGeoVector<Real> v1 = n2 - n1;
             CGeoVector<Real> v2 = n3 - n1;
 
@@ -85,7 +80,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::setTransientTerm()
     {
-
         this->ddt.resize(3, 3);
 
         this->ddt << 1.0 / 6.0, 1.0 / 12.0, 1.0 / 12.0,
@@ -101,7 +95,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::calculateB(Eigen::Matrix<Real, 2, 3>& B)
     {
-
         B << -m_y32, -m_y13, -m_y21,
             +m_x32, +m_x13, +m_x21;
     }
@@ -109,7 +102,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::setDiffusionTerm()
     {
-
         this->laplacian.resize(3, 3);
 
         Eigen::Matrix<Real, 2, 3> B;
@@ -131,7 +123,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::update()
     {
-
         // Calculate geometrical properties
         this->rebuild();
 
@@ -146,14 +137,12 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::setSourceOnNode(Integer aNodeIndex, Real aValue)
     {
-
         this->source(aNodeIndex) += aValue;
     }
 
     template <typename Real>
     void CFemTriangle<Real, 3, 1, 1>::setSourceOnEdge(const Integer anEdgeIndex, const Real aValue)
     {
-
         this->source((anEdgeIndex + 0) % 3) += aValue * 0.5;
         this->source((anEdgeIndex + 1) % 3) += aValue * 0.5;
     }
@@ -161,7 +150,6 @@ namespace fem {
     template <typename Real>
     void CFemTriangle<Real, 3, 2, 1>::calculateB(Eigen::Matrix<Real, 3, 6>& B)
     {
-
         Real x21 = this->m_x21;
         Real x32 = this->m_x32;
         Real x13 = this->m_x13;

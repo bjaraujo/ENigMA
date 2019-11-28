@@ -18,20 +18,16 @@
 using namespace ENigMA::geometry;
 
 namespace ENigMA {
-
 namespace stl {
-
     template <typename Real>
     CStlUtils<Real>::CStlUtils()
     {
-
         m_stlFile.stats.type = FT_ASCII;
     }
 
     template <typename Real>
     CStlUtils<Real>::CStlUtils(ENigMA::mesh::CMshMesh<Real>& aTriMesh)
     {
-
         m_stlFile.stats.type = FT_ASCII;
 
         this->set(aTriMesh);
@@ -45,18 +41,15 @@ namespace stl {
     template <typename Real>
     ENigMA::stl::CStlFile<Real>& CStlUtils<Real>::stlFile()
     {
-
         return m_stlFile;
     }
 
     template <typename Real>
     void CStlUtils<Real>::set(ENigMA::mesh::CMshMesh<Real>& aTriMesh)
     {
-
         m_stlFile.reset();
 
         for (Integer i = 0; i < aTriMesh.nbElements(); ++i) {
-
             Integer anElementId = aTriMesh.elementId(i);
 
             ENigMA::mesh::CMshElement<Real> anElement = aTriMesh.element(anElementId);
@@ -67,7 +60,6 @@ namespace stl {
             CStlFacet<Real> aFacet;
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
-
                 Integer aNodeId = anElement.nodeId(j);
 
                 CGeoCoordinate<Real> aVertex = aTriMesh.node(aNodeId);
@@ -84,7 +76,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::load(const std::string& strFileName)
     {
-
         // Open the file
         m_stlFile.fileName = strFileName;
 
@@ -95,7 +86,6 @@ namespace stl {
         std::string line;
 
         if (fileSTL.is_open()) {
-
             // Find size of file
             fileSTL.seekg(0, std::ios::end);
 
@@ -144,7 +134,6 @@ namespace stl {
                     }
 
                 } else {
-
                     // Otherwise, if the .STL file is ASCII, then do the following
 
                     // Get the header
@@ -156,7 +145,6 @@ namespace stl {
                     Integer c = 0;
 
                     while (c < 5) {
-
                         char letter = fileSTL.get();
 
                         if (letter != 32) {
@@ -179,7 +167,6 @@ namespace stl {
                     Integer numLines = 1;
 
                     for (Integer i = 0, j = 0; i < m_stlFile.stats.fileSize; i++, ++j) {
-
                         if (fileSTL.get() == '\n') {
                             if (j > 4) // don't count short lines
                                 numLines++;
@@ -209,7 +196,6 @@ namespace stl {
                 m_stlFile.reset();
 
                 for (Integer i = 0; i < numFacets; ++i) {
-
                     CStlFacet<Real> aFacet;
 
                     if (m_stlFile.stats.type == FT_BINARY) {
@@ -232,7 +218,6 @@ namespace stl {
                         aFacet.extra[1] = static_cast<char>(fileSTL.get());
 
                     } else {
-
                         std::string strFacet, strNormal;
                         std::string strOuter, strLoop;
                         std::string strVertex;
@@ -275,20 +260,17 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::saveAscii(const std::string& strFileName)
     {
-
         std::ofstream fileSTL;
 
         fileSTL.open(strFileName.c_str(), std::ios_base::out);
 
         if (fileSTL.is_open()) {
-
             fileSTL << "solid" << std::endl;
 
             fileSTL.precision(8);
             fileSTL.setf(std::ios::scientific);
 
             for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
                 Integer aFacetId = m_stlFile.facetId(i);
 
                 fileSTL << "facet normal "
@@ -299,7 +281,6 @@ namespace stl {
                 fileSTL << "outer loop" << std::endl;
 
                 for (Integer j = 0; j < 3; ++j) {
-
                     fileSTL << "vertex "
                             << m_stlFile.facet(aFacetId).vertex(j).x() << " "
                             << m_stlFile.facet(aFacetId).vertex(j).y() << " "
@@ -321,7 +302,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::writeFloat(std::ofstream& stream, const Real aValue)
     {
-
         float fvalue = static_cast<float>(aValue);
         stream.write(reinterpret_cast<const char*>(&fvalue), sizeof(float));
         return true;
@@ -330,7 +310,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::writeInt(std::ofstream& stream, const Integer value)
     {
-
         stream.write(reinterpret_cast<const char*>(&value), sizeof(int));
         return true;
     }
@@ -338,7 +317,6 @@ namespace stl {
     template <typename Real>
     Real CStlUtils<Real>::getFloat(std::ifstream& stream)
     {
-
         float fvalue;
         stream.read(reinterpret_cast<char*>(&fvalue), sizeof(float));
         return static_cast<Real>(fvalue);
@@ -347,7 +325,6 @@ namespace stl {
     template <typename Real>
     Integer CStlUtils<Real>::getInt(std::ifstream& stream)
     {
-
         Integer ivalue;
         stream.read(reinterpret_cast<char*>(&ivalue), sizeof(int));
         return ivalue;
@@ -356,20 +333,17 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::saveBinary(const std::string& strFileName)
     {
-
         std::ofstream fileSTL;
 
         fileSTL.open(strFileName.c_str(), std::ios_base::out | std::ios::binary);
 
         if (fileSTL.is_open()) {
-
             for (Integer i = 0; i < LABEL_SIZE; ++i)
                 fileSTL.put(0);
 
             this->writeInt(fileSTL, m_stlFile.nbFacets());
 
             for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
                 Integer aFacetId = m_stlFile.facetId(i);
 
                 this->writeFloat(fileSTL, m_stlFile.facet(aFacetId).normal().x());
@@ -395,7 +369,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::save(const std::string& strFileName)
     {
-
         if (m_stlFile.stats.type == FT_ASCII)
             return this->saveAscii(strFileName);
         else
@@ -405,9 +378,7 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::add(CStlUtils<Real>& aStl)
     {
-
         for (Integer i = 0; i < aStl.stlFile().nbFacets(); ++i) {
-
             Integer aFacetId = aStl.stlFile().facetId(i);
             Integer aNewFacetId = m_stlFile.nextFacetId();
 
@@ -422,7 +393,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::calculateStatistics()
     {
-
         // Initialize the max and min values the first time through
         if (m_stlFile.nbFacets() > 0) {
             Integer aFacetId = m_stlFile.facetId(0);
@@ -434,7 +404,6 @@ namespace stl {
         }
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             CStlFacet<Real> aFacet = m_stlFile.facet(aFacetId);
@@ -461,7 +430,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::addFacet(const Integer aFacetId, ENigMA::stl::CStlFacet<Real> aFacet)
     {
-
         m_stlFile.addFacet(aFacetId, aFacet);
         return true;
     }
@@ -469,7 +437,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::removeFacet(const Integer aFacetId)
     {
-
         m_stlFile.removeFacet(aFacetId);
         return true;
     }
@@ -477,11 +444,9 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::removeDuplicateFacets(const Real aTolerance)
     {
-
         CGeoHashGrid<Real> aHashGrid;
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             m_stlFile.facet(aFacetId).calculateCentroid();
@@ -493,7 +458,6 @@ namespace stl {
         aHashGrid.build();
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             m_stlFile.facet(aFacetId).calculateArea();
@@ -505,7 +469,6 @@ namespace stl {
             aHashGrid.find(sCoordinates, aCenterCoordinate, aTolerance);
 
             for (Integer k = 1; k < static_cast<Integer>(sCoordinates.size()); ++k) {
-
                 Integer wFacetId = sCoordinates.at(k);
 
                 m_stlFile.facet(wFacetId).calculateArea();
@@ -513,7 +476,6 @@ namespace stl {
                 Real area_diff = fabs(m_stlFile.facet(aFacetId).area() - m_stlFile.facet(wFacetId).area());
 
                 if (area_diff < aTolerance * aTolerance) {
-
                     // Remove this facet
                     this->removeFacet(wFacetId);
                     i--;
@@ -527,9 +489,7 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::removeInvalidFacets(const Real aTolerance)
     {
-
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             Real d1 = (m_stlFile.facet(aFacetId).vertex(1) - m_stlFile.facet(aFacetId).vertex(0)).norm();
@@ -553,7 +513,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::generateConnectivity(const Real aTolerance)
     {
-
         // Discover double edges
         CGeoHashGrid<Real> aHashGrid;
 
@@ -562,11 +521,9 @@ namespace stl {
         Integer anEdgeId;
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             for (Integer j = 0; j < 3; ++j) {
-
                 CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) + m_stlFile.facet(aFacetId).vertex((j + 1) % 3)) * 0.5;
 
                 sCenterCoordinates.push_back(aCenterCoordinate);
@@ -580,7 +537,6 @@ namespace stl {
         aHashGrid.build();
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             // initialize neighbors list to -1 to mark unconnected edges
@@ -591,11 +547,9 @@ namespace stl {
         }
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             for (Integer j = 0; j < 3; ++j) {
-
                 CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) + m_stlFile.facet(aFacetId).vertex((j + 1) % 3)) * 0.5;
 
                 std::vector<Integer> sCoordinates;
@@ -603,9 +557,7 @@ namespace stl {
                 aHashGrid.find(sCoordinates, aCenterCoordinate, aTolerance);
 
                 for (Integer k = 0; k < static_cast<Integer>(sCoordinates.size()); ++k) {
-
                     if (sCoordinates.at(k) != aFacetId * 3 + j) {
-
                         Integer ni = sCoordinates.at(k) / 3;
                         Integer nj = sCoordinates.at(k) % 3;
 
@@ -624,13 +576,11 @@ namespace stl {
     template <typename Real>
     ENigMA::mesh::CMshMesh<Real> CStlUtils<Real>::mesh()
     {
-
         ENigMA::mesh::CMshMesh<Real> aMesh;
 
         Integer aMaxNodeId = std::numeric_limits<Integer>::max();
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             ENigMA::mesh::CMshElement<Real> anElement;
@@ -649,7 +599,6 @@ namespace stl {
         Integer aNodeId = 0;
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             Integer aFirstFacet = aFacetId;
@@ -657,7 +606,6 @@ namespace stl {
             Integer anElementId = aFacetId;
 
             for (Integer j = 0; j < 3; ++j) {
-
                 if (aMesh.element(anElementId).nodeId(j) != aMaxNodeId)
                     continue;
 
@@ -726,7 +674,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::getFacetQuality(ENigMA::stl::CStlFacet<Real>& aFacet, Integer& smallEdge, Integer& bigEdge, Real& dmin, Real& dmax, Real& q)
     {
-
         Real d0, d1, d2;
         Real p, e;
 
@@ -779,7 +726,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::splitFacets(const Real splitSize, const Real fq)
     {
-
         CGeoCoordinate<Real> pn;
         CGeoCoordinate<Real> p3;
         CGeoCoordinate<Real> p[3];
@@ -793,7 +739,6 @@ namespace stl {
         Integer neighbor_c, vertex_not_c;
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             Integer sedg, bedg;
@@ -806,7 +751,6 @@ namespace stl {
                 p[j] = m_stlFile.facet(aFacetId).vertex(j);
 
             if (q >= fq && dmax > splitSize) {
-
                 ai = (Integer)(dmax / splitSize);
 
                 if (ai > 1 && ai < 10) {
@@ -877,7 +821,6 @@ namespace stl {
                 this->addFacet(aNewFacetId1, aNewFacet1);
 
                 if (neighbor != -1) {
-
                     p3 = m_stlFile.facet(neighbor).vertex(vertexNot);
 
                     // New facet
@@ -923,7 +866,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::relaxVertices()
     {
-
         std::vector<CGeoCoordinate<Real>> sVertices;
         std::vector<CStlFacet<Real>> aFacet_i;
         std::vector<CStlFacet<Real>> aFacet_f;
@@ -939,11 +881,9 @@ namespace stl {
         }
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             for (Integer j = 0; j < 3; ++j) {
-
                 if (m_stlFile.facet(aFacetId).edge(j).outline() == true)
                     continue;
 
@@ -961,7 +901,6 @@ namespace stl {
                 bool fixedNode = false;
 
                 do {
-
                     if (aNextFacet == -1) {
                         fixedNode = true;
                         break;
@@ -1012,7 +951,6 @@ namespace stl {
                 fixedNode = false;
 
                 for (Integer k = 0; k < static_cast<Integer>(whichVertex.size()); ++k) {
-
                     CGeoNormal<Real> normal_i, normal_f;
 
                     aFacet_i[k].calculateNormal();
@@ -1040,7 +978,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::checkEdges(const Real angle)
     {
-
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
             Integer aFacetId = m_stlFile.facetId(i);
 
@@ -1048,11 +985,9 @@ namespace stl {
         }
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             for (Integer j = 0; j < 3; ++j) {
-
                 CGeoCoordinate<Real> p1 = m_stlFile.facet(aFacetId).vertex((j + 0) % 3);
                 CGeoCoordinate<Real> p2 = m_stlFile.facet(aFacetId).vertex((j + 1) % 3);
 
@@ -1062,7 +997,6 @@ namespace stl {
                 m_stlFile.facet(aFacetId).edge(j).setOutline(false);
 
                 if (m_stlFile.facet(aFacetId).edge(j).neighbor() != -1) {
-
                     m_stlFile.facet(aFacetId).edge(j).setNaked(false);
 
                     if (fabs(m_stlFile.facet(aFacetId).normal().angle(m_stlFile.facet(m_stlFile.facet(aFacetId).edge(j).neighbor()).normal())) > angle)
@@ -1079,7 +1013,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::flipEdges(const Real swapAngle)
     {
-
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
             Integer aFacetId = m_stlFile.facetId(i);
 
@@ -1087,7 +1020,6 @@ namespace stl {
         }
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             if (m_stlFile.facet(aFacetId).extra[0] == 'c')
@@ -1101,7 +1033,6 @@ namespace stl {
             CGeoNormal<Real> normal_i = m_stlFile.facet(aFacetId).normal();
 
             for (Integer j = 0; j < 3; ++j) {
-
                 Integer neighbor = m_stlFile.facet(aFacetId).edge(j).neighbor();
                 Integer vertexNot = m_stlFile.facet(aFacetId).edge(j).whichVertexNot();
 
@@ -1125,7 +1056,6 @@ namespace stl {
                 Real area = m_stlFile.facet(aFacetId).area();
 
                 if (fabs(ang) < swapAngle || area < std::numeric_limits<Real>::min()) {
-
                     Real dmin, dmax;
 
                     Integer sedg, bedg;
@@ -1211,7 +1141,6 @@ namespace stl {
                     Real areaf = newFacet_i.area() + newFacet_j.area();
 
                     if (qminf > qmini) {
-
                         Real cangi;
 
                         if (qmini > 1E-15)
@@ -1241,7 +1170,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::collapseEdges(const Real minQuality, const Real maxAngle)
     {
-
         std::vector<CStlFacet<Real>> aFacet_i;
         std::vector<CStlFacet<Real>> aFacet_f;
         std::vector<Integer> whichVertex;
@@ -1256,7 +1184,6 @@ namespace stl {
         }
 
         for (Integer i = 0; i < m_stlFile.nbFacets(); ++i) {
-
             Integer aFacetId = m_stlFile.facetId(i);
 
             if (m_stlFile.facet(aFacetId).extra[0] == 'c')
@@ -1296,7 +1223,6 @@ namespace stl {
             bool fixedNode = false;
 
             do {
-
                 Integer aNeighborId = m_stlFile.facet(aNextFacet).edge(aNextEdge).neighbor();
                 Integer aVertexNot = m_stlFile.facet(aNextFacet).edge(aNextEdge).whichVertexNot();
 
@@ -1335,13 +1261,11 @@ namespace stl {
             fixedNode = false;
 
             for (Integer k = 0; k < static_cast<Integer>(aFacet_f.size()); ++k) {
-
                 aFacet_f[k].vertex((whichVertex[k] + 1) % 3) = aNewVertex;
 
                 aFacet_f[k].calculateArea();
 
                 if (aFacet_f[k].area() > 0.0) {
-
                     aFacet_f[k].calculateNormal();
                     aFacet_i[k].calculateNormal();
 
@@ -1353,7 +1277,6 @@ namespace stl {
             }
 
             if (!fixedNode) {
-
                 for (Integer k = 0; k < static_cast<Integer>(whichFacet.size()); ++k)
                     m_stlFile.facet(whichFacet[k]).vertex((whichVertex[k] + 1) % 3) = aNewVertex;
 
@@ -1368,7 +1291,6 @@ namespace stl {
     template <typename Real>
     void CStlUtils<Real>::invertFacet(Integer aFacetId, Integer aVertexNot)
     {
-
         // Fix facet
         CGeoCoordinate<Real> anAux = m_stlFile.facet(aFacetId).vertex((aVertexNot + 2) % 3);
         m_stlFile.facet(aFacetId).vertex((aVertexNot + 2) % 3) = m_stlFile.facet(aFacetId).vertex((aVertexNot + 1) % 3);
@@ -1407,24 +1329,19 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::setOrientation(Integer aPivotFacetId, const Real aTolerance)
     {
-
         std::vector<Integer> sFacetsToFix;
 
         sFacetsToFix.push_back(aPivotFacetId);
 
         for (Integer i = 0; i < static_cast<Integer>(sFacetsToFix.size()); ++i) {
-
             Integer aFacetId = sFacetsToFix[i];
 
             for (Integer j = 0; j < 3; ++j) {
-
                 Integer aNeighborId = m_stlFile.facet(aFacetId).edge(j).neighbor();
                 Integer aVertexNot = m_stlFile.facet(aFacetId).edge(j).whichVertexNot();
 
                 if (aNeighborId != -1) {
-
                     if (std::find(sFacetsToFix.begin(), sFacetsToFix.end(), aNeighborId) == sFacetsToFix.end()) {
-
                         sFacetsToFix.push_back(aNeighborId);
 
                         Real d1 = (m_stlFile.facet(aNeighborId).vertex((aVertexNot + 1) % 3) - m_stlFile.facet(aFacetId).vertex((j + 0) % 3)).norm();
@@ -1443,7 +1360,6 @@ namespace stl {
     template <typename Real>
     bool CStlUtils<Real>::setOrientation(bool bPointOut, const Real aTolerance)
     {
-
         Integer aFacetId = m_stlFile.facetId(0);
         CStlFacet<Real>& aFacet = m_stlFile.facet(aFacetId);
 
@@ -1460,7 +1376,6 @@ namespace stl {
         Integer nbIntersections = 0;
 
         for (Integer i = 1; i < m_stlFile.nbFacets(); ++i) {
-
             aFacetId = m_stlFile.facetId(i);
             aFacet = m_stlFile.facet(aFacetId);
 

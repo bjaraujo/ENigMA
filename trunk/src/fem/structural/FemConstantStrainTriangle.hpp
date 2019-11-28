@@ -13,11 +13,8 @@
 #include "FemTriangle.hpp"
 
 namespace ENigMA {
-
 namespace fem {
-
     namespace structural {
-
         template <typename Real, Integer NbNodes, Integer Dof, Integer Order>
         class CFemConstantStrainTriangle : public CFemStructuralElement<Real>, public CFemTriangle<Real, 3, 1, 1> {
         };

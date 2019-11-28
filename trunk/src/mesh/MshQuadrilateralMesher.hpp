@@ -18,9 +18,7 @@
 #include "MshMesh.hpp"
 
 namespace ENigMA {
-
 namespace mesh {
-
     template <typename Real>
     class CMshQuadrilateralMesher {
     private:
@@ -51,7 +49,6 @@ namespace mesh {
 
             void build(CMshMesh<Real>& aMesh)
             {
-
                 this->line.reset();
                 this->line.setStartPoint(aMesh.node(this->nodeId[0]));
                 this->line.setEndPoint(aMesh.node(this->nodeId[1]));

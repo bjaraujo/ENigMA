@@ -16,9 +16,7 @@
 #include "GeoVector.hpp"
 
 namespace ENigMA {
-
 namespace fvm {
-
     template <typename Real>
     class CFvmCell {
     public:

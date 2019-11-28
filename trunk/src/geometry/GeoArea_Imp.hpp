@@ -10,9 +10,7 @@
 #pragma once
 
 namespace ENigMA {
-
 namespace geometry {
-
     template <typename Real>
     CGeoArea<Real>::CGeoArea()
         : m_area(0.0)
@@ -30,21 +28,18 @@ namespace geometry {
     template <typename Real>
     CGeoNormal<Real>& CGeoArea<Real>::normal()
     {
-
         return m_normal;
     }
 
     template <typename Real>
     Real& CGeoArea<Real>::area()
     {
-
         return m_area;
     }
 
     template <typename Real>
     CGeoBoundingBox<Real>& CGeoArea<Real>::boundingBox()
     {
-
         return m_boundingBox;
     }
 }

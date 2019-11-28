@@ -14,9 +14,7 @@
 using namespace ENigMA::pde;
 
 namespace ENigMA {
-
 namespace post {
-
     template <typename Real>
     class CPosGnuplot {
     public:
