@@ -34,7 +34,7 @@ namespace ENigMA
         public:
 
             CCsgBspNode(std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sPolygons, const Real aTolerance);
-            CCsgBspNode(const Real aTolerance);
+            explicit CCsgBspNode(const Real aTolerance);
 
             ~CCsgBspNode();
 

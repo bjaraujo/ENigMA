@@ -14,7 +14,7 @@ using namespace ENigMA::geometry;
 namespace ENigMA {
 namespace sph {
     template <typename Real>
-    CSphParticles<Real>::CSphParticles(CSphKernel<Real>& kernel)
+    CSphParticles<Real>::CSphParticles(CSphKernel<Real>& kernel) : m_bCyclic(false)
     {
         m_kernel = &kernel;
     }
