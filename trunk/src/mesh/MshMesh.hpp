@@ -49,10 +49,10 @@ namespace mesh {
         Integer m_nbBoundaryFaces;
 
         Real m_dx, m_dy, m_dz;
-        
+
         std::vector<ENigMA::geometry::CGeoCoordinate<Real>> m_faceCentroid;
         std::vector<ENigMA::geometry::CGeoCoordinate<Real>> m_elementCentroid;
-       
+
     public:
         CMshMesh();
         CMshMesh(const CMshMesh<Real>& aMesh);

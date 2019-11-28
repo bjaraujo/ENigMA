@@ -143,7 +143,6 @@ namespace geometry {
                 m_coordinateListPtr[0] = 0;
             }
         }
-
     }
 
     template <typename Real>

@@ -153,7 +153,6 @@ namespace geometry {
             node->nbChildren--;
             node = node->fatherNode;
         }
-
     }
 
     template <typename Real>
@@ -213,7 +212,6 @@ namespace geometry {
                 nodes.at(stacks).dir = ndir;
             }
         }
-
     }
 
     template <typename Real>

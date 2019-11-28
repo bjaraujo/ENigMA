@@ -13,7 +13,9 @@ namespace ENigMA {
 namespace fem {
     namespace structural {
         template <typename Real>
-        CFemStructuralElement<Real>::CFemStructuralElement() : m_coeffPoisson(1.0), m_elasticModulus(1.0)
+        CFemStructuralElement<Real>::CFemStructuralElement()
+            : m_coeffPoisson(1.0)
+            , m_elasticModulus(1.0)
         {
         }
 

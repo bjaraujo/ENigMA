@@ -46,7 +46,7 @@ namespace bem {
         }
         return true;
     }
-    
+
     template <typename Real>
     void CBemTriangle<Real>::laplacianCoeff(const Integer i, const Integer j, CBemTriangle<Real>& aBemTriangle, Real& h, Real& g)
     {

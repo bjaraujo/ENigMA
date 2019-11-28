@@ -55,7 +55,6 @@ namespace geometry {
 
             this->m_bVolume = true;
         }
-
     }
 
     template <typename Real>

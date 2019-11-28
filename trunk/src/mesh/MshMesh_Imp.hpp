@@ -28,7 +28,8 @@ namespace mesh {
     {
     }
 
-    template <typename Real> CMshMesh<Real>::CMshMesh(const CMshMesh<Real>& aMesh)
+    template <typename Real>
+    CMshMesh<Real>::CMshMesh(const CMshMesh<Real>& aMesh)
     {
         reset();
 
@@ -54,9 +55,11 @@ namespace mesh {
         }
     }
 
-    template <typename Real> CMshMesh<Real>::~CMshMesh() {}
+    template <typename Real>
+    CMshMesh<Real>::~CMshMesh() {}
 
-    template <typename Real> void CMshMesh<Real>::reset()
+    template <typename Real>
+    void CMshMesh<Real>::reset()
     {
         m_nodeIds.clear();
         m_nodes.clear();
@@ -82,13 +85,17 @@ namespace mesh {
         m_nbBoundaryFaces = 0;
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nbNodes() const { return static_cast<Integer>(m_nodeIds.size()); }
+    template <typename Real>
+    Integer CMshMesh<Real>::nbNodes() const { return static_cast<Integer>(m_nodeIds.size()); }
 
-    template <typename Real> Integer CMshMesh<Real>::nbFaces() const { return static_cast<Integer>(m_faceIds.size()); }
+    template <typename Real>
+    Integer CMshMesh<Real>::nbFaces() const { return static_cast<Integer>(m_faceIds.size()); }
 
-    template <typename Real> Integer CMshMesh<Real>::nbElements() const { return static_cast<Integer>(m_elementIds.size()); }
+    template <typename Real>
+    Integer CMshMesh<Real>::nbElements() const { return static_cast<Integer>(m_elementIds.size()); }
 
-    template <typename Real> void CMshMesh<Real>::addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode)
+    template <typename Real>
+    void CMshMesh<Real>::addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode)
     {
         m_nodes[aNodeId] = aNode;
         m_nodeIds.push_back(aNodeId);
@@ -97,7 +104,8 @@ namespace mesh {
         m_nodeIndex++;
     }
 
-    template <typename Real> void CMshMesh<Real>::addFace(const Integer aFaceId, const ENigMA::mesh::CMshFace<Real>& aFace)
+    template <typename Real>
+    void CMshMesh<Real>::addFace(const Integer aFaceId, const ENigMA::mesh::CMshFace<Real>& aFace)
     {
         m_faces[aFaceId] = aFace;
         m_faceIds.push_back(aFaceId);
@@ -106,7 +114,8 @@ namespace mesh {
         m_faceIndex++;
     }
 
-    template <typename Real> void CMshMesh<Real>::addElement(const Integer anElementId, const ENigMA::mesh::CMshElement<Real>& anElement)
+    template <typename Real>
+    void CMshMesh<Real>::addElement(const Integer anElementId, const ENigMA::mesh::CMshElement<Real>& anElement)
     {
         m_elements[anElementId] = anElement;
         m_elementIds.push_back(anElementId);
@@ -115,28 +124,32 @@ namespace mesh {
         m_elementIndex++;
     }
 
-    template <typename Real> void CMshMesh<Real>::removeNode(const Integer aNodeId)
+    template <typename Real>
+    void CMshMesh<Real>::removeNode(const Integer aNodeId)
     {
         m_nodes.erase(aNodeId);
         m_nodeIndices.erase(aNodeId);
         m_nodeIds.erase(std::find(m_nodeIds.begin(), m_nodeIds.end(), aNodeId));
     }
 
-    template <typename Real> void CMshMesh<Real>::removeFace(const Integer aFaceId)
+    template <typename Real>
+    void CMshMesh<Real>::removeFace(const Integer aFaceId)
     {
         m_faces.erase(aFaceId);
         m_faceIndices.erase(aFaceId);
         m_faceIds.erase(std::find(m_faceIds.begin(), m_faceIds.end(), aFaceId));
     }
 
-    template <typename Real> void CMshMesh<Real>::removeElement(const Integer anElementId)
+    template <typename Real>
+    void CMshMesh<Real>::removeElement(const Integer anElementId)
     {
         m_elements.erase(anElementId);
         m_elementIndices.erase(anElementId);
         m_elementIds.erase(std::find(m_elementIds.begin(), m_elementIds.end(), anElementId));
     }
 
-    template <typename Real> void CMshMesh<Real>::addMesh(CMshMesh<Real>& aMesh)
+    template <typename Real>
+    void CMshMesh<Real>::addMesh(CMshMesh<Real>& aMesh)
     {
         std::map<Integer, Integer> sNewNodeIds;
 
@@ -170,25 +183,35 @@ namespace mesh {
         }
     }
 
-    template <typename Real> ENigMA::mesh::CMshNode<Real>& CMshMesh<Real>::node(const Integer aNodeId) { return m_nodes.at(aNodeId); }
+    template <typename Real>
+    ENigMA::mesh::CMshNode<Real>& CMshMesh<Real>::node(const Integer aNodeId) { return m_nodes.at(aNodeId); }
 
-    template <typename Real> ENigMA::mesh::CMshFace<Real>& CMshMesh<Real>::face(const Integer aFaceId) { return m_faces.at(aFaceId); }
+    template <typename Real>
+    ENigMA::mesh::CMshFace<Real>& CMshMesh<Real>::face(const Integer aFaceId) { return m_faces.at(aFaceId); }
 
-    template <typename Real> ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId) { return m_elements.at(anElementId); }
+    template <typename Real>
+    ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId) { return m_elements.at(anElementId); }
 
-    template <typename Real> Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex) const { return m_nodeIds.at(aNodeIndex); }
+    template <typename Real>
+    Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex) const { return m_nodeIds.at(aNodeIndex); }
 
-    template <typename Real> Integer CMshMesh<Real>::faceId(const Integer aFaceIndex) const { return m_faceIds.at(aFaceIndex); }
+    template <typename Real>
+    Integer CMshMesh<Real>::faceId(const Integer aFaceIndex) const { return m_faceIds.at(aFaceIndex); }
 
-    template <typename Real> Integer CMshMesh<Real>::elementId(const Integer anElementIndex) const { return m_elementIds.at(anElementIndex); }
+    template <typename Real>
+    Integer CMshMesh<Real>::elementId(const Integer anElementIndex) const { return m_elementIds.at(anElementIndex); }
 
-    template <typename Real> Integer CMshMesh<Real>::nodeIndex(const Integer aNodeId) const { return m_nodeIndices.at(aNodeId); }
+    template <typename Real>
+    Integer CMshMesh<Real>::nodeIndex(const Integer aNodeId) const { return m_nodeIndices.at(aNodeId); }
 
-    template <typename Real> Integer CMshMesh<Real>::faceIndex(const Integer aFaceId) const { return m_faceIndices.at(aFaceId); }
+    template <typename Real>
+    Integer CMshMesh<Real>::faceIndex(const Integer aFaceId) const { return m_faceIndices.at(aFaceId); }
 
-    template <typename Real> Integer CMshMesh<Real>::elementIndex(const Integer anElementId) const { return m_elementIndices.at(anElementId); }
+    template <typename Real>
+    Integer CMshMesh<Real>::elementIndex(const Integer anElementId) const { return m_elementIndices.at(anElementId); }
 
-    template <typename Real> void CMshMesh<Real>::generateFaces(const Real aTolerance)
+    template <typename Real>
+    void CMshMesh<Real>::generateFaces(const Real aTolerance)
     {
         m_faceIds.clear();
         m_faces.clear();
@@ -267,9 +290,11 @@ namespace mesh {
         }
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nbBoundaryFaces() const { return m_nbBoundaryFaces; }
+    template <typename Real>
+    Integer CMshMesh<Real>::nbBoundaryFaces() const { return m_nbBoundaryFaces; }
 
-    template <typename Real> ENigMA::mesh::CMshMesh<Real> CMshMesh<Real>::extractBoundary(const Real aTolerance)
+    template <typename Real>
+    ENigMA::mesh::CMshMesh<Real> CMshMesh<Real>::extractBoundary(const Real aTolerance)
     {
         CMshMesh<Real> aBoundaryMesh;
 
@@ -313,19 +338,26 @@ namespace mesh {
         return aBoundaryMesh;
     }
 
-    template <typename Real> void CMshMesh<Real>::setDx(const Real aValue) { m_dx = aValue; }
+    template <typename Real>
+    void CMshMesh<Real>::setDx(const Real aValue) { m_dx = aValue; }
 
-    template <typename Real> Real CMshMesh<Real>::dx() const { return m_dx; }
+    template <typename Real>
+    Real CMshMesh<Real>::dx() const { return m_dx; }
 
-    template <typename Real> void CMshMesh<Real>::setDy(const Real aValue) { m_dy = aValue; }
+    template <typename Real>
+    void CMshMesh<Real>::setDy(const Real aValue) { m_dy = aValue; }
 
-    template <typename Real> Real CMshMesh<Real>::dy() const { return m_dy; }
+    template <typename Real>
+    Real CMshMesh<Real>::dy() const { return m_dy; }
 
-    template <typename Real> void CMshMesh<Real>::setDz(const Real aValue) { m_dz = aValue; }
+    template <typename Real>
+    void CMshMesh<Real>::setDz(const Real aValue) { m_dz = aValue; }
 
-    template <typename Real> Real CMshMesh<Real>::dz() const { return m_dz; }
+    template <typename Real>
+    Real CMshMesh<Real>::dz() const { return m_dz; }
 
-    template <typename Real> void CMshMesh<Real>::calculateFaceCentroid()
+    template <typename Real>
+    void CMshMesh<Real>::calculateFaceCentroid()
     {
         m_faceCentroid.clear();
 
@@ -349,7 +381,8 @@ namespace mesh {
         }
     }
 
-    template <typename Real> void CMshMesh<Real>::calculateElementCentroid()
+    template <typename Real>
+    void CMshMesh<Real>::calculateElementCentroid()
     {
         m_elementCentroid.clear();
 
@@ -373,21 +406,25 @@ namespace mesh {
         }
     }
 
-    template <typename Real> CGeoCoordinate<Real>& CMshMesh<Real>::faceCentroid(const Integer aFaceId) { return m_faceCentroid.at(this->faceIndex(aFaceId)); }
+    template <typename Real>
+    CGeoCoordinate<Real>& CMshMesh<Real>::faceCentroid(const Integer aFaceId) { return m_faceCentroid.at(this->faceIndex(aFaceId)); }
 
-    template <typename Real> CGeoCoordinate<Real>& CMshMesh<Real>::elementCentroid(const Integer anElementId)
+    template <typename Real>
+    CGeoCoordinate<Real>& CMshMesh<Real>::elementCentroid(const Integer anElementId)
     {
         return m_elementCentroid.at(m_elementIndices.at(anElementId));
     }
 
-    template <typename Real> void CMshMesh<Real>::scale(const Real aFactor)
+    template <typename Real>
+    void CMshMesh<Real>::scale(const Real aFactor)
     {
         for (typename mapNode::iterator it = m_nodes.begin(); it != m_nodes.end(); ++it) {
             it->second *= aFactor;
         }
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nextNodeId()
+    template <typename Real>
+    Integer CMshMesh<Real>::nextNodeId()
     {
         if (m_nodes.size() > 0)
             return m_nodes.rbegin()->first + 1;
@@ -395,7 +432,8 @@ namespace mesh {
             return 0;
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nextFaceId()
+    template <typename Real>
+    Integer CMshMesh<Real>::nextFaceId()
     {
         if (m_faces.size() > 0)
             return m_faces.rbegin()->first + 1;
@@ -403,7 +441,8 @@ namespace mesh {
             return 0;
     }
 
-    template <typename Real> Integer CMshMesh<Real>::nextElementId()
+    template <typename Real>
+    Integer CMshMesh<Real>::nextElementId()
     {
         if (m_elements.size() > 0)
             return m_elements.rbegin()->first + 1;
@@ -411,7 +450,8 @@ namespace mesh {
             return 0;
     }
 
-    template <typename Real> void CMshMesh<Real>::mergeNodes(const Real aTolerance)
+    template <typename Real>
+    void CMshMesh<Real>::mergeNodes(const Real aTolerance)
     {
         CGeoHashGrid<Real> aHashGrid;
 
@@ -499,7 +539,8 @@ namespace mesh {
         this->rebuildIndices();
     }
 
-    template <typename Real> void CMshMesh<Real>::removeInvalidElements()
+    template <typename Real>
+    void CMshMesh<Real>::removeInvalidElements()
     {
         std::map<Integer, bool> bDeleteElement;
 
@@ -530,7 +571,8 @@ namespace mesh {
         }
     }
 
-    template <typename Real> void CMshMesh<Real>::rebuildIndices()
+    template <typename Real>
+    void CMshMesh<Real>::rebuildIndices()
     {
         // Rebuild node indices
         m_nodeIndices.clear();
@@ -560,7 +602,8 @@ namespace mesh {
         }
     }
 
-    template <typename Real> void CMshMesh<Real>::removeDanglingNodes()
+    template <typename Real>
+    void CMshMesh<Real>::removeDanglingNodes()
     {
         std::map<Integer, bool> bDeleteNode;
 
@@ -601,7 +644,8 @@ namespace mesh {
         }
     }
 
-    template <typename Real> void CMshMesh<Real>::collapseNakedEdges(const Real aTolerance)
+    template <typename Real>
+    void CMshMesh<Real>::collapseNakedEdges(const Real aTolerance)
     {
         Real minDistance = std::numeric_limits<Real>::max();
 
@@ -652,7 +696,8 @@ namespace mesh {
         }
     }
 
-    template <typename Real> void CMshMesh<Real>::renumber()
+    template <typename Real>
+    void CMshMesh<Real>::renumber()
     {
         mapNodeIndex sNewNodeIds;
         mapNode sNewNodes;
@@ -724,7 +769,8 @@ namespace mesh {
         this->rebuildIndices();
     }
 
-    template <typename Real> void CMshMesh<Real>::invert()
+    template <typename Real>
+    void CMshMesh<Real>::invert()
     {
         for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i) {
             Integer anElementId = m_elementIds.at(i);
@@ -733,7 +779,8 @@ namespace mesh {
         }
     }
 
-    template <typename Real> void CMshMesh<Real>::meshQuality(Real& aMinQ, Real& aMaxQ, Real& aAveQ)
+    template <typename Real>
+    void CMshMesh<Real>::meshQuality(Real& aMinQ, Real& aMaxQ, Real& aAveQ)
     {
         aMinQ = 1.0;
         aMaxQ = 0.0;
@@ -795,7 +842,8 @@ namespace mesh {
             aAveQ = aSumQ / n;
     }
 
-    template <typename Real> CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox(const Integer anElementId)
+    template <typename Real>
+    CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox(const Integer anElementId)
     {
         CGeoBoundingBox<Real> aBoundingBox;
 
@@ -809,7 +857,8 @@ namespace mesh {
         return aBoundingBox;
     }
 
-    template <typename Real> CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox()
+    template <typename Real>
+    CGeoBoundingBox<Real> CMshMesh<Real>::boundingBox()
     {
         CGeoBoundingBox<Real> aBoundingBox;
 

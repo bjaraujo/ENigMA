@@ -12,11 +12,11 @@
 namespace ENigMA {
 namespace stl {
     template <typename Real>
-    CStlEdge<Real>::CStlEdge() :
-        m_neighbor(-1),
-        m_whichVertexNot(-1),
-        m_outline(false),
-        m_naked(false)
+    CStlEdge<Real>::CStlEdge()
+        : m_neighbor(-1)
+        , m_whichVertexNot(-1)
+        , m_outline(false)
+        , m_naked(false)
     {
     }
 
@@ -74,7 +74,8 @@ namespace stl {
     }
 
     template <typename Real>
-    CStlFacet<Real>::CStlFacet() : extra({0, 0}) 
+    CStlFacet<Real>::CStlFacet()
+        : extra({ 0, 0 })
     {
     }
 

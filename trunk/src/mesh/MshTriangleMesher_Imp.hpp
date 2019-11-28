@@ -351,7 +351,6 @@ namespace mesh {
 
         if (bAdjustConnectivity)
             this->adjustConnectivity(sEdges);
-
     }
 
     template <typename Real>
@@ -429,7 +428,6 @@ namespace mesh {
         m_anAdvFront.push_back(aNewEdge2);
 
         this->cleanDuplicateEdges(sEdges, aTolerance);
-
     }
 
     template <typename Real>
@@ -580,7 +578,6 @@ namespace mesh {
         aAnaFunction.set(meshSize);
 
         return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
-
     }
 
     template <typename Real>
@@ -590,7 +587,6 @@ namespace mesh {
         aAnaFunction.set(meshSize);
 
         return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
-
     }
 
     template <typename Real>
@@ -719,7 +715,6 @@ namespace mesh {
             std::cout << "Meshing error!" << std::endl;
             return false;
         }
-
     }
 
     template <typename Real>

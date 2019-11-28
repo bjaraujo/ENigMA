@@ -97,8 +97,7 @@ namespace stl {
             char chtest[256];
             fileSTL.read(chtest, sizeof(chtest));
 
-            if (fileSTL)
-            {
+            if (fileSTL) {
                 m_stlFile.stats.type = FT_ASCII;
 
                 char* pch;
@@ -124,8 +123,7 @@ namespace stl {
                     // Read the header
                     fileSTL.read(m_stlFile.stats.header, LABEL_SIZE);
 
-                    if (fileSTL)
-                    {
+                    if (fileSTL) {
                         m_stlFile.stats.header[80] = '\0';
 
                         // Read the int following the header.  This should contain # of facets
@@ -178,8 +176,9 @@ namespace stl {
                     fileSTL.seekg(0);
 
                     // Read the header
-                    for (Integer i = 0; (i < 80) && (m_stlFile.stats.header[i] = static_cast<char>(fileSTL.get())) != '\n'; ++i);
-                    
+                    for (Integer i = 0; (i < 80) && (m_stlFile.stats.header[i] = static_cast<char>(fileSTL.get())) != '\n'; ++i)
+                        ;
+
                     m_stlFile.stats.header[80] = '\0';
 
                     numFacets = numLines / ASCII_LINES_PER_FACET;
@@ -244,7 +243,6 @@ namespace stl {
                     // Add the facet.
                     m_stlFile.addFacet(i, aFacet);
                 }
-
             }
 
             fileSTL.close();

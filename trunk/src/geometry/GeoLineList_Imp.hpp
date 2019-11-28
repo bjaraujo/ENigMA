@@ -96,7 +96,6 @@ namespace geometry {
 
         for (Integer i = 0; i < static_cast<Integer>(m_lines.size()); ++i)
             m_lines[i].invert();
-
     }
 }
 }

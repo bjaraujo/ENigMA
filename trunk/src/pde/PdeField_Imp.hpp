@@ -13,11 +13,11 @@ namespace ENigMA {
 namespace pde {
     template <typename Real>
     CPdeField<Real>::CPdeField()
-        : m_nbDofs(0),
-        m_discretMethod(DM_NONE),
-        m_discretOrder(DO_LINEAR),
-        m_discretLocation(DL_NODE),
-        m_simulationType(ST_GENERIC)
+        : m_nbDofs(0)
+        , m_discretMethod(DM_NONE)
+        , m_discretOrder(DO_LINEAR)
+        , m_discretLocation(DL_NODE)
+        , m_simulationType(ST_GENERIC)
     {
     }
 

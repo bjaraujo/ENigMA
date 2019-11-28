@@ -43,7 +43,6 @@ namespace geometry {
         b_max[2] = aBoundingBox.max().z();
 
         m_tree.Insert(b_min, b_max, aBoundingBoxId);
-
     }
 
     template <typename Real>

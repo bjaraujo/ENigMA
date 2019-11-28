@@ -57,8 +57,7 @@ namespace geometry {
     template <typename Real>
     CGeoCoordinate<Real>& CGeoVertexList<Real>::vertex(const Integer aVertexIndex)
     {
-        if (m_vertices.size() == 0)
-        {
+        if (m_vertices.size() == 0) {
             throw std::runtime_error("Vertex size = 0");
         }
 
@@ -74,11 +73,10 @@ namespace geometry {
     template <typename Real>
     void CGeoVertexList<Real>::removeCollinear(const Real aTolerance)
     {
-        if (m_vertices.size() == 0)
-        {
+        if (m_vertices.size() == 0) {
             return;
         }
-        
+
         Integer j = 1;
 
         for (Integer i = 1; i < static_cast<Integer>(m_vertices.size()) - 1; ++i) {

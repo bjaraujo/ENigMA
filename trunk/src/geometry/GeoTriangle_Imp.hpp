@@ -235,7 +235,7 @@ namespace geometry {
             anIntersectionType = IT_INTERNAL;
             return true;
         }
-        
+
         return false;
     }
 

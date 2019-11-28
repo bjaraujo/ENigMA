@@ -13,10 +13,10 @@ namespace ENigMA {
 namespace fem {
     namespace thermal {
         template <typename Real>
-        CFemThermalElement<Real>::CFemThermalElement() :
-            m_specificHeat(1.0),
-            m_density(1.0),
-            m_thermalConductivity(1.0)
+        CFemThermalElement<Real>::CFemThermalElement()
+            : m_specificHeat(1.0)
+            , m_density(1.0)
+            , m_thermalConductivity(1.0)
         {
         }
 

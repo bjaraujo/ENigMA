@@ -13,7 +13,7 @@ namespace integration {
     CIntTriangularPrism<Real>::CIntTriangularPrism()
     {
     }
-    
+
     template <typename Real>
     CIntTriangularPrism<Real>::~CIntTriangularPrism()
     {

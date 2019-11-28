@@ -13,7 +13,9 @@ namespace ENigMA {
 namespace fem {
     namespace flow {
         template <typename Real>
-        CFemFlowElement<Real>::CFemFlowElement() : m_density(1.0), m_viscosity(1.0)
+        CFemFlowElement<Real>::CFemFlowElement()
+            : m_density(1.0)
+            , m_viscosity(1.0)
         {
         }
 

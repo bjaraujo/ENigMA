@@ -18,21 +18,13 @@ namespace analytical {
     }
 
     template <typename Real>
-    CAnaFunction<Real>::CAnaFunction(Real aConstant)
-    {
-        this->set(aConstant);
-    }
+    CAnaFunction<Real>::CAnaFunction(Real aConstant) { this->set(aConstant); }
 
     template <typename Real>
-    CAnaFunction<Real>::CAnaFunction(const std::string& anExpression)
-    {
-        this->set(anExpression);
-    }
+    CAnaFunction<Real>::CAnaFunction(const std::string& anExpression) { this->set(anExpression); }
 
     template <typename Real>
-    CAnaFunction<Real>::~CAnaFunction()
-    {
-    }
+    CAnaFunction<Real>::~CAnaFunction() {}
 
     template <typename Real>
     void CAnaFunction<Real>::set(Real aConstant)
@@ -49,22 +41,13 @@ namespace analytical {
     }
 
     template <typename Real>
-    void CAnaFunction<Real>::defineVariable(const std::string& aVariable, Real& aValue)
-    {
-        m_symbolTable.add_variable(aVariable, aValue);
-    }
+    void CAnaFunction<Real>::defineVariable(const std::string& aVariable, Real& aValue) { m_symbolTable.add_variable(aVariable, aValue); }
 
     template <typename Real>
-    void CAnaFunction<Real>::undefineVariable(const std::string& aVariable)
-    {
-        m_symbolTable.remove_variable(aVariable);
-    }
+    void CAnaFunction<Real>::undefineVariable(const std::string& aVariable) { m_symbolTable.remove_variable(aVariable); }
 
     template <typename Real>
-    void CAnaFunction<Real>::removeAllVariables()
-    {
-        m_symbolTable.clear();
-    }
+    void CAnaFunction<Real>::removeAllVariables() { m_symbolTable.clear(); }
 
     template <typename Real>
     Real CAnaFunction<Real>::evaluate()
@@ -249,9 +232,6 @@ namespace analytical {
     }
 
     template <typename Real>
-    Real CAnaFunction<Real>::root(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
-    {
-        return bisection(strVar, lowerBnd, upperBnd, nIterations, nMaxIterations, aTolerance);
-    }
+    Real CAnaFunction<Real>::root(const std::string& strVar, Real lowerBnd, Real upperBnd, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance) { return bisection(strVar, lowerBnd, upperBnd, nIterations, nMaxIterations, aTolerance); }
 }
 }

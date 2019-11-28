@@ -997,7 +997,7 @@ namespace mesh {
                 throw std::runtime_error("Boundary is open!");
             }
         }
-        
+
         return true;
     }
 

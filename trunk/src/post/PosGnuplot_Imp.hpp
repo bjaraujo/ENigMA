@@ -38,11 +38,11 @@ namespace post {
                     Integer id = aField.mesh().nodeIndex(i);
                     CMshNode<Real> aNode = aField.mesh().node(id);
 
-                    fileGnuplot << id + 1 << std::setprecision(16) 
-                        << " " << aNode.x()
-                        << " " << aNode.y()
-                        << " " << aNode.z()
-                        << " " << aField.u(i) << std::endl;
+                    fileGnuplot << id + 1 << std::setprecision(16)
+                                << " " << aNode.x()
+                                << " " << aNode.y()
+                                << " " << aNode.z()
+                                << " " << aField.u(i) << std::endl;
                 }
             }
 
@@ -51,12 +51,12 @@ namespace post {
                     Integer id = aField.mesh().elementIndex(i);
                     CGeoCoordinate<Real> aCentroid = aField.mesh().elementCentroid(id);
 
-                    fileGnuplot << id + 1 << std::setprecision(16) 
-                        << " " << aCentroid.x()
-                        << " " << aCentroid.y()
-                        << " " << aCentroid.z() 
-                        << " " << aField.u(i)
-                        << std::endl;
+                    fileGnuplot << id + 1 << std::setprecision(16)
+                                << " " << aCentroid.x()
+                                << " " << aCentroid.y()
+                                << " " << aCentroid.z()
+                                << " " << aField.u(i)
+                                << std::endl;
                 }
             }
 

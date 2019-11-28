@@ -110,7 +110,6 @@ namespace geometry {
         anOctreeNode.xmid = (anOctreeNode.xmin + anOctreeNode.xmax) * 0.5;
         anOctreeNode.ymid = (anOctreeNode.ymin + anOctreeNode.ymax) * 0.5;
         anOctreeNode.zmid = (anOctreeNode.zmin + anOctreeNode.zmax) * 0.5;
-
     }
 
     template <typename Real>
@@ -254,7 +253,6 @@ namespace geometry {
         }
 
         createRecursive(m_root);
-
     }
 
     template <typename Real>
@@ -281,7 +279,6 @@ namespace geometry {
             if (dist <= aTolerance)
                 coordinateIds.push_back(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjectIds[aCoordinateIndex]);
         }
-
     }
 }
 }

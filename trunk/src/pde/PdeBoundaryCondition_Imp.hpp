@@ -12,16 +12,16 @@
 namespace ENigMA {
 namespace pde {
     template <typename Real>
-    CPdeBoundaryCondition<Real>::CPdeBoundaryCondition(EBoundaryConditionType aBoundaryConditionType) :
-        m_boundaryConditionType(aBoundaryConditionType),
-        m_boundaryLocation(BL_NODE)
+    CPdeBoundaryCondition<Real>::CPdeBoundaryCondition(EBoundaryConditionType aBoundaryConditionType)
+        : m_boundaryConditionType(aBoundaryConditionType)
+        , m_boundaryLocation(BL_NODE)
     {
     }
 
     template <typename Real>
-    CPdeBoundaryCondition<Real>::CPdeBoundaryCondition() : 
-        m_boundaryConditionType(BT_GENERIC_FIXED_VALUE),
-        m_boundaryLocation(BL_NODE)
+    CPdeBoundaryCondition<Real>::CPdeBoundaryCondition()
+        : m_boundaryConditionType(BT_GENERIC_FIXED_VALUE)
+        , m_boundaryLocation(BL_NODE)
     {
     }
 

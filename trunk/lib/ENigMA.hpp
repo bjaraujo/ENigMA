@@ -9,16 +9,12 @@
 
 #pragma once
 
-namespace ENigMA
-{
+namespace ENigMA {
 
-    class ENigMA
-    {
-    private:
-
-    public:
-        ENigMA();
-        ~ENigMA();
-    };
-
+class ENigMA {
+private:
+public:
+    ENigMA();
+    ~ENigMA();
+};
 }

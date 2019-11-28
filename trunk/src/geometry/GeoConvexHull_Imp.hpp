@@ -99,7 +99,6 @@ namespace geometry {
 
         for (Integer i = 0; i < static_cast<Integer>(sNewExtVertices.size()); ++i)
             m_vertices.push_back(sNewExtVertices[i].v3D);
-
     }
 
     template <typename Real>
