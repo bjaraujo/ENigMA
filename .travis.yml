@@ -4,6 +4,13 @@ language:
 matrix:
     include:
     - os: linux
+      compiler: clang
+      sudo: true
+      env: 
+        - CMAKE_GENERATOR="Unix Makefiles"
+
+    - os: linux
+      compiler: gcc
       sudo: true
       env: 
         - CMAKE_GENERATOR="Unix Makefiles"
