@@ -24,31 +24,31 @@ namespace ENigMA
 
             Real m_tolerance;
 
-            ENigMA::geometry::CGeoPlane<Real> m_plane;
-
             CCsgBspNode<Real>* m_front;
             CCsgBspNode<Real>* m_back;
 
-            std::vector<ENigMA::geometry::CGeoPolygon<Real> > m_polygons;
+            ENigMA::geometry::CGeoPlane<Real> m_plane;
+
+            std::vector<ENigMA::geometry::CGeoPolygon<Real>> m_polygons;
             
         public:
 
-            CCsgBspNode(std::vector<ENigMA::geometry::CGeoPolygon<Real> >& sPolygons, const Real aTolerance);
+            CCsgBspNode(std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sPolygons, const Real aTolerance);
             CCsgBspNode(const Real aTolerance);
 
             ~CCsgBspNode();
 
             void invert();
 
-            std::vector<ENigMA::geometry::CGeoPolygon<Real> > clipPolygons(std::vector<ENigMA::geometry::CGeoPolygon<Real> >& sPolygons, bool removeCoplanarFront = false);
+            std::vector<ENigMA::geometry::CGeoPolygon<Real>> clipPolygons(std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sPolygons, bool removeCoplanarFront = false);
 
             void clipTo(CCsgBspNode<Real> aCsgBspNode, bool removeCoplanarFront = false);
 
-            std::vector<ENigMA::geometry::CGeoPolygon<Real> >& allPolygons();
+            std::vector<ENigMA::geometry::CGeoPolygon<Real>>& allPolygons();
 
-            void build(std::vector<ENigMA::geometry::CGeoPolygon<Real> >& sPolygons);
+            void build(std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sPolygons);
 
-            void splitPolygon(ENigMA::geometry::CGeoPolygon<Real> aPolygon, std::vector<ENigMA::geometry::CGeoPolygon<Real> >& sCoplanarFront, std::vector<CGeoPolygon<Real> >& sCoplanarBack, std::vector<CGeoPolygon<Real> >& sFront, std::vector<CGeoPolygon<Real> >& sBack);
+            void splitPolygon(ENigMA::geometry::CGeoPolygon<Real> aPolygon, std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sCoplanarFront, std::vector<CGeoPolygon<Real>>& sCoplanarBack, std::vector<CGeoPolygon<Real>>& sFront, std::vector<CGeoPolygon<Real>>& sBack);
 
             void clear();
 

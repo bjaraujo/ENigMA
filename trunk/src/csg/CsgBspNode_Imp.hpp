@@ -18,24 +18,21 @@ namespace ENigMA
     namespace csg
     {
         template<typename Real> 
-        CCsgBspNode<Real>::CCsgBspNode(std::vector<CGeoPolygon<Real> >& sPolygons, const Real aTolerance)
+        CCsgBspNode<Real>::CCsgBspNode(std::vector<CGeoPolygon<Real>>& sPolygons, const Real aTolerance) : 
+            m_tolerance(aTolerance),
+            m_front(nullptr),
+            m_back(nullptr)
         {
-            m_tolerance = aTolerance;
-
-            m_front = NULL;
-            m_back = NULL;
-
             if (sPolygons.size() > 0)
                 this->build(sPolygons);
         }
 
         template<typename Real> 
-        CCsgBspNode<Real>::CCsgBspNode(const Real aTolerance) 
+        CCsgBspNode<Real>::CCsgBspNode(const Real aTolerance) : 
+            m_tolerance(aTolerance), 
+            m_front(nullptr), 
+            m_back(nullptr)
         {
-            m_tolerance = aTolerance;
-
-            m_front = NULL;
-            m_back = NULL;
         }
 
         template<typename Real> 
@@ -61,10 +58,10 @@ namespace ENigMA
         }
 
         template<typename Real> 
-        std::vector<CGeoPolygon<Real> > CCsgBspNode<Real>::clipPolygons(std::vector<CGeoPolygon<Real> >& sPolygons, bool removeCoplanarFront)
+        std::vector<CGeoPolygon<Real>> CCsgBspNode<Real>::clipPolygons(std::vector<CGeoPolygon<Real>>& sPolygons, bool removeCoplanarFront)
         {
-            std::vector<CGeoPolygon<Real> > sFront;
-            std::vector<CGeoPolygon<Real> > sBack;
+            std::vector<CGeoPolygon<Real>> sFront;
+            std::vector<CGeoPolygon<Real>> sBack;
 
             for (Integer i = 0; i < static_cast<Integer> (sPolygons.size()); ++i)
             {
@@ -101,11 +98,11 @@ namespace ENigMA
         }
 
         template<typename Real> 
-        std::vector<CGeoPolygon<Real> >& CCsgBspNode<Real>::allPolygons()
+        std::vector<CGeoPolygon<Real>>& CCsgBspNode<Real>::allPolygons()
         {
             if (this->m_front)
             { 
-                std::vector<CGeoPolygon<Real> > allFront = this->m_front->allPolygons();
+                std::vector<CGeoPolygon<Real>> allFront = this->m_front->allPolygons();
 
                 for (Integer i = 0; i < static_cast<Integer> (allFront.size()); ++i)
                     this->m_polygons.push_back(allFront[i]);
@@ -113,7 +110,7 @@ namespace ENigMA
 
             if (this->m_back)
             {
-                std::vector<CGeoPolygon<Real> > allBack = this->m_back->allPolygons();
+                std::vector<CGeoPolygon<Real>> allBack = this->m_back->allPolygons();
 
                 for (Integer i = 0; i < static_cast<Integer> (allBack.size()); ++i)
                     this->m_polygons.push_back(allBack[i]);
@@ -123,7 +120,7 @@ namespace ENigMA
         }
 
         template<typename Real> 
-        void CCsgBspNode<Real>::build(std::vector<CGeoPolygon<Real> >& sPolygons)
+        void CCsgBspNode<Real>::build(std::vector<CGeoPolygon<Real>>& sPolygons)
         {
             if (sPolygons.size() == 0) 
                 return;
@@ -134,8 +131,8 @@ namespace ENigMA
             Real d = sPolygons[0].normal().dot(sPolygons[0].polyline().vertex(0));
             this->m_plane.set(sPolygons[0].normal(), d);
 
-            std::vector<CGeoPolygon<Real> > sFront;
-            std::vector<CGeoPolygon<Real> > sBack;
+            std::vector<CGeoPolygon<Real>> sFront;
+            std::vector<CGeoPolygon<Real>> sBack;
 
             for (Integer i = 0; i < static_cast<Integer> (sPolygons.size()); ++i)
                 this->splitPolygon(sPolygons[i], this->m_polygons, this->m_polygons, sFront, sBack);
@@ -160,7 +157,7 @@ namespace ENigMA
         }
 
         template<typename Real> 
-        void CCsgBspNode<Real>::splitPolygon(CGeoPolygon<Real> aPolygon, std::vector<CGeoPolygon<Real> >& sCoplanarFront, std::vector<CGeoPolygon<Real> >& sCoplanarBack, std::vector<CGeoPolygon<Real> >& sFront, std::vector<CGeoPolygon<Real> >& sBack)
+        void CCsgBspNode<Real>::splitPolygon(CGeoPolygon<Real> aPolygon, std::vector<CGeoPolygon<Real>>& sCoplanarFront, std::vector<CGeoPolygon<Real>>& sCoplanarBack, std::vector<CGeoPolygon<Real>>& sFront, std::vector<CGeoPolygon<Real>>& sBack)
         {
             const int CSG_COPLANAR = 0;
             const int CSG_FRONT = 1;

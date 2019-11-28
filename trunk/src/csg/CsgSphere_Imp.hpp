@@ -33,7 +33,7 @@ namespace ENigMA
         template<typename Real> 
         ENigMA::csg::CCsgBoolean<Real> CCsgSphere<Real>::create(CGeoCoordinate<Real>& aCenter, Real aRadius, Integer nSlices, Integer nStacks)
         {
-            std::vector<CGeoPolygon<Real> > sPolygons;
+            std::vector<CGeoPolygon<Real>> sPolygons;
 
             for (Integer i = 0; i < nSlices; ++i) 
             {

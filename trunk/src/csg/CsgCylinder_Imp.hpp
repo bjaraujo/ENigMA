@@ -19,8 +19,7 @@ namespace ENigMA
     {
         template<typename Real> 
         CGeoCoordinate<Real> CCsgCylinder<Real>::point(CGeoCoordinate<Real>& aStart, CGeoVector<Real>& axisX, CGeoVector<Real>& axisY, CGeoVector<Real>& axisZ, CGeoVector<Real>& aRay, Real aRadius, Real stack, Real slice, Real normalBlend)
-        {
-            
+        {            
             const Real pi = std::acos(-1.0);
 
             Real angle = slice * pi * 2;
@@ -33,7 +32,7 @@ namespace ENigMA
         template<typename Real> 
         ENigMA::csg::CCsgBoolean<Real> CCsgCylinder<Real>::create(CGeoCoordinate<Real>& aStart, CGeoCoordinate<Real>& anEnd, Real aRadius, Integer nSlices)
         {
-            std::vector<CGeoPolygon<Real> > sPolygons;
+            std::vector<CGeoPolygon<Real>> sPolygons;
 
             CGeoVector<Real> aRay = anEnd - aStart;
             CGeoVector<Real> axisZ = aRay;

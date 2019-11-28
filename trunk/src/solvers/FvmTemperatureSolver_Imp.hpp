@@ -15,10 +15,9 @@ namespace ENigMA {
 namespace fvm {
     template <typename Real>
     CFvmTemperatureSolver<Real>::CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh)
-        : CFvmPisoSolver(aFvmMesh)
+        : CFvmPisoSolver(aFvmMesh), 
+        m_bthcond(1.0)
     {
-        m_bthcond = 1.0;
-
         for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
             Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 

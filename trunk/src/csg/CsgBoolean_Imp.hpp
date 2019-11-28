@@ -18,32 +18,26 @@ namespace ENigMA
     namespace csg
     {
         template<typename Real> 
-        CCsgBoolean<Real>::CCsgBoolean(const Real aTolerance)
+        CCsgBoolean<Real>::CCsgBoolean(const Real aTolerance) : m_tolerance(aTolerance)
         {
-            m_tolerance = aTolerance;
         }
 
         template<typename Real> 
-        CCsgBoolean<Real>::CCsgBoolean(std::vector<CGeoPolygon<Real>>& sPolygons, const Real aTolerance)
+        CCsgBoolean<Real>::CCsgBoolean(std::vector<CGeoPolygon<Real>>& sPolygons, const Real aTolerance) : m_tolerance(aTolerance)
         {
-            m_tolerance = aTolerance;
-
             for (Integer i = 0; i < static_cast<Integer> (sPolygons.size()); ++i)
                 m_polygons.push_back(sPolygons[i]);
         }
 
         template<typename Real> 
         CCsgBoolean<Real>::~CCsgBoolean()
-        {
-        
+        {        
         }
 
         template<typename Real> 
         void CCsgBoolean<Real>::setTolerance(const Real aTolerance)
-        {
-        
+        {        
             m_tolerance = aTolerance;
-
         }
 
         template<typename Real> 

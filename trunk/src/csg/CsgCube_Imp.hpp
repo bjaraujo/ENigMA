@@ -20,7 +20,7 @@ namespace ENigMA
         template<typename Real> 
         ENigMA::csg::CCsgBoolean<Real> CCsgCube<Real>::create(CGeoCoordinate<Real> aCenter, CGeoVector<Real> aRadius)
         {
-            std::vector<CGeoCoordinate<Real> > sVertices;
+            std::vector<CGeoCoordinate<Real>> sVertices;
 
             for (Integer i = 0; i < 8; ++i)
             {
@@ -34,7 +34,7 @@ namespace ENigMA
 
             }
 
-            std::vector<CGeoPolygon<Real> > sPolygons;
+            std::vector<CGeoPolygon<Real>> sPolygons;
 
             // face 1
             CGeoPolygon<Real> aPolygon1;
