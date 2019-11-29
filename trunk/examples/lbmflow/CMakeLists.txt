@@ -30,6 +30,8 @@ ${GLUT_INCLUDE_DIR}
 
 add_executable(LbmFlow ${LBMFLOW_SOURCES})
 
+add_dependencies(LbmFlow eigen)
+
 target_link_libraries(LbmFlow
 ${OPENGL_LIBRARIES}
 ${GLUT_LIBRARIES}

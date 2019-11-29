@@ -42,6 +42,8 @@ set(LINEINTERSECTION_UI MainWindow.ui)
 
 add_executable(LineIntersection ${LINEINTERSECTION_HEADERS} ${LINEINTERSECTION_SOURCES} ${LINEINTERSECTION_UI})
 
+add_dependencies(LineIntersection eigen)
+
 target_link_libraries(LineIntersection
   Qt5::Core
   Qt5::Widgets

@@ -55,6 +55,8 @@ set(FVMCHANNEL_RESOURCES Icons/icons.qrc)
 
 add_executable(FvmChannel ${FVMCHANNEL_HEADERS} ${FVMCHANNEL_SOURCES} ${FVMCHANNEL_UI} ${FVMCHANNEL_RESOURCES})
 
+add_dependencies(FvmChannel eigen)
+
 target_link_libraries(FvmChannel
   Qt5::Core
   Qt5::Widgets

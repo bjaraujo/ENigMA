@@ -30,6 +30,6 @@ ${EXPRTK_DIR}
 
 add_executable(SphHeat ${SPHHEAT_SOURCES})
 
-
+add_dependencies(SphHeat eigen)
 
 

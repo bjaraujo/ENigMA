@@ -115,6 +115,8 @@ endif(USE_NETGEN)
 
 add_executable(OccActive MACOSX_BUNDLE ${OCC_ACTIVEHEADERS} ${OCC_ACTIVESOURCES} ${UISrcs} ${MOCSrcs} ${ResourceSrcs})
 
+add_dependencies(OccActive eigen)
+
 target_link_libraries(OccActive
     ${QT_LIBRARIES} 
     ${OpenCASCADE_LIBRARIES}

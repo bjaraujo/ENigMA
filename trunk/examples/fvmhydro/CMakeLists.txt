@@ -55,6 +55,8 @@ set(FVMHYDRO_RESOURCES Icons/icons.qrc)
 
 add_executable(FvmHydro ${FVMHYDRO_HEADERS} ${FVMHYDRO_SOURCES} ${FVMHYDRO_UI} ${FVMHYDRO_RESOURCES})
 
+add_dependencies(FvmHydro eigen)
+
 target_link_libraries(FvmHydro
   Qt5::Core
   Qt5::Widgets

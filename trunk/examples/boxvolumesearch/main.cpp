@@ -101,8 +101,8 @@ int main(int argc, char *argv[])
         if (sBoundingBoxes1 != sBoundingBoxes2)
         {
 
-            int size1 = sBoundingBoxes1.size();
-            int size2 = sBoundingBoxes2.size();
+            int size1 = static_cast<int>(sBoundingBoxes1.size());
+            int size2 = static_cast<int>(sBoundingBoxes2.size());
 
             for (int i = 0; i < std::min(5, size1); ++i)
                 std::cout << sBoundingBoxes1[i] << std::endl;

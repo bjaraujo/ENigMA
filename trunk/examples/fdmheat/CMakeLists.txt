@@ -29,6 +29,8 @@ include_directories(
 
 add_executable(FdmHeat ${FDMHEAT_SOURCES})
 
+add_dependencies(FdmHeat eigen)
+
 
 
 

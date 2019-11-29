@@ -53,6 +53,8 @@ set(FEMFLOW_RESOURCES Icons/icons.qrc)
 
 add_executable(FemFlow ${FEMFLOW_HEADERS} ${FEMFLOW_SOURCES} ${FEMFLOW_UI} ${FEMFLOW_RESOURCES})
 
+add_dependencies(FemFlow eigen)
+
 target_link_libraries(FemFlow
   Qt5::Core
   Qt5::Widgets

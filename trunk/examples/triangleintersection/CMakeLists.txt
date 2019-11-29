@@ -41,6 +41,8 @@ set(TRIANGLEINTERSECTION_RESOURCES Icons/icons.qrc)
 
 add_executable(TriangleIntersection ${TRIANGLEINTERSECTION_HEADERS} ${TRIANGLEINTERSECTION_SOURCES} ${TRIANGLEINTERSECTION_UI} ${TRIANGLEINTERSECTION_RESOURCES})
 
+add_dependencies(TriangleIntersection eigen)
+
 target_link_libraries(TriangleIntersection
   Qt5::Core
   Qt5::Widgets

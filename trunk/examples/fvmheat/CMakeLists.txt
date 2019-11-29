@@ -29,5 +29,6 @@ include_directories(
 
 add_executable(FvmHeat ${FVMHEAT_SOURCES})
 
+add_dependencies(FvmHeat eigen)
 
 

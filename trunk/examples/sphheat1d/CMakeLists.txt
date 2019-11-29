@@ -46,6 +46,8 @@ set(SPH_HEAT1D_UI MainWindow.ui)
 
 add_executable(SphHeat1D ${SPH_HEAT1D_HEADERS} ${SPH_HEAT1D_SOURCES} ${SPH_HEAT1D_UI})
 
+add_dependencies(SphHeat1D eigen)
+
 target_link_libraries(SphHeat1D
   Qt5::Core
   Qt5::Widgets

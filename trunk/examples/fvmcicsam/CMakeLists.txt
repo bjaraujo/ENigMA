@@ -55,6 +55,8 @@ set(FVMCICSAM_RESOURCES Icons/icons.qrc)
 
 add_executable(FvmCicsam ${FVMCICSAM_HEADERS} ${FVMCICSAM_SOURCES} ${FVMCICSAM_UI} ${FVMCICSAM_RESOURCES})
 
+add_dependencies(FvmCicsam eigen)
+
 target_link_libraries(FvmCicsam
   Qt5::Core
   Qt5::Widgets

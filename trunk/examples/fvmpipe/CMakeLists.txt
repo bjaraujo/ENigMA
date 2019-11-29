@@ -55,6 +55,8 @@ set(FVMPIPE_RESOURCES Icons/icons.qrc)
 
 add_executable(FvmPipe ${FVMPIPE_HEADERS} ${FVMPIPE_SOURCES} ${FVMPIPE_UI} ${FVMPIPE_RESOURCES})
 
+add_dependencies(FvmPipe eigen)
+
 target_link_libraries(FvmPipe
   Qt5::Core
   Qt5::Widgets

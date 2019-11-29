@@ -41,6 +41,8 @@ set(CLIPPOLYHEDRON_RESOURCES Icons/icons.qrc)
 
 add_executable(ClipPolyhedron ${CLIPPOLYHEDRON_HEADERS} ${CLIPPOLYHEDRON_SOURCES} ${CLIPPOLYHEDRON_UI})
 
+add_dependencies(ClipPolyhedron eigen)
+
 target_link_libraries(ClipPolyhedron
   Qt5::Core
   Qt5::Widgets

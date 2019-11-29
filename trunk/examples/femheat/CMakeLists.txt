@@ -29,6 +29,6 @@ ${EXPRTK_DIR}
 
 add_executable(FemHeat ${FEMHEAT_SOURCES})
 
-
+add_dependencies(FemHeat eigen)
 
 

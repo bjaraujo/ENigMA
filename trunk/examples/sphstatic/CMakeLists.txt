@@ -37,6 +37,8 @@ ${GLUT_INCLUDE_DIR}
 
 add_executable(SphStatic ${SPHSTATIC_HEADERS} ${SPHSTATIC_SOURCES})
 
+add_dependencies(SphStatic eigen)
+
 target_link_libraries(SphStatic 
 ${OPENGL_LIBRARIES}
 ${GLUT_LIBRARIES}

@@ -29,3 +29,4 @@ include_directories(
 
 add_executable(BemHeat ${BEMHEAT_SOURCES})
 
+add_dependencies(BemHeat eigen)

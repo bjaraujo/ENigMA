@@ -37,6 +37,8 @@ ${GLUT_INCLUDE_DIR}
 
 add_executable(SphFS ${SPHFS_HEADERS} ${SPHFS_SOURCES})
 
+add_dependencies(SphFS eigen)
+
 target_link_libraries(SphFS 
 ${OPENGL_LIBRARIES}
 ${GLUT_LIBRARIES}

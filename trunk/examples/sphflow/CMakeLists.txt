@@ -37,6 +37,8 @@ ${GLUT_INCLUDE_DIR}
 
 add_executable(SphFlow ${SPHFLOW_HEADERS} ${SPHFLOW_SOURCES})
 
+add_dependencies(SphFlow eigen)
+
 target_link_libraries(SphFlow 
 ${OPENGL_LIBRARIES}
 ${GLUT_LIBRARIES}

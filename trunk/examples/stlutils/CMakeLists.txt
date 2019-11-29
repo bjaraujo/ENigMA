@@ -43,6 +43,8 @@ set(STLUTILS_RESOURCES Icons/icons.qrc)
 
 add_executable(StlUtils ${STLUTILS_HEADERS} ${STLUTILS_SOURCES} ${STLUTILS_UI} ${STLUTILS_RESOURCES})
 
+add_dependencies(StlUtils eigen)
+
 target_link_libraries(StlUtils
   Qt5::Core
   Qt5::Widgets

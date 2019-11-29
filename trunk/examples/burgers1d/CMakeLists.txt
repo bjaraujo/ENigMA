@@ -46,6 +46,8 @@ set(BURGERS1D_UI MainWindow.ui)
 
 add_executable(Burgers1D ${BURGERS1D_HEADERS} ${BURGERS1D_SOURCES} ${BURGERS1D_UI})
 
+add_dependencies(Burgers1D eigen)
+
 target_link_libraries(Burgers1D
   Qt5::Core
   Qt5::Widgets

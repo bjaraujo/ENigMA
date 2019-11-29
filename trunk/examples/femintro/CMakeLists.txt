@@ -30,5 +30,6 @@ ${EXPRTK_DIR}
 
 add_executable(FemIntro ${FEMINTRO_SOURCES})
 
+add_dependencies(FemIntro eigen)
 
 

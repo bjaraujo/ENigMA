@@ -55,6 +55,8 @@ set(FVMFLOW_RESOURCES Icons/icons.qrc)
 
 add_executable(FvmFlow ${FVMFLOW_HEADERS} ${FVMFLOW_SOURCES} ${FVMFLOW_UI} ${FVMFLOW_RESOURCES})
 
+add_dependencies(FvmFlow eigen)
+
 target_link_libraries(FvmFlow
   Qt5::Core
   Qt5::Widgets

@@ -58,8 +58,6 @@ endif()
 
 include(GetEigen)
 
-add_subdirectory(lib)
-
 if(ENIGMA_BUILD_UNIT_TESTS)
     add_subdirectory(tests)
 
@@ -74,6 +72,5 @@ if(ENIGMA_BUILD_UNIT_TESTS)
 endif()
 
 add_subdirectory(wrappers)
-
 add_subdirectory(examples)
 

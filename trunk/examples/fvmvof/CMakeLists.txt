@@ -56,6 +56,8 @@ set(FVMVOF_RESOURCES Icons/icons.qrc)
 
 add_executable(FvmVof ${FVMVOF_HEADERS} ${FVMVOF_SOURCES} ${FVMVOF_UI} ${FVMVOF_RESOURCES})
 
+add_dependencies(FvmVof eigen)
+
 target_link_libraries(FvmVof
   Qt5::Core
   Qt5::Widgets

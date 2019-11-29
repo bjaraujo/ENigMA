@@ -46,6 +46,8 @@ set(HEAT1D_UI MainWindow.ui)
 
 add_executable(Heat1D ${HEAT1D_HEADERS} ${HEAT1D_SOURCES} ${HEAT1D_UI})
 
+add_dependencies(Heat1D eigen)
+
 target_link_libraries(Heat1D
   Qt5::Core
   Qt5::Widgets

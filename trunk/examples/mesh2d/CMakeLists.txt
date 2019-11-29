@@ -51,6 +51,8 @@ set(MESH2D_RESOURCES Icons/icons.qrc)
 
 add_executable(Mesh2D ${MESH2D_HEADERS} ${MESH2D_SOURCES} ${MESH2D_UI} ${MESH2D_RESOURCES})
 
+add_dependencies(Mesh2D eigen)
+
 target_link_libraries(Mesh2D
   Qt5::Core
   Qt5::Widgets

@@ -44,6 +44,8 @@ set(FINANCE_UI MainWindow.ui)
 
 add_executable(Finance ${FINANCE_HEADERS} ${FINANCE_SOURCES} ${FINANCE_UI})
 
+add_dependencies(Finance eigen)
+
 target_link_libraries(Finance
   Qt5::Core
   Qt5::Widgets

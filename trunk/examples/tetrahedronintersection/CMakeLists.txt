@@ -51,6 +51,8 @@ set(TETRAHEDRONINTERSECTION_RESOURCES Icons/icons.qrc)
 
 add_executable(TetrahedronIntersection ${TETRAHEDRONINTERSECTION_HEADERS} ${TETRAHEDRONINTERSECTION_SOURCES} ${TETRAHEDRONINTERSECTION_UI} ${TETRAHEDRONINTERSECTION_RESOURCES})
 
+add_dependencies(TetrahedronIntersection eigen)
+
 target_link_libraries(TetrahedronIntersection
   Qt5::Core
   Qt5::Widgets
