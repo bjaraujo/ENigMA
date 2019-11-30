@@ -67,10 +67,10 @@ os.system('cmake --build build --config Release')
 if not os.path.exists('release'):
     os.mkdir('release')
 
-# Python module
-pyReleaseFolder = 'release/ENigMApy_' + strNewVersion + '_win32'
-if not os.path.isdir(pyReleaseFolder):
-    os.mkdir(pyReleaseFolder)
+# https://packaging.python.org/tutorials/packaging-projects/ 
+pyReleaseFolderTemp = 'build/bin/ENigMApy'
+if not os.path.isdir(pyReleaseFolderTemp):
+    os.mkdir(pyReleaseFolderTemp)
 
 # Copy files
 setup = ['import setuptools', \
@@ -92,32 +92,38 @@ setup = ['import setuptools', \
          '    classifiers=[', \
          '        "Programming Language :: Python :: 3",', \
          '        "License :: OSI Approved :: GNU General Public License (GPL)",', \
-         '        "Operating System :: OS Independent",', \
+         '        "Operating System :: Microsoft :: Windows",', \
          '    ],', \
          '    python_requires=">=3.6",', \
          ')']
 
-with open(pyReleaseFolder + '/setup.py', 'w') as f:
+with open(pyReleaseFolderTemp + '/setup.py', 'w') as f:
     for l in setup:
         f.write(l + '\n')
 
-with open(pyReleaseFolder + '/MANIFEST.in', 'w') as f:
+with open(pyReleaseFolderTemp + '/MANIFEST.in', 'w') as f:
     f.write('recursive-include ENigMA *.pyd\n')
 
-if not os.path.isdir(pyReleaseFolder + '/ENigMA'):
-    os.mkdir(pyReleaseFolder + '/ENigMA')
+if not os.path.isdir(pyReleaseFolderTemp + '/ENigMA'):
+    os.mkdir(pyReleaseFolderTemp + '/ENigMA')
 
-open(pyReleaseFolder + '/ENigMA/__init__.py', 'w').close()   
-shutil.copy2('build/bin/_ENigMA.pyd', pyReleaseFolder + '/ENigMA/_ENigMA.pyd')
-shutil.copy2('build/bin/ENigMA.py', pyReleaseFolder + '/ENigMA/ENigMA.py')
+open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()   
+shutil.copy2('build/bin/_ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/_ENigMA.pyd')
+shutil.copy2('build/bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
 
-shutil.copy2('LICENSE.txt', pyReleaseFolder + '/LICENSE.txt')
-shutil.copy2('README.md', pyReleaseFolder + '/README.md')
+shutil.copy2('LICENSE.txt', pyReleaseFolderTemp + '/LICENSE.txt')
+shutil.copy2('README.md', pyReleaseFolderTemp + '/README.md')
 
-os.chdir(pyReleaseFolder)
-os.system('python setup.py sdist bdist_wheel')
-os.system('python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*')
-os.chdir('../..')
+os.chdir(pyReleaseFolderTemp)
+os.system('python setup.py bdist_wheel')
+os.chdir('../../..')
+
+# Python module
+pyReleaseFolder = 'release/ENigMApy_' + strNewVersion + '_win32'
+if not os.path.isdir(pyReleaseFolder):
+    os.mkdir(pyReleaseFolder)
+
+shutil.copy2('build/bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-win32.whl')
 
 # CSharp module
 csReleaseFolder = 'release/ENigMAcs_' + strNewVersion + '_win32'
@@ -129,7 +135,7 @@ shutil.copy2('LICENSE.txt', csReleaseFolder + '/LICENSE.txt')
 shutil.copy2('README.md', csReleaseFolder + '/README.md')
 
 # Create tag
-#os.system('git commit -a -m v' + strNewVersion)
-#os.system('git tag v' + strNewVersion)
-#os.system('git push --tags')
+os.system('git commit -a -m v' + strNewVersion)
+os.system('git tag v' + strNewVersion)
+os.system('git push --tags')
 
