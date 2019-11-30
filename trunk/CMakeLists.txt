@@ -58,6 +58,8 @@ endif()
 
 include(GetEigen)
 
+add_subdirectory(lib)
+
 if(ENIGMA_BUILD_UNIT_TESTS)
     add_subdirectory(tests)
 

@@ -370,14 +370,6 @@ namespace std
 
 };
 
-%extend ENigMA::geometry::CGeoPolyline<double> {
-    
-    int nbVertices() { 
-        return (*$self).nbVertices();
-    }
-
-};
-
 // Triangle
 %include "GeoTriangle.hpp"
 
@@ -387,14 +379,6 @@ namespace std
     
     void addVertex(ENigMA::geometry::CGeoCoordinate<double>& vertex) { 
         (*$self).addVertex(vertex);
-    }
-
-};
-
-%extend ENigMA::geometry::CGeoTriangle<double> {
-    
-    int nbVertices() { 
-        return (*$self).nbVertices();
     }
 
 };
@@ -412,14 +396,6 @@ namespace std
 
 };
 
-%extend ENigMA::geometry::CGeoQuadrilateral<double> {
-    
-    int nbVertices() { 
-        return (*$self).nbVertices();
-    }
-
-};
-
 // Tetrahedron
 %include "GeoTetrahedron.hpp"
 
@@ -429,14 +405,6 @@ namespace std
     
     void addVertex(ENigMA::geometry::CGeoCoordinate<double>& vertex) { 
         (*$self).addVertex(vertex);
-    }
-
-};
-
-%extend ENigMA::geometry::CGeoTetrahedron<double> {
-    
-    int nbVertices() { 
-        return (*$self).nbVertices();
     }
 
 };
@@ -463,14 +431,6 @@ namespace std
     
     void addVertex(ENigMA::geometry::CGeoCoordinate<double>& vertex) { 
         (*$self).addVertex(vertex);
-    }
-
-};
-
-%extend ENigMA::geometry::CGeoHexahedron<double> {
-    
-    int nbVertices() { 
-        return (*$self).nbVertices();
     }
 
 };

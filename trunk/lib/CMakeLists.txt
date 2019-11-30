@@ -1,5 +1,5 @@
 
-project(ENigMALib CXX)
+project(ENigMA CXX)
 
 set(GEOMETRY_HEADERS
 ../src/geometry/GeoCentroid.hpp
@@ -391,7 +391,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_library(ENigMALib 
+add_library(ENigMA
     ENigMA.hpp
     ENigMA.cpp
     ${GEOMETRY_HEADERS} 
@@ -430,5 +430,5 @@ add_library(ENigMALib
     ${STL_HEADERS}
 )
 
-add_dependencies(ENigMALib eigen)
+add_dependencies(ENigMA eigen)
 
