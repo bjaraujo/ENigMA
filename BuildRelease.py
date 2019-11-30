@@ -1,12 +1,7 @@
 
 import os
 import shutil
-
-# Build platform
-build = 'msvc16-win32'
-
-configuration = 'Release'
-    
+   
 # Read version info
 fi = open('trunk/src/version.h', 'r')
 strLines = fi.readlines()
@@ -57,34 +52,69 @@ for strLine in strLines:
     
 fo.close()
 
-# Build
+# Build packages
 print('------------ Building release ------------')
 print('version: ' + strNewVersion)
-print('build: ' + build)
 
-os.system("pause")
-os.system('"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/MSBuild.exe" build/' + build + '/wrappers/swig/python/_ENigMA.vcxproj /p:Configuration=' + configuration + ' /t:Rebuild')
+os.system('pause')
 
-if not os.path.exists('releases'):
-    os.mkdir('releases')
+if not os.path.exists('build'):
+    os.mkdir('build')
+    
+os.system('cmake -Bbuild trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=OFF -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=D:/Libraries/Swig/swigwin-4.0.1/swig.exe')
+os.system('cmake --build build --config Release')
 
-strNewFolder = 'releases/' + build
-if not os.path.isdir(strNewFolder):
-    os.mkdir(strNewFolder)
+if not os.path.exists('release'):
+    os.mkdir('release')
 
-strNewFolder = 'releases/' + build + '/ENigMA_python3_64bit_' + strNewVersion
-if not os.path.isdir(strNewFolder):
-    os.mkdir(strNewFolder)
+pyReleaseFolder = 'release/ENigMApy_' + strNewVersion + '_win32'
+if not os.path.isdir(pyReleaseFolder):
+    os.mkdir(pyReleaseFolder)
 
 # Copy files
-shutil.copy2('build/' + build + '/wrappers/swig/python/' + configuration + '/_ENigMA.pyd', strNewFolder + '/_ENigMA.pyd')
-shutil.copy2('build/' + build + '/wrappers/swig/python/' + configuration + '/ENigMA.py', strNewFolder + '/ENigMA.py')
+setup = ['import setuptools', \
+         '', \
+         'with open("README.md", "r") as fh:', \
+         '    long_description = fh.read()', \
+         '', \
+         'setuptools.setup(', \
+         '    name="ENigMApy",', \
+         '    version="' + strNewVersion + '",', \
+         '    author="baraujo",', \
+         '    author_email="",', \
+         '    description="ENigMA - Extended Numerical Multiphysics Analysis",', \
+         '    long_description=long_description,', \
+         '    long_description_content_type="text/markdown",', \
+         '    url="https://github.com/bjaraujo/ENigMA",', \
+         '    packages=["ENigMA"],', \
+         '    include_package_data=True,', \
+         '    classifiers=[', \
+         '        "Programming Language :: Python :: 3",', \
+         '        "License :: OSI Approved :: MIT License",', \
+         '        "Operating System :: OS Independent",', \
+         '    ],', \
+         '    python_requires=">=3.6",', \
+         ')']
+
+with open(pyReleaseFolder + '/setup.py', 'w') as f:
+    for l in setup:
+        f.write(l + '\n')
+
+with open(pyReleaseFolder + '/MANIFEST.in', 'w') as f:
+    f.write('recursive-include ENigMA *.pyd\n')
+
+if not os.path.isdir(pyReleaseFolder + '/ENigMA'):
+    os.mkdir(pyReleaseFolder + '/ENigMA')
+        
+shutil.copy2('build/bin/_ENigMA.pyd', pyReleaseFolder + '/ENigMA/_ENigMA.pyd')
+shutil.copy2('build/bin/ENigMA.py', pyReleaseFolder + '/ENigMA/_ENigMA.py')
 
 # Copy license
-shutil.copy2('LICENSE.txt', strNewFolder + '/LICENSE.txt')
+shutil.copy2('LICENSE.txt', pyReleaseFolder + '/LICENSE.txt')
+shutil.copy2('README.md', pyReleaseFolder + '/README.md')
 
 # Create tag
-os.system('git commit -a -m v' + strNewVersion)
-os.system('git tag v' + strNewVersion)
-os.system('git push --tags')
+#os.system('git commit -a -m v' + strNewVersion)
+#os.system('git tag v' + strNewVersion)
+#os.system('git push --tags')
 

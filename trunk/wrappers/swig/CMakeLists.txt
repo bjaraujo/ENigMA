@@ -14,7 +14,7 @@ include(${SWIG_USE_FILE})
 
 set(CMAKE_SWIG_FLAGS "")
 
-set(WRAP_SWIG_PYTHON ON CACHE BOOL "Build SWIG python interface")
+set(WRAP_SWIG_PYTHON OFF CACHE BOOL "Build SWIG python interface")
 
 IF (WRAP_SWIG_PYTHON)
   add_subdirectory(python)
