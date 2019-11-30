@@ -3,7 +3,7 @@ import os
 import shutil
 
 # Build platform
-build = 'msvc16-win64'
+build = 'msvc16-win32'
 
 configuration = 'Release'
     

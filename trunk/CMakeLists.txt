@@ -1,6 +1,6 @@
 
 #Specify the version being used aswell as the language
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.8)
 
 if(POLICY CMP0020)
   # Accept new policy related to automatically linking Qt apps to qtmain.lib on Windows
