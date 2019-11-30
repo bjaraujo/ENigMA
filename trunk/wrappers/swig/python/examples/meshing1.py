@@ -3,7 +3,7 @@ from timeit import default_timer as timer
 #import subprocess
 
 from ENigMA import ENigMA
- 
+
 edgeMesh = ENigMA.CMshMeshDouble()
 
 node1 = ENigMA.CMshNodeDouble(10, 10, 0)

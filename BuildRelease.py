@@ -67,6 +67,7 @@ os.system('cmake --build build --config Release')
 if not os.path.exists('release'):
     os.mkdir('release')
 
+# Python module
 pyReleaseFolder = 'release/ENigMApy_' + strNewVersion + '_win32'
 if not os.path.isdir(pyReleaseFolder):
     os.mkdir(pyReleaseFolder)
@@ -90,7 +91,7 @@ setup = ['import setuptools', \
          '    include_package_data=True,', \
          '    classifiers=[', \
          '        "Programming Language :: Python :: 3",', \
-         '        "License :: OSI Approved :: MIT License",', \
+         '        "License :: OSI Approved :: GNU General Public License (GPL)",', \
          '        "Operating System :: OS Independent",', \
          '    ],', \
          '    python_requires=">=3.6",', \
@@ -105,13 +106,27 @@ with open(pyReleaseFolder + '/MANIFEST.in', 'w') as f:
 
 if not os.path.isdir(pyReleaseFolder + '/ENigMA'):
     os.mkdir(pyReleaseFolder + '/ENigMA')
-        
-shutil.copy2('build/bin/_ENigMA.pyd', pyReleaseFolder + '/ENigMA/_ENigMA.pyd')
-shutil.copy2('build/bin/ENigMA.py', pyReleaseFolder + '/ENigMA/_ENigMA.py')
 
-# Copy license
+open(pyReleaseFolder + '/ENigMA/__init__.py', 'w').close()   
+shutil.copy2('build/bin/_ENigMA.pyd', pyReleaseFolder + '/ENigMA/_ENigMA.pyd')
+shutil.copy2('build/bin/ENigMA.py', pyReleaseFolder + '/ENigMA/ENigMA.py')
+
 shutil.copy2('LICENSE.txt', pyReleaseFolder + '/LICENSE.txt')
 shutil.copy2('README.md', pyReleaseFolder + '/README.md')
+
+os.chdir(pyReleaseFolder)
+os.system('python setup.py sdist bdist_wheel')
+os.system('python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*')
+os.chdir('../..')
+
+# CSharp module
+csReleaseFolder = 'release/ENigMAcs_' + strNewVersion + '_win32'
+if not os.path.isdir(csReleaseFolder):
+    os.mkdir(csReleaseFolder)
+
+shutil.copy2('build/bin/ENigMAcs.dll', csReleaseFolder + '/ENigMAcs.dll')
+shutil.copy2('LICENSE.txt', csReleaseFolder + '/LICENSE.txt')
+shutil.copy2('README.md', csReleaseFolder + '/README.md')
 
 # Create tag
 #os.system('git commit -a -m v' + strNewVersion)
