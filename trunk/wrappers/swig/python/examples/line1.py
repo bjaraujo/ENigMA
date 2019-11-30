@@ -1,5 +1,5 @@
 
-import ENigMA
+from ENigMA import ENigMA
 
 a = ENigMA.CGeoCoordinateDouble(0, 0, 0)
 b = ENigMA.CGeoCoordinateDouble(1, 0, 0)

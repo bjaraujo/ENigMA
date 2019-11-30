@@ -1,5 +1,5 @@
 
-import ENigMA
+from ENigMA import ENigMA
 
 a = ENigMA.CGeoNormalDouble(1, 2, 3)
 

@@ -1,6 +1,6 @@
 import subprocess
 
-import ENigMA
+from ENigMA import ENigMA
  
 vertex1 = ENigMA.CGeoCoordinateDouble(0, 0, 0)
 vertex2 = ENigMA.CGeoCoordinateDouble(1, 0, 0)

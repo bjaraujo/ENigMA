@@ -2,7 +2,7 @@
 from timeit import default_timer as timer
 #import subprocess
 
-import ENigMA
+from ENigMA import ENigMA
 
 d = 0.125
 

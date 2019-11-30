@@ -1,7 +1,7 @@
 
 import subprocess
 
-import ENigMA
+from ENigMA import ENigMA
  
 center = ENigMA.CGeoCoordinateDouble(0,0,0)
 radius = ENigMA.CGeoVectorDouble(1,1,1)
