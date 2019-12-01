@@ -87,7 +87,7 @@ setup = ['import setuptools', \
          'setuptools.setup(', \
          '    name="ENigMApy",', \
          '    version="' + strNewVersion + '",', \
-         '    author="baraujo",', \
+         '    author="bjaraujo",', \
          '    author_email="",', \
          '    description="ENigMA - Extended Numerical Multiphysics Analysis",', \
          '    long_description=long_description,', \
