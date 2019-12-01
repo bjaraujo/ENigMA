@@ -20,7 +20,6 @@ strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intR
 #incVersion = True
 #if incVersionInput == 'n':
 #    incVersion = False
-
 incVersion = False
 
 fo = open('trunk/src/version.h', 'w')
@@ -119,7 +118,7 @@ if not os.path.isdir(pyReleaseFolderTemp + '/ENigMA'):
 
 if sys.platform == 'win32':
     open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
-    shutil.copy2('bin/_ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/_ENigMA.pyd')
+    shutil.copy2('bin/ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/ENigMA.pyd')
     shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
 else:
     open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
