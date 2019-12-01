@@ -99,7 +99,10 @@ Configure correctly the environment variables (EIGEN_DIR, EXPRTK_DIR, RTREE_DIR,
 
 - Install python 3 32/64bit (if you don't have already), 
 - Download the latest release,
-- pip install ENigMApy-0.1.8.0-py3-none-DISTRO.whl
+- Install using pip:
+```bash
+ENigMApy-VERSION-py3-none-DISTRO.whl
+```
 - Create file named "Example1.py"
 - Go to wiki and copy example "Creating a mesh using python"
 - Run command "python Example1.py"
