@@ -52,6 +52,5 @@ if(WIN32)
 endif(WIN32)
 
 set_target_properties(_ENigMApy PROPERTIES OUTPUT_NAME ENigMA)
-
 add_custom_command(TARGET _ENigMApy POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:_ENigMApy>/ENigMA.py)
 

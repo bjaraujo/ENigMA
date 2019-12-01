@@ -122,7 +122,7 @@ if sys.platform == 'win32':
     shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
 else:
     open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
-    shutil.copy2('bin/ENigMA.so', pyReleaseFolderTemp + '/ENigMA/ENigMA.so')
+    shutil.copy2('bin/ENigMA.so', pyReleaseFolderTemp + '/ENigMA/_ENigMA.so')
     shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
 
 shutil.copy2('../LICENSE.txt', pyReleaseFolderTemp + '/LICENSE.txt')
