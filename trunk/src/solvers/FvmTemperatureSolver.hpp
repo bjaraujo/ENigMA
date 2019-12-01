@@ -16,6 +16,8 @@ namespace fvm {
     template <typename Real>
     class CFvmTemperatureSolver : public CFvmPisoSolver<Real> {
     protected:
+	typedef std::map<Integer, Real> varMap;
+
         bool m_calcT;
 
         Real m_bthcond; // Boundary thermal conductivity

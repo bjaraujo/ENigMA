@@ -36,7 +36,7 @@ include_directories(
 )
 
 set(ENGIMA_INTERFACE
-    ../ENigMA.i
+  ../ENigMA.i
 )
 
 set(CMAKE_SWIG_FLAGS "")
@@ -47,5 +47,5 @@ set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_FLAGS "-debug-tm
 swig_add_library(ENigMAcs LANGUAGE csharp SOURCES ${ENGIMA_INTERFACE})
 
 if(WIN32)
-add_definitions(/bigobj)
+  add_definitions(/bigobj)
 endif(WIN32)

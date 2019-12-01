@@ -26,7 +26,7 @@ include_directories(
   ../../../src/material
   ../../../src/mesh
   ../../../src/pde
-  ../../../src/solvers  
+  ../../../src/solvers
   ../../../src/post
   ../../../src/sle
   ../../../src/stl
@@ -36,7 +36,7 @@ include_directories(
 )
 
 set(ENGIMA_INTERFACE
-    ../ENigMA.i
+  ../ENigMA.i
 )
 
 set(CMAKE_SWIG_FLAGS "")
@@ -48,10 +48,10 @@ swig_add_library(ENigMApy LANGUAGE python SOURCES ${ENGIMA_INTERFACE})
 swig_link_libraries(ENigMApy ${PYTHON_LIBRARIES})
 
 if(WIN32)
-add_definitions(/bigobj)
+  add_definitions(/bigobj)
 endif(WIN32)
 
-set_target_properties(ENigMApy PROPERTIES OUTPUT_NAME ENigMA)
+set_target_properties(_ENigMApy PROPERTIES OUTPUT_NAME ENigMA)
 
-add_custom_command(TARGET ENigMApy POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:ENigMApy>/ENigMA.py)
+add_custom_command(TARGET _ENigMApy POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:_ENigMApy>/ENigMA.py)
 

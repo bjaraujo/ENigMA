@@ -15,17 +15,17 @@ namespace ENigMA {
 namespace fvm {
     template <typename Real>
     CFvmTemperatureSolver<Real>::CFvmTemperatureSolver(CFvmMesh<Real>& aFvmMesh)
-        : CFvmPisoSolver(aFvmMesh), 
+        : CFvmPisoSolver<Real>::CFvmPisoSolver(aFvmMesh),
         m_bthcond(1.0)
     {
-        for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-            Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
+        for (Integer i = 0; i < CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(); ++i) {
+            Integer aControlVolumeId = CFvmPisoSolver<Real>::m_fvmMesh.controlVolumeId(i);
 
             m_T0[aControlVolumeId] = m_T[aControlVolumeId] = 0.0;
         }
 
-        for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i) {
-            Integer aFaceId = m_fvmMesh.faceId(i);
+        for (Integer i = 0; i < CFvmPisoSolver<Real>::m_fvmMesh.nbFaces(); ++i) {
+            Integer aFaceId = CFvmPisoSolver<Real>::m_fvmMesh.faceId(i);
 
             m_Tf[aFaceId] = 0.0;
         }
@@ -39,7 +39,7 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::storePreviousQuantities()
     {
-        CFvmPisoSolver::storePreviousQuantities();
+        CFvmPisoSolver<Real>::storePreviousQuantities();
 
         m_T0 = m_T;
     }
@@ -47,11 +47,11 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::setMaterialProperties(const Real aDensity, const Real aViscosity, const Real aThermalConductivity, const Real aSpecificHeat)
     {
-        for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-            Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
+        for (Integer i = 0; i < CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(); ++i) {
+            Integer aControlVolumeId = CFvmPisoSolver<Real>::m_fvmMesh.controlVolumeId(i);
 
-            m_dens[aControlVolumeId] = aDensity;
-            m_visc[aControlVolumeId] = aViscosity;
+            CFvmPisoSolver<Real>::m_dens[aControlVolumeId] = aDensity;
+            CFvmPisoSolver<Real>::m_visc[aControlVolumeId] = aViscosity;
             m_thcond[aControlVolumeId] = aThermalConductivity;
             m_spheat[aControlVolumeId] = aSpecificHeat;
         }
@@ -65,7 +65,7 @@ namespace fvm {
 
             m_Tf[aFaceId] = T;
 
-            m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
+            CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).setBoundaryType(CFvmBoundaryType(sFaceType));
         }
     }
 
@@ -75,49 +75,49 @@ namespace fvm {
         Eigen::SparseMatrix<Real> A;
         Eigen::Matrix<Real, Eigen::Dynamic, 1> b;
 
-        A.resize(m_fvmMesh.nbControlVolumes(), m_fvmMesh.nbControlVolumes());
-        A.reserve(m_fvmMesh.nbControlVolumes());
+        A.resize(CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(), CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes());
+        A.reserve(CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes());
 
-        b.resize(m_fvmMesh.nbControlVolumes());
+        b.resize(CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes());
         b.setZero();
 
         // Assemble temperature matrix
-        for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-            Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
+        for (Integer i = 0; i < CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(); ++i) {
+            Integer aControlVolumeId = CFvmPisoSolver<Real>::m_fvmMesh.controlVolumeId(i);
 
-            Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
+            Real volume = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
 
-            Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
+            Integer anIndexP = CFvmPisoSolver<Real>::m_mapIdToIndex.at(aControlVolumeId);
 
-            Real dens = m_dens.at(aControlVolumeId);
-            Real visc = m_visc.at(aControlVolumeId);
+            Real dens = CFvmPisoSolver<Real>::m_dens.at(aControlVolumeId);
+            Real visc = CFvmPisoSolver<Real>::m_visc.at(aControlVolumeId);
             Real thcond = m_thcond.at(aControlVolumeId);
             Real spheat = m_spheat.at(aControlVolumeId);
 
-            for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j) {
-                Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
+            for (Integer j = 0; j < CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j) {
+                Integer aFaceId = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
-                Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
-                Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId);
+                Real area = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
+                Real dist = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId);
 
                 Real flux;
 
-                if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                    flux = +m_flux.at(aFaceId);
+                if (CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
+                    flux = +CFvmPisoSolver<Real>::m_flux.at(aFaceId);
                 else
-                    flux = -m_flux.at(aFaceId);
+                    flux = -CFvmPisoSolver<Real>::m_flux.at(aFaceId);
 
-                if (m_fvmMesh.face(aFaceId).hasPair()) {
-                    Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
+                if (CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).hasPair()) {
+                    Integer aNeighborId = CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
-                    Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
+                    Integer anIndexN = CFvmPisoSolver<Real>::m_mapIdToIndex.at(aNeighborId);
 
-                    if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId)) {
-                        area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
+                    if (CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId)) {
+                        area += CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                         area *= 0.5;
-                        dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
+                        dist += CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
 
-                        dens += m_dens[aNeighborId];
+                        dens += CFvmPisoSolver<Real>::m_dens[aNeighborId];
                         dens *= 0.5;
                         thcond += m_thcond[aNeighborId];
                         thcond *= 0.5;
@@ -159,10 +159,10 @@ namespace fvm {
                 }
             }
 
-            if (m_dt > 0) {
+            if (CFvmPisoSolver<Real>::m_dt > 0) {
                 // Unsteady term - Euler
-                A.coeffRef(anIndexP, anIndexP) += volume * spheat * dens / m_dt;
-                b[anIndexP] += volume * spheat * dens / m_dt * m_T0.at(aControlVolumeId);
+                A.coeffRef(anIndexP, anIndexP) += volume * spheat * dens / CFvmPisoSolver<Real>::m_dt;
+                b[anIndexP] += volume * spheat * dens / CFvmPisoSolver<Real>::m_dt * m_T0.at(aControlVolumeId);
             }
         }
 
@@ -174,7 +174,7 @@ namespace fvm {
         Eigen::Matrix<Real, Eigen::Dynamic, 1> T = solver.solve(b);
 
         for (int i = 0; i < T.rows(); ++i) {
-            Integer aControlVolumeId = m_mapIndexToId[i];
+            Integer aControlVolumeId = CFvmPisoSolver<Real>::m_mapIndexToId[i];
 
             m_T[aControlVolumeId] = T[i];
         }
@@ -183,7 +183,7 @@ namespace fvm {
     template <typename Real>
     void CFvmTemperatureSolver<Real>::iterate(const Real dt, const bool bInit)
     {
-        CFvmPisoSolver::iterate(dt, bInit);
+        CFvmPisoSolver<Real>::iterate(dt, bInit);
 
         this->calculateTemperatureField();
     }
@@ -197,13 +197,13 @@ namespace fvm {
         rp = 0;
         rT = 0;
 
-        for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i) {
-            Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
+        for (Integer i = 0; i < CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(); ++i) {
+            Integer aControlVolumeId = CFvmPisoSolver<Real>::m_fvmMesh.controlVolumeId(i);
 
-            ru += (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId)) * (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId));
-            rv += (m_v.at(aControlVolumeId) - m_v0.at(aControlVolumeId)) * (m_v.at(aControlVolumeId) - m_v0.at(aControlVolumeId));
-            rw += (m_w.at(aControlVolumeId) - m_w0.at(aControlVolumeId)) * (m_w.at(aControlVolumeId) - m_w0.at(aControlVolumeId));
-            rp += (m_p.at(aControlVolumeId) - m_p0.at(aControlVolumeId)) * (m_p.at(aControlVolumeId) - m_p0.at(aControlVolumeId));
+            ru += (CFvmPisoSolver<Real>::m_u.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_u0.at(aControlVolumeId)) * (CFvmPisoSolver<Real>::m_u.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_u0.at(aControlVolumeId));
+            rv += (CFvmPisoSolver<Real>::m_v.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_v0.at(aControlVolumeId)) * (CFvmPisoSolver<Real>::m_v.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_v0.at(aControlVolumeId));
+            rw += (CFvmPisoSolver<Real>::m_w.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_w0.at(aControlVolumeId)) * (CFvmPisoSolver<Real>::m_w.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_w0.at(aControlVolumeId));
+            rp += (CFvmPisoSolver<Real>::m_p.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_p0.at(aControlVolumeId)) * (CFvmPisoSolver<Real>::m_p.at(aControlVolumeId) - CFvmPisoSolver<Real>::m_p0.at(aControlVolumeId));
             rT += (m_T.at(aControlVolumeId) - m_T0.at(aControlVolumeId)) * (m_T.at(aControlVolumeId) - m_T0.at(aControlVolumeId));
         }
     }

@@ -16,6 +16,8 @@ namespace fvm {
     template <typename Real>
     class CFvmVofSolver : public CFvmPisoSolver<Real> {
     protected:
+	typedef std::map<Integer, Real> varMap;
+
         Real m_dens0;
         Real m_visc0;
 

@@ -22,7 +22,6 @@ namespace fvm {
     class CFvmPisoSolver {
     protected:
         typedef std::map<Integer, Real> varMap;
-        typedef std::map<Integer, CGeoVector<Real>> vecMap;
 
         std::map<Integer, Integer> m_mapIdToIndex;
         std::map<Integer, Integer> m_mapIndexToId;
