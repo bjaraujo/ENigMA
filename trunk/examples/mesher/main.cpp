@@ -7,13 +7,14 @@
 // <Author> Billy Araujo </Author>
 // *****************************************************************************
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 #include <time.h>
 
 #include "MshTriangleMesher.hpp"
 #include "MshQuadrilateralMesher.hpp"
+#include "MshTetrahedronMesher.hpp"
 #include "PosGmsh.hpp"
 #include "StlUtils.hpp"
 
@@ -23,84 +24,38 @@ using namespace ENigMA::post;
 using namespace ENigMA::pde;
 using namespace ENigMA::stl;
 
-void Example1(const double meshSize, const int maxEle, const double tol)
+void addCircle(CMshMesh<double>& anEdgeMesh, double cx, double cy, double radius)
 {
+    int aFirstNodeId = anEdgeMesh.nextNodeId();
 
-    CMshTriangleMesher<double> aTriangleMesher;
+    for (int i = 0; i < 16; i++) {
+        double teta = i / 16.0 * 2 * 3.14159265359;
 
-    CMshMesh<double> anEdgeMesh;
+        CMshNode<double> aNode5(cx - radius * cos(teta), cy + radius * sin(teta), 0.0);
+        anEdgeMesh.addNode(anEdgeMesh.nextNodeId(), aNode5);
 
-    CMshNode<double> aNode1;
-    aNode1 << 0.0, 0.0, 0.0;
-    anEdgeMesh.addNode(0, aNode1);
+        if (i > 0) {
+            CMshElement<double> anElement(ET_BEAM);
+            anElement.addNodeId(anEdgeMesh.nextNodeId() - 2);
+            anElement.addNodeId(anEdgeMesh.nextNodeId() - 1);
+            anEdgeMesh.addElement(anEdgeMesh.nextElementId(), anElement);
+        }
+    }
 
-    CMshNode<double> aNode2;
-    aNode2 << 1.0, 0.0, 0.0;
-    anEdgeMesh.addNode(1, aNode2);
+    {
+        CMshElement<double> anElement(ET_BEAM);
+        anElement.addNodeId(anEdgeMesh.nextNodeId() - 1);
+        anElement.addNodeId(aFirstNodeId);
+        anEdgeMesh.addElement(anEdgeMesh.nextElementId(), anElement);
+    }
+}
 
-    CMshNode<double> aNode3;
-    aNode3 << 1.0, 1.0, 0.0;
-    anEdgeMesh.addNode(2, aNode3);
-
-    CMshNode<double> aNode4;
-    aNode4 << 0.0, 1.0, 0.0;
-    anEdgeMesh.addNode(3, aNode4);
-
-    CMshElement<double> anElement1(ET_BEAM);
-    anElement1.addNodeId(0);
-    anElement1.addNodeId(1);
-    anEdgeMesh.addElement(0, anElement1);
-
-    CMshElement<double> anElement2(ET_BEAM);
-    anElement2.addNodeId(1);
-    anElement2.addNodeId(2);
-    anEdgeMesh.addElement(1, anElement2);
-
-    CMshElement<double> anElement3(ET_BEAM);
-    anElement3.addNodeId(2);
-    anElement3.addNodeId(3);
-    anEdgeMesh.addElement(2, anElement3);
-
-    CMshElement<double> anElement4(ET_BEAM);
-    anElement4.addNodeId(3);
-    anElement4.addNodeId(0);
-    anEdgeMesh.addElement(3, anElement4);
-
-    anEdgeMesh.generateFaces(1E-3);
-
-    clock_t start, finish;
-
-    start = clock();
-
-    aTriangleMesher.remesh(anEdgeMesh, meshSize);
-    aTriangleMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, tol);
-
-    aTriangleMesher.collapseEdges(meshSize, tol);
-    
-    aTriangleMesher.relaxNodes(tol);
-
-    finish = clock();
-
-    std::cout << "Finished in about " << std::setprecision(2) << (double)(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
-
-    CMshMesh<double> aSurfaceMesh;
-    aSurfaceMesh = aTriangleMesher.mesh();
-
-    std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
+void GenerateMesh(const double meshSize, const int maxEle, const double tol)
+{
 
     CPdeField<double> T;
     CPosGmsh<double> aPosGmsh;
-
-    T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "edge_tris.msh", "beams");
-
-    T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "surface_tris.msh", "tris");
-
-}
-
-void Example2(const double meshSize, const int maxEle, const double tol)
-{
+    CMshMesh<double> aSurfaceMesh;
 
     CMshQuadrilateralMesher<double> aQuadrilateralMesher;
 
@@ -111,15 +66,15 @@ void Example2(const double meshSize, const int maxEle, const double tol)
     anEdgeMesh.addNode(0, aNode1);
 
     CMshNode<double> aNode2;
-    aNode2 << 1.0, 0.0, 0.0;
+    aNode2 << 400.0, 0.0, 0.0;
     anEdgeMesh.addNode(1, aNode2);
 
     CMshNode<double> aNode3;
-    aNode3 << 1.0, 1.0, 0.0;
+    aNode3 << 400.0, 400.0, 0.0;
     anEdgeMesh.addNode(2, aNode3);
 
     CMshNode<double> aNode4;
-    aNode4 << 0.0, 1.0, 0.0;
+    aNode4 << 0.0, 400.0, 0.0;
     anEdgeMesh.addNode(3, aNode4);
 
     CMshElement<double> anElement1(ET_BEAM);
@@ -142,32 +97,7 @@ void Example2(const double meshSize, const int maxEle, const double tol)
     anElement4.addNodeId(0);
     anEdgeMesh.addElement(3, anElement4);
 
-    CMshNode<double> aNode5;
-    aNode5 << 0.6, 0.5, 0.0;
-    anEdgeMesh.addNode(4, aNode5);
-
-    CMshNode<double> aNode6;
-    aNode6 << 0.4, 0.5, 0.0;
-    anEdgeMesh.addNode(5, aNode6);
-
-    CMshNode<double> aNode7;
-    aNode7 << 0.5, 0.7, 0.0;
-    anEdgeMesh.addNode(6, aNode7);
-
-    CMshElement<double> anElement5(ET_BEAM);
-    anElement5.addNodeId(4);
-    anElement5.addNodeId(5);
-    anEdgeMesh.addElement(4, anElement5);
-
-    CMshElement<double> anElement6(ET_BEAM);
-    anElement6.addNodeId(5);
-    anElement6.addNodeId(6);
-    anEdgeMesh.addElement(5, anElement6);
-
-    CMshElement<double> anElement7(ET_BEAM);
-    anElement7.addNodeId(6);
-    anElement7.addNodeId(4);
-    anEdgeMesh.addElement(6, anElement7);
+    addCircle(anEdgeMesh, 200, 200, 100);
 
     anEdgeMesh.generateFaces(1E-3);
 
@@ -176,35 +106,53 @@ void Example2(const double meshSize, const int maxEle, const double tol)
     start = clock();
 
     aQuadrilateralMesher.remesh(anEdgeMesh, meshSize);
-    aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, tol);
+
+    try {
+        aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, tol);
+    } catch (std::vector<SMshQuadrilateralAdvancingFrontEdge<double>> advFront) {
+
+        CMshMesh<double> aMesh;
+
+		aSurfaceMesh = aQuadrilateralMesher.mesh();
+
+        for (int i = 0; i < aSurfaceMesh.nbNodes(); i++) {
+            int aNodeId = aSurfaceMesh.nodeId(i);
+			CMshNode<double> aNode = aSurfaceMesh.node(aNodeId);
+
+            aMesh.addNode(aNodeId, aNode);
+        }
+
+        for (int i = 0; i < advFront.size(); i++) {
+
+            if (advFront[i].remove)
+                continue;
+
+            CMshElement<double> anElement(ET_BEAM);
+            anElement.addNodeId(advFront[i].nodeId[0]);
+            anElement.addNodeId(advFront[i].nodeId[1]);
+            aMesh.addElement(aMesh.nextElementId(), anElement);
+        }
+
+	    T.setMesh(aMesh);
+        aPosGmsh.save(T, "adv_front.msh", "beams");
+    }
 
     finish = clock();
 
     std::cout << "Finished in about " << std::setprecision(2) << (double)(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
 
-    CMshMesh<double> aSurfaceMesh;
     aSurfaceMesh = aQuadrilateralMesher.mesh();
 
     std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
-
-    CPdeField<double> T;
-    CPosGmsh<double> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "edge_quads.msh", "beams");
 
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "surface_quads.msh", "quads");
-
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-
-    if (argc > 1)
-    {
-        //Example1(atof(argv[1]), atoi(argv[2]), atof(argv[3]));
-        Example2(atof(argv[1]), atoi(argv[2]), atof(argv[3]));
-    }
-
+    GenerateMesh(20, 499, 1E-4);
 }

@@ -57,14 +57,14 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshTriangleMesher<Real>::removeEdge(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance)
+    void CMshTriangleMesher<Real>::removeEdge(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
     {
         anAdvEdge.remove = true;
         removeEdgeFromRtree(anAdvEdge, aTolerance);
     }
 
     template <typename Real>
-    void CMshTriangleMesher<Real>::addEdgeToRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance)
+    void CMshTriangleMesher<Real>::addEdgeToRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
     {
         Integer aNodeId1 = anAdvEdge.nodeId[0];
         Integer aNodeId2 = anAdvEdge.nodeId[1];
@@ -83,7 +83,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshTriangleMesher<Real>::removeEdgeFromRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance)
+    void CMshTriangleMesher<Real>::removeEdgeFromRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
     {
         Integer aNodeId1 = anAdvEdge.nodeId[0];
         Integer aNodeId2 = anAdvEdge.nodeId[1];
@@ -99,7 +99,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTriangleMesher<Real>::edgeExists(SAdvancingFrontEdge& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges)
+    bool CMshTriangleMesher<Real>::edgeExists(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges)
     {
         std::vector<Integer> sNodeIds;
 
@@ -113,7 +113,7 @@ namespace mesh {
             if (sEdges[j] == anAdvEdge.id)
                 continue;
 
-            SAdvancingFrontEdge& anotherEdge = m_anAdvFront[sEdges[j]];
+            SMshTriangleAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
 
             std::vector<Integer> sOtherNodeIds;
 
@@ -132,7 +132,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTriangleMesher<Real>::edgeOk(SAdvancingFrontEdge& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance)
+    bool CMshTriangleMesher<Real>::edgeOk(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance)
     {
         CGeoCoordinate<Real> aPoint;
 
@@ -143,7 +143,7 @@ namespace mesh {
             if (sEdges[j] == anAdvEdge.id)
                 continue;
 
-            SAdvancingFrontEdge& anotherEdge = m_anAdvFront[sEdges[j]];
+            SMshTriangleAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
 
             if (anotherEdge.remove)
                 continue;
@@ -278,7 +278,7 @@ namespace mesh {
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
             Integer anAdvEdgeId = i;
 
-            SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+            SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
             if (anAdvEdge.remove)
                 continue;
@@ -292,8 +292,8 @@ namespace mesh {
                 throw std::out_of_range("Connectivity is out of range!");
             }
 
-            SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-            SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+            SMshTriangleAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+            SMshTriangleAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
             if (aPrevEdge.remove || aNextEdge.remove) {
                 for (Integer j = 0; j < static_cast<Integer>(sEdges.size()); ++j) {
@@ -303,7 +303,7 @@ namespace mesh {
                     if (anotherEdgeId == anAdvEdge.id)
                         continue;
 
-                    SAdvancingFrontEdge& anotherEdge = m_anAdvFront[anotherEdgeId];
+                    SMshTriangleAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[anotherEdgeId];
 
                     if (anotherEdge.remove)
                         continue;
@@ -332,7 +332,7 @@ namespace mesh {
         for (Integer i = 0; i < 2; ++i) {
             Integer anAdvEdgeId = m_nextEdgeId - i - 1;
 
-            SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+            SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
             if (anAdvEdge.remove)
                 continue;
@@ -340,7 +340,7 @@ namespace mesh {
             Integer aDuplicateEdgeId;
 
             if (edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges)) {
-                SAdvancingFrontEdge& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
+                SMshTriangleAdvancingFrontEdge<Real>& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
 
                 this->removeEdge(anAdvEdge, aTolerance);
                 this->removeEdge(aDuplicateEdge, aTolerance);
@@ -354,7 +354,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshTriangleMesher<Real>::addTriangle(SAdvancingFrontEdge& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance)
+    void CMshTriangleMesher<Real>::addTriangle(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance)
     {
         Integer aNodeId1 = anAdvEdge.nodeId[0];
         Integer aNodeId2 = anAdvEdge.nodeId[1];
@@ -375,14 +375,14 @@ namespace mesh {
 
         m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-        SAdvancingFrontEdge& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-        SAdvancingFrontEdge& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+        SMshTriangleAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+        SMshTriangleAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
         Integer aNewEdgeId1 = m_nextEdgeId++;
         Integer aNewEdgeId2 = m_nextEdgeId++;
 
         // Add edge 1
-        SAdvancingFrontEdge aNewEdge1;
+        SMshTriangleAdvancingFrontEdge<Real> aNewEdge1;
         aNewEdge1.id = aNewEdgeId1;
         aNewEdge1.remove = false;
         aNewEdge1.boundary = false;
@@ -402,7 +402,7 @@ namespace mesh {
         addEdgeToRtree(aNewEdge1, aTolerance);
 
         // Add edge 2
-        SAdvancingFrontEdge aNewEdge2;
+        SMshTriangleAdvancingFrontEdge<Real> aNewEdge2;
         aNewEdge2.id = aNewEdgeId2;
         aNewEdge2.remove = false;
         aNewEdge2.boundary = false;
@@ -640,7 +640,7 @@ namespace mesh {
             CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
 
             if (anElement.elementType() == ET_BEAM) {
-                SAdvancingFrontEdge anAdvEdge;
+                SMshTriangleAdvancingFrontEdge<Real> anAdvEdge;
 
                 anAdvEdge.id = m_nextEdgeId++;
                 anAdvEdge.remove = false;
@@ -705,16 +705,16 @@ namespace mesh {
         res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
         res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
 
+        if (this->frontSize() > 0) {
+            std::cout << "Meshing error!" << std::endl;
+            throw(m_anAdvFront);
+        }
+
         m_surfaceMesh.removeDanglingNodes();
         m_surfaceMesh.renumber();
+        m_surfaceMesh.generateFaces(aTolerance);
 
-        if (this->frontSize() == 0) {
-            m_surfaceMesh.generateFaces(aTolerance);
-            return true;
-        } else {
-            std::cout << "Meshing error!" << std::endl;
-            return false;
-        }
+        return true;
     }
 
     template <typename Real>
@@ -763,7 +763,7 @@ namespace mesh {
             if (!m_anAdvFront[i].remove) {
                 Integer anAdvEdgeId = i;
 
-                SAdvancingFrontEdge& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
                 Integer aNodeId1 = anAdvEdge.nodeId[0];
                 Integer aNodeId2 = anAdvEdge.nodeId[1];

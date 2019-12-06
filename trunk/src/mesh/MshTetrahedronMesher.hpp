@@ -19,6 +19,34 @@
 
 namespace ENigMA {
 namespace mesh {
+
+    // Advancing front
+    template <typename Real>
+    struct SMshTetrahedronAdvancingFrontTriangle {
+        Integer id;
+
+        bool remove;
+        bool boundary;
+
+        Integer nodeId[3];
+
+        Integer neighborId[3];
+        Integer nodeNotId[3];
+
+        Integer tetrahedronId;
+        Integer nodeNotId4;
+
+        CGeoTriangle<Real> triangle;
+
+        void build(CMshMesh<Real>& aMesh)
+        {
+            this->triangle.reset();
+            this->triangle.addVertex(aMesh.node(this->nodeId[0]));
+            this->triangle.addVertex(aMesh.node(this->nodeId[1]));
+            this->triangle.addVertex(aMesh.node(this->nodeId[2]));
+        }
+    };
+
     template <typename Real>
     class CMshTetrahedronMesher {
     private:
@@ -32,33 +60,7 @@ namespace mesh {
 
         std::vector<SNode> m_innerNodes;
 
-        // Advancing front
-        struct SAdvancingFrontTriangle {
-            Integer id;
-
-            bool remove;
-            bool boundary;
-
-            Integer nodeId[3];
-
-            Integer neighborId[3];
-            Integer nodeNotId[3];
-
-            Integer tetrahedronId;
-            Integer nodeNotId4;
-
-            CGeoTriangle<Real> triangle;
-
-            void build(CMshMesh<Real>& aMesh)
-            {
-                this->triangle.reset();
-                this->triangle.addVertex(aMesh.node(this->nodeId[0]));
-                this->triangle.addVertex(aMesh.node(this->nodeId[1]));
-                this->triangle.addVertex(aMesh.node(this->nodeId[2]));
-            }
-        };
-
-        std::vector<SAdvancingFrontTriangle> m_anAdvFront;
+        std::vector<SMshTetrahedronAdvancingFrontTriangle<Real>> m_anAdvFront;
 
         CGeoBoundingBox<Real> m_boundingBox;
 
@@ -77,24 +79,24 @@ namespace mesh {
 
         void checkUpdate();
 
-        inline bool triangleExists(SAdvancingFrontTriangle& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles);
-        inline bool triangleOk(SAdvancingFrontTriangle& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+        inline bool triangleExists(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles);
+        inline bool triangleOk(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
         inline bool tetrahedronContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
         inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
-        bool pairEdges(SAdvancingFrontTriangle& anAdvTriangle1, SAdvancingFrontTriangle& anAdvTriangle2);
+        bool pairEdges(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle2);
 
         void cleanDuplicateTriangles(std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
         void adjustConnectivity(std::vector<Integer>& sTriangles);
         void findClosestNodes(std::vector<Integer>& sTriangles, std::vector<Integer>& sNodes);
         Real findShortestDistance(std::vector<Integer>& sTriangles, CGeoLine<Real>& aLine, Integer anAdvTriangleId, const Real aTolerance = 0.0);
 
-        void addTriangleToRtree(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance = 0.0);
-        void removeTriangleFromRtree(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance = 0.0);
+        void addTriangleToRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
+        void removeTriangleFromRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
 
-        void removeTriangle(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance);
+        void removeTriangle(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance);
 
-        void addTetrahedron(SAdvancingFrontTriangle& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+        void addTetrahedron(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
 
         bool advancingFrontMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
 

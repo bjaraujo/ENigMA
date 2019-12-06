@@ -54,14 +54,14 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshTetrahedronMesher<Real>::removeTriangle(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance)
+    void CMshTetrahedronMesher<Real>::removeTriangle(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
     {
         anAdvTriangle.remove = true;
         this->removeTriangleFromRtree(anAdvTriangle, aTolerance);
     }
 
     template <typename Real>
-    void CMshTetrahedronMesher<Real>::addTriangleToRtree(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance)
+    void CMshTetrahedronMesher<Real>::addTriangleToRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
     {
         Integer aNodeId1 = anAdvTriangle.nodeId[0];
         Integer aNodeId2 = anAdvTriangle.nodeId[1];
@@ -83,7 +83,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshTetrahedronMesher<Real>::removeTriangleFromRtree(SAdvancingFrontTriangle& anAdvTriangle, const Real aTolerance)
+    void CMshTetrahedronMesher<Real>::removeTriangleFromRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
     {
         Integer aNodeId1 = anAdvTriangle.nodeId[0];
         Integer aNodeId2 = anAdvTriangle.nodeId[1];
@@ -101,7 +101,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::triangleExists(SAdvancingFrontTriangle& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles)
+    bool CMshTetrahedronMesher<Real>::triangleExists(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles)
     {
         std::vector<Integer> sNodeIds;
 
@@ -116,7 +116,7 @@ namespace mesh {
             if (sTriangles[j] == anAdvTriangle.id)
                 continue;
 
-            SAdvancingFrontTriangle& anotherTriangle = m_anAdvFront[sTriangles[j]];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[sTriangles[j]];
 
             std::vector<Integer> sOtherNodeIds;
 
@@ -136,7 +136,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::triangleOk(SAdvancingFrontTriangle& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::triangleOk(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance)
     {
         CGeoTriangle<Real> aTriangle1;
 
@@ -149,7 +149,7 @@ namespace mesh {
             if (sTriangles[j] == anAdvTriangle.id)
                 continue;
 
-            SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[sTriangles[j]];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[sTriangles[j]];
 
             if (anotherAdvTriangle.remove)
                 continue;
@@ -276,7 +276,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::pairEdges(SAdvancingFrontTriangle& anAdvTriangle1, SAdvancingFrontTriangle& anAdvTriangle2)
+    bool CMshTetrahedronMesher<Real>::pairEdges(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle2)
     {
         for (Integer k = 0; k < 3; ++k) {
             for (Integer l = 0; l < 3; l++) {
@@ -300,7 +300,7 @@ namespace mesh {
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
             Integer anAdvTriangleId = i;
 
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -323,7 +323,7 @@ namespace mesh {
                     if (anotherAdvTriangleId == anAdvTriangle.id)
                         continue;
 
-                    SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
+                    SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
 
                     if (anotherAdvTriangle.remove)
                         continue;
@@ -350,7 +350,7 @@ namespace mesh {
         for (Integer i = 0; i < 3; ++i) {
             Integer anAdvTriangleId = m_nextTriangleId - i - 1;
 
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -358,7 +358,7 @@ namespace mesh {
             Integer aDuplicateTriangleId;
 
             if (this->triangleExists(anAdvTriangle, aDuplicateTriangleId, sTriangles)) {
-                SAdvancingFrontTriangle& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
+                SMshTetrahedronAdvancingFrontTriangle<Real>& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
 
                 this->removeTriangle(anAdvTriangle, aTolerance);
                 this->removeTriangle(aDuplicateTriangle, aTolerance);
@@ -372,7 +372,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshTetrahedronMesher<Real>::addTetrahedron(SAdvancingFrontTriangle& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance)
+    void CMshTetrahedronMesher<Real>::addTetrahedron(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance)
     {
         Integer aNodeId1 = anAdvTriangle.nodeId[0];
         Integer aNodeId2 = anAdvTriangle.nodeId[1];
@@ -394,16 +394,16 @@ namespace mesh {
 
         m_volumeMesh.addElement(aNewElementId, aNewElement);
 
-        SAdvancingFrontTriangle& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
-        SAdvancingFrontTriangle& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
-        SAdvancingFrontTriangle& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
+        SMshTetrahedronAdvancingFrontTriangle<Real>& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
+        SMshTetrahedronAdvancingFrontTriangle<Real>& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
+        SMshTetrahedronAdvancingFrontTriangle<Real>& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
 
         Integer aNewTriangleId1 = m_nextTriangleId++;
         Integer aNewTriangleId2 = m_nextTriangleId++;
         Integer aNewTriangleId3 = m_nextTriangleId++;
 
         // Add triangle 1
-        SAdvancingFrontTriangle aNewTriangle1;
+        SMshTetrahedronAdvancingFrontTriangle<Real> aNewTriangle1;
         aNewTriangle1.id = aNewTriangleId1;
         aNewTriangle1.remove = false;
         aNewTriangle1.boundary = false;
@@ -429,7 +429,7 @@ namespace mesh {
         this->addTriangleToRtree(aNewTriangle1, aTolerance);
 
         // Add triangle 2
-        SAdvancingFrontTriangle aNewTriangle2;
+        SMshTetrahedronAdvancingFrontTriangle<Real> aNewTriangle2;
         aNewTriangle2.id = aNewTriangleId2;
         aNewTriangle2.remove = false;
         aNewTriangle2.boundary = false;
@@ -455,7 +455,7 @@ namespace mesh {
         this->addTriangleToRtree(aNewTriangle2, aTolerance);
 
         // Add triangle 3
-        SAdvancingFrontTriangle aNewTriangle3;
+        SMshTetrahedronAdvancingFrontTriangle<Real> aNewTriangle3;
         aNewTriangle3.id = aNewTriangleId3;
         aNewTriangle3.remove = false;
         aNewTriangle3.boundary = false;
@@ -561,7 +561,7 @@ namespace mesh {
             CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
 
             if (anElement.elementType() == ET_TRIANGLE) {
-                SAdvancingFrontTriangle anAdvTriangle;
+                SMshTetrahedronAdvancingFrontTriangle<Real> anAdvTriangle;
 
                 anAdvTriangle.id = m_nextTriangleId++;
                 anAdvTriangle.remove = false;
@@ -666,16 +666,16 @@ namespace mesh {
             }
         }
 
+        if (this->frontSize() > 0) {
+            std::cout << "Meshing error!" << std::endl;
+            throw(m_anAdvFront);
+        }
+
         m_volumeMesh.removeDanglingNodes();
         m_volumeMesh.renumber();
+        m_volumeMesh.generateFaces(aTolerance);
 
-        if (this->frontSize() == 0) {
-            m_volumeMesh.generateFaces(aTolerance);
-            return true;
-        } else {
-            std::cout << "Meshing error!" << std::endl;
-            return false;
-        }
+        return true;
     }
 
     template <typename Real>
@@ -725,7 +725,7 @@ namespace mesh {
             if (m_anAdvFront[anAdvTriangleId].remove)
                 continue;
 
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
             if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max())
                 continue;
@@ -954,7 +954,7 @@ namespace mesh {
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
             Integer anAdvTriangleId = i;
 
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -985,7 +985,7 @@ namespace mesh {
                 if (anotherTriangleId == anAdvTriangle.id)
                     continue;
 
-                SAdvancingFrontTriangle& anotherTriangle = m_anAdvFront[anotherTriangleId];
+                SMshTetrahedronAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[anotherTriangleId];
 
                 if (anotherTriangle.remove)
                     continue;
@@ -1009,7 +1009,7 @@ namespace mesh {
         Real minArea = std::numeric_limits<Real>::max();
 
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[i];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -1030,14 +1030,14 @@ namespace mesh {
     template <typename Real>
     void CMshTetrahedronMesher<Real>::reduceFront(const Real aTolerance)
     {
-        std::vector<SAdvancingFrontTriangle> aReducedAdvFront;
+        std::vector<SMshTetrahedronAdvancingFrontTriangle<Real>> aReducedAdvFront;
 
         std::map<Integer, Integer> aAdvFrontMapId;
 
         Integer aNewAdvFrontId = 0;
 
         for (Integer i = 0; i < m_anAdvFront.size(); ++i) {
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[i];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -1055,7 +1055,7 @@ namespace mesh {
         m_anAdvFront.clear();
 
         for (Integer i = 0; i < aReducedAdvFront.size(); ++i) {
-            SAdvancingFrontTriangle& anAdvTriangle = aReducedAdvFront[i];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = aReducedAdvFront[i];
 
             anAdvTriangle.id = aAdvFrontMapId.at(anAdvTriangle.id);
             anAdvTriangle.neighborId[0] = aAdvFrontMapId.at(anAdvTriangle.neighborId[0]);
@@ -1089,7 +1089,7 @@ namespace mesh {
             if (m_bStop)
                 return false;
 
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[i];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -1098,7 +1098,7 @@ namespace mesh {
                 continue;
 
             for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j) {
-                SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[j];
+                SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
 
                 if (anotherAdvTriangle.remove)
                     continue;
@@ -1212,7 +1212,7 @@ namespace mesh {
             anElement.generateFaces(sFaces);
 
             for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j) {
-                SAdvancingFrontTriangle anAdvTriangle;
+                SMshTetrahedronAdvancingFrontTriangle<Real> anAdvTriangle;
 
                 anAdvTriangle.id = m_nextTriangleId++;
                 anAdvTriangle.remove = false;
@@ -1243,7 +1243,7 @@ namespace mesh {
             if (m_bStop)
                 return false;
 
-            SAdvancingFrontTriangle& anAdvTriangle = m_anAdvFront[i];
+            SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
             if (anAdvTriangle.remove)
                 continue;
@@ -1257,7 +1257,7 @@ namespace mesh {
             std::sort(sNodeIds.begin(), sNodeIds.end());
 
             for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j) {
-                SAdvancingFrontTriangle& anotherAdvTriangle = m_anAdvFront[j];
+                SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
 
                 if (anotherAdvTriangle.remove)
                     continue;

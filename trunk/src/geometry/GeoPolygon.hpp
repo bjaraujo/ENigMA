@@ -47,6 +47,7 @@ namespace geometry {
         void invert();
 
         bool isClosed();
+
         void close();
     };
 }

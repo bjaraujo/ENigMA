@@ -19,6 +19,33 @@
 
 namespace ENigMA {
 namespace mesh {
+
+    // Advancing front
+    template <typename Real>
+    struct SMshTriangleAdvancingFrontEdge {
+        Integer id;
+
+        bool remove;
+        bool boundary;
+
+        Integer nodeId[2];
+
+        Integer neighborId[2];
+
+        Integer triangleId;
+
+        Integer nodeNotId3;
+
+        ENigMA::geometry::CGeoLine<Real> line;
+
+        void build(CMshMesh<Real>& aMesh)
+        {
+            this->line.reset();
+            this->line.setStartPoint(aMesh.node(this->nodeId[0]));
+            this->line.setEndPoint(aMesh.node(this->nodeId[1]));
+        }
+    };
+
     template <typename Real>
     class CMshTriangleMesher {
     private:
@@ -32,32 +59,7 @@ namespace mesh {
 
         std::vector<SNode> m_interiorNodes;
 
-        // Advancing front
-        struct SAdvancingFrontEdge {
-            Integer id;
-
-            bool remove;
-            bool boundary;
-
-            Integer nodeId[2];
-
-            Integer neighborId[2];
-
-            Integer triangleId;
-
-            Integer nodeNotId3;
-
-            ENigMA::geometry::CGeoLine<Real> line;
-
-            void build(CMshMesh<Real>& aMesh)
-            {
-                this->line.reset();
-                this->line.setStartPoint(aMesh.node(this->nodeId[0]));
-                this->line.setEndPoint(aMesh.node(this->nodeId[1]));
-            }
-        };
-
-        std::vector<SAdvancingFrontEdge> m_anAdvFront;
+        std::vector<SMshTriangleAdvancingFrontEdge<Real>> m_anAdvFront;
 
         ENigMA::geometry::CGeoBoundingBox<Real> m_boundingBox;
 
@@ -76,8 +78,8 @@ namespace mesh {
 
         void checkUpdate();
 
-        inline bool edgeExists(SAdvancingFrontEdge& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges);
-        inline bool edgeOk(SAdvancingFrontEdge& anAdvEdge, ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+        inline bool edgeExists(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges);
+        inline bool edgeOk(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
         inline bool triangleContainsNode(ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, ENigMA::mesh::CMshNode<Real>& aNode3, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
         inline bool checkDelaunay(ENigMA::mesh::CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
@@ -86,12 +88,12 @@ namespace mesh {
         void findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes);
         Real findShortestDistance(std::vector<Integer>& sEdges, ENigMA::geometry::CGeoLine<Real>& aLine, Integer anAdvEdgeId, const Real aTolerance);
 
-        void addTriangle(SAdvancingFrontEdge& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+        void addTriangle(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
 
-        void addEdgeToRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
-        void removeEdgeFromRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
+        void addEdgeToRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+        void removeEdgeFromRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
-        void removeEdge(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
+        void removeEdge(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
         bool advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
 

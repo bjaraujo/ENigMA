@@ -19,6 +19,31 @@
 
 namespace ENigMA {
 namespace mesh {
+
+    // Advancing front
+    template <typename Real>
+    struct SMshQuadrilateralAdvancingFrontEdge {
+        Integer id;
+
+        bool remove;
+        bool boundary;
+
+        Integer nodeId[2];
+
+        Integer neighborId[2];
+
+        Integer quadrilateralId;
+
+        CGeoLine<Real> line;
+
+        void build(CMshMesh<Real>& aMesh)
+        {
+            this->line.reset();
+            this->line.setStartPoint(aMesh.node(this->nodeId[0]));
+            this->line.setEndPoint(aMesh.node(this->nodeId[1]));
+        }
+    };
+
     template <typename Real>
     class CMshQuadrilateralMesher {
     private:
@@ -32,30 +57,7 @@ namespace mesh {
 
         std::vector<SNode> m_interiorNodes;
 
-        // Advancing front
-        struct SAdvancingFrontEdge {
-            Integer id;
-
-            bool remove;
-            bool boundary;
-
-            Integer nodeId[2];
-
-            Integer neighborId[2];
-
-            Integer quadrilateralId;
-
-            CGeoLine<Real> line;
-
-            void build(CMshMesh<Real>& aMesh)
-            {
-                this->line.reset();
-                this->line.setStartPoint(aMesh.node(this->nodeId[0]));
-                this->line.setEndPoint(aMesh.node(this->nodeId[1]));
-            }
-        };
-
-        std::vector<SAdvancingFrontEdge> m_anAdvFront;
+        std::vector<SMshQuadrilateralAdvancingFrontEdge<Real>> m_anAdvFront;
 
         CGeoBoundingBox<Real> m_boundingBox;
 
@@ -74,8 +76,8 @@ namespace mesh {
 
         void checkUpdate();
 
-        inline bool edgeExists(SAdvancingFrontEdge& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
-        inline bool edgeOk(SAdvancingFrontEdge& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+        inline bool edgeExists(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+        inline bool edgeOk(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
         inline bool quadrilateralContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
         inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
@@ -84,12 +86,12 @@ namespace mesh {
         void findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes);
         Real findShortestDistance(std::vector<Integer>& sEdges, CGeoLine<Real>& aLine, Integer anAdvEdgeId, const Real aTolerance);
 
-        void addQuadrilateral(SAdvancingFrontEdge& anAdvEdge, const Integer aNodeId3, const Integer aNodeId4, std::vector<Integer>& sEdges, const Real aTolerance);
+        void addQuadrilateral(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId3, const Integer aNodeId4, std::vector<Integer>& sEdges, const Real aTolerance);
 
-        void addEdgeToRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
-        void removeEdgeFromRtree(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
+        void addEdgeToRtree(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+        void removeEdgeFromRtree(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
-        void removeEdge(SAdvancingFrontEdge& anAdvEdge, const Real aTolerance = 0.0);
+        void removeEdge(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
         bool advancingFrontQuadMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
 
