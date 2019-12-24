@@ -191,7 +191,7 @@ namespace fem {
     void CFemCbsSolver<Real, 3>::setGravity(const Real gx, const Real gy, const Real gz)
     {
         m_gx = gx;
-        m_gy = gx;
+        m_gy = gy;
         m_gz = gz;
     }
 

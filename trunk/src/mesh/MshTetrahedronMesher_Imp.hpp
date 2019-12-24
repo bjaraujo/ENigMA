@@ -27,6 +27,7 @@ namespace mesh {
         , m_bStop(false)
         , onUpdate(nullptr)
         , m_previousNbElements(0)
+        , m_nextTriangleId(0)
     {
     }
 
