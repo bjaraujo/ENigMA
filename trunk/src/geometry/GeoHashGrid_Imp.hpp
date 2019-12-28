@@ -17,6 +17,7 @@ namespace geometry {
         , m_nbCellsY(0)
         , m_nbCellsZ(0)
         , m_nbCellsXY(0)
+        , m_nbCells(0)
     {
         m_adOrig.resize(3);
         m_adDelta.resize(3);
