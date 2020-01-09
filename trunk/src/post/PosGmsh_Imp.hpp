@@ -27,7 +27,7 @@ namespace post {
     template <typename Real>
     bool CPosGmsh<Real>::findSection(std::ifstream& fileStream, const std::string& sectionName)
     {
-        while (!fileStream.eof()) {
+        while (!fileStream.eof() && !fileStream.fail()) {
             std::string line;
 
             std::getline(fileStream, line);
