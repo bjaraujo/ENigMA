@@ -31,7 +31,7 @@ namespace post {
         fileQuickMesh.open(strFileName.c_str(), std::ios_base::in);
 
         if (fileQuickMesh.is_open()) {
-            while (!fileQuickMesh.eof()) {
+            while (!fileQuickMesh.eof() && !fileQuickMesh.fail()) {
                 std::string line;
 
                 std::getline(fileQuickMesh, line);
