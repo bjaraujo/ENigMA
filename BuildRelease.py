@@ -16,11 +16,21 @@ intBuildNumber = 0
 strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intReleaseNumber) + '.' + str(intBuildNumber)
 
 # Increment version
-#incVersionInput = input('Increment version number [Y/n]?')
-#incVersion = True
-#if incVersionInput == 'n':
-#    incVersion = False
+incVersionInput = input('Increment version number [y/N]? ') or 'N'
+
 incVersion = False
+if incVersionInput.upper() == 'Y':
+    incVersion = True
+
+print('1 - 32bit')
+print('2 - 64bit')
+version32or64Bit = input('Which version [1]? ') or '1'
+
+version32 = True
+if version32or64Bit == '1':
+    version32 = True
+elif version32or64Bit == '2':
+    version32 = False
 
 fo = open('trunk/src/version.h', 'w')
 
@@ -57,6 +67,10 @@ print(sys.executable)
 # Build packages
 print('------------ Building release ------------')
 print('version: ' + strNewVersion)
+if version32:
+    print('32 bit')
+else:
+    print('64 bit')
 
 os.system('pause')
 
@@ -66,8 +80,10 @@ if not os.path.exists('build'):
 os.chdir('build')
 
 if sys.platform == 'win32':
-    #os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=OFF -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=D:/Libraries/Swig/swigwin-4.0.1/swig.exe')
-    os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=OFF -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=D:/Libraries/Swig/swigwin-4.0.1/swig.exe')
+    if version32:
+        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=OFF -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=D:/Libraries/Swig/swigwin-4.0.1/swig.exe')
+    else:
+        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=OFF -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=D:/Libraries/Swig/swigwin-4.0.1/swig.exe')
 else:
     os.system('cmake ../trunk -G "Ninja" -DENIGMA_BUILD_UNIT_TESTS:BOOL=OFF -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON')
 
@@ -138,13 +154,18 @@ if not os.path.exists('../release'):
 
 # Python module
 if sys.platform == 'win32':
-    #pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_win32'
-    pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_x64'
+    if version32:
+        pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_win32'
+    else:
+        pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_x64'
+        
     if not os.path.isdir(pyReleaseFolder):
         os.mkdir(pyReleaseFolder)
 
-    #shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
-    shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
+    if version32:
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
+    else:
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
 else:
     pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_linux'
     if not os.path.isdir(pyReleaseFolder):
@@ -154,8 +175,11 @@ else:
 
 # CSharp module
 if sys.platform == 'win32':
-    #csReleaseFolder = '../release/ENigMAcs_' + strNewVersion + '_win32'
-    csReleaseFolder = '../release/ENigMAcs_' + strNewVersion + '_x64'
+    if version32:
+        csReleaseFolder = '../release/ENigMAcs_' + strNewVersion + '_win32'
+    else:
+        csReleaseFolder = '../release/ENigMAcs_' + strNewVersion + '_x64'
+        
     if not os.path.isdir(csReleaseFolder):
         os.mkdir(csReleaseFolder)
 
@@ -164,10 +188,10 @@ if sys.platform == 'win32':
     shutil.copy2('../README.md', csReleaseFolder + '/README.md')
     
 # Create tag
-'''
+
 if incVersion:
     os.system('git commit -a -m v' + strNewVersion)
     os.system('git tag v' + strNewVersion)
     os.system('git push --tags')
-'''
+
 
