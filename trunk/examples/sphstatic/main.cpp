@@ -172,8 +172,8 @@ float intersectionArea(CGeoCoordinate<float>& center, float r)
     else if (r >= fabs(nearestRectangleEdge - center.y()))
     {
         //If the circle's center lies outside of the rectangle, we can choose optimal bounds.
-        leftBound = std::max(-sqrt(r * r - fabs(pow(nearestRectangleEdge - center.y(), 2))) + center.y(), (float)walls.p1.x());
-        rightBound = std::min(sqrt(r * r - fabs(pow(nearestRectangleEdge - center.y(), 2))) + center.y(), (float)walls.p2.x());
+        leftBound = std::max(static_cast<float>(-sqrt(r * r - fabs(pow(nearestRectangleEdge - center.y(), 2))) + center.y()), walls.p1.x());
+        rightBound = std::min(static_cast<float>(sqrt(r * r - fabs(pow(nearestRectangleEdge - center.y(), 2))) + center.y()), walls.p2.x());
     }
 
     float upperBound;
