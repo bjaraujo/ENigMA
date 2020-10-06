@@ -39,7 +39,7 @@ set(ENGIMA_INTERFACE
   ../ENigMA.i
 )
 
-set(CMAKE_SWIG_FLAGS "")
+#set(CMAKE_SWIG_FLAGS "")
 
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_FLAGS "-debug-tmused")

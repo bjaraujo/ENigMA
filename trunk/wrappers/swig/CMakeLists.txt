@@ -1,10 +1,12 @@
 
 project(SwigWrappers)
 
+cmake_policy(SET CMP0078 OLD)
+
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
-set(CMAKE_SWIG_FLAGS "")
+#set(CMAKE_SWIG_FLAGS "")
 
 set(WRAP_SWIG_PYTHON OFF CACHE BOOL "Build SWIG python interface")
 

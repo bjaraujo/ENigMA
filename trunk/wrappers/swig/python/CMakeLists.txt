@@ -39,10 +39,11 @@ set(ENGIMA_INTERFACE
   ../ENigMA.i
 )
 
-set(CMAKE_SWIG_FLAGS "")
+#set(CMAKE_SWIG_FLAGS "")
 
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_FLAGS "-debug-tmused")
+set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES SWIG_MODULE_NAME ENigMA)
 
 swig_add_library(ENigMApy LANGUAGE python SOURCES ${ENGIMA_INTERFACE})
 swig_link_libraries(ENigMApy ${PYTHON_LIBRARIES})
