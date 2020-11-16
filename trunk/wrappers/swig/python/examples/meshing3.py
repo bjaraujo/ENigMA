@@ -41,7 +41,7 @@ surfaceMesh.generateFaces(1E-5)
 tetrahedronMesher = ENigMA.CMshTetrahedronMesherDouble()
 
 start = timer()
-tetrahedronMesher.generate(surfaceMesh, 99999, d, 0.1, 1E-6);
+tetrahedronMesher.generate(surfaceMesh, 99999, d, 0.1, 1E-6)
 end = timer()
 
 print("Elapsed time: " + str(end - start))
@@ -57,6 +57,6 @@ pdeField.setMesh(volumeMesh)
 
 posGmsh = ENigMA.CPosGmshDouble()
 
-posGmsh.save(pdeField, "mesh3.msh", "tetras");
+posGmsh.save(pdeField, "mesh3.msh", "tetras")
 
 #subprocess.call(['gmsh.exe', 'mesh2.msh'])

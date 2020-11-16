@@ -42,7 +42,7 @@ quadrilateralMesher = ENigMA.CMshQuadrilateralMesherDouble()
 meshSize = 20
 
 edgeMesh.generateFaces(1E-3)
-quadrilateralMesher.remesh(edgeMesh, meshSize);
+quadrilateralMesher.remesh(edgeMesh, meshSize)
 
 start = timer()
 quadrilateralMesher.generate(edgeMesh, 9999, meshSize, 0.1, 1E-3)
@@ -61,6 +61,6 @@ pdeField.setMesh(surfaceMesh)
 
 posGmsh = ENigMA.CPosGmshDouble()
 
-posGmsh.save(pdeField, "mesh2.msh", "tris");
+posGmsh.save(pdeField, "mesh2.msh", "tris")
 
 #subprocess.call(['gmsh.exe', 'mesh1.msh'])
