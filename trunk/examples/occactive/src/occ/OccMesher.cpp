@@ -215,7 +215,7 @@ Integer OccMesher::addPointToMesh(CMshMesh<double>& aMesh, gp_Pnt& aPoint, CGeoR
 
     aRtree.find(sNodes, aBoundingBox, tolerance);
 
-    if (sNodes.size() == 0)
+    if (sNodes.empty())
     {
 
         // Create node

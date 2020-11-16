@@ -1343,9 +1343,6 @@ namespace mesh {
 
             aMeshQuery.elementsSharingNode(aMovingNodeId, sElementIds);
 
-            std::vector<Integer> sNodeIds;
-            sNodeIds.push_back(aMovingNodeId);
-
             Real aTotalVolume = 0.0;
 
             CMshNode<Real> aNewNode(0.0, 0.0, 0.0);

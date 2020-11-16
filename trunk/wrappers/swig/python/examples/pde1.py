@@ -29,7 +29,7 @@ T.setDiscretLocation(ENigMA.DL_NODE)
 T.setSimulationType(ENigMA.ST_THERMAL)
 T.setNbDofs(1)
 
-T.setSize(surfaceMesh.nbNodes());
+T.setSize(surfaceMesh.nbNodes())
 
 for i in range(0, surfaceMesh.nbNodes()):
     
@@ -52,12 +52,12 @@ for i in range(0, surfaceMesh.nbNodes()):
     
 pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(T))
 
-pdeEquation.setElimination(T);
+pdeEquation.setElimination(T)
 
-pdeEquation.solve(T);
+pdeEquation.solve(T)
 
 posGmsh = ENigMA.CPosGmshDouble()
 
-posGmsh.save(T, "pde1.msh", "tris");
+posGmsh.save(T, "pde1.msh", "tris")
 
 #subprocess.call(['gmsh.exe', 'pde1.msh'])
