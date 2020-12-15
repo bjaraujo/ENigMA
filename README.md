@@ -1,6 +1,6 @@
 |Build Status|License|
 |:--:|:--:|
-|[![Build Status](https://travis-ci.org/bjaraujo/ENigMA.svg?branch=master)](https://travis-ci.org/bjaraujo/ENigMA)|[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0)|
+|[![Build Status](https://github.com/bjaraujo/ENigMA/workflows/CMake/badge.svg)](https://github.com/bjaraujo/ENigMA/actions)|[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0)|
 
 # ENigMA - Extended Numerical Multiphysics Analysis #
 
