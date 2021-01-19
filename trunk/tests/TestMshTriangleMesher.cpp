@@ -39,8 +39,6 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
 
     CMshMesh<decimal> anEdgeMesh;
 
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
-
     CMshNode<decimal> aNode1;
     CMshNode<decimal> aNode2;
     CMshNode<decimal> aNode3;
@@ -123,6 +121,12 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
     CMshTriangleMesher<decimal> aTriangleMesher;
 
     anEdgeMesh.generateFaces(1E-3);
+    aTriangleMesher.remesh(anEdgeMesh, 1.0);
+    
+    aTriangleMesher.generate(anEdgeMesh, 99, 1.0, 0.1, 1E-3);
+
+    CMshMesh<decimal> aSurfaceMesh;
+    aSurfaceMesh = aTriangleMesher.mesh();
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
@@ -130,27 +134,17 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge1.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 99, sInnerPoints, 2.0, 0.1, 1E-3);
-
-    CMshMesh<decimal> aSurfaceMesh;
-    aSurfaceMesh = aTriangleMesher.mesh();
-
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface1.msh", "tris");
 
+    EXPECT_EQ(16, anEdgeMesh.nbElements());
     EXPECT_EQ(16, aSurfaceMesh.nbElements());
-
-    EXPECT_EQ(0, aSurfaceMesh.element(0).nodeId(0));
-    EXPECT_EQ(2, aSurfaceMesh.element(0).nodeId(1));
-    EXPECT_EQ(8, aSurfaceMesh.element(0).nodeId(2));
 
 }
 
 TEST_F(CTestMshTriangleMesher, mesh2) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
 
     CMshNode<decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
@@ -195,13 +189,16 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 0.1);
 
+    aTriangleMesher.flipEdges();
+    aTriangleMesher.relaxNodes();
+
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge2.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, sInnerPoints, 0.1, 0.1, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, 0.1, 0.1, 1E-3);
 
     EXPECT_EQ(40, anEdgeMesh.nbElements());
 
@@ -218,8 +215,6 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
 TEST_F(CTestMshTriangleMesher, mesh3) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
 
     CMshNode<decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
@@ -306,7 +301,10 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge3.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, sInnerPoints, 0.1, 0.1, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, 0.1, 0.1, 1E-3);
+
+    aTriangleMesher.flipEdges();
+    aTriangleMesher.relaxNodes();
 
     EXPECT_EQ(52, anEdgeMesh.nbElements());
 
@@ -316,15 +314,13 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface3.msh", "tris");
 
-    EXPECT_EQ(196, aSurfaceMesh.nbElements());
+    EXPECT_EQ(216, aSurfaceMesh.nbElements());
 
 }
 
 TEST_F(CTestMshTriangleMesher, mesh4) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
 
     CMshNode<decimal> aNode1;
     CMshNode<decimal> aNode2;
@@ -391,7 +387,10 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge4.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 99, sInnerPoints, 2.0, 0.1, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 99, 2.0, 0.1, 1E-3);
+
+    aTriangleMesher.flipEdges();
+    aTriangleMesher.relaxNodes();
 
     EXPECT_EQ(6, anEdgeMesh.nbElements());
 
@@ -408,8 +407,6 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
 TEST_F(CTestMshTriangleMesher, mesh5) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
 
     CMshNode<decimal> aNode1(0, 0, 0);
     CMshNode<decimal> aNode2(100, 0, 0);
@@ -515,7 +512,10 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge5.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, sInnerPoints, 10, 0.1, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, 10, 0.1, 1E-3);
+
+    aTriangleMesher.flipEdges();
+    aTriangleMesher.relaxNodes();
 
     EXPECT_EQ(64, anEdgeMesh.nbElements());
 
@@ -525,16 +525,13 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface5.msh", "tris");
 
-    EXPECT_GE(aSurfaceMesh.nbElements(), 194);
-    EXPECT_LE(aSurfaceMesh.nbElements(), 204);
+    EXPECT_EQ(aSurfaceMesh.nbElements(), 220);
 
 }
 
 TEST_F(CTestMshTriangleMesher, mesh6) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
 
     CMshNode<decimal> aNode1(0, 0, 0);
     CMshNode<decimal> aNode2(100, 0, 0);
@@ -657,7 +654,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge6.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, sInnerPoints, 10, 0.1, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, 10, 0.1, 1E-3);
     aTriangleMesher.applyFixedBoundary(anEdgeMesh, 1E-3);
 
     aTriangleMesher.flipEdges();
@@ -676,16 +673,13 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface6.msh", "tris");
 
-    EXPECT_GE(aSurfaceMesh.nbElements(), 200);
-    EXPECT_LE(aSurfaceMesh.nbElements(), 206);
+    EXPECT_EQ(aSurfaceMesh.nbElements(), 238);
 
 }
 
 TEST_F(CTestMshTriangleMesher, mesh7) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInnerPoints;
 
     CMshNode<decimal> aNode1(0, 0, 0);
     CMshNode<decimal> aNode2(100, 0, 0);
@@ -747,15 +741,19 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
     anEdgeMesh.mergeNodes(1E-2);
     anEdgeMesh.generateFaces(1E-2);
 
+    CMshTriangleMesher<decimal> aTriangleMesher;
+
+    aTriangleMesher.remesh(anEdgeMesh, 2.0);
+    aTriangleMesher.generate(anEdgeMesh, 9999, 2.0, 0.1, 1E-4);
+    
+    aTriangleMesher.flipEdges();
+    aTriangleMesher.relaxNodes();
+
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge7.msh", "beams");
-
-    CMshTriangleMesher<decimal> aTriangleMesher;
-
-    aTriangleMesher.generate(anEdgeMesh, 9999, sInnerPoints, 25, 0.1, 1E-3);
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
@@ -763,6 +761,6 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface7.msh", "tris");
 
-    EXPECT_EQ(26, aSurfaceMesh.nbElements());
+    EXPECT_EQ(5790, aSurfaceMesh.nbElements());
 
 }

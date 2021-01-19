@@ -89,7 +89,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume1.msh", "tetras");
 
-    EXPECT_EQ(52, aVolumeMesh.nbElements());
+    EXPECT_EQ(42, aVolumeMesh.nbElements());
 
 }
 
@@ -147,8 +147,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume2.msh", "tetras");
 
-    EXPECT_GE(aVolumeMesh.nbElements(), 105);
-    EXPECT_LE(aVolumeMesh.nbElements(), 109);
+    EXPECT_EQ(81, aVolumeMesh.nbElements());
 
 }
 
@@ -206,8 +205,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume3.msh", "tetras");
 
-    EXPECT_GE(aVolumeMesh.nbElements(), 120);
-    EXPECT_LE(aVolumeMesh.nbElements(), 123);
+    EXPECT_EQ(120, aVolumeMesh.nbElements());
 
 }
 

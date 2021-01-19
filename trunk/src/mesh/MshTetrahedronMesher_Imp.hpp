@@ -635,8 +635,8 @@ namespace mesh {
 
         bool res = true;
 
-        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.10, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.35, 0.01, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.10, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.01, false, 0, aTolerance) : res = false;
 
         if (res) {
             for (Integer i = 0; i < 30; ++i) {
@@ -646,18 +646,18 @@ namespace mesh {
                     res ? res = this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance) : res = false;
 
                 if (i < 4) {
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
                 } else if (i < 8) {
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
-                    res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
                 }
 
-                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
-                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, 0, aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, 0, aTolerance) : res = false;
 
-                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
-                res ? res = this->advancingFrontMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, 0, aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, 0, aTolerance) : res = false;
 
                 if (!res)
                     break;
@@ -693,7 +693,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::advancingFrontMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
     {
         bool res = true;
 
@@ -752,30 +752,23 @@ namespace mesh {
             z = aMidNode.z();
 
             // Use inverse of normal vector
-            CGeoVector<Real> v = -((aNode2 - aNode1).cross(aNode3 - aNode1));
+            CGeoVector<Real> a = aNode2 - aNode1;
+            CGeoVector<Real> b = aNode3 - aNode1;
 
-            Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
+            Real localMeshSize = 0.98 * static_cast<Real>(a.norm()) + 0.02 * meshSizeFunc.evaluate();
 
-            sumMeshSize += localMeshSize;
-            nMeshSize++;
-            Real averageMeshSize = sumMeshSize / nMeshSize;
-
-            if (averageMeshSize > localMeshSize)
-                localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
-            else
-                localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
-
-            v.normalize();
+            Real baseHeightSize = localMeshSize * sqrt(2.0 / 3.0); // Equilateral tetrahedron (height to edge ratio)
 
             // Regular tetrahedron (height to edge ratio)
-            v *= sqrt(2.0 / 3.0);
+            CGeoVector<Real> v = a.cross(b);
+            v.normalize();
 
             // Add point to form tetrahedra with correct spacing
-            CMshNode<Real> aNewNode = aMidNode + v * localMeshSize * sizeFactor;
+            CMshNode<Real> aNewNode = aMidNode + v * baseHeightSize * sizeFactor;
             Integer aNewNodeId = m_volumeMesh.nextNodeId();
 
             // Get closest triangles
-            CMshNode<Real> anAuxNode = aMidNode + v * localMeshSize * sizeFactor * 1.5;
+            CMshNode<Real> anAuxNode = aMidNode + v * baseHeightSize * sizeFactor * 1.5;
 
             CGeoBoundingBox<Real> aBoundingBox;
             aBoundingBox.addCoordinate(aNode1);
@@ -836,7 +829,7 @@ namespace mesh {
                 Real d = (aNode - aNewNode).norm();
 
                 // Use closest node
-                if (d < localMeshSize * sizeFactor * expandFactor) {
+                if (d < baseHeightSize * sizeFactor * expandFactor) {
                     CMshTetrahedron<Real> aNewTetrahedron1;
 
                     aNewTetrahedron1.addVertex(aNode1);
@@ -891,7 +884,7 @@ namespace mesh {
 
                 Real dmin = findShortestDistance(sTriangles, aLine, anAdvTriangleId, aTolerance);
 
-                if (dmin > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin < localMeshSize * sizeFactor * expandFactor)
+                if (dmin > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin < baseHeightSize * sizeFactor * expandFactor)
                     aNewNode = aMidNode + v * dmin * 0.5;
 
                 CMshTetrahedron<Real> aNewTetrahedron2;

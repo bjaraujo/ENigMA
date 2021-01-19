@@ -859,9 +859,6 @@ namespace mesh {
 
         const Real pi = std::acos(-1.0);
 
-        Real sumMeshSize = 0;
-        Integer nMeshSize = 0;
-
         for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
             this->checkUpdate();
 
@@ -903,30 +900,24 @@ namespace mesh {
                 x = aMidNode.x();
                 y = aMidNode.y();
 
-                // Rotate vector by 90�
-                CGeoVector<Real> v = aNode2 - aNode1;
+                CGeoVector<Real> a = aNode2 - aNode1;
 
-                Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
+                Real localMeshSize = 0.98 * static_cast<Real>(a.norm()) + 0.02 * meshSizeFunc.evaluate();
 
-                sumMeshSize += localMeshSize;
-                nMeshSize++;
-                Real averageMeshSize = sumMeshSize / nMeshSize;
+                Real baseHeightSize = localMeshSize; // Equilateral rectangle (height to edge ratio)
 
-                if (averageMeshSize > localMeshSize)
-                    localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
-                else
-                    localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
-
+                CGeoVector<Real> v = a;
                 v.normalize();
 
-                CMshNode<Real> aMidNode1 = aMidNode - v * localMeshSize * sizeFactor * 0.5;
-                CMshNode<Real> aMidNode2 = aMidNode + v * localMeshSize * sizeFactor * 0.5;
+                CMshNode<Real> aMidNode1 = aMidNode - v * baseHeightSize * sizeFactor * 0.5;
+                CMshNode<Real> aMidNode2 = aMidNode + v * baseHeightSize * sizeFactor * 0.5;
 
+                // Rotate vector by 90 degrees
                 v.rotate(pi * 0.5);
 
                 // Add point to form rectangle with correct spacing
-                CMshNode<Real> aNewNode1 = aMidNode1 + v * localMeshSize * sizeFactor;
-                CMshNode<Real> aNewNode2 = aMidNode2 + v * localMeshSize * sizeFactor;
+                CMshNode<Real> aNewNode1 = aMidNode1 + v * baseHeightSize * sizeFactor;
+                CMshNode<Real> aNewNode2 = aMidNode2 + v * baseHeightSize * sizeFactor;
 
                 Integer aNewNodeId1 = m_surfaceMesh.nextNodeId() + 0;
                 Integer aNewNodeId2 = m_surfaceMesh.nextNodeId() + 1;
@@ -937,7 +928,7 @@ namespace mesh {
                 aBoundingBox.addCoordinate(aNode2);
                 aBoundingBox.addCoordinate(aNewNode1);
                 aBoundingBox.addCoordinate(aNewNode2);
-                aBoundingBox.grow(localMeshSize * sizeFactor * 0.5);
+                aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
 
                 std::vector<Integer> sEdges;
                 m_tree.find(sEdges, aBoundingBox);
@@ -1034,7 +1025,7 @@ namespace mesh {
                         Real d = (aNode - aNewNode1).norm();
 
                         // Use closest node
-                        if (d < localMeshSize * sizeFactor * expandFactor * 0.75 && q1 > q1max) {
+                        if (d < baseHeightSize * sizeFactor * expandFactor * 0.75 && q1 > q1max) {
                             q1max = q1;
                             anExistingNodeId1 = aNodeId;
                             anExistingNode1 = aNode;
@@ -1091,7 +1082,7 @@ namespace mesh {
                         Real d = (aNode - aNewNode2).norm();
 
                         // Use closest node
-                        if (d < localMeshSize * sizeFactor * expandFactor * 0.75 && q2 > q2max) {
+                        if (d < baseHeightSize * sizeFactor * expandFactor * 0.75 && q2 > q2max) {
                             q2max = q2;
                             anExistingNodeId2 = aNodeId;
                             anExistingNode2 = aNode;
@@ -1171,14 +1162,14 @@ namespace mesh {
 
                     Real dmin1 = findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
 
-                    if (dmin1 > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < localMeshSize * sizeFactor * expandFactor)
+                    if (dmin1 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < baseHeightSize * sizeFactor * expandFactor)
                         aNewNode1 = aNode1 + v * dmin1 * 0.5;
 
                     CGeoLine<Real> aLine2(aMidNode, aNewNode2);
 
                     Real dmin2 = findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
 
-                    if (dmin2 > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < localMeshSize * sizeFactor * expandFactor)
+                    if (dmin2 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < baseHeightSize * sizeFactor * expandFactor)
                         aNewNode2 = aNode2 + v * dmin2 * 0.5;
 
                     CMshQuadrilateral<Real> aNewQuadrilateral4;

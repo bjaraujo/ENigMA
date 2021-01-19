@@ -744,9 +744,6 @@ namespace mesh {
 
         const Real pi = std::acos(-1.0);
 
-        Real sumMeshSize = 0;
-        Integer nMeshSize = 0;
-
         for (Integer i = firstIndex; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
             this->checkUpdate();
 
@@ -779,29 +776,19 @@ namespace mesh {
                 x = aMidNode.x();
                 y = aMidNode.y();
 
-                // Rotate vector by 90�
-                CGeoVector<Real> v = aNode2 - aNode1;
+                CGeoVector<Real> a = aNode2 - aNode1;
 
-                Real localMeshSize = std::max(meshSizeFunc.evaluate(), static_cast<Real>(v.norm() * 0.7));
+                Real localMeshSize = 0.4 * static_cast<Real>(a.norm()) + 0.6 * meshSizeFunc.evaluate();
 
-                sumMeshSize += localMeshSize;
-                nMeshSize++;
-                Real averageMeshSize = sumMeshSize / nMeshSize;
+                Real baseHeightSize = localMeshSize * sqrt(2.0 / 3.0); // Equilateral tetrahedron (height to edge ratio)
 
-                if (averageMeshSize > localMeshSize)
-                    localMeshSize = std::min(averageMeshSize, static_cast<Real>(2.0 * localMeshSize));
-                else
-                    localMeshSize = std::max(averageMeshSize, static_cast<Real>(0.5 * localMeshSize));
-
+                // Rotate vector by 90 degrees
+                CGeoVector<Real> v = a;
+                v.rotate(pi * 0.5);
                 v.normalize();
 
-                v.rotate(pi * 0.5);
-
-                // Equilateral triangle (height to edge ratio)
-                v *= sqrt(3.0) * 0.5;
-
                 // Add point to form triangle with correct spacing
-                CMshNode<Real> aNewNode = aMidNode + v * localMeshSize * sizeFactor;
+                CMshNode<Real> aNewNode = aMidNode + v * baseHeightSize * sizeFactor;
                 Integer aNewNodeId = m_surfaceMesh.nextNodeId();
 
                 // Get closest edges
@@ -809,7 +796,7 @@ namespace mesh {
                 aBoundingBox.addCoordinate(aNode1);
                 aBoundingBox.addCoordinate(aNode2);
                 aBoundingBox.addCoordinate(aNewNode);
-                aBoundingBox.grow(localMeshSize * sizeFactor * 0.5);
+                aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
 
                 std::vector<Integer> sEdges;
                 m_tree.find(sEdges, aBoundingBox);
@@ -880,7 +867,7 @@ namespace mesh {
                     }
 
                     // Use closest node
-                    if (d < localMeshSize * sizeFactor * expandFactor * factor) {
+                    if (d < baseHeightSize * sizeFactor * expandFactor * factor) {
                         CMshTriangle<Real> aNewTriangle1;
 
                         aNewTriangle1.addVertex(aNode1);
@@ -931,7 +918,7 @@ namespace mesh {
 
                     Real dmin = findShortestDistance(sEdges, aLine, anAdvEdgeId, aTolerance);
 
-                    if (dmin > localMeshSize * sizeFactor * shrinkFactor * 0.25 && dmin < localMeshSize * sizeFactor * expandFactor)
+                    if (dmin > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin < baseHeightSize * sizeFactor * expandFactor)
                         aNewNode = aMidNode + v * dmin * 0.5;
 
                     CMshTriangle<Real> aNewTriangle2;
