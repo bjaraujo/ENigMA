@@ -49,6 +49,5 @@ if(WIN32)
   add_definitions(/bigobj)
 endif(WIN32)
 
-set_target_properties(_ENigMA PROPERTIES OUTPUT_NAME ENigMA)
 add_custom_command(TARGET _ENigMA POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:_ENigMA>/ENigMA.py)
 

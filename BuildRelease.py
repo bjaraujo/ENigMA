@@ -137,7 +137,7 @@ if not os.path.isdir(pyReleaseFolderTemp + '/ENigMA'):
 
 if sys.platform == 'win32':
     open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
-    shutil.copy2('bin/ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/_ENigMA.pyd')
+    shutil.copy2('bin/_ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/_ENigMA.pyd')
     shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
 else:
     open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
