@@ -1,5 +1,5 @@
 
-project(ENigMApy)
+project(ENigMA)
 
 find_package(PythonLibs 3.0 REQUIRED)
 find_package(PythonInterp 3.0 REQUIRED)
@@ -42,13 +42,13 @@ set(ENGIMA_INTERFACE
 #set(CMAKE_SWIG_FLAGS "")
 set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
 
-swig_add_library(ENigMApy LANGUAGE python SOURCES ${ENGIMA_INTERFACE})
-swig_link_libraries(ENigMApy ${PYTHON_LIBRARIES})
+swig_add_library(ENigMA LANGUAGE python SOURCES ${ENGIMA_INTERFACE})
+swig_link_libraries(ENigMA ${PYTHON_LIBRARIES})
 
 if(WIN32)
   add_definitions(/bigobj)
 endif(WIN32)
 
-set_target_properties(_ENigMApy PROPERTIES OUTPUT_NAME ENigMA)
-add_custom_command(TARGET _ENigMApy POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:_ENigMApy>/ENigMA.py)
+set_target_properties(_ENigMA PROPERTIES OUTPUT_NAME ENigMA)
+add_custom_command(TARGET _ENigMA POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:_ENigMA>/ENigMA.py)
 
