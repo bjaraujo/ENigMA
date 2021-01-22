@@ -10,6 +10,7 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
 
 #include "GeoCircle.hpp"
 #include "GeoLine.hpp"
@@ -778,9 +779,12 @@ namespace mesh {
 
                 CGeoVector<Real> a = aNode2 - aNode1;
 
-                Real localMeshSize = 0.4 * static_cast<Real>(a.norm()) + 0.6 * meshSizeFunc.evaluate();
+                Real requiredMeshSize = meshSizeFunc.evaluate();
+                Real localMeshSize = static_cast<Real>(a.norm());
 
-                Real baseHeightSize = localMeshSize * sqrt(2.0 / 3.0); // Equilateral tetrahedron (height to edge ratio)
+                Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
+
+                Real baseHeightSize = localMeshSize * aFactor * sqrt(2.0 / 3.0); // Equilateral triangle (height to edge ratio)
 
                 // Rotate vector by 90 degrees
                 CGeoVector<Real> v = a;
