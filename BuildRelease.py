@@ -3,6 +3,9 @@ import os
 import sys
 import shutil
 
+swigExecuable = 'D:/Libraries/Swig/swigwin-4.0.2/swig.exe'
+unitTests = 'OFF'
+
 # Read version info
 fi = open('trunk/src/version.h', 'r')
 strLines = fi.readlines()
@@ -79,14 +82,11 @@ if not os.path.exists('build'):
 
 os.chdir('build')
 
-swigExecuable = 'D:/Libraries/Swig/swigwin-4.0.2/swig.exe'
-unitTests = 'OFF'
-
 if sys.platform == 'win32':
     if version64:
-        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=OFF -DSWIG_EXECUTABLE=' + swigExecuable)
+        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecuable)
     else:
-        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=OFF -DSWIG_EXECUTABLE=' + swigExecuable)
+        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecuable)
 else:
     os.system('cmake ../trunk -G "Ninja" -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON')
 
@@ -166,15 +166,15 @@ if sys.platform == 'win32':
         os.mkdir(pyReleaseFolder)
 
     if version64:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
     else:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
 else:
     pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_linux'
     if not os.path.isdir(pyReleaseFolder):
         os.mkdir(pyReleaseFolder)
 
-    shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-linux_x86_64.whl')
+    shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-linux_x86_64.whl')
 
 # CSharp module
 if sys.platform == 'win32':
