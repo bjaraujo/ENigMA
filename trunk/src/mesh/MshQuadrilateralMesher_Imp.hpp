@@ -902,7 +902,10 @@ namespace mesh {
 
                 CGeoVector<Real> a = aNode2 - aNode1;
 
-                Real localMeshSize = 0.98 * static_cast<Real>(a.norm()) + 0.02 * meshSizeFunc.evaluate();
+                Real requiredMeshSize = meshSizeFunc.evaluate();
+                Real localMeshSize = static_cast<Real>(a.norm());
+
+                Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
 
                 Real baseHeightSize = localMeshSize; // Equilateral rectangle (height to edge ratio)
 

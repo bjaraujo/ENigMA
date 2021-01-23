@@ -153,6 +153,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
 
 TEST_F(CTestMshTetrahedronMesher, mesh3) {
 
+    GTEST_SKIP();
+
     const decimal d = 0.125;
 
     const Integer nu = 5;

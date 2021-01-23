@@ -784,7 +784,7 @@ namespace mesh {
 
                 Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
 
-                Real baseHeightSize = localMeshSize * aFactor * sqrt(2.0 / 3.0); // Equilateral triangle (height to edge ratio)
+                Real baseHeightSize = localMeshSize * aFactor * sqrt(3.0) / 2.0; // Equilateral triangle (height to edge ratio)
 
                 // Rotate vector by 90 degrees
                 CGeoVector<Real> v = a;
