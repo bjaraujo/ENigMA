@@ -869,7 +869,8 @@ posGmsh.save(u, "fvm_01.msh", "Flow")
 
 ### Changes ###
 
-Note: for newer versions of ENigMA (> v0.18), you might need to import the library differently: 
+For newer versions of ENigMA (>= v0.18), you might need to import the library differently: 
+
 ```
 from ENigMA import ENigMA
 ```
