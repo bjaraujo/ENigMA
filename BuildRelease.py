@@ -166,15 +166,15 @@ if sys.platform == 'win32':
         os.mkdir(pyReleaseFolder)
 
     if version64:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy_' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy_' + strNewVersion + '-py3-none-win_amd64.whl')
     else:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy_' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy_' + strNewVersion + '-py3-none-win32.whl')
 else:
     pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_linux'
     if not os.path.isdir(pyReleaseFolder):
         os.mkdir(pyReleaseFolder)
 
-    shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-linux_x86_64.whl')
+    shutil.copy2('bin/ENigMApy/dist/ENigMApy_' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy_' + strNewVersion + '-py3-none-linux_x86_64.whl')
 
 # CSharp module
 if sys.platform == 'win32':

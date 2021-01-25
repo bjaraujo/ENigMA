@@ -114,16 +114,19 @@ The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build t
 
 To reproduce these examples:
 
-1. Download miniconda (python3.6 64bit): https://conda.io/miniconda.html
+1. Download miniconda (Python 3.8.5 64bit): https://conda.io/miniconda.html
 
 2. Install pythonocc: 
 ```bash
-conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.1 python=3
+conda install -c conda-forge pythonocc-core=7.4.1
 ```
 
-3. Download ENigMA 0.1.2: [ENigMA_python3_64bit_0.1.2.0.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python3_64bit_0.1.2.0.zip)
+3. Install ENigMA 0.1.9: 
+```bash
+pip install ENigMApy_0.1.9.0-py3.8-none-win_amd64.whl
+```
 
-4. Download the examples: [ENigMA_python_examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.2.0/ENigMA_python_examples.zip)
+4. Download the examples: [ENigMApy_0.1.9.0-py3-occ-examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.9.0/ENigMApy_0.1.9.0-py3-occ-examples.zip)
 
 #### Mesh Generation ####
 
@@ -135,10 +138,10 @@ conda install -c conda-forge -c dlr-sc -c pythonocc -c oce pythonocc-core==0.18.
 <p>
         
 ```python
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeCylinder
 
 import ENigMAocc
-        
+
 cylinder = BRepPrimAPI_MakeCylinder(3.0, 10.0).Shape() 
 
 mesh = ENigMAocc.meshShape(cylinder, 0.5, 1E-3)
@@ -156,7 +159,7 @@ ENigMAocc.saveMeshFile(mesh, "occ_01.msh")
 <p>
 
 ```python
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeTorus
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeTorus
 
 import ENigMAocc
     
@@ -177,10 +180,10 @@ ENigMAocc.saveMeshFile(mesh, "occ_02.msh")
 <p>
 
 ```python
-from OCC.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeSphere
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
+from OCC.Core.gp import gp_Pnt2d, gp_Pnt, gp_Vec, gp_Trsf
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeSphere
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.Core.BRepAlgoAPI import BRepAlgoAPI_Cut
 
 import ENigMAocc
         
@@ -208,10 +211,10 @@ ENigMAocc.saveMeshFile(mesh, "occ_03.msh")
 <p>
 
 ```python
-from OCC.gp import gp_Vec, gp_Trsf
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
+from OCC.Core.gp import gp_Vec, gp_Trsf
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.Core.BRepAlgoAPI import BRepAlgoAPI_Cut
 
 import ENigMAocc
         
@@ -239,10 +242,10 @@ ENigMAocc.saveMeshFile(mesh, "occ_04a.msh")
 <p>
 
 ```python
-from OCC.gp import gp_Vec, gp_Trsf
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Fuse
+from OCC.Core.gp import gp_Vec, gp_Trsf
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox, BRepPrimAPI_MakeCylinder
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.Core.BRepAlgoAPI import BRepAlgoAPI_Fuse
 
 import ENigMAocc
         
@@ -270,11 +273,11 @@ ENigMAocc.saveMeshFile(mesh, "occ_04b.msh")
 <p>
 
 ```python
-from OCC.gp import gp_Vec, gp_Trsf
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeBox
-from OCC.BRepPrimAPI import BRepPrimAPI_MakeCylinder
-from OCC.BRepBuilderAPI import BRepBuilderAPI_Transform
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Cut
+from OCC.Core.gp import gp_Vec, gp_Trsf
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeBox
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakeCylinder
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Transform
+from OCC.Core.BRepAlgoAPI import BRepAlgoAPI_Cut
 
 import ENigMAocc
         
@@ -324,10 +327,10 @@ ENigMAocc.saveMeshFile(mesh, "occ_05.msh")
 <p>
 
 ```python
-from OCC.STEPControl import STEPControl_Reader
+from OCC.Core.STEPControl import STEPControl_Reader
 
 import ENigMAocc
-        
+
 step_reader = STEPControl_Reader()
 step_reader.ReadFile("lego.step")
 
@@ -349,47 +352,52 @@ ENigMAocc.saveMeshFile(mesh, "occ_06.msh")
 <p>
 
 ```python
-
 import math
 
-from OCC.gp import gp_Pnt, gp_OX, gp_Vec, gp_Trsf, gp_DZ, gp_Ax2, gp_Ax3, gp_Pnt2d, gp_Dir2d, gp_Ax2d
-from OCC.GC import GC_MakeArcOfCircle, GC_MakeSegment
-from OCC.GCE2d import GCE2d_MakeSegment
-from OCC.Geom import Geom_Plane, Geom_Curve, Geom_CylindricalSurface, Handle_Geom_Plane, Handle_Geom_Surface
-from OCC.Geom2d import Geom2d_Ellipse, Geom2d_TrimmedCurve, Handle_Geom2d_Ellipse, Handle_Geom2d_Curve
-from OCC.BRepBuilderAPI import BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire, BRepBuilderAPI_MakeFace, BRepBuilderAPI_Transform
-from OCC.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeCylinder, BRepPrimAPI_MakeBox
-from OCC.BRepFilletAPI import BRepFilletAPI_MakeFillet
-from OCC.BRepAlgoAPI import BRepAlgoAPI_Fuse, BRepAlgoAPI_Cut
-from OCC.BRepOffsetAPI import BRepOffsetAPI_MakeThickSolid, BRepOffsetAPI_ThruSections
-from OCC.BRepLib import breplib
-from OCC.BRep import BRep_Builder, BRep_Tool, BRep_Tool_Curve, BRep_Tool_Surface, BRep_Tool_CurveOnSurface
-from OCC.BRepGProp import brepgprop_LinearProperties
-from OCC.BRepAdaptor import BRepAdaptor_Curve
-from OCC.TopExp import TopExp_Explorer
-from OCC.TopTools import TopTools_ListOfShape
-from OCC.TopExp import TopExp_Explorer
-from OCC.TopoDS import topods, TopoDS_Compound, topods_Face, topods_Wire, topods_Edge
-from OCC.TopAbs import TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE, TopAbs_REVERSED
+from OCC.Core.gp import (gp_Pnt, gp_OX, gp_Vec, gp_Trsf, gp_DZ, gp_Ax2, gp_Ax3,
+                         gp_Pnt2d, gp_Dir2d, gp_Ax2d, gp_Pln)
+from OCC.Core.GC import GC_MakeArcOfCircle, GC_MakeSegment
+from OCC.Core.GCE2d import GCE2d_MakeSegment
+from OCC.Core.Geom import Geom_CylindricalSurface
+from OCC.Core.Geom2d import Geom2d_Ellipse, Geom2d_TrimmedCurve
+from OCC.Core.BRepBuilderAPI import (BRepBuilderAPI_MakeEdge, BRepBuilderAPI_MakeWire,
+                                     BRepBuilderAPI_MakeFace, BRepBuilderAPI_Transform)
+from OCC.Core.BRepPrimAPI import BRepPrimAPI_MakePrism, BRepPrimAPI_MakeCylinder
+from OCC.Core.BRepFilletAPI import BRepFilletAPI_MakeFillet
+from OCC.Core.BRepAlgoAPI import BRepAlgoAPI_Fuse
+from OCC.Core.BRepOffsetAPI import BRepOffsetAPI_MakeThickSolid, BRepOffsetAPI_ThruSections
+from OCC.Core.BRepLib import breplib
+from OCC.Core.BRep import BRep_Builder
+from OCC.Core.GeomAbs import GeomAbs_Plane
+from OCC.Core.BRepAdaptor import BRepAdaptor_Surface
+from OCC.Core.TopoDS import topods, TopoDS_Compound, TopoDS_Face
+from OCC.Core.TopExp import TopExp_Explorer
+from OCC.Core.TopAbs import TopAbs_EDGE, TopAbs_FACE
+from OCC.Core.TopTools import TopTools_ListOfShape
 
 import ENigMAocc
 
-def faceIsPlane(face):
-    hs = BRep_Tool_Surface(face)
-    downcast_result = Handle_Geom_Plane.DownCast(hs)
-    # The handle is null if downcast failed or is not possible, that is to say the face is not a plane
-    if downcast_result.IsNull():
-        return False
-    else:
-        return True
+def face_is_plane(face: TopoDS_Face) -> bool:
+    """
+    Returns True if the TopoDS_Face is a plane, False otherwise
+    """
+    surf = BRepAdaptor_Surface(face, True)
+    surf_type = surf.GetType()
+    return surf_type == GeomAbs_Plane
 
-def geomPlaneFromFace(aFace):
-    return Handle_Geom_Plane.DownCast(BRep_Tool_Surface(aFace)).GetObject()
+
+def geom_plane_from_face(aFace: TopoDS_Face) -> gp_Pln:
+    """
+    Returns the geometric plane entity from a planar surface
+    """
+    return BRepAdaptor_Surface(aFace, True).Plane()
+
 
 height = 70
 width = 50
 thickness = 30
 
+print("creating bottle")
 # The points we'll use to create the profile of the bottle's body
 aPnt1 = gp_Pnt(-width / 2.0, 0, 0)
 aPnt2 = gp_Pnt(-width / 2.0, -thickness / 4.0, 0)
@@ -436,19 +444,17 @@ myFaceProfile = BRepBuilderAPI_MakeFace(myWireProfile)
 
 # We want to sweep the face along the Z axis to the height
 aPrismVec = gp_Vec(0, 0, height)
-myBody = BRepPrimAPI_MakePrism(myFaceProfile.Face(), aPrismVec)
+myBody_step1 = BRepPrimAPI_MakePrism(myFaceProfile.Face(), aPrismVec)
 
 # Add fillets to all edges through the explorer
-mkFillet = BRepFilletAPI_MakeFillet(myBody.Shape())
-anEdgeExplorer = TopExp_Explorer(myBody.Shape(), TopAbs_EDGE)
+mkFillet = BRepFilletAPI_MakeFillet(myBody_step1.Shape())
+anEdgeExplorer = TopExp_Explorer(myBody_step1.Shape(), TopAbs_EDGE)
 
 while anEdgeExplorer.More():
     anEdge = topods.Edge(anEdgeExplorer.Current())
     mkFillet.Add(thickness / 12.0, anEdge)
 
     anEdgeExplorer.Next()
-
-myBody = mkFillet
 
 # Create the neck of the bottle
 neckLocation = gp_Pnt(0, 0, height)
@@ -460,33 +466,29 @@ myNeckHeight = height / 10.0
 
 mkCylinder = BRepPrimAPI_MakeCylinder(neckAx2, myNeckRadius, myNeckHeight)
 
-myBody = BRepAlgoAPI_Fuse(myBody.Shape(), mkCylinder.Shape())
+myBody_step2 = BRepAlgoAPI_Fuse(mkFillet.Shape(), mkCylinder.Shape())
 
 # Our goal is to find the highest Z face and remove it
-faceToRemove = None
-zMax = -1
+zMax = -1.
 
 # We have to work our way through all the faces to find the highest Z face so we can remove it for the shell
-aFaceExplorer = TopExp_Explorer(myBody.Shape(), TopAbs_FACE)
+aFaceExplorer = TopExp_Explorer(myBody_step2.Shape(), TopAbs_FACE)
 while aFaceExplorer.More():
     aFace = topods.Face(aFaceExplorer.Current())
-
-    if faceIsPlane(aFace):
-        aPlane = geomPlaneFromFace(aFace)
+    if face_is_plane(aFace):
+        aPlane = geom_plane_from_face(aFace)
 
         # We want the highest Z face, so compare this to the previous faces
-        aPnt = aPlane.Location()
-        aZ = aPnt.Z()
+        aPntLoc = aPlane.Location()
+        aZ = aPntLoc.Z()
         if aZ > zMax:
             zMax = aZ
-            faceToRemove = aFace
-
     aFaceExplorer.Next()
 
 facesToRemove = TopTools_ListOfShape()
-facesToRemove.Append(faceToRemove)
+facesToRemove.Append(aFace)
 
-myBody = BRepOffsetAPI_MakeThickSolid(myBody.Shape(), facesToRemove, -thickness / 50.0, 0.001)
+myBody_step3 = BRepOffsetAPI_MakeThickSolid(myBody_step2.Shape(), facesToRemove, -thickness / 50.0, 0.001)
 
 # Set up our surfaces for the threading on the neck
 neckAx2_Ax3 = gp_Ax3(neckLocation, gp_DZ())
@@ -504,8 +506,8 @@ aMinor = myNeckHeight / 10.0
 anEllipse1 = Geom2d_Ellipse(anAx2d, aMajor, aMinor)
 anEllipse2 = Geom2d_Ellipse(anAx2d, aMajor, aMinor / 4.0)
 
-anArc1 = Geom2d_TrimmedCurve(Handle_Geom2d_Ellipse(anEllipse1), 0, math.pi)
-anArc2 = Geom2d_TrimmedCurve(Handle_Geom2d_Ellipse(anEllipse2), 0, math.pi)
+anArc1 = Geom2d_TrimmedCurve(anEllipse1, 0, math.pi)
+anArc2 = Geom2d_TrimmedCurve(anEllipse2, 0, math.pi)
 
 anEllipsePnt1 = anEllipse1.Value(0)
 anEllipsePnt2 = anEllipse1.Value(math.pi)
@@ -513,10 +515,10 @@ anEllipsePnt2 = anEllipse1.Value(math.pi)
 aSegment = GCE2d_MakeSegment(anEllipsePnt1, anEllipsePnt2)
 
 # Build edges and wires for threading
-anEdge1OnSurf1 = BRepBuilderAPI_MakeEdge(Handle_Geom2d_Curve(anArc1), Handle_Geom_Surface(aCyl1))
-anEdge2OnSurf1 = BRepBuilderAPI_MakeEdge(aSegment.Value(), Handle_Geom_Surface(aCyl1))
-anEdge1OnSurf2 = BRepBuilderAPI_MakeEdge(Handle_Geom2d_Curve(anArc2), Handle_Geom_Surface(aCyl2))
-anEdge2OnSurf2 = BRepBuilderAPI_MakeEdge(aSegment.Value(), Handle_Geom_Surface(aCyl2))
+anEdge1OnSurf1 = BRepBuilderAPI_MakeEdge(anArc1, aCyl1)
+anEdge2OnSurf1 = BRepBuilderAPI_MakeEdge(aSegment.Value(), aCyl1)
+anEdge1OnSurf2 = BRepBuilderAPI_MakeEdge(anArc2, aCyl2)
+anEdge2OnSurf2 = BRepBuilderAPI_MakeEdge(aSegment.Value(), aCyl2)
 
 threadingWire1 = BRepBuilderAPI_MakeWire(anEdge1OnSurf1.Edge(), anEdge2OnSurf1.Edge())
 threadingWire2 = BRepBuilderAPI_MakeWire(anEdge1OnSurf2.Edge(), anEdge2OnSurf2.Edge())
@@ -533,15 +535,14 @@ aTool.CheckCompatibility(False)
 myThreading = aTool.Shape()
 
 # Build the resulting compound
-aRes = TopoDS_Compound()
+bottle = TopoDS_Compound()
 aBuilder = BRep_Builder()
-aBuilder.MakeCompound(aRes)
-aBuilder.Add(aRes, myBody.Shape())
-aBuilder.Add(aRes, myThreading)
+aBuilder.MakeCompound(bottle)
+aBuilder.Add(bottle, myBody_step3.Shape())
+aBuilder.Add(bottle, myThreading)
+print("bottle finished")
 
-shape = aRes
-
-mesh = ENigMAocc.meshShape(shape, 1.5, 1E-3)
+mesh = ENigMAocc.meshShape(bottle, 1.5, 1E-3)
 ENigMAocc.saveMeshFile(mesh, "occ_07.msh")
 ```
 
@@ -566,7 +567,7 @@ Max deflection (theoretical) = -0.021333333333333326
 
 ```python
 import math
-import ENigMA
+from ENigMA import ENigMA
 
 b = 0.05
 h = 0.05
@@ -671,7 +672,7 @@ Temperature at point (0.5, 0.5) (theoretical) = 0.25
 
 ```python
 import math
-import ENigMA
+from ENigMA import ENigMA
 
 vertex1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
 vertex2 = ENigMA.CMshNodeDouble(1.0, 0.0, 0.0)
@@ -762,7 +763,7 @@ Lid-driven cavity (Re = 1000).
 
 ```python
 import math
-import ENigMA
+from ENigMA import ENigMA
 
 vertex1 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, -0.1)
 vertex2 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, -0.1)
