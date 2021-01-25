@@ -867,7 +867,3 @@ posGmsh.save(u, "fvm_01.msh", "Flow")
 
 </p>
 </details>
-
-
-
-

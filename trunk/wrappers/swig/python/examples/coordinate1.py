@@ -13,7 +13,7 @@ b(2, 2, 1)
 # get value
 print(b(0, 0))
 
-a.transform(b);
+a.transform(b)
 
 print(a.x())
 print(a.y())
