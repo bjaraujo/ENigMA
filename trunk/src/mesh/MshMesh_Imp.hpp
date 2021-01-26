@@ -167,6 +167,21 @@ namespace mesh {
             aStartNodeId++;
         }
 
+        Integer aStartFaceId = this->nextFaceId();
+
+        for (Integer i = 0; i < aMesh.nbFaces(); ++i) {
+            Integer aFaceId = aMesh.faceId(i);
+
+            CMshFace<Real>& aFace = aMesh.face(aFaceId);
+
+            for (Integer j = 0; j < aFace.nbNodeIds(); ++j)
+                aFace.setNodeId(j, sNewNodeIds.at(aFace.nodeId(j)));
+
+            this->addFace(aStartFaceId, aFace);
+
+            aStartFaceId++;
+        }
+
         Integer aStartElementId = this->nextElementId();
 
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {

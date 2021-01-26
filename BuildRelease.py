@@ -158,30 +158,30 @@ if not os.path.exists('../release'):
 # Python module
 if sys.platform == 'win32':
     if version64:
-        pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_x64'
+        pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_x64'
     else:
-        pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_win32'
+        pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_win32'
         
     if not os.path.isdir(pyReleaseFolder):
         os.mkdir(pyReleaseFolder)
 
     if version64:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy_' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy_' + strNewVersion + '-py3-none-win_amd64.whl')
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
     else:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy_' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy_' + strNewVersion + '-py3-none-win32.whl')
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
 else:
-    pyReleaseFolder = '../release/ENigMApy_' + strNewVersion + '_linux'
+    pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_linux'
     if not os.path.isdir(pyReleaseFolder):
         os.mkdir(pyReleaseFolder)
 
-    shutil.copy2('bin/ENigMApy/dist/ENigMApy_' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy_' + strNewVersion + '-py3-none-linux_x86_64.whl')
+    shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-linux_x86_64.whl')
 
 # CSharp module
 if sys.platform == 'win32':
     if version64:
-        csReleaseFolder = '../release/ENigMAcs_' + strNewVersion + '_x64'
+        csReleaseFolder = '../release/ENigMAcs-' + strNewVersion + '_x64'
     else:
-        csReleaseFolder = '../release/ENigMAcs_' + strNewVersion + '_win32'
+        csReleaseFolder = '../release/ENigMAcs-' + strNewVersion + '_win32'
         
     if not os.path.isdir(csReleaseFolder):
         os.mkdir(csReleaseFolder)
