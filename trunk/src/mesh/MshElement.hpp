@@ -27,15 +27,15 @@ namespace mesh {
     template <typename Real>
     class CMshElement {
     private:
+        EElementType m_elementType;
+        Real m_thickness;
+
         std::vector<Integer> m_nodeIds;
         std::vector<Integer> m_faceIds;
 
-        EElementType m_elementType;
-
-        Real m_thickness;
-
     public:
         CMshElement();
+        CMshElement(const CMshElement<Real>& anElement);
         explicit CMshElement(EElementType anElementType);
         virtual ~CMshElement();
 

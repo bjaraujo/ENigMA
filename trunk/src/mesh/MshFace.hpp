@@ -26,17 +26,16 @@ namespace mesh {
     template <typename Real>
     class CMshFace {
     private:
-        std::vector<Integer> m_nodeIds;
-
         EFaceType m_faceType;
-
         bool m_hasPair;
-
         Integer m_pairFaceId;
         Integer m_elementId;
 
+        std::vector<Integer> m_nodeIds;
+
     public:
         CMshFace();
+        CMshFace(const CMshFace<Real>& aFace);
         explicit CMshFace(EFaceType aFaceType);
         virtual ~CMshFace();
 

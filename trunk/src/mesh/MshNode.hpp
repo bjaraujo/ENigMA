@@ -34,7 +34,7 @@ namespace mesh {
         template <typename Derived>
         CMshNode& operator=(const Eigen::MatrixBase<Derived>& p)
         {
-            this->Base::operator=(p);
+            Base::operator=(p);
             return *this;
         }
     };

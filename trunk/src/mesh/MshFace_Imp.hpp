@@ -21,6 +21,16 @@ namespace mesh {
     }
 
     template <typename Real>
+    CMshFace<Real>::CMshFace(const CMshFace<Real>& aFace)
+    {
+        m_nodeIds = aFace.m_nodeIds;
+        m_faceType = aFace.m_faceType;
+        m_hasPair = aFace.m_hasPair;
+        m_pairFaceId = aFace.m_pairFaceId;
+        m_elementId = aFace.m_elementId;
+    }
+
+    template <typename Real>
     CMshFace<Real>::CMshFace(EFaceType aFaceType)
         : m_faceType(aFaceType)
         , m_hasPair(false)

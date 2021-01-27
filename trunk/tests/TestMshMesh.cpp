@@ -93,7 +93,8 @@ TEST_F(CTestMshMesh, set) {
 
 }
 
-TEST_F(CTestMshMesh, add) {
+TEST_F(CTestMshMesh, addMesh01)
+{
 
     // Mesh 1
     CMshMesh<decimal> aMesh1;
@@ -166,9 +167,18 @@ TEST_F(CTestMshMesh, add) {
     EXPECT_EQ(8, aMesh.nbNodes());
     EXPECT_EQ(4, aMesh.nbElements());
 
+    // Mesh shouldn't change
+    EXPECT_EQ(1, aMesh2.element(1).nodeId(0));
+    EXPECT_EQ(2, aMesh2.element(1).nodeId(1));
+    EXPECT_EQ(4, aMesh2.element(1).nodeId(2));
+
+    EXPECT_EQ(2, aMesh2.element(2).nodeId(0));
+    EXPECT_EQ(3, aMesh2.element(2).nodeId(1));
+    EXPECT_EQ(4, aMesh2.element(2).nodeId(2));
+
 }
 
-TEST_F(CTestMshMesh, addMesh) {
+TEST_F(CTestMshMesh, addMesh02) {
 
     // Mesh 1
     CMshMesh<decimal> aMesh1;

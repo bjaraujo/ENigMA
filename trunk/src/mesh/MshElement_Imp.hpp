@@ -19,6 +19,15 @@ namespace mesh {
     }
 
     template <typename Real>
+    CMshElement<Real>::CMshElement(const CMshElement<Real>& anElement)
+    {
+        m_elementType = anElement.m_elementType;
+        m_thickness = anElement.m_thickness;
+        m_nodeIds = anElement.m_nodeIds;
+        m_faceIds = anElement.m_faceIds;
+    }
+
+    template <typename Real>
     CMshElement<Real>::CMshElement(EElementType anElementType)
         : m_elementType(anElementType)
     {
@@ -358,23 +367,23 @@ namespace mesh {
             break;
         case ET_BEAM:
             idAux = m_nodeIds[0];
-            this->m_nodeIds[0] = this->m_nodeIds[1];
-            this->m_nodeIds[1] = idAux;
+            m_nodeIds[0] = m_nodeIds[1];
+            m_nodeIds[1] = idAux;
             break;
         case ET_TRIANGLE:
             idAux = m_nodeIds[1];
-            this->m_nodeIds[1] = this->m_nodeIds[2];
-            this->m_nodeIds[2] = idAux;
+            m_nodeIds[1] = m_nodeIds[2];
+            m_nodeIds[2] = idAux;
             break;
         case ET_QUADRILATERAL:
             idAux = m_nodeIds[1];
-            this->m_nodeIds[1] = this->m_nodeIds[3];
-            this->m_nodeIds[3] = idAux;
+            m_nodeIds[1] = m_nodeIds[3];
+            m_nodeIds[3] = idAux;
             break;
         case ET_TETRAHEDRON:
             idAux = m_nodeIds[1];
-            this->m_nodeIds[1] = this->m_nodeIds[2];
-            this->m_nodeIds[2] = idAux;
+            m_nodeIds[1] = m_nodeIds[2];
+            m_nodeIds[2] = idAux;
             break;
         case ET_TRIANGULAR_PRISM:
             // TODO:
