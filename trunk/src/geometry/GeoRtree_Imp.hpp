@@ -29,7 +29,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoRtree<Real>::addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
+    void CGeoRtree<Real>::addGeometricObject(const Integer aBoundingBoxId, const CGeoBoundingBox<Real>& aBoundingBox)
     {
         Real b_min[3];
         Real b_max[3];
@@ -46,7 +46,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoRtree<Real>::removeGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
+    void CGeoRtree<Real>::removeGeometricObject(const Integer aBoundingBoxId, const CGeoBoundingBox<Real>& aBoundingBox)
     {
         Real b_min[3];
         Real b_max[3];
@@ -68,7 +68,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoRtree<Real>::find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
+    void CGeoRtree<Real>::find(std::vector<Integer>& boundingBoxIds, const CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
     {
         Real b_min[3];
         Real b_max[3];

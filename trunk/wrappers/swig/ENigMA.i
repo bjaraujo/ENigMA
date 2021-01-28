@@ -455,10 +455,26 @@ namespace std
 
 %template(CGeoHashGridDouble) ENigMA::geometry::CGeoHashGrid<double>;
 
+%extend ENigMA::geometry::CGeoHashGrid<double> {
+    
+    void addGeometricObject(int id, ENigMA::geometry::CGeoCoordinate<double>& coordinate) { 
+        (*$self).addGeometricObject(id, coordinate);
+    }
+
+};
+
 // Octree
 %include "GeoOctree.hpp"
 
 %template(CGeoOctreeDouble) ENigMA::geometry::CGeoOctree<double>;
+
+%extend ENigMA::geometry::CGeoOctree<double> {
+    
+    void addGeometricObject(int id, ENigMA::geometry::CGeoCoordinate<double>& coordinate) { 
+        (*$self).addGeometricObject(id, coordinate);
+    }
+
+};
 
 // R-Tree
 %include "GeoRtree.hpp"

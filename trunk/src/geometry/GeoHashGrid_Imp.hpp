@@ -147,7 +147,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoHashGrid<Real>::find(std::vector<Integer>& coordinateIds, CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
+    void CGeoHashGrid<Real>::find(std::vector<Integer>& coordinateIds, const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
     {
         Real dRm1DeltaX = 1.0 / m_adDelta[0];
         Real dRm1DeltaY = 1.0 / m_adDelta[1];

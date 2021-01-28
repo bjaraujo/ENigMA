@@ -30,8 +30,8 @@ namespace geometry {
         void reset();
         void addCoordinate(CGeoCoordinate<Real>& aCoordinate);
 
-        CGeoVector<Real>& min();
-        CGeoVector<Real>& max();
+        const CGeoVector<Real>& min() const;
+        const CGeoVector<Real>& max() const;
 
         void grow(const Real anAmount);
         void grow(const Real anAmountX, const Real anAmountY, const Real anAmountZ);

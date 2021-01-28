@@ -149,13 +149,13 @@ namespace mesh {
     }
 
     template <typename Real>
-    void CMshMesh<Real>::addMesh(CMshMesh<Real>& aMesh)
+    void CMshMesh<Real>::addMesh(const CMshMesh<Real>& aMesh)
     {
         mapNodeIndex sNewNodeIds;
         
         for (Integer i = 0; i < aMesh.nbNodes(); ++i) {
             Integer aNodeId = aMesh.nodeId(i);
-            CMshNode<Real>& aNode = aMesh.node(aNodeId);
+            const CMshNode<Real>& aNode = aMesh.node(aNodeId);
 
             Integer aNewNodeId = nextNodeId();
             addNode(aNewNodeId, aNode);
@@ -164,7 +164,7 @@ namespace mesh {
 
         for (Integer i = 0; i < aMesh.nbFaces(); ++i) {
             Integer aFaceId = aMesh.faceId(i);
-            CMshFace<Real>& aFace = aMesh.face(aFaceId);
+            const CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
             Integer aNewFaceId = nextFaceId();
             addFace(aNewFaceId, aFace);
@@ -178,7 +178,7 @@ namespace mesh {
 
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {
             Integer anElementId = aMesh.elementId(i);
-            CMshElement<Real>& anElement = aMesh.element(anElementId);
+            const CMshElement<Real>& anElement = aMesh.element(anElementId);
 
             Integer aNewElementId = nextElementId();
             addElement(aNewElementId, anElement);
@@ -195,10 +195,19 @@ namespace mesh {
     ENigMA::mesh::CMshNode<Real>& CMshMesh<Real>::node(const Integer aNodeId) { return m_nodes.at(aNodeId); }
 
     template <typename Real>
+    const ENigMA::mesh::CMshNode<Real>& CMshMesh<Real>::node(const Integer aNodeId) const { return m_nodes.at(aNodeId); }
+
+    template <typename Real>
     ENigMA::mesh::CMshFace<Real>& CMshMesh<Real>::face(const Integer aFaceId) { return m_faces.at(aFaceId); }
 
     template <typename Real>
+    const ENigMA::mesh::CMshFace<Real>& CMshMesh<Real>::face(const Integer aFaceId) const { return m_faces.at(aFaceId); }
+
+    template <typename Real>
     ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId) { return m_elements.at(anElementId); }
+
+    template <typename Real>
+    const ENigMA::mesh::CMshElement<Real>& CMshMesh<Real>::element(const Integer anElementId) const { return m_elements.at(anElementId); }
 
     template <typename Real>
     Integer CMshMesh<Real>::nodeId(const Integer aNodeIndex) const { return m_nodeIds.at(aNodeIndex); }

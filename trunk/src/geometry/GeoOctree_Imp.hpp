@@ -256,7 +256,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoOctreeNode<Real>& CGeoOctree<Real>::findRecursive(CGeoOctreeNode<Real>& anOctreeNode, CGeoCoordinate<Real>& aCoordinate)
+    CGeoOctreeNode<Real>& CGeoOctree<Real>::findRecursive(CGeoOctreeNode<Real>& anOctreeNode, const CGeoCoordinate<Real>& aCoordinate)
     {
         Integer octreeLocation = static_cast<Integer>(dispatch(anOctreeNode, aCoordinate.x(), aCoordinate.y(), aCoordinate.z()));
 
@@ -267,7 +267,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoOctree<Real>::find(std::vector<Integer>& coordinateIds, CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
+    void CGeoOctree<Real>::find(std::vector<Integer>& coordinateIds, const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance)
     {
         CGeoOctreeNode<Real> anOctreeNode = findRecursive(m_root, aCoordinate);
 

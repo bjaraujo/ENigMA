@@ -39,7 +39,7 @@ namespace geometry {
 
         void build();
 
-        void find(std::vector<Integer>& coordinateIds, CGeoCoordinate<Real>& aCoordinate, const Real aTolerance = 0.0);
+        void find(std::vector<Integer>& coordinateIds, const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance = 0.0) override;
     };
 }
 }

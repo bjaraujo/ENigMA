@@ -80,11 +80,16 @@ namespace mesh {
         void removeFace(const Integer aFaceId);
         void removeElement(const Integer anElementId);
 
-        void addMesh(CMshMesh<Real>& aMesh);
+        void addMesh(const CMshMesh<Real>& aMesh);
 
         ENigMA::mesh::CMshNode<Real>& node(const Integer aNodeId);
+        const ENigMA::mesh::CMshNode<Real>& node(const Integer aNodeId) const;
+
         ENigMA::mesh::CMshFace<Real>& face(const Integer aFaceId);
+        const ENigMA::mesh::CMshFace<Real>& face(const Integer aFaceId) const;
+
         ENigMA::mesh::CMshElement<Real>& element(const Integer anElementId);
+        const ENigMA::mesh::CMshElement<Real>& element(const Integer anElementId) const;
 
         void generateFaces(const Real aTolerance = 0.0);
 

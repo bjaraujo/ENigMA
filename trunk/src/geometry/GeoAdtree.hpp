@@ -73,11 +73,10 @@ namespace geometry {
 
         void build();
 
-        void find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0);
+        void find(std::vector<Integer>& boundingBoxIds, const CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance = 0.0) override;
 
-        void addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox);
-
-        void removeGeometricObject(const Integer aBoundingBoxId);
+        void addGeometricObject(const Integer aBoundingBoxId, const CGeoBoundingBox<Real>& aBoundingBox) override;
+        void removeGeometricObject(const Integer aBoundingBoxId) override;
     };
 }
 }

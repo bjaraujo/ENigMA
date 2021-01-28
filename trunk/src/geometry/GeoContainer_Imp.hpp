@@ -29,7 +29,7 @@ namespace geometry {
     }
 
     template <class T, typename Real>
-    void CGeoContainer<T, Real>::addGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject)
+    void CGeoContainer<T, Real>::addGeometricObject(const Integer aGeomtericObjectId, const T& aGeometricObject)
     {
         m_geometricObjectIds[static_cast<Integer>(m_geometricObjects.size())] = aGeomtericObjectId;
         m_geometricObjects.push_back(aGeometricObject);
@@ -41,7 +41,7 @@ namespace geometry {
     }
 
     template <class T, typename Real>
-    void CGeoContainer<T, Real>::removeGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject)
+    void CGeoContainer<T, Real>::removeGeometricObject(const Integer aGeomtericObjectId, const T& aGeometricObject)
     {
     }
 }

@@ -29,12 +29,12 @@ namespace geometry {
 
         virtual void build() = 0;
 
-        virtual void find(std::vector<Integer>& sGeomtericObjectIds, T& aGeometricObject, const Real aTolerance = 0.0) = 0;
+        virtual void find(std::vector<Integer>& sGeomtericObjectIds, const T& aGeometricObject, const Real aTolerance = 0.0) = 0;
 
-        virtual void addGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject);
+        virtual void addGeometricObject(const Integer aGeomtericObjectId, const T& aGeometricObject);
 
         virtual void removeGeometricObject(const Integer aGeomtericObjectId);
-        virtual void removeGeometricObject(const Integer aGeomtericObjectId, T& aGeometricObject);
+        virtual void removeGeometricObject(const Integer aGeomtericObjectId, const T& aGeometricObject);
     };
 }
 }

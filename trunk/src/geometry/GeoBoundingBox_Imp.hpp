@@ -67,13 +67,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoVector<Real>& CGeoBoundingBox<Real>::min()
+    const CGeoVector<Real>& CGeoBoundingBox<Real>::min() const
     {
         return m_min;
     }
 
     template <typename Real>
-    CGeoVector<Real>& CGeoBoundingBox<Real>::max()
+    const CGeoVector<Real>& CGeoBoundingBox<Real>::max() const
     {
         return m_max;
     }

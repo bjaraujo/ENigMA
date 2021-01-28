@@ -250,7 +250,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoAdtree<Real>::addGeometricObject(const Integer aBoundingBoxId, CGeoBoundingBox<Real>& aBoundingBox)
+    void CGeoAdtree<Real>::addGeometricObject(const Integer aBoundingBoxId, const CGeoBoundingBox<Real>& aBoundingBox)
     {
         Real b[6];
 
@@ -277,7 +277,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoAdtree<Real>::find(std::vector<Integer>& boundingBoxIds, CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
+    void CGeoAdtree<Real>::find(std::vector<Integer>& boundingBoxIds, const CGeoBoundingBox<Real>& aBoundingBox, const Real aTolerance)
     {
         Real b_min[6];
         Real b_max[6];

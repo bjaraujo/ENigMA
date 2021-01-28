@@ -37,7 +37,7 @@ namespace geometry {
         EOctreeLocation dispatch(CGeoOctreeNode<Real>& anOctreeNode, Real x, Real y, Real z);
         void createNode(CGeoOctreeNode<Real>& anOctreeNode, const CGeoOctreeNode<Real>& anOctreeParent, Integer i);
         void createRecursive(CGeoOctreeNode<Real>& anOctreeNode);
-        CGeoOctreeNode<Real>& findRecursive(CGeoOctreeNode<Real>& anOctreeNode, CGeoCoordinate<Real>& aCoordinate);
+        CGeoOctreeNode<Real>& findRecursive(CGeoOctreeNode<Real>& anOctreeNode, const CGeoCoordinate<Real>& aCoordinate);
 
         CGeoBoundingBox<Real> m_boundingBox;
 
@@ -49,7 +49,7 @@ namespace geometry {
 
         void build();
 
-        void find(std::vector<Integer>& coordinateIds, CGeoCoordinate<Real>& aCoordinate, const Real aTolerance = 0.0);
+        void find(std::vector<Integer>& coordinateIds, const CGeoCoordinate<Real>& aCoordinate, const Real aTolerance = 0.0) override;
     };
 }
 }
