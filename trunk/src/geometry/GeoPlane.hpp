@@ -22,7 +22,7 @@ namespace geometry {
 
     public:
         CGeoPlane();
-        CGeoPlane(CGeoNormal<Real>& aNormal, const Real d);
+        CGeoPlane(const CGeoNormal<Real>& aNormal, const Real d);
         virtual ~CGeoPlane();
 
         CGeoNormal<Real>& normal();
@@ -30,7 +30,7 @@ namespace geometry {
         void setD(const Real aValue);
         Real d() const;
 
-        void set(CGeoNormal<Real>& aNormal, const Real d);
+        void set(const CGeoNormal<Real>& aNormal, const Real d);
 
         void invert();
 

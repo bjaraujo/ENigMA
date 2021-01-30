@@ -19,13 +19,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoPlane<Real>::CGeoPlane(CGeoNormal<Real>& aNormal, const Real d)
+    CGeoPlane<Real>::CGeoPlane(const CGeoNormal<Real>& aNormal, const Real d)
     {
         this->set(aNormal, d);
     }
 
     template <typename Real>
-    void CGeoPlane<Real>::set(CGeoNormal<Real>& aNormal, const Real d)
+    void CGeoPlane<Real>::set(const CGeoNormal<Real>& aNormal, const Real d)
     {
         m_normal = aNormal;
         m_d = d;

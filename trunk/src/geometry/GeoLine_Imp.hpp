@@ -19,7 +19,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoLine<Real>::CGeoLine(CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2)
+    CGeoLine<Real>::CGeoLine(const CGeoCoordinate<Real>& aPoint1, const CGeoCoordinate<Real>& aPoint2)
     {
         this->m_startPoint = aPoint1;
         this->m_endPoint = aPoint2;
