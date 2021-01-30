@@ -154,8 +154,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     const decimal d = 0.125;
 
     const Integer nu = 5;
-    const Integer nv = 2;
-    const Integer nw = 2;    
+    const Integer nv = 3;
+    const Integer nw = 3;    
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
@@ -193,7 +193,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
 
     CMshTetrahedronMesher<decimal> aTetrahedronMesher;
 
-    aTetrahedronMesher.generate(aSurfaceMesh, 999, d * 0.5, d * 0.1, d * 10.0, 1E-3);
+    aTetrahedronMesher.generate(aSurfaceMesh, 999, d, d * 0.1, d * 10.0, 1E-3);
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = aTetrahedronMesher.mesh();

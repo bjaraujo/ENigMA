@@ -44,6 +44,8 @@ set_source_files_properties(${ENGIMA_INTERFACE} PROPERTIES CPLUSPLUS ON)
 
 swig_add_library(ENigMAcs LANGUAGE csharp SOURCES ${ENGIMA_INTERFACE})
 
+add_dependencies(ENigMAcs eigen)
+
 if(WIN32)
   add_definitions(/bigobj)
 endif(WIN32)
