@@ -492,7 +492,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         std::vector<CGeoCoordinate<Real>> sInteriorPoints;
 
@@ -503,7 +503,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
@@ -512,7 +512,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         m_bStop = false;
 
@@ -524,7 +524,7 @@ namespace mesh {
 
         for (Integer i = 0; i < aSurfaceMesh.nbNodes(); ++i) {
             Integer aNodeId = aSurfaceMesh.nodeId(i);
-            CMshNode<Real>& aNode = aSurfaceMesh.node(aNodeId);
+            const CMshNode<Real>& aNode = aSurfaceMesh.node(aNodeId);
 
             m_volumeMesh.addNode(aNodeId, aNode);
 
@@ -548,7 +548,7 @@ namespace mesh {
         for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
             Integer anElementId = aSurfaceMesh.elementId(i);
 
-            CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
+            const CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
 
             if (anElement.elementType() == ET_TRIANGLE)
                 newTriangleIds[anElementId] = m_nextTriangleId++;
@@ -559,7 +559,7 @@ namespace mesh {
         for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
             Integer anElementId = aSurfaceMesh.elementId(i);
 
-            CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
+            const CMshElement<Real>& anElement = aSurfaceMesh.element(anElementId);
 
             if (anElement.elementType() == ET_TRIANGLE) {
                 SMshTetrahedronAdvancingFrontTriangle<Real> anAdvTriangle;
@@ -580,16 +580,16 @@ namespace mesh {
                     anAdvTriangle.neighborId[j] = std::numeric_limits<Integer>::max();
 
                     Integer aFaceId = anElement.faceId(j);
-                    CMshFace<Real>& aFace = aSurfaceMesh.face(aFaceId);
+                    const CMshFace<Real>& aFace = aSurfaceMesh.face(aFaceId);
 
                     if (aFace.hasPair()) {
                         Integer aPairFaceId = aFace.pairFaceId();
-                        Integer aNeighborId = aSurfaceMesh.face(aPairFaceId).elementId();
+                        const Integer aNeighborId = aSurfaceMesh.face(aPairFaceId).elementId();
 
                         if (newTriangleIds.find(aNeighborId) != newTriangleIds.end()) {
                             anAdvTriangle.neighborId[j] = newTriangleIds.at(aNeighborId);
 
-                            CMshElement<Real>& aNeighbor = aSurfaceMesh.element(aNeighborId);
+                            const CMshElement<Real>& aNeighbor = aSurfaceMesh.element(aNeighborId);
 
                             for (Integer k = 0; k < aNeighbor.nbNodeIds(); ++k) {
                                 if (aNeighbor.nodeId(k) != aFace.nodeId(0) && aNeighbor.nodeId(k) != aFace.nodeId(1)) {

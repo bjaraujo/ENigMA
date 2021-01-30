@@ -28,7 +28,7 @@ namespace geometry {
 
         virtual void reset();
 
-        void addVertex(CGeoCoordinate<Real>& aVertex);
+        void addVertex(const CGeoCoordinate<Real>& aVertex);
         void insertVertex(const Integer aVertexIndex, CGeoCoordinate<Real>& aVertex);
         void removeVertex(const Integer aVertexIndex);
 

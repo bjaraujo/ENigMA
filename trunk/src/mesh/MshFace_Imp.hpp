@@ -57,7 +57,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshFace<Real>::nodeId(const Integer aNodeIndex)
+    Integer CMshFace<Real>::nodeId(const Integer aNodeIndex) const
     {
         return m_nodeIds.at(aNodeIndex);
     }
@@ -76,13 +76,13 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshFace<Real>::pairFaceId()
+    Integer CMshFace<Real>::pairFaceId() const
     {
         return m_pairFaceId;
     }
 
     template <typename Real>
-    bool CMshFace<Real>::hasPair()
+    bool CMshFace<Real>::hasPair() const
     {
         return m_hasPair;
     }
@@ -100,7 +100,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshFace<Real>::elementId()
+    Integer CMshFace<Real>::elementId() const
     {
         return m_elementId;
     }

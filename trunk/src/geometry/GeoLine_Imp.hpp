@@ -38,13 +38,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoLine<Real>::setStartPoint(CGeoCoordinate<Real>& aPoint1)
+    void CGeoLine<Real>::setStartPoint(const CGeoCoordinate<Real>& aPoint1)
     {
         this->m_startPoint = aPoint1;
     }
 
     template <typename Real>
-    void CGeoLine<Real>::setEndPoint(CGeoCoordinate<Real>& aPoint2)
+    void CGeoLine<Real>::setEndPoint(const CGeoCoordinate<Real>& aPoint2)
     {
         this->m_endPoint = aPoint2;
         this->m_vector = aPoint2 - m_startPoint;

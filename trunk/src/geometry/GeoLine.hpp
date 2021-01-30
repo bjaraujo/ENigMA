@@ -62,8 +62,8 @@ namespace geometry {
 
         void reset();
 
-        void setStartPoint(CGeoCoordinate<Real>& aPoint1);
-        void setEndPoint(CGeoCoordinate<Real>& aPoint2);
+        void setStartPoint(const CGeoCoordinate<Real>& aPoint1);
+        void setEndPoint(const CGeoCoordinate<Real>& aPoint2);
 
         CGeoCoordinate<Real>& startPoint();
         CGeoCoordinate<Real>& endPoint();

@@ -42,17 +42,17 @@ namespace mesh {
         Integer nbNodeIds() const;
 
         void addNodeId(Integer aNodeId);
-        Integer nodeId(Integer aNodeIndex);
+        Integer nodeId(Integer aNodeIndex) const;
         void setNodeId(const Integer aNodeIndex, const Integer aNodeId);
 
         void setPairFaceId(Integer aPairFace);
-        Integer pairFaceId();
+        Integer pairFaceId() const;
 
         void setHasPair(bool hasPair);
-        bool hasPair();
+        bool hasPair() const;
 
         void setElementId(Integer anElementId);
-        Integer elementId();
+        Integer elementId() const;
 
         void setFaceType(EFaceType aFaceType);
         EFaceType faceType();

@@ -57,7 +57,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshElement<Real>::nodeId(const Integer aNodeIndex)
+    Integer CMshElement<Real>::nodeId(const Integer aNodeIndex) const
     {
         return m_nodeIds.at(aNodeIndex);
     }
@@ -81,7 +81,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshElement<Real>::faceId(const Integer aFaceIndex)
+    Integer CMshElement<Real>::faceId(const Integer aFaceIndex) const
     {
         return m_faceIds.at(aFaceIndex);
     }
@@ -93,7 +93,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    EElementType CMshElement<Real>::elementType()
+    EElementType CMshElement<Real>::elementType() const
     {
         return m_elementType;
     }

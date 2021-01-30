@@ -37,7 +37,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoVertexList<Real>::addVertex(CGeoCoordinate<Real>& aVertex)
+    void CGeoVertexList<Real>::addVertex(const CGeoCoordinate<Real>& aVertex)
     {
         m_vertices.push_back(aVertex);
     }

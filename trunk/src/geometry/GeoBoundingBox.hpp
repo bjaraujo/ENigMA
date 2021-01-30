@@ -28,7 +28,7 @@ namespace geometry {
         virtual ~CGeoBoundingBox();
 
         void reset();
-        void addCoordinate(CGeoCoordinate<Real>& aCoordinate);
+        void addCoordinate(const CGeoCoordinate<Real>& aCoordinate);
 
         const CGeoVector<Real>& min() const;
         const CGeoVector<Real>& max() const;

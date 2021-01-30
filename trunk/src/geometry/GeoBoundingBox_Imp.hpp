@@ -52,7 +52,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoBoundingBox<Real>::addCoordinate(CGeoCoordinate<Real>& aCoordinate)
+    void CGeoBoundingBox<Real>::addCoordinate(const CGeoCoordinate<Real>& aCoordinate)
     {
         m_min.x() = std::min(m_min.x(), aCoordinate.x());
         m_min.y() = std::min(m_min.y(), aCoordinate.y());

@@ -690,7 +690,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshQuadrilateralMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+    bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         std::vector<CGeoCoordinate<Real>> sInteriorPoints;
 
@@ -701,7 +701,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshQuadrilateralMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+    bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
@@ -710,7 +710,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshQuadrilateralMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+    bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         m_previousNbElements = 0;
 
@@ -752,7 +752,7 @@ namespace mesh {
         for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
             Integer anAdvEdgeId = anEdgeMesh.elementId(i);
 
-            CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
+            const CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
 
             if (anElement.elementType() == ET_BEAM) {
                 SMshQuadrilateralAdvancingFrontEdge<Real> anAdvEdge;
