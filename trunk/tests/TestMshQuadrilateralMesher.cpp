@@ -38,8 +38,6 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
 
     CMshMesh<decimal> anEdgeMesh;
 
-    std::vector<CGeoCoordinate<decimal> > sInteriorPoints;
-
     CMshNode<decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
     anEdgeMesh.addNode(0, aNode1);
@@ -89,7 +87,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "quad_edge1.msh", "beams");
 
-    aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.1, 1E-3);
+    aQuadrilateralMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 1.0, 1E-3);
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aQuadrilateralMesher.mesh();
@@ -104,8 +102,6 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
 TEST_F(CTestMshQuadrilateralMesher, mesh2) {
 
     CMshMesh<decimal> anEdgeMesh;
-
-    std::vector<CGeoCoordinate<decimal> > sInteriorPoints;
 
     CMshNode<decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
@@ -192,7 +188,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh2) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "quad_edge2.msh", "beams");
 
-    aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.1, 1E-3);
+    aQuadrilateralMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 1.0, 1E-3);
 
     EXPECT_EQ(52, anEdgeMesh.nbElements());
 

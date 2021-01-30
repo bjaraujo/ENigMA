@@ -88,6 +88,8 @@ set(MESH_HEADERS
 ../src/mesh/MshTriangleMesher_Imp.hpp
 ../src/mesh/MshQuadrilateralMesher.hpp
 ../src/mesh/MshQuadrilateralMesher_Imp.hpp
+../src/mesh/MshTetrahedronMesher.hpp
+../src/mesh/MshTetrahedronMesher_Imp.hpp
 )
 
 set(INT_HEADERS

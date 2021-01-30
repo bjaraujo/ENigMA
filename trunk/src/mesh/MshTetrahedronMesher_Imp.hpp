@@ -492,27 +492,27 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minQuality, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         std::vector<CGeoCoordinate<Real>> sInteriorPoints;
 
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
 
-        return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
+        return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minQuality, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
 
-        return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
+        return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minQuality, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         m_bStop = false;
 
@@ -635,8 +635,8 @@ namespace mesh {
 
         bool res = true;
 
-        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.10, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.01, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.01, false, 0, aTolerance) : res = false;
 
         if (res) {
             for (Integer i = 0; i < 30; ++i) {
@@ -646,18 +646,18 @@ namespace mesh {
                     res ? res = this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance) : res = false;
 
                 if (i < 4) {
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
                 } else if (i < 8) {
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, this->getFirstIndex(), aTolerance) : res = false;
+                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, 0, aTolerance) : res = false;
                 }
 
-                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
-                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.50, 1.50, 0.00, false, 0, aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, false, 0, aTolerance) : res = false;
 
-                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
-                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, 1.00, 0.25, 2.50, 0.00, false, 0, aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, false, this->getFirstIndex(), aTolerance) : res = false;
+                res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, false, 0, aTolerance) : res = false;
 
                 if (!res)
                     break;
@@ -693,7 +693,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTetrahedronMesher<Real>::advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
+    bool CMshTetrahedronMesher<Real>::advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
     {
         bool res = true;
 
@@ -759,6 +759,10 @@ namespace mesh {
             Real localMeshSize = static_cast<Real>(a.norm());
 
             Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
+
+            localMeshSize *= aFactor;
+            localMeshSize = std::max(localMeshSize, minMeshSize);
+            localMeshSize = std::min(localMeshSize, maxMeshSize);
 
             Real baseHeightSize = localMeshSize * sqrt(2.0 / 3.0); // Equilateral tetrahedron (height to edge ratio)
 

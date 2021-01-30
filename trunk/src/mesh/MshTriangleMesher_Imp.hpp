@@ -571,27 +571,27 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTriangleMesher<Real>::generate(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minQuality, const Real aTolerance)
+    bool CMshTriangleMesher<Real>::generate(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         std::vector<CGeoCoordinate<Real>> sInteriorPoints;
 
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
 
-        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
+        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
     }
 
     template <typename Real>
-    bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minQuality, const Real aTolerance)
+    bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
 
-        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minQuality, aTolerance);
+        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
     }
 
     template <typename Real>
-    bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minQuality, const Real aTolerance)
+    bool CMshTriangleMesher<Real>::generate(CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
     {
         m_previousNbElements = 0;
 
@@ -703,8 +703,8 @@ namespace mesh {
 
         bool res = true;
 
-        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
 
         if (this->frontSize() > 0) {
             std::cout << "Meshing error!" << std::endl;
@@ -732,7 +732,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshTriangleMesher<Real>::advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
+    bool CMshTriangleMesher<Real>::advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bCheckDelaunay, Integer firstIndex, const Real aTolerance)
     {
         bool res = true;
 
@@ -784,7 +784,11 @@ namespace mesh {
 
                 Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
 
-                Real baseHeightSize = localMeshSize * aFactor * sqrt(3.0) / 2.0; // Equilateral triangle (height to edge ratio)
+                localMeshSize *= aFactor;
+                localMeshSize = std::max(localMeshSize, minMeshSize);
+                localMeshSize = std::min(localMeshSize, maxMeshSize);
+
+                Real baseHeightSize = localMeshSize * sqrt(3.0) / 2.0; // Equilateral triangle (height to edge ratio)
 
                 // Rotate vector by 90 degrees
                 CGeoVector<Real> v = a;
