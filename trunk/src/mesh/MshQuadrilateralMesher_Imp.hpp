@@ -706,7 +706,7 @@ namespace mesh {
         ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
         aAnaFunction.set(meshSize);
 
-        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, minQuality, aTolerance);
+        return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
     }
 
     template <typename Real>
