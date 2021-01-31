@@ -42,16 +42,16 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --target UnitTests --config $BUILD_TYPE
 
-    - name: Test
+    - name: Run Tests
       working-directory: ${{runner.workspace}}/build/bin
       shell: bash
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ./UnitTests
 
-    - name: Artifacts
+    - name: Save Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: UnitTests
-        path: UnitTests
+        path: ./UnitTests
         retention-days: 5
