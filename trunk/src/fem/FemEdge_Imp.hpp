@@ -22,13 +22,13 @@ namespace fem {
     }
 
     template <typename Real>
-    Real& CFemEdge<Real>::sectionArea()
+    Real CFemEdge<Real>::sectionArea() const
     {
         return m_sectionArea;
     }
 
     template <typename Real>
-    Real& CFemEdge<Real>::perimeter()
+    Real CFemEdge<Real>::perimeter() const
     {
         return m_perimeter;
     }

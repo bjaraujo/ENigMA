@@ -25,8 +25,8 @@ namespace geometry {
         CGeoCircle(const CGeoCoordinate<Real>& aCenter, const Real aRadius);
         virtual ~CGeoCircle();
 
-        CGeoCoordinate<Real>& center();
-        Real radius();
+        const CGeoCoordinate<Real>& center() const;
+        Real radius() const;
 
         inline void calculateBoundingBox(bool bReCalculate = false);
         inline void calculateCentroid(bool bReCalculate = false);

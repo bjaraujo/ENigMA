@@ -54,13 +54,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CGeoCircle<Real>::center()
+    const CGeoCoordinate<Real>& CGeoCircle<Real>::center() const
     {
         return this->m_center;
     }
 
     template <typename Real>
-    Real CGeoCircle<Real>::radius()
+    Real CGeoCircle<Real>::radius() const
     {
         return this->m_radius;
     }

@@ -23,8 +23,8 @@ namespace fem {
         CFemEdge();
         virtual ~CFemEdge();
 
-        Real& sectionArea();
-        Real& perimeter();
+        Real sectionArea() const;
+        Real perimeter() const;
 
         virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
     };
