@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest]
+        platform: [windows-latest]
         
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -28,8 +28,6 @@ jobs:
           curl -L --output $GITHUB_WORKSPACE/swigwin-4.0.2.zip --url http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip
           unzip $GITHUB_WORKSPACE/swigwin-4.0.2.zip
         else
-          sudo apt remove python        
-          sudo apt install python3
           sudo apt install swig
         fi
     
