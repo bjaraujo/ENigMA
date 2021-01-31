@@ -28,6 +28,7 @@ jobs:
           curl --output $GITHUB_WORKSPACE/swigwin-4.0.2.zip --url http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip
           unzip $GITHUB_WORKSPACE/swigwin-4.0.2.zip
         else
+          sudo apt install python3
           sudo apt install swig
         fi
     
@@ -69,7 +70,12 @@ jobs:
       shell: bash
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: python BuildRelease.py -a 64 --swig=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          python BuildRelease.py -a 64 --swig=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
+        else
+          python BuildRelease.py -a 64
+        fi
 
     - name: Save Artifacts
       uses: actions/upload-artifact@v2
