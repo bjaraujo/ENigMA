@@ -45,7 +45,7 @@ edgeMesh.generateFaces(1E-3)
 quadrilateralMesher.remesh(edgeMesh, meshSize)
 
 start = timer()
-quadrilateralMesher.generate(edgeMesh, 9999, meshSize, 0.1, 1E-3)
+quadrilateralMesher.generate(edgeMesh, 9999, meshSize, meshSize * 0.1, meshSize * 10.0, 1E-3)
 end = timer()
 
 print("Elapsed time: " + str(end - start))

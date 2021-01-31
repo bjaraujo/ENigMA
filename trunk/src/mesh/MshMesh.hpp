@@ -108,14 +108,14 @@ namespace mesh {
         void calculateFaceCentroid();
         void calculateElementCentroid();
 
-        ENigMA::geometry::CGeoCoordinate<Real>& faceCentroid(const Integer aFaceId);
-        ENigMA::geometry::CGeoCoordinate<Real>& elementCentroid(const Integer anElementId);
+        const ENigMA::geometry::CGeoCoordinate<Real>& faceCentroid(const Integer aFaceId) const;
+        const ENigMA::geometry::CGeoCoordinate<Real>& elementCentroid(const Integer anElementId) const;
 
         void scale(const Real aFactor);
 
-        Integer nextNodeId();
-        Integer nextFaceId();
-        Integer nextElementId();
+        Integer nextNodeId() const;
+        Integer nextFaceId() const;
+        Integer nextElementId() const;
 
         void mergeNodes(const Real aTolerance = 0.0);
         void removeInvalidElements();

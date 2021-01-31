@@ -45,7 +45,7 @@ namespace geometry {
     };
 
     template <typename Real>
-    std::ostream& operator<<(std::ostream& output, CGeoCoordinate<Real>& aCoordinate);
+    std::ostream& operator<<(std::ostream& output, const CGeoCoordinate<Real>& aCoordinate);
 }
 }
 

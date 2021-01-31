@@ -6,9 +6,9 @@ from ENigMA import ENigMA
 
 d = 0.125
 
-nu = 20
-nv = 20
-nw = 20
+nu = 10
+nv = 10
+nw = 10
 
 vertex1 = ENigMA.CGeoCoordinateDouble(0.0, 0.0, 0.0)
 vertex2 = ENigMA.CGeoCoordinateDouble(nu * d, 0.0, 0.0)
@@ -41,7 +41,7 @@ surfaceMesh.generateFaces(1E-5)
 tetrahedronMesher = ENigMA.CMshTetrahedronMesherDouble()
 
 start = timer()
-tetrahedronMesher.generate(surfaceMesh, 99999, d, 0.1, 1E-6)
+tetrahedronMesher.generate(surfaceMesh, 99999, d, d * 0.1, d * 10.0, 1E-6)
 end = timer()
 
 print("Elapsed time: " + str(end - start))

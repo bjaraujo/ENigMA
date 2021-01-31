@@ -424,10 +424,10 @@ namespace mesh {
     }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CMshMesh<Real>::faceCentroid(const Integer aFaceId) { return m_faceCentroid.at(faceIndex(aFaceId)); }
+    const CGeoCoordinate<Real>& CMshMesh<Real>::faceCentroid(const Integer aFaceId) const { return m_faceCentroid.at(faceIndex(aFaceId)); }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CMshMesh<Real>::elementCentroid(const Integer anElementId)
+    const CGeoCoordinate<Real>& CMshMesh<Real>::elementCentroid(const Integer anElementId) const
     {
         return m_elementCentroid.at(m_elementIndices.at(anElementId));
     }
@@ -441,7 +441,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshMesh<Real>::nextNodeId()
+    Integer CMshMesh<Real>::nextNodeId() const
     {
         if (m_nodes.size() > 0)
             return m_nodes.rbegin()->first + 1;
@@ -450,7 +450,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshMesh<Real>::nextFaceId()
+    Integer CMshMesh<Real>::nextFaceId() const
     {
         if (m_faces.size() > 0)
             return m_faces.rbegin()->first + 1;
@@ -459,7 +459,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Integer CMshMesh<Real>::nextElementId()
+    Integer CMshMesh<Real>::nextElementId() const
     {
         if (m_elements.size() > 0)
             return m_elements.rbegin()->first + 1;
