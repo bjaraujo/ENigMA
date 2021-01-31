@@ -22,8 +22,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
 
 #Configure options
-set(EXPRTK_DIR "${CMAKE_SOURCE_DIR}/dependencies/exprtk/exprtk")
-set(RTREE_DIR "${CMAKE_SOURCE_DIR}/dependencies/RTree/RTree-2011")
+set(EXPRTK_DIR "${CMAKE_SOURCE_DIR}/dependencies/exprtk")
+set(RTREE_DIR "${CMAKE_SOURCE_DIR}/dependencies/rtree")
 
 set(QT_MOC_EXECUTABLE "$ENV{QTDIR}/bin/moc.exe" CACHE FILEPATH "")
 set(QT_UIC_EXECUTABLE "$ENV{QTDIR}/bin/uic.exe" CACHE FILEPATH "")
