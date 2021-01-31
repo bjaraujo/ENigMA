@@ -53,5 +53,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: UnitTests
-        path: ./UnitTests
+        path: ${{runner.workspace}}/build/bin/UnitTests
         retention-days: 5
