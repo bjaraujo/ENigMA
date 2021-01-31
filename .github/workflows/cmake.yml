@@ -25,7 +25,7 @@ jobs:
       shell: bash
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          curl --output $GITHUB_WORKSPACE/swigwin-4.0.2.zip --url http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip
+          curl -L --output $GITHUB_WORKSPACE/swigwin-4.0.2.zip --url http://prdownloads.sourceforge.net/swig/swigwin-4.0.2.zip
           unzip $GITHUB_WORKSPACE/swigwin-4.0.2.zip
         else
           sudo apt remove python        
