@@ -1,198 +1,223 @@
-
 import os
 import sys
 import shutil
+import argparse
 
-swigExecuable = 'D:/Libraries/Swig/swigwin-4.0.2/swig.exe'
-unitTests = 'OFF'
 
-# Read version info
-fi = open('trunk/src/version.h', 'r')
-strLines = fi.readlines()
-fi.close()
+def getVersion(args):
 
-intMajorNumber = 0
-intMinorNumber = 0
-intReleaseNumber = 0
-intBuildNumber = 0
+    # Read version info
+    fi = open('trunk/src/version.h', 'r')
+    strLines = fi.readlines()
+    fi.close()
 
-strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intReleaseNumber) + '.' + str(intBuildNumber)
+    intMajorNumber = 0
+    intMinorNumber = 0
+    intReleaseNumber = 0
+    intBuildNumber = 0
 
-# Increment version
-incVersionInput = input('Increment version number [y/N]? ') or 'N'
+    strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intReleaseNumber) + '.' + str(intBuildNumber)
 
-incVersion = False
-if incVersionInput.upper() == 'Y':
-    incVersion = True
+    fo = open('trunk/src/version.h', 'w')
 
-print('1 - 32bit')
-print('2 - 64bit')
-version32or64Bit = input('Which version [2]? ') or '2'
+    for strLine in strLines:
+        if 'APP_VERSION_INFO' in strLine.upper():
+            strPrevVersion = strLine.split(' ')[-1].rstrip().replace('"', '')
 
-version64 = True
-if version32or64Bit == '1':
-    version64 = False
-elif version32or64Bit == '2':
-    version64 = True
+            intMajorNumber = int(strPrevVersion.split('.')[0])
+            intMinorNumber = int(strPrevVersion.split('.')[1])
+            intReleaseNumber = int(strPrevVersion.split('.')[2])
+            intBuildNumber = int(strPrevVersion.split('.')[3])
 
-fo = open('trunk/src/version.h', 'w')
+            if args.increment:
+                intReleaseNumber = intReleaseNumber + 1
 
-for strLine in strLines:
-    if 'APP_VERSION_INFO' in strLine.upper():
-        strPrevVersion = strLine.split(' ')[-1].rstrip().replace('"', '')
+                if intReleaseNumber > 9:
+                    intMinorNumber = intMinorNumber + 1
+                    intReleaseNumber = 0
 
-        intMajorNumber = int(strPrevVersion.split('.')[0])
-        intMinorNumber = int(strPrevVersion.split('.')[1])
-        intReleaseNumber = int(strPrevVersion.split('.')[2])
-        intBuildNumber = int(strPrevVersion.split('.')[3])
+                if intMinorNumber > 9:
+                    intMajorNumber = intMajorNumber + 1
+                    intMinorNumber = 0
 
-        if incVersion:
-            intReleaseNumber = intReleaseNumber + 1
+            strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intReleaseNumber) + '.' + str(intBuildNumber)
 
-            if intReleaseNumber > 9:
-                intMinorNumber = intMinorNumber + 1
-                intReleaseNumber = 0
+            strLine = strLine.replace(strPrevVersion, strNewVersion)
 
-            if intMinorNumber > 9:
-                intMajorNumber = intMajorNumber + 1
-                intMinorNumber = 0
+        fo.write(strLine)
 
-        strNewVersion = str(intMajorNumber) + '.' + str(intMinorNumber) + '.' + str(intReleaseNumber) + '.' + str(intBuildNumber)
+    fo.close()
 
-        strLine = strLine.replace(strPrevVersion, strNewVersion)
-
-    fo.write(strLine)
-
-fo.close()
-
-print(sys.executable)
-
-# Build packages
-print('------------ Building release ------------')
-print('version: ' + strNewVersion)
-if version64:
-    print('64 bit')
-else:
-    print('32 bit')
-
-os.system('pause')
-
-if not os.path.exists('build'):
-    os.mkdir('build')
-
-os.chdir('build')
-
-if sys.platform == 'win32':
-    if version64:
-        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecuable)
-    else:
-        os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecuable)
-else:
-    os.system('cmake ../trunk -G "Ninja" -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON')
-
-os.system('cmake --build . --config Release')
-
-# https://packaging.python.org/tutorials/packaging-projects/ 
-pyReleaseFolderTemp = 'bin/ENigMApy'
-if not os.path.isdir(pyReleaseFolderTemp):
-    os.mkdir(pyReleaseFolderTemp)
-
-# Copy files
-setup = ['import setuptools', \
-         '', \
-         'with open("README.md", "r") as fh:', \
-         '    long_description = fh.read()', \
-         '', \
-         'setuptools.setup(', \
-         '    name="ENigMApy",', \
-         '    version="' + strNewVersion + '",', \
-         '    author="bjaraujo",', \
-         '    author_email="",', \
-         '    description="ENigMA - Extended Numerical Multiphysics Analysis",', \
-         '    long_description=long_description,', \
-         '    long_description_content_type="text/markdown",', \
-         '    url="https://github.com/bjaraujo/ENigMA",', \
-         '    packages=["ENigMA"],', \
-         '    include_package_data=True,', \
-         '    classifiers=[', \
-         '        "Programming Language :: Python :: 3",', \
-         '        "License :: OSI Approved :: GNU General Public License (GPL)",', \
-         '        "Operating System :: Microsoft :: Windows",' if sys.platform == 'win32' else '        "Operating System :: POSIX :: Linux",', \
-         '    ],', \
-         '    python_requires=">=3.6",', \
-         ')']
-
-with open(pyReleaseFolderTemp + '/setup.py', 'w') as f:
-    for l in setup:
-        f.write(l + '\n')
-
-if sys.platform == 'win32':
-    with open(pyReleaseFolderTemp + '/MANIFEST.in', 'w') as f:
-        f.write('recursive-include ENigMA *.pyd\n')
-else:
-    with open(pyReleaseFolderTemp + '/MANIFEST.in', 'w') as f:
-        f.write('recursive-include ENigMA *.so\n')
-
-if not os.path.isdir(pyReleaseFolderTemp + '/ENigMA'):
-    os.mkdir(pyReleaseFolderTemp + '/ENigMA')
-
-if sys.platform == 'win32':
-    open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
-    shutil.copy2('bin/_ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/_ENigMA.pyd')
-    shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
-else:
-    open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
-    shutil.copy2('bin/ENigMA.so', pyReleaseFolderTemp + '/ENigMA/_ENigMA.so')
-    shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
-
-shutil.copy2('../LICENSE.txt', pyReleaseFolderTemp + '/LICENSE.txt')
-shutil.copy2('../README.md', pyReleaseFolderTemp + '/README.md')
-
-os.chdir(pyReleaseFolderTemp)
-os.system(sys.executable + ' setup.py bdist_wheel')
-os.chdir('../..')
-
-if not os.path.exists('../release'):
-    os.mkdir('../release')
-
-# Python module
-if sys.platform == 'win32':
-    if version64:
-        pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_x64'
-    else:
-        pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_win32'
-        
-    if not os.path.isdir(pyReleaseFolder):
-        os.mkdir(pyReleaseFolder)
-
-    if version64:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
-    else:
-        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
-else:
-    pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_linux'
-    if not os.path.isdir(pyReleaseFolder):
-        os.mkdir(pyReleaseFolder)
-
-    shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-linux_x86_64.whl')
-
-# CSharp module
-if sys.platform == 'win32':
-    if version64:
-        csReleaseFolder = '../release/ENigMAcs-' + strNewVersion + '_x64'
-    else:
-        csReleaseFolder = '../release/ENigMAcs-' + strNewVersion + '_win32'
-        
-    if not os.path.isdir(csReleaseFolder):
-        os.mkdir(csReleaseFolder)
-
-    shutil.copy2('bin/ENigMAcs.dll', csReleaseFolder + '/ENigMAcs.dll')
-    shutil.copy2('../LICENSE.txt', csReleaseFolder + '/LICENSE.txt')
-    shutil.copy2('../README.md', csReleaseFolder + '/README.md')
+    return strNewVersion
     
-# Create tag
 
-if incVersion:
-    os.system('git commit -a -m v' + strNewVersion)
-    os.system('git tag v' + strNewVersion)
-    os.system('git push --tags')
+def configureProject(args):
+
+    unitTests = 'OFF'
+    if args.tests:
+        unitTests = 'ON'
+    
+    swigExecutable = ''
+    if args.swig:
+        swigExecutable = args.swig
+    
+    if not os.path.exists('build'):
+        os.mkdir('build')
+
+    os.chdir('build')
+
+    if sys.platform == 'win32':
+        if args.arch == 64:
+            os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecutable)
+        else:
+            os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecutable)
+    else:
+        os.system('cmake ../trunk -G "Ninja" -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON')
+
+    os.system('cmake --build . --config Release')
+
+    os.chdir('..')
+
+
+def package(args, strNewVersion):
+
+    os.chdir('build')
+
+    # https://packaging.python.org/tutorials/packaging-projects/ 
+    pyReleaseFolderTemp = 'bin/ENigMApy'
+    if not os.path.isdir(pyReleaseFolderTemp):
+        os.mkdir(pyReleaseFolderTemp)
+
+    # Copy files
+    setup = ['import setuptools', \
+             '', \
+             'with open("README.md", "r") as fh:', \
+             '    long_description = fh.read()', \
+             '', \
+             'setuptools.setup(', \
+             '    name="ENigMApy",', \
+             '    version="' + strNewVersion + '",', \
+             '    author="bjaraujo",', \
+             '    author_email="",', \
+             '    description="ENigMA - Extended Numerical Multiphysics Analysis",', \
+             '    long_description=long_description,', \
+             '    long_description_content_type="text/markdown",', \
+             '    url="https://github.com/bjaraujo/ENigMA",', \
+             '    packages=["ENigMA"],', \
+             '    include_package_data=True,', \
+             '    classifiers=[', \
+             '        "Programming Language :: Python :: 3",', \
+             '        "License :: OSI Approved :: GNU General Public License (GPL)",', \
+             '        "Operating System :: Microsoft :: Windows",' if sys.platform == 'win32' else '        "Operating System :: POSIX :: Linux",', \
+             '    ],', \
+             '    python_requires=">=3.6"', \
+             ')']
+
+    with open(pyReleaseFolderTemp + '/setup.py', 'w') as f:
+        for l in setup:
+            f.write(l + '\n')
+
+    if sys.platform == 'win32':
+        with open(pyReleaseFolderTemp + '/MANIFEST.in', 'w') as f:
+            f.write('recursive-include ENigMA *.pyd\n')
+    else:
+        with open(pyReleaseFolderTemp + '/MANIFEST.in', 'w') as f:
+            f.write('recursive-include ENigMA *.so\n')
+
+    if not os.path.isdir(pyReleaseFolderTemp + '/ENigMA'):
+        os.mkdir(pyReleaseFolderTemp + '/ENigMA')
+
+    if sys.platform == 'win32':
+        open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
+        shutil.copy2('bin/_ENigMA.pyd', pyReleaseFolderTemp + '/ENigMA/_ENigMA.pyd')
+        shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
+    else:
+        open(pyReleaseFolderTemp + '/ENigMA/__init__.py', 'w').close()
+        shutil.copy2('bin/ENigMA.so', pyReleaseFolderTemp + '/ENigMA/_ENigMA.so')
+        shutil.copy2('bin/ENigMA.py', pyReleaseFolderTemp + '/ENigMA/ENigMA.py')
+
+    shutil.copy2('../LICENSE.txt', pyReleaseFolderTemp + '/LICENSE.txt')
+    shutil.copy2('../README.md', pyReleaseFolderTemp + '/README.md')
+
+    os.chdir(pyReleaseFolderTemp)
+    os.system(sys.executable + ' setup.py bdist_wheel')
+    os.chdir('../..')
+
+    if not os.path.exists('../release'):
+        os.mkdir('../release')
+
+    # Python module
+    if sys.platform == 'win32':
+        if args.arch == 64:
+            pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_x64'
+        else:
+            pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_win32'
+            
+        if not os.path.isdir(pyReleaseFolder):
+            os.mkdir(pyReleaseFolder)
+
+        if args.arch == 64:
+            shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win_amd64.whl')
+        else:
+            shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-win32.whl')
+    else:
+        pyReleaseFolder = '../release/ENigMApy-' + strNewVersion + '_linux'
+        if not os.path.isdir(pyReleaseFolder):
+            os.mkdir(pyReleaseFolder)
+
+        shutil.copy2('bin/ENigMApy/dist/ENigMApy-' + strNewVersion + '-py3.8-none-any.whl', pyReleaseFolder + '/ENigMApy-' + strNewVersion + '-py3-none-linux_x86_64.whl')
+
+    # CSharp module
+    if sys.platform == 'win32':
+        if args.arch == 64:
+            csReleaseFolder = '../release/ENigMAcs-' + strNewVersion + '_x64'
+        else:
+            csReleaseFolder = '../release/ENigMAcs-' + strNewVersion + '_win32'
+            
+        if not os.path.isdir(csReleaseFolder):
+            os.mkdir(csReleaseFolder)
+
+        shutil.copy2('bin/ENigMAcs.dll', csReleaseFolder + '/ENigMAcs.dll')
+        shutil.copy2('../LICENSE.txt', csReleaseFolder + '/LICENSE.txt')
+        shutil.copy2('../README.md', csReleaseFolder + '/README.md')
+    
+
+def tagVersion():
+
+    if args.increment:
+        os.system('git commit -a -m v' + strNewVersion)
+        os.system('git tag v' + strNewVersion)
+        os.system('git push --tags')
+    
+
+def main():
+
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument('-c', '--configure', action='store_true', help="configure project")
+    parser.add_argument('-i', '--increment', action='store_true', help="increment version")
+    parser.add_argument('-t', '--tests', action='store_true', help="build units tests")
+    parser.add_argument('-a', '--arch', type=int, required=True, help="build as 32 bit or 64 bit")
+    parser.add_argument('-s', '--swig', type=str, help="swig executable")
+
+    args = parser.parse_args()
+
+    if args.configure:
+        configureProject(args)
+    
+    strNewVersion = getVersion(args)
+    
+    print('------------ Building release ------------')
+    print('version: ' + strNewVersion)
+    if args.arch == 64:
+        print('64 bit')
+    else:
+        print('32 bit')
+    
+    package(args, strNewVersion)
+
+    tagVersion(args):
+
+    
+if __name__ == "__main__":
+    main()
