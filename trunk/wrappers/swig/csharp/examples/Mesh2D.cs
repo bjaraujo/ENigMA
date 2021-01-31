@@ -132,7 +132,7 @@ namespace Demo
             anEdgeMesh.generateFaces(1E-3);
 
             aMesher.remesh(anEdgeMesh, aMeshSize);
-            aMesher.generate(anEdgeMesh, 99999, aMeshSize, 0.1, 1E-6);
+            aMesher.generate(anEdgeMesh, 99999, aMeshSize, aMeshSize * 0.1, aMeshSize * 10.0, 1E-6);
 
             for (int i = 0; i < 3; i++)
             {

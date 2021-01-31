@@ -45,7 +45,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Real CMshTetrahedron<Real>::quality()
+    Real CMshTetrahedron<Real>::quality() const
     {
         return m_quality;
     }

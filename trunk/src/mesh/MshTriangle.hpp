@@ -23,7 +23,7 @@ namespace mesh {
         virtual ~CMshTriangle();
 
         void calculateQuality();
-        Real quality();
+        Real quality() const;
     };
 }
 }

@@ -42,7 +42,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Real CMshTriangle<Real>::quality()
+    Real CMshTriangle<Real>::quality() const
     {
         return m_quality;
     }

@@ -23,7 +23,7 @@ namespace mesh {
         virtual ~CMshQuadrilateral();
 
         void calculateQuality();
-        Real quality();
+        Real quality() const;
     };
 }
 }

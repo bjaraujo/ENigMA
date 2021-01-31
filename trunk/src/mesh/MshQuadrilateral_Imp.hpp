@@ -36,7 +36,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Real CMshQuadrilateral<Real>::quality()
+    Real CMshQuadrilateral<Real>::quality() const
     {
         return m_quality;
     }

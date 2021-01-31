@@ -404,7 +404,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    Real CMshElement<Real>::thickness()
+    Real CMshElement<Real>::thickness() const
     {
         return m_thickness;
     }

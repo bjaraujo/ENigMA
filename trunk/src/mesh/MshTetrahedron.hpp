@@ -23,7 +23,7 @@ namespace mesh {
         virtual ~CMshTetrahedron();
 
         void calculateQuality();
-        Real quality();
+        Real quality() const;
     };
 }
 }

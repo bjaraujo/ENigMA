@@ -55,7 +55,7 @@ namespace mesh {
         EElementType elementType() const;
 
         void setThickness(Real aThickness);
-        Real thickness();
+        Real thickness() const;
 
         void reset();
 
