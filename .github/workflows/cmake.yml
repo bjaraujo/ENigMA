@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         platform: [windows-2019, ubuntu-20.04]
-        #arch: [x86, x64]
+        arch: [x86, amd64]
         
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -37,7 +37,24 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
 
-    - name: Configure Project
+    - name: Configure Project 32bit
+      if: matrix.arch == 'x86'
+      # Use a bash shell so we can use the same syntax for environment variable
+      # access regardless of the host operating system
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      # Note the current convention is to use the -S and -B options here to specify source 
+      # and build directories, but this is only available with CMake 3.13 and higher.  
+      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          cmake $GITHUB_WORKSPACE/trunk -A Win32 -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
+        else
+          cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON
+        fi
+
+    - name: Configure Project 64bit
+      if: matrix.arch == 'amd64'
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       shell: bash
@@ -75,10 +92,10 @@ jobs:
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
           pip install wheel
-          python setup.py bdist_wheel --plat-name win_amd64
+          python setup.py bdist_wheel --plat-name win_${{matrix.arch}}
         else
           pip install wheel
-          python setup.py bdist_wheel --plat-name linux_x86_64
+          python setup.py bdist_wheel --plat-name linux_${{matrix.arch}}
         fi
         
     - name: Build CSharp Package
