@@ -8,7 +8,10 @@ with open('version.h', 'r') as fh:
 if not os.path.exists('dist'):
     os.mkdir('dist')
 
-file = 'dist/ENigMAcs-' + version + '.zip'
+if len(sys.argv) > 1:
+    arch = sys.argv[1]
+
+file = 'dist/ENigMAcs-' + version + '_' + arch + '.zip'
 print(file)
 
 with ZipFile(file, 'w') as fh:
