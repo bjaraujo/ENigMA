@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows-latest]
+        platform: [windows-latest, ubuntu-latest]
         #arch: [x86, x64]
         
     # The CMake configure and build commands are platform agnostic and should work equally
