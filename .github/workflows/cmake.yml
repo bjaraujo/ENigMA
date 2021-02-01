@@ -75,9 +75,9 @@ jobs:
       shell: bash
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
-          python setup.py bdist_wheel --plat-name win_amd64
+          python $GITHUB_WORKSPACE/release/setup.py bdist_wheel --plat-name win_amd64
         else
-          python setup.py bdist_wheel --plat-name linux_x86_64
+          python $GITHUB_WORKSPACE/release/setup.py bdist_wheel --plat-name linux_x86_64
         fi
         
     - name: Build CSharp Package
@@ -85,7 +85,7 @@ jobs:
       shell: bash
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
-          python $GITHUB_WORKSPACE/release/ENigMAcs/setup.py
+          python $GITHUB_WORKSPACE/release/setup.py
         fi
         
     - name: Save Artifacts
