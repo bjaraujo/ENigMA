@@ -1,0 +1,2 @@
+recursive-include ENigMA *.pyd
+recursive-include ENigMA *.so

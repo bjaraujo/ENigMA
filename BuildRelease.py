@@ -29,7 +29,7 @@ def getVersion(args):
             intReleaseNumber = int(strPrevVersion.split('.')[2])
             intBuildNumber = int(strPrevVersion.split('.')[3])
 
-            if args.increment:
+            if args.version:
                 intReleaseNumber = intReleaseNumber + 1
 
                 if intReleaseNumber > 9:
@@ -74,7 +74,29 @@ def configureProject(args):
     else:
         os.system('cmake ../trunk -G "Ninja" -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON')
 
+    os.chdir('..')
+
+
+def buildProject(args):
+    
+    if not os.path.exists('build'):
+        os.mkdir('build')
+    
+    os.chdir('build')
+
     os.system('cmake --build . --config Release')
+
+    os.chdir('..')
+
+
+def installProject(args):
+    
+    if not os.path.exists('build'):
+        os.mkdir('build')
+    
+    os.chdir('build')
+
+    os.system('cmake --install . --prefix ../release')
 
     os.chdir('..')
 
@@ -182,9 +204,9 @@ def package(args, strNewVersion):
         shutil.copy2('../README.md', csReleaseFolder + '/README.md')
     
 
-def tagVersion():
+def tagVersion(args):
 
-    if args.increment:
+    if args.version:
         os.system('git commit -a -m v' + strNewVersion)
         os.system('git tag v' + strNewVersion)
         os.system('git push --tags')
@@ -195,7 +217,9 @@ def main():
     parser = argparse.ArgumentParser()
     
     parser.add_argument('-c', '--configure', action='store_true', help="configure project")
-    parser.add_argument('-i', '--increment', action='store_true', help="increment version")
+    parser.add_argument('-b', '--build', action='store_true', help="build project")
+    parser.add_argument('-i', '--install', action='store_true', help="install project")
+    parser.add_argument('-v', '--version', action='store_true', help="increment version")
     parser.add_argument('-t', '--tests', action='store_true', help="build units tests")
     parser.add_argument('-a', '--arch', type=int, required=True, help="build as 32 bit or 64 bit")
     parser.add_argument('-s', '--swig', type=str, help="swig executable")
@@ -204,6 +228,12 @@ def main():
 
     if args.configure:
         configureProject(args)
+
+    if args.build:
+        buildProject(args)
+
+    if args.install:
+        installProject(args)
     
     strNewVersion = getVersion(args)
     
@@ -214,9 +244,9 @@ def main():
     else:
         print('32 bit')
     
-    package(args, strNewVersion)
-
-    tagVersion(args):
+    #package(args, strNewVersion)
+    
+    tagVersion(args)
 
     
 if __name__ == "__main__":

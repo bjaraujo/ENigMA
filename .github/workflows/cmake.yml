@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Swig
+    - name: Install Dependencies
       shell: bash
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
@@ -36,7 +36,7 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
 
-    - name: Configure CMake
+    - name: Configure Project
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       shell: bash
@@ -51,11 +51,17 @@ jobs:
           cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON
         fi
  
-    - name: Build
+    - name: Build Project
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE
+
+    - name: Install Project
+      working-directory: ${{runner.workspace}}/build
+      shell: bash
+      # Execute the build.  You can specify a specific target with "--target <NAME>"
+      run: cmake --install . --prefix $GITHUB_WORKSPACE/release
 
     - name: Run Tests
       working-directory: ${{runner.workspace}}/build/bin
@@ -67,19 +73,19 @@ jobs:
     - name: Build Packages
       working-directory: ${{runner.workspace}}
       shell: bash
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: |
+      run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
-          python BuildRelease.py -a 64 --swig=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
+          python $GITHUB_WORKSPACE/release/ENigMApy/setup.py bdist_wheel --plat-name win_amd64
         else
-          python BuildRelease.py -a 64
+          python $GITHUB_WORKSPACE/release/ENigMApy/setup.py bdist_wheel --plat-name linux_x86_64
         fi
-
+        
     - name: Save Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ENigMApy
-        path: ${{runner.workspace}}/release/**/*.whl
+        name: ENigMA
+        path: | 
+          ${{runner.workspace}}/release/ENigMApy/dist/*.whl
+          ${{runner.workspace}}/release/ENigMAcs/dist/*.zip
         retention-days: 3
 
