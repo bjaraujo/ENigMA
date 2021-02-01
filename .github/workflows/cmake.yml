@@ -11,12 +11,13 @@ jobs:
     strategy:
       matrix:
         platform: [windows-latest]
+        #arch: [x86, x64]
         
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{matrix.platform}}
 
     steps:
     - uses: actions/checkout@v2
@@ -66,26 +67,24 @@ jobs:
     - name: Run Tests
       working-directory: ${{runner.workspace}}/build/bin
       shell: bash
-      # Execute tests defined by the CMake configuration.  
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ./UnitTests
 
     - name: Build Python Package
-      working-directory: ${{runner.workspace}}/release/ENigMApy
+      working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
       shell: bash
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
-          python $GITHUB_WORKSPACE/release/setup.py bdist_wheel --plat-name win_amd64
+          python setup.py bdist_wheel --plat-name win_amd64
         else
-          python $GITHUB_WORKSPACE/release/setup.py bdist_wheel --plat-name linux_x86_64
+          python setup.py bdist_wheel --plat-name linux_x86_64
         fi
         
     - name: Build CSharp Package
-      working-directory: ${{runner.workspace}}/release/ENigMAcs
+      working-directory: ${{runner.workspace}}/ENigMA/release/ENigMAcs
       shell: bash
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
-          python $GITHUB_WORKSPACE/release/setup.py
+          python setup.py
         fi
         
     - name: Save Artifacts
@@ -93,7 +92,7 @@ jobs:
       with:
         name: ENigMA
         path: | 
-          ${{runner.workspace}}/release/ENigMApy/dist/*.whl
-          ${{runner.workspace}}/release/ENigMAcs/dist/*.zip
+          ${{runner.workspace}}/ENigMA/release/ENigMApy/dist/*.whl
+          ${{runner.workspace}}/ENigMA/release/ENigMAcs/dist/*.zip
         retention-days: 3
 
