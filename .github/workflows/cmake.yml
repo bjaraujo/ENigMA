@@ -82,6 +82,7 @@ jobs:
         fi
         
     - name: Build CSharp Package
+      if: matrix.platform == 'windows-2019'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMAcs
       shell: bash
       run: | 
