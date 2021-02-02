@@ -1,8 +1,8 @@
 
 project(ENigMA)
 
-find_package(PythonLibs 3.0 REQUIRED)
-find_package(PythonInterp 3.0 REQUIRED)
+find_package(PythonLibs 3.8 EXACT REQUIRED)
+find_package(PythonInterp 3.8 EXACT REQUIRED)
 
 include_directories(
   ${EIGEN_DIR}
