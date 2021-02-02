@@ -93,16 +93,27 @@ jobs:
       shell: bash
       run: ./UnitTests
 
-    - name: Build Python Package
+    - name: Build Python Package 32 bit
+     if: matrix.arch == 'x86'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
       shell: bash
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
           pip install wheel
-          python setup.py bdist_wheel --plat-name win_${{matrix.arch}}
+          python setup.py bdist_wheel --plat-name win32
+        fi
+
+    - name: Build Python Package 64 bit
+     if: matrix.arch == 'x64'
+      working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
+      shell: bash
+      run: | 
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          pip install wheel
+          python setup.py bdist_wheel --plat-name win_amd64
         else
           pip install wheel
-          python setup.py bdist_wheel --plat-name linux_${{matrix.arch}}
+          python setup.py bdist_wheel --plat-name linux_x86_64
         fi
         
     - name: Build CSharp Package
