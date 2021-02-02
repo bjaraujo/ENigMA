@@ -13,7 +13,7 @@ jobs:
         platform: [windows-2019, ubuntu-20.04]
         arch: [x86, x64]
         exclude:
-          - os: ubuntu-20.04
+          - platform: 'ubuntu-20.04'
             arch: 'x86'
             
     # The CMake configure and build commands are platform agnostic and should work equally
