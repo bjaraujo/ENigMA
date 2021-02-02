@@ -245,7 +245,7 @@ def main():
     else:
         print('32 bit')
     
-    #package(args, strNewVersion)
+    package(args, strNewVersion)
     
     tagVersion(args)
 
