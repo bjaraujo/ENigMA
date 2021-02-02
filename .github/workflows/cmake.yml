@@ -12,9 +12,10 @@ jobs:
       matrix:
         platform: [windows-2019, ubuntu-20.04]
         arch: [x86, x64]
+        python-version: ['3.8.x']
         exclude:
-          - platform: 'ubuntu-20.04'
-            arch: 'x86'
+          - platform: ubuntu-20.04
+            arch: x86
             
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -26,7 +27,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
-        python-version: '3.8.x'
+        python-version: ${{matrix.python-version}}
         architecture: ${{matrix.arch}}
         
     - name: Install Dependencies
@@ -44,7 +45,7 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
 
-    - name: Configure Project 32bit
+    - name: Configure Project x32
       if: matrix.arch == 'x86'
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -60,7 +61,7 @@ jobs:
           cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON
         fi
 
-    - name: Configure Project 64bit
+    - name: Configure Project x64
       if: matrix.arch == 'x64'
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
