@@ -93,8 +93,8 @@ jobs:
       shell: bash
       run: ./UnitTests
 
-    - name: Build Python Package 32 bit
-     if: matrix.arch == 'x86'
+    - name: Build Python Package x86
+      if: matrix.arch == 'x86'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
       shell: bash
       run: | 
@@ -103,8 +103,8 @@ jobs:
           python setup.py bdist_wheel --plat-name win32
         fi
 
-    - name: Build Python Package 64 bit
-     if: matrix.arch == 'x64'
+    - name: Build Python Package x64
+      if: matrix.arch == 'x64'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
       shell: bash
       run: | 
