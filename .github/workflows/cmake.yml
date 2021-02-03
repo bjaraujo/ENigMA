@@ -56,9 +56,9 @@ jobs:
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          cmake $GITHUB_WORKSPACE/trunk -A Win32 -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
+          cmake $GITHUB_WORKSPACE/trunk -A Win32 -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DENIGMA_PYTHON_VERSION=${{matrix.python-version}} -DSWIG_EXECUTABLE=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
         else
-          cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON
+          cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DENIGMA_PYTHON_VERSION=${{matrix.python-version}}
         fi
 
     - name: Configure Project x64
@@ -72,9 +72,9 @@ jobs:
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          cmake $GITHUB_WORKSPACE/trunk -A x64 -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
+          cmake $GITHUB_WORKSPACE/trunk -A x64 -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DENIGMA_PYTHON_VERSION=${{matrix.python-version}} -DSWIG_EXECUTABLE=$GITHUB_WORKSPACE/swigwin-4.0.2/swig.exe
         else
-          cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON
+          cmake $GITHUB_WORKSPACE/trunk -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DENIGMA_BUILD_UNIT_TESTS:BOOL=ON -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DENIGMA_PYTHON_VERSION=${{matrix.python-version}}
         fi
  
     - name: Build Project
@@ -101,7 +101,7 @@ jobs:
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
           pip install wheel
-          python setup.py bdist_wheel --plat-name win32
+          python setup.py bdist_wheel --python-tag py${{matrix.python-version}} --plat-name win32
         fi
 
     - name: Build Python Package x64
@@ -111,10 +111,10 @@ jobs:
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
           pip install wheel
-          python setup.py bdist_wheel --plat-name win_amd64
+          python setup.py bdist_wheel --python-tag py${{matrix.python-version}} --plat-name win_amd64
         else
           pip install wheel
-          python setup.py bdist_wheel --plat-name linux_x86_64
+          python setup.py bdist_wheel --python-tag py${{matrix.python-version}} --plat-name linux_x86_64
         fi
         
     - name: Build CSharp Package

@@ -1,8 +1,14 @@
 
 project(ENigMA)
 
-find_package(PythonLibs 3.8 EXACT REQUIRED)
-find_package(PythonInterp 3.8 EXACT REQUIRED)
+if(ENIGMA_PYTHON_VERSION)
+  string(REPLACE ".x" "" ENIGMA_PYTHON_VERSION ${ENIGMA_PYTHON_VERSION})
+  find_package(PythonLibs ${ENIGMA_PYTHON_VERSION} EXACT REQUIRED)
+  find_package(PythonInterp ${ENIGMA_PYTHON_VERSION} EXACT REQUIRED)
+else()
+  find_package(PythonLibs 3.0 REQUIRED)
+  find_package(PythonInterp 3.0 REQUIRED)
+endif()
 
 include_directories(
   ${EIGEN_DIR}
