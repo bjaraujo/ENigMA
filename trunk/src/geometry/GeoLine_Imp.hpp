@@ -393,8 +393,8 @@ namespace geometry {
     {
         // http://paulbourke.net/geometry/pointlineplane/
 
-        CGeoVector<Real>& v21 = this->vector();
-        CGeoVector<Real>& v43 = aLine.vector();
+        CGeoVector<Real> v21 = this->vector();
+        CGeoVector<Real> v43 = aLine.vector();
 
         Real d4343 = v43.dot(v43);
 
