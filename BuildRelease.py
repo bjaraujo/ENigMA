@@ -211,6 +211,7 @@ def tagVersion(args, strNewVersion):
         os.system('git commit -a -m v' + strNewVersion)
         os.system('git tag v' + strNewVersion)
         os.system('git push --tags')
+        os.system('git push')
     
 
 def main():
