@@ -389,7 +389,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    inline bool CGeoLine<Real>::distance(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance)
+    inline bool CGeoLine<Real>::distance(const CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance)
     {
         // http://paulbourke.net/geometry/pointlineplane/
 

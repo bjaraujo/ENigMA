@@ -85,7 +85,7 @@ namespace geometry {
         inline bool contains(const CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
 
         inline bool distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance = 0.0);
-        inline bool distance(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance = 0.0);
+        inline bool distance(const CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint1, CGeoCoordinate<Real>& aPoint2, Real& aDistance, const Real aTolerance = 0.0);
 
         void invert();
     };
