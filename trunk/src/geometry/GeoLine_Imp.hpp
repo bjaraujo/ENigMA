@@ -208,8 +208,8 @@ namespace geometry {
         if (!this->boundingBox().intersects(aLine.boundingBox(), aTolerance))
             return false;
 
-        CGeoVector<Real>& da = this->m_vector;
-        CGeoVector<Real>& db = aLine.vector();
+        const CGeoVector<Real> da = this->m_vector;
+        const CGeoVector<Real> db = aLine.vector();
 
         CGeoVector<Real> dc = aLine.startPoint() - this->m_startPoint;
         CGeoVector<Real> dd = da.cross(db);
