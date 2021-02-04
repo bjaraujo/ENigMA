@@ -47,10 +47,10 @@ namespace fvm {
 
     public:
         CFvmMesh();
-        explicit CFvmMesh(CMshMesh<Real>& aMesh);
+        explicit CFvmMesh(const CMshMesh<Real>& aMesh);
         virtual ~CFvmMesh();
 
-        void set(CMshMesh<Real>& aMesh);
+        void set(const CMshMesh<Real>& aMesh);
         CMshMesh<Real>& mesh();
 
         void reset();

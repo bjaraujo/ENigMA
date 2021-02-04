@@ -31,7 +31,7 @@ namespace geometry {
         void reset();
 
         CGeoPolyline<Real>& polyline();
-        void setPolyline(CGeoPolyline<Real>& aPolyline);
+        void setPolyline(const CGeoPolyline<Real>& aPolyline);
 
         std::vector<CGeoTriangle<Real>> triangulate();
 

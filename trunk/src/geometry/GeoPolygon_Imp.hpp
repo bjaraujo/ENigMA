@@ -35,7 +35,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoPolygon<Real>::setPolyline(CGeoPolyline<Real>& aPolyline)
+    void CGeoPolygon<Real>::setPolyline(const CGeoPolyline<Real>& aPolyline)
     {
         m_polyline = aPolyline;
     }

@@ -17,13 +17,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoConvexHull<Real>::CGeoConvexHull(std::vector<CGeoCoordinate<Real>>& sVertices)
+    CGeoConvexHull<Real>::CGeoConvexHull(const std::vector<CGeoCoordinate<Real>>& sVertices)
     {
         this->set(sVertices);
     }
 
     template <typename Real>
-    void CGeoConvexHull<Real>::set(std::vector<CGeoCoordinate<Real>>& sVertices)
+    void CGeoConvexHull<Real>::set(const std::vector<CGeoCoordinate<Real>>& sVertices)
     {
         if (sVertices.size() < 3)
             return;

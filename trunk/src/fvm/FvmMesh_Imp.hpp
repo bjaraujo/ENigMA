@@ -19,7 +19,7 @@ namespace fvm {
     }
 
     template <typename Real>
-    CFvmMesh<Real>::CFvmMesh(CMshMesh<Real>& aMesh)
+    CFvmMesh<Real>::CFvmMesh(const CMshMesh<Real>& aMesh)
         : m_faceIndex(0)
         , m_controlVolumeIndex(0)
     {
@@ -32,7 +32,7 @@ namespace fvm {
     }
 
     template <typename Real>
-    void CFvmMesh<Real>::set(CMshMesh<Real>& aMesh)
+    void CFvmMesh<Real>::set(const CMshMesh<Real>& aMesh)
     {
         this->reset();
 
