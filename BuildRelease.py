@@ -205,7 +205,7 @@ def package(args, strNewVersion):
         shutil.copy2('../README.md', csReleaseFolder + '/README.md')
     
 
-def tagVersion(args):
+def tagVersion(args, strNewVersion):
 
     if args.version:
         os.system('git commit -a -m v' + strNewVersion)
@@ -247,7 +247,7 @@ def main():
     
     package(args, strNewVersion)
     
-    tagVersion(args)
+    tagVersion(args, strNewVersion)
 
     
 if __name__ == "__main__":
