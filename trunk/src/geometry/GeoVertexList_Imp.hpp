@@ -55,7 +55,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CGeoVertexList<Real>::vertex(const Integer aVertexIndex)
+    void CGeoVertexList<Real>::setVertex(const Integer aVertexIndex, const CGeoCoordinate<Real>& aVertex)
+    {
+        m_vertices[aVertexIndex % m_vertices.size()] = aVertex;
+    }
+
+    template <typename Real>
+    CGeoCoordinate<Real> CGeoVertexList<Real>::vertex(const Integer aVertexIndex) const
     {
         if (m_vertices.size() == 0) {
             throw std::runtime_error("Vertex size = 0");

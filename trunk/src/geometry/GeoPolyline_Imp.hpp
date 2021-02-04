@@ -56,7 +56,7 @@ namespace geometry {
 
             if (d <= aTolerance) {
                 // fuse vertices
-                CGeoVertexList<Real>::vertex(i) = CGeoVertexList<Real>::vertex(i - 1);
+                CGeoVertexList<Real>::setVertex(i, CGeoVertexList<Real>::vertex(i - 1));
             }
         }
 
@@ -134,10 +134,8 @@ namespace geometry {
         for (Integer i = 0; i < CGeoVertexList<Real>::nbVertices() - 1; ++i) {
             CGeoLine<Real> aLine;
 
-            CGeoCoordinate<Real> p1, p2;
-
-            p1 = CGeoVertexList<Real>::vertex(i);
-            p2 = CGeoVertexList<Real>::vertex(i + 1);
+            const CGeoCoordinate<Real> p1 = CGeoVertexList<Real>::vertex(i);
+            const CGeoCoordinate<Real> p2 = CGeoVertexList<Real>::vertex(i + 1);
 
             aLine.setStartPoint(p1);
             aLine.setEndPoint(p2);

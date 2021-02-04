@@ -32,7 +32,8 @@ namespace geometry {
         void insertVertex(const Integer aVertexIndex, CGeoCoordinate<Real>& aVertex);
         void removeVertex(const Integer aVertexIndex);
 
-        CGeoCoordinate<Real>& vertex(const Integer aVertexIndex);
+        void setVertex(const Integer aVertexIndex, const CGeoCoordinate<Real>& aVertex);
+        CGeoCoordinate<Real> vertex(const Integer aVertexIndex) const;
 
         void removeDuplicates();
         void removeCollinear(const Real aTolerance = 0.0);

@@ -51,19 +51,19 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CGeoLine<Real>::startPoint()
+    CGeoCoordinate<Real> CGeoLine<Real>::startPoint() const
     {
         return this->m_startPoint;
     }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CGeoLine<Real>::endPoint()
+    CGeoCoordinate<Real> CGeoLine<Real>::endPoint() const
     {
         return this->m_endPoint;
     }
 
     template <typename Real>
-    CGeoVector<Real>& CGeoLine<Real>::vector()
+    CGeoVector<Real> CGeoLine<Real>::vector() const
     {
         return this->m_vector;
     }

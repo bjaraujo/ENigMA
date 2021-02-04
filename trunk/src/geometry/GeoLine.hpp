@@ -65,9 +65,9 @@ namespace geometry {
         void setStartPoint(const CGeoCoordinate<Real>& aPoint1);
         void setEndPoint(const CGeoCoordinate<Real>& aPoint2);
 
-        CGeoCoordinate<Real>& startPoint();
-        CGeoCoordinate<Real>& endPoint();
-        CGeoVector<Real>& vector();
+        CGeoCoordinate<Real> startPoint() const;
+        CGeoCoordinate<Real> endPoint() const;
+        CGeoVector<Real> vector() const;
 
         CGeoCoordinate<Real> midPoint(Real factor);
 

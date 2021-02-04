@@ -26,7 +26,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshBasicMesher<Real>::generate(CGeoLine<Real>& aLine, const Integer nu)
+    bool CMshBasicMesher<Real>::generate(const CGeoLine<Real>& aLine, const Integer nu)
     {
         Real du;
 
@@ -72,7 +72,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshBasicMesher<Real>::generate(CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate)
+    bool CMshBasicMesher<Real>::generate(const CGeoQuadrilateral<Real>& aQuadrilateral, const Integer nu, const Integer nv, bool decimate)
     {
         Real du, dv;
 
@@ -162,9 +162,9 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshBasicMesher<Real>::generate(CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate)
+    bool CMshBasicMesher<Real>::generate(const CGeoHexahedron<Real>& aHexahedron, const Integer nu, const Integer nv, const Integer nw, bool decimate)
     {
-        CGeoVector<Real> aVectorU = aHexahedron.vertex(1) - aHexahedron.vertex(0);
+        CGeoVector<Real> aVectorU = (aHexahedron.vertex(1) - aHexahedron.vertex(0));
         CGeoNormal<Real> aNormalU = aVectorU;
         aNormalU.normalize();
 
@@ -327,7 +327,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshBasicMesher<Real>::generate(CGeoBoundingBox<Real>& aBoundingBox, const Real meshSize, bool decimate)
+    bool CMshBasicMesher<Real>::generate(const CGeoBoundingBox<Real>& aBoundingBox, const Real meshSize, bool decimate)
     {
         CGeoVector<Real> aVector = aBoundingBox.max() - aBoundingBox.min();
 

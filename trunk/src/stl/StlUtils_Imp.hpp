@@ -811,7 +811,7 @@ namespace stl {
                 }
 
                 // Facet: i
-                m_stlFile.facet(aFacetId).vertex((bedg + 1) % 3) = pn;
+                m_stlFile.facet(aFacetId).setVertex((bedg + 1) % 3, pn);
                 m_stlFile.facet(aFacetId).edge((bedg + 1) % 3).setNeighbor(m_stlFile.nbFacets());
                 m_stlFile.facet(aFacetId).edge((bedg + 1) % 3).setWhichVertexNot(1);
 
@@ -848,7 +848,7 @@ namespace stl {
                     }
 
                     // Facet: neighbor
-                    m_stlFile.facet(neighbor).vertex((vertexNot + 1) % 3) = pn;
+                    m_stlFile.facet(neighbor).setVertex((vertexNot + 1) % 3, pn);
                     m_stlFile.facet(neighbor).edge((vertexNot + 0) % 3).setNeighbor(m_stlFile.nbFacets());
                     m_stlFile.facet(neighbor).edge((vertexNot + 0) % 3).setWhichVertexNot(2);
 
@@ -954,7 +954,7 @@ namespace stl {
                     aFacet_i[k].calculateNormal();
                     normal_i = aFacet_i[k].normal();
 
-                    aFacet_f[k].vertex((whichVertex[k] + 1) % 3) = aNewVertex;
+                    aFacet_f[k].setVertex((whichVertex[k] + 1) % 3, aNewVertex);
 
                     aFacet_f[k].calculateNormal();
                     normal_f = aFacet_f[k].normal();
@@ -965,7 +965,7 @@ namespace stl {
 
                 if (fixedNode == false) {
                     for (Integer k = 0; k < static_cast<Integer>(whichFacet.size()); ++k)
-                        m_stlFile.facet(whichFacet[k]).vertex((whichVertex[k] + 1) % 3) = aNewVertex;
+                        m_stlFile.facet(whichFacet[k]).setVertex((whichVertex[k] + 1) % 3, aNewVertex);
                 }
             }
         }
@@ -1276,7 +1276,7 @@ namespace stl {
 
             if (!fixedNode) {
                 for (Integer k = 0; k < static_cast<Integer>(whichFacet.size()); ++k)
-                    m_stlFile.facet(whichFacet[k]).vertex((whichVertex[k] + 1) % 3) = aNewVertex;
+                    m_stlFile.facet(whichFacet[k]).setVertex((whichVertex[k] + 1) % 3, aNewVertex);
 
                 m_stlFile.facet(aFacetId).extra[0] = 'c';
                 m_stlFile.facet(pair).extra[0] = 'c';
@@ -1291,8 +1291,8 @@ namespace stl {
     {
         // Fix facet
         CGeoCoordinate<Real> anAux = m_stlFile.facet(aFacetId).vertex((aVertexNot + 2) % 3);
-        m_stlFile.facet(aFacetId).vertex((aVertexNot + 2) % 3) = m_stlFile.facet(aFacetId).vertex((aVertexNot + 1) % 3);
-        m_stlFile.facet(aFacetId).vertex((aVertexNot + 1) % 3) = anAux;
+        m_stlFile.facet(aFacetId).setVertex((aVertexNot + 2) % 3, m_stlFile.facet(aFacetId).vertex((aVertexNot + 1) % 3));
+        m_stlFile.facet(aFacetId).setVertex((aVertexNot + 1) % 3, anAux);
 
         Integer aNeighborId2 = m_stlFile.facet(aFacetId).edge((aVertexNot + 2) % 3).neighbor();
         Integer aNeighborId3 = m_stlFile.facet(aFacetId).edge((aVertexNot + 3) % 3).neighbor();
