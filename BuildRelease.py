@@ -221,6 +221,7 @@ def main():
     parser.add_argument('-c', '--configure', action='store_true', help="configure project")
     parser.add_argument('-b', '--build', action='store_true', help="build project")
     parser.add_argument('-i', '--install', action='store_true', help="install project")
+    parser.add_argument('-p', '--package', action='store_true', help="package project")
     parser.add_argument('-v', '--version', action='store_true', help="increment version")
     parser.add_argument('-t', '--tests', action='store_true', help="build units tests")
     parser.add_argument('-a', '--arch', type=int, required=True, help="build as 32 bit or 64 bit")
@@ -246,7 +247,8 @@ def main():
     else:
         print('32 bit')
     
-    package(args, strNewVersion)
+    if args.package:
+        package(args, strNewVersion)
     
     tagVersion(args, strNewVersion)
 
