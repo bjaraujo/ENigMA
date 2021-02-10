@@ -128,6 +128,8 @@ pip install ENigMApy_0.1.9.0-py3.8-none-win_amd64.whl
 
 4. Download the examples: [ENigMApy_0.1.9.0-py3-occ-examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.9.0/ENigMApy_0.1.9.0-py3-occ-examples.zip)
 
+Note: If you are using Windows, make sure you download the Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019.
+
 #### Mesh Generation ####
 
 ##### A Cylinder #####
