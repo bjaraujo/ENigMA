@@ -593,13 +593,13 @@ quadrilateral.addVertex(vertex4)
 
 basicMesher = ENigMA.CMshBasicMesherDouble()
 
-basicMesher.generate(quadrilateral, 400, 20, True);
+basicMesher.generate(quadrilateral, 400, 20, True)
 
-surfaceMesh = basicMesher.mesh();
+surfaceMesh = basicMesher.mesh()
 
 for i in range(0, surfaceMesh.nbElements()):
     elementId = surfaceMesh.elementId(i)
-    surfaceMesh.element(elementId).setThickness(b);
+    surfaceMesh.element(elementId).setThickness(b)
 
 # Material
 material = ENigMA.CMatMaterialDouble()
@@ -618,7 +618,7 @@ u.setDiscretOrder(ENigMA.DO_LINEAR)
 u.setDiscretLocation(ENigMA.DL_NODE)
 u.setNbDofs(2)
 
-index = 0;
+index = 0
 
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
@@ -629,7 +629,7 @@ for i in range(0, surfaceMesh.nbNodes()):
         u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1, 0.0)
         
     if (math.fabs(node.x() - L) < 1E-6 and math.fabs(node.y() - h) < 1E-6):
-        index = i;
+        index = i
         u.setSource(surfaceMesh.nodeIndex(nodeId), 1, F)
 
 sleSystem = ENigMA.laplacian(u)
@@ -637,7 +637,7 @@ sleSystem.setRhs(0)
         
 pdeEquation = ENigMA.CPdeEquationDouble(sleSystem)
 
-pdeEquation.setSources(u);
+pdeEquation.setSources(u)
 
 pdeEquation.setElimination(u)
 
@@ -690,9 +690,9 @@ quadrilateral.addVertex(vertex4)
 
 basicMesher = ENigMA.CMshBasicMesherDouble()
 
-basicMesher.generate(quadrilateral, 16, 16, True);
+basicMesher.generate(quadrilateral, 16, 16, True)
 
-surfaceMesh = basicMesher.mesh();
+surfaceMesh = basicMesher.mesh()
 
 # Temperature field
 u = ENigMA.CPdeFieldDouble()
@@ -704,7 +704,7 @@ u.setDiscretOrder(ENigMA.DO_LINEAR)
 u.setDiscretLocation(ENigMA.DL_NODE)
 u.setNbDofs(1)
 
-index = 0;
+index = 0
 
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
@@ -727,7 +727,7 @@ sleSystem.setRhs(0)
         
 pdeEquation = ENigMA.CPdeEquationDouble(sleSystem)
 
-pdeEquation.setSources(u);
+pdeEquation.setSources(u)
 
 pdeEquation.setElimination(u)
 
