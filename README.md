@@ -121,14 +121,14 @@ To reproduce these examples:
 conda install -c conda-forge pythonocc-core=7.4.1
 ```
 
-3. Install ENigMA 0.1.9: 
+3. Install ENigMA 0.3.7: 
 ```bash
-pip install ENigMApy_0.1.9.0-py3.8-none-win_amd64.whl
+pip install ENigMApy_0.3.7.0-py3.8-none-win_amd64.whl
 ```
 
-4. Download the examples: [ENigMApy_0.1.9.0-py3-occ-examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.1.9.0/ENigMApy_0.1.9.0-py3-occ-examples.zip)
+4. Download the examples: [ENigMApy_0.3.7.0-py3-occ-examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.3.7.0/ENigMApy_0.3.7.0-py3-occ-examples.zip)
 
-Note: If you are using Windows, make sure you download the Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019.
+Note: If you are using Windows and you get the following error: "ImportError: DLL load failed: The specified module could not be found", you might need to download and install the Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019.
 
 #### Mesh Generation ####
 
