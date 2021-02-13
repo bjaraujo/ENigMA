@@ -694,7 +694,7 @@ namespace std
 
 %extend ENigMA::fvm::CFvmFace<double> {
     
-    ENigMA::geometry::CGeoCoordinate<double>& centroid() { 
+    ENigMA::geometry::CGeoCoordinate<double> centroid() { 
         return (*$self).centroid();
     }
 
