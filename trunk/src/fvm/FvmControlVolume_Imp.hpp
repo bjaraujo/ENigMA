@@ -199,10 +199,10 @@ namespace fvm {
         if (!m_bCentroid || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateCentroid();
-                CGeoVolume<Real>::centroid() = m_clippedPolyhedron.centroid();
+                m_centroid = m_clippedPolyhedron.centroid();
             } else {
                 m_polyhedron.calculateCentroid();
-                CGeoVolume<Real>::centroid() = m_polyhedron.centroid();
+                m_centroid = m_polyhedron.centroid();
             }
 
             m_bCentroid = true;

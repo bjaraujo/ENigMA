@@ -17,7 +17,6 @@ namespace geometry {
     class CGeoCentroid {
     protected:
         CGeoCoordinate<Real> m_centroid;
-
         bool m_bCentroid;
 
     public:
@@ -26,7 +25,7 @@ namespace geometry {
 
         virtual void calculateCentroid(bool bReCalculate = false) = 0;
 
-        CGeoCoordinate<Real>& centroid();
+        CGeoCoordinate<Real> centroid() const;
     };
 }
 }

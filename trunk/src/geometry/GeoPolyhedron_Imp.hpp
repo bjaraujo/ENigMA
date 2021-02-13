@@ -274,33 +274,33 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateCentroid(bool bReCalculate)
     {
-        if (!this->m_bCentroid || bReCalculate) {
-            CGeoVolume<Real>::centroid() << 0.0, 0.0, 0.0;
+        if (!m_bCentroid || bReCalculate) {
+            m_centroid << 0.0, 0.0, 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
                 m_polygons[m_polygonIds[i]].calculateCentroid();
-                CGeoVolume<Real>::centroid() += m_polygons[m_polygonIds[i]].centroid();
+                m_centroid += m_polygons[m_polygonIds[i]].centroid();
             }
 
             if (m_polygons.size() > 0)
-                CGeoVolume<Real>::centroid() /= static_cast<Real>(m_polygonIds.size());
+                m_centroid /= static_cast<Real>(m_polygonIds.size());
 
-            this->m_bCentroid = true;
+            m_bCentroid = true;
         }
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-        if (!this->m_bSurfaceArea || bReCalculate) {
-            this->m_surfaceArea = 0.0;
+        if (!m_bSurfaceArea || bReCalculate) {
+            m_surfaceArea = 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
                 m_polygons[m_polygonIds[i]].calculateArea();
-                this->m_surfaceArea += m_polygons[m_polygonIds[i]].area();
+                m_surfaceArea += m_polygons[m_polygonIds[i]].area();
             }
 
-            this->m_bSurfaceArea = true;
+            m_bSurfaceArea = true;
         }
     }
 
@@ -334,7 +334,7 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateBoundingBox(bool bReCalculate)
     {
-        if (!this->m_bBoundingBox || bReCalculate) {
+        if (!m_bBoundingBox || bReCalculate) {
             CGeoVolume<Real>::boundingBox().reset();
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
@@ -343,7 +343,7 @@ namespace geometry {
                 }
             }
 
-            this->m_bBoundingBox = true;
+            m_bBoundingBox = true;
         }
     }
 

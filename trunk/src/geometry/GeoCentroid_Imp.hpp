@@ -24,7 +24,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoCoordinate<Real>& CGeoCentroid<Real>::centroid()
+    CGeoCoordinate<Real> CGeoCentroid<Real>::centroid() const
     {
         return m_centroid;
     }
