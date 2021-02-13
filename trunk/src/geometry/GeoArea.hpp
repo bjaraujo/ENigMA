@@ -35,7 +35,7 @@ namespace geometry {
         virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
 
         CGeoNormal<Real>& normal();
-        Real& area();
+        Real area();
         CGeoBoundingBox<Real>& boundingBox();
     };
 }

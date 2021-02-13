@@ -87,7 +87,7 @@ namespace geometry {
     void CGeoPolygon<Real>::calculateArea(bool bReCalculate)
     {
         if (!this->m_bArea || bReCalculate) {
-            CGeoArea<Real>::area() = 0.0;
+            m_area = 0.0;
 
             if (m_polyline.nbVertices() > 1) {
                 this->calculateNormal(bReCalculate);
@@ -128,7 +128,7 @@ namespace geometry {
                     _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().z()));
                 }
 
-                CGeoArea<Real>::area() += _parea;
+                m_area += _parea;
             }
 
             this->m_bArea = true;

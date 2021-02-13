@@ -180,23 +180,23 @@ namespace fvm {
     template <typename Real>
     void CFvmControlVolume<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-        if (!this->m_bSurfaceArea || bReCalculate) {
+        if (!m_bSurfaceArea || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateSurfaceArea();
-                CGeoVolume<Real>::surfaceArea() = m_clippedPolyhedron.surfaceArea();
+                m_surfaceArea = m_clippedPolyhedron.surfaceArea();
             } else {
                 m_polyhedron.calculateSurfaceArea();
-                CGeoVolume<Real>::surfaceArea() = m_polyhedron.surfaceArea();
+                m_surfaceArea = m_polyhedron.surfaceArea();
             }
 
-            this->m_bSurfaceArea = true;
+            m_bSurfaceArea = true;
         }
     }
 
     template <typename Real>
     void CFvmControlVolume<Real>::calculateCentroid(bool bReCalculate)
     {
-        if (!this->m_bCentroid || bReCalculate) {
+        if (!m_bCentroid || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateCentroid();
                 CGeoVolume<Real>::centroid() = m_clippedPolyhedron.centroid();
@@ -205,20 +205,20 @@ namespace fvm {
                 CGeoVolume<Real>::centroid() = m_polyhedron.centroid();
             }
 
-            this->m_bCentroid = true;
+            m_bCentroid = true;
         }
     }
 
     template <typename Real>
     void CFvmControlVolume<Real>::calculateVolume(bool bReCalculate)
     {
-        if (!this->m_bVolume || bReCalculate) {
+        if (!m_bVolume || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateVolume(bReCalculate);
-                CGeoVolume<Real>::volume() = m_clippedPolyhedron.volume();
+                m_volume = m_clippedPolyhedron.volume();
             } else {
                 m_polyhedron.calculateVolume(bReCalculate);
-                CGeoVolume<Real>::volume() = m_polyhedron.volume();
+                m_volume = m_polyhedron.volume();
             }
 
             this->m_bVolume = true;

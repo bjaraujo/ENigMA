@@ -34,8 +34,9 @@ namespace geometry {
         virtual void calculateVolume(bool bReCalculate = false) = 0;
         virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
 
-        Real& surfaceArea();
-        Real& volume();
+        Real surfaceArea() const;        
+        Real volume() const;
+
         CGeoBoundingBox<Real>& boundingBox();
     };
 }

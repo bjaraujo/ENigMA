@@ -27,13 +27,13 @@ namespace geometry {
     }
 
     template <typename Real>
-    Real& CGeoVolume<Real>::volume()
+    Real CGeoVolume<Real>::volume() const
     {
         return m_volume;
     }
 
     template <typename Real>
-    Real& CGeoVolume<Real>::surfaceArea()
+    Real CGeoVolume<Real>::surfaceArea() const
     {
         return m_surfaceArea;
     }
