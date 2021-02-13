@@ -127,7 +127,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoLineList<Real> CGeoPolyline<Real>::clip(CGeoPlane<Real>& aPlane)
+    CGeoLineList<Real> CGeoPolyline<Real>::clip(CGeoPlane<Real> aPlane)
     {
         CGeoLineList<Real> aLineList;
 
@@ -153,7 +153,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    bool CGeoPolyline<Real>::intersects(CGeoPlane<Real>& aPlane)
+    bool CGeoPolyline<Real>::intersects(CGeoPlane<Real> aPlane)
     {
         CGeoCoordinate<Real> aPoint;
         CGeoIntersectionType anIntersectionType;

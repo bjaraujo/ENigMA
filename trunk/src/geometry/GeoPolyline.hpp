@@ -34,9 +34,9 @@ namespace geometry {
         inline void calculateLength(bool bReCalculate = false);
         inline void calculateBoundingBox(bool bReCalculate = false);
 
-        inline CGeoLineList<Real> clip(CGeoPlane<Real>& aPlane);
+        inline CGeoLineList<Real> clip(CGeoPlane<Real> aPlane);
 
-        inline bool intersects(CGeoPlane<Real>& aPlane);
+        inline bool intersects(CGeoPlane<Real> aPlane);
 
         void invert();
     };

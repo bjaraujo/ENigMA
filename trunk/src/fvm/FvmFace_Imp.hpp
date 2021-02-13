@@ -22,7 +22,7 @@ namespace fvm {
     }
 
     template <typename Real>
-    CFvmFace<Real>::CFvmFace(CGeoPolygon<Real>& aPolygon)
+    CFvmFace<Real>::CFvmFace(CGeoPolygon<Real> aPolygon)
         : m_boundaryType(BT_NONE)
         , m_controlVolumeId(0)
         , m_neighborId(0)
@@ -36,7 +36,7 @@ namespace fvm {
     }
 
     template <typename Real>
-    void CFvmFace<Real>::set(CGeoPolygon<Real>& aPolygon)
+    void CFvmFace<Real>::set(CGeoPolygon<Real> aPolygon)
     {
         CGeoPolygon<Real>::polyline().reset();
 

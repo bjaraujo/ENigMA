@@ -166,7 +166,7 @@ namespace fvm {
     }
 
     template <typename Real>
-    void CFvmControlVolume<Real>::clip(CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+    void CFvmControlVolume<Real>::clip(CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
         CGeoPolygon<Real> aPolygon;
         Real d;
