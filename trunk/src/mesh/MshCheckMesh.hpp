@@ -19,8 +19,8 @@ namespace mesh {
         CMshCheckMesh();
         virtual ~CMshCheckMesh();
 
-        bool checkOpen(CMshMesh<Real>& aMesh);
-        bool checkIntersections(CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
+        bool checkOpen(const CMshMesh<Real>& aMesh);
+        bool checkIntersections(const CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
     };
 }
 }

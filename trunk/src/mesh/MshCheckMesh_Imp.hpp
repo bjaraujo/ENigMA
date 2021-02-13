@@ -22,7 +22,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshCheckMesh<Real>::checkOpen(CMshMesh<Real>& aMesh)
+    bool CMshCheckMesh<Real>::checkOpen(const CMshMesh<Real>& aMesh)
     {
         for (Integer i = 0; i < aMesh.nbElements(); ++i) {
             Integer anElementId = aMesh.elementId(i);
@@ -42,7 +42,7 @@ namespace mesh {
     }
 
     template <typename Real>
-    bool CMshCheckMesh<Real>::checkIntersections(CMshMesh<Real>& aMesh, const Real aTolerance)
+    bool CMshCheckMesh<Real>::checkIntersections(const CMshMesh<Real>& aMesh, const Real aTolerance)
     {
         CGeoRtree<Real> aRtree;
 

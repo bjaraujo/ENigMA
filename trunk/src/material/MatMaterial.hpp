@@ -35,7 +35,7 @@ namespace material {
         virtual ~CMatMaterial();
 
         void addProperty(EPropertyType aPropertyType, const Real aPropertyValue);
-        void addProperty(EPropertyType aPropertyType, CAnaFunction<Real>& aPropertyFunction);
+        void addProperty(EPropertyType aPropertyType, const CAnaFunction<Real>& aPropertyFunction);
 
         Real propertyValue(EPropertyType aPropertyType);
         Real propertyValue(EPropertyType aPropertyType, const std::string& aVariable1, Real& aValue1);
