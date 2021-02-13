@@ -180,45 +180,45 @@ namespace fvm {
     template <typename Real>
     void CFvmControlVolume<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-        if (!m_bSurfaceArea || bReCalculate) {
+        if (!this->m_bSurfaceArea || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateSurfaceArea();
-                m_surfaceArea = m_clippedPolyhedron.surfaceArea();
+                this->m_surfaceArea = m_clippedPolyhedron.surfaceArea();
             } else {
                 m_polyhedron.calculateSurfaceArea();
-                m_surfaceArea = m_polyhedron.surfaceArea();
+                this->m_surfaceArea = m_polyhedron.surfaceArea();
             }
 
-            m_bSurfaceArea = true;
+            this->m_bSurfaceArea = true;
         }
     }
 
     template <typename Real>
     void CFvmControlVolume<Real>::calculateCentroid(bool bReCalculate)
     {
-        if (!m_bCentroid || bReCalculate) {
+        if (!this->m_bCentroid || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateCentroid();
-                m_centroid = m_clippedPolyhedron.centroid();
+                this->m_centroid = m_clippedPolyhedron.centroid();
             } else {
                 m_polyhedron.calculateCentroid();
-                m_centroid = m_polyhedron.centroid();
+                this->m_centroid = m_polyhedron.centroid();
             }
 
-            m_bCentroid = true;
+            this->m_bCentroid = true;
         }
     }
 
     template <typename Real>
     void CFvmControlVolume<Real>::calculateVolume(bool bReCalculate)
     {
-        if (!m_bVolume || bReCalculate) {
+        if (!this->m_bVolume || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateVolume(bReCalculate);
-                m_volume = m_clippedPolyhedron.volume();
+                this->m_volume = m_clippedPolyhedron.volume();
             } else {
                 m_polyhedron.calculateVolume(bReCalculate);
-                m_volume = m_polyhedron.volume();
+                this->m_volume = m_polyhedron.volume();
             }
 
             this->m_bVolume = true;

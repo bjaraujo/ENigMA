@@ -274,44 +274,44 @@ namespace geometry {
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateCentroid(bool bReCalculate)
     {
-        if (!m_bCentroid || bReCalculate) {
-            m_centroid << 0.0, 0.0, 0.0;
+        if (!this->m_bCentroid || bReCalculate) {
+            this->m_centroid << 0.0, 0.0, 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
                 m_polygons[m_polygonIds[i]].calculateCentroid();
-                m_centroid += m_polygons[m_polygonIds[i]].centroid();
+                this->m_centroid += m_polygons[m_polygonIds[i]].centroid();
             }
 
             if (m_polygons.size() > 0)
-                m_centroid /= static_cast<Real>(m_polygonIds.size());
+                this->m_centroid /= static_cast<Real>(m_polygonIds.size());
 
-            m_bCentroid = true;
+            this->m_bCentroid = true;
         }
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-        if (!m_bSurfaceArea || bReCalculate) {
-            m_surfaceArea = 0.0;
+        if (!this->m_bSurfaceArea || bReCalculate) {
+            this->m_surfaceArea = 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
                 m_polygons[m_polygonIds[i]].calculateArea();
-                m_surfaceArea += m_polygons[m_polygonIds[i]].area();
+                this->m_surfaceArea += m_polygons[m_polygonIds[i]].area();
             }
 
-            m_bSurfaceArea = true;
+            this->m_bSurfaceArea = true;
         }
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateVolume(bool bReCalculate)
     {
-        if (!m_bVolume || bReCalculate) {
+        if (!this->m_bVolume || bReCalculate) {
             // see: http://en.wikipedia.org/wiki/Polyhedron#Volume
             // see: http://g3d.sourceforge.net/
 
-            m_volume = 0.0;
+            this->m_volume = 0.0;
 
             if (m_polygons.size() >= 4) {
                 if (m_polygons[m_polygonIds[0]].polyline().nbVertices() > 0) {
@@ -321,20 +321,20 @@ namespace geometry {
                         m_polygons[m_polygonIds[i]].calculateArea();
 
                         if (m_polygons[m_polygonIds[i]].polyline().nbVertices() > 0)
-                            m_volume += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
+                            this->m_volume += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
                     }
                 }
             }
 
-            m_volume /= 3.0;
-            m_bVolume = true;
+            this->m_volume /= 3.0;
+            this->m_bVolume = true;
         }
     }
 
     template <typename Real>
     void CGeoPolyhedron<Real>::calculateBoundingBox(bool bReCalculate)
     {
-        if (!m_bBoundingBox || bReCalculate) {
+        if (!this->m_bBoundingBox || bReCalculate) {
             CGeoVolume<Real>::boundingBox().reset();
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
@@ -343,7 +343,7 @@ namespace geometry {
                 }
             }
 
-            m_bBoundingBox = true;
+            this->m_bBoundingBox = true;
         }
     }
 

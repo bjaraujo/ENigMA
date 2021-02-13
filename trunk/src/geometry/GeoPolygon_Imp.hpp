@@ -43,17 +43,17 @@ namespace geometry {
     template <typename Real>
     void CGeoPolygon<Real>::calculateCentroid(bool bReCalculate)
     {
-        if (!m_bCentroid || bReCalculate) {
-            m_centroid << 0.0, 0.0, 0.0;
+        if (!this->m_bCentroid || bReCalculate) {
+            this->m_centroid << 0.0, 0.0, 0.0;
 
             for (Integer i = 1; i < m_polyline.nbVertices(); ++i) {
-                m_centroid += m_polyline.vertex(i);
+                this->m_centroid += m_polyline.vertex(i);
             }
 
             if (m_polyline.nbVertices() > 1)
-                m_centroid /= (static_cast<Real>(m_polyline.nbVertices()) - 1);
+                this->m_centroid /= (static_cast<Real>(m_polyline.nbVertices()) - 1);
 
-            m_bCentroid = true;
+            this->m_bCentroid = true;
         }
     }
 
@@ -87,7 +87,7 @@ namespace geometry {
     void CGeoPolygon<Real>::calculateArea(bool bReCalculate)
     {
         if (!this->m_bArea || bReCalculate) {
-            m_area = 0.0;
+            this->m_area = 0.0;
 
             if (m_polyline.nbVertices() > 1) {
                 this->calculateNormal(bReCalculate);
@@ -128,7 +128,7 @@ namespace geometry {
                     _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().z()));
                 }
 
-                m_area += _parea;
+                this->m_area += _parea;
             }
 
             this->m_bArea = true;

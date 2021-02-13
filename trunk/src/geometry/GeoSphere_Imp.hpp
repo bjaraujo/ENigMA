@@ -82,36 +82,36 @@ namespace geometry {
     template <typename Real>
     void CGeoSphere<Real>::calculateCentroid(bool bReCalculate)
     {
-        if (!m_bCentroid || bReCalculate) {
-            m_centroid = this->m_center;
-            m_bCentroid = true;
+        if (!this->m_bCentroid || bReCalculate) {
+            this->m_centroid = this->m_center;
+            this->m_bCentroid = true;
         }
     }
 
     template <typename Real>
     void CGeoSphere<Real>::calculateSurfaceArea(bool bReCalculate)
     {
-        if (!m_bSurfaceArea || bReCalculate) {
+        if (!this->m_bSurfaceArea || bReCalculate) {
             const Real pi = std::acos(-1.0);
-            m_surfaceArea += 4.0 * pi * m_radius * m_radius;
-            m_bSurfaceArea = true;
+            this->m_surfaceArea += 4.0 * pi * m_radius * m_radius;
+            this->m_bSurfaceArea = true;
         }
     }
 
     template <typename Real>
     void CGeoSphere<Real>::calculateVolume(bool bReCalculate)
     {
-        if (!m_bVolume || bReCalculate) {
+        if (!this->m_bVolume || bReCalculate) {
             const Real pi = std::acos(-1.0);
-            m_volume = 4.0 / 3.0 * pi * m_radius * m_radius * m_radius;
-            m_bVolume = true;
+            this->m_volume = 4.0 / 3.0 * pi * m_radius * m_radius * m_radius;
+            this->m_bVolume = true;
         }
     }
 
     template <typename Real>
     void CGeoSphere<Real>::calculateBoundingBox(bool bReCalculate)
     {
-        if (!m_bBoundingBox || bReCalculate) {
+        if (!this->m_bBoundingBox || bReCalculate) {
             CGeoVolume<Real>::boundingBox().reset();
 
             CGeoCoordinate<Real> aCoordinate1(-m_radius, -m_radius, -m_radius);
@@ -120,7 +120,7 @@ namespace geometry {
             CGeoVolume<Real>::boundingBox().addCoordinate(aCoordinate1);
             CGeoVolume<Real>::boundingBox().addCoordinate(aCoordinate2);
 
-            m_bBoundingBox = true;
+            this->m_bBoundingBox = true;
         }
     }
 

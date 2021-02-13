@@ -68,33 +68,32 @@ namespace geometry {
     template <typename Real>
     void CGeoCircle<Real>::calculateCentroid(bool bReCalculate)
     {
-        m_centroid = this->m_center;
+        this->m_centroid = this->m_center;
     }
 
     template <typename Real>
     void CGeoCircle<Real>::calculateNormal(bool bReCalculate)
     {
-        if (!m_bNormal || bReCalculate) {
+        if (!this->m_bNormal || bReCalculate) {
             CGeoArea<Real>::normal() << 1.0, 0.0, 0.0;
-
-            m_bNormal = true;
+            this->m_bNormal = true;
         }
     }
 
     template <typename Real>
     void CGeoCircle<Real>::calculateArea(bool bReCalculate)
     {
-        if (!m_bArea || bReCalculate) {
+        if (!this->m_bArea || bReCalculate) {
             const Real pi = std::acos(-1.0);
-            m_area = pi * this->m_radius * this->m_radius;
-            m_bArea = true;
+            this->m_area = pi * this->m_radius * this->m_radius;
+            this->m_bArea = true;
         }
     }
 
     template <typename Real>
     void CGeoCircle<Real>::calculateBoundingBox(bool bReCalculate)
     {
-        if (!m_bBoundingBox || bReCalculate) {
+        if (!this->m_bBoundingBox || bReCalculate) {
             CGeoArea<Real>::boundingBox().reset();
 
             CGeoCoordinate<Real> aCoordinate1(-this->m_radius, -this->m_radius, 0.0);
@@ -103,7 +102,7 @@ namespace geometry {
             CGeoArea<Real>::boundingBox().addCoordinate(aCoordinate1);
             CGeoArea<Real>::boundingBox().addCoordinate(aCoordinate2);
 
-            m_bBoundingBox = true;
+            this->m_bBoundingBox = true;
         }
     }
 
