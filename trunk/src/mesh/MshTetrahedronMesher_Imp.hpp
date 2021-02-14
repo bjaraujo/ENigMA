@@ -767,7 +767,7 @@ namespace mesh {
             Real baseHeightSize = localMeshSize * sqrt(2.0 / 3.0); // Equilateral tetrahedron (height to edge ratio)
 
             // Regular tetrahedron (height to edge ratio)
-            CGeoVector<Real> v = a.cross(b);
+            CGeoVector<Real> v = -a.cross(b);
             v.normalize();
 
             // Add point to form tetrahedra with correct spacing

@@ -87,7 +87,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume1.msh", "tetras");
 
-    EXPECT_EQ(42, aVolumeMesh.nbElements());
+    EXPECT_EQ(52, aVolumeMesh.nbElements());
 
 }
 
@@ -143,13 +143,13 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume2.msh", "tetras");
 
-    EXPECT_EQ(83, aVolumeMesh.nbElements());
+    EXPECT_EQ(124, aVolumeMesh.nbElements());
 
 }
 
 TEST_F(CTestMshTetrahedronMesher, mesh3) {
 
-    GTEST_SKIP();
+    //GTEST_SKIP();
 
     const decimal d = 0.125;
 
@@ -193,7 +193,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
 
     CMshTetrahedronMesher<decimal> aTetrahedronMesher;
 
-    aTetrahedronMesher.generate(aSurfaceMesh, 999, d, d * 0.1, d * 10.0, 1E-3);
+    aTetrahedronMesher.generate(aSurfaceMesh, 999, d, d * 0.5, d * 2.0, 1E-3);
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = aTetrahedronMesher.mesh();
