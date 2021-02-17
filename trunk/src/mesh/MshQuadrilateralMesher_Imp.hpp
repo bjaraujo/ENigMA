@@ -1503,6 +1503,8 @@ namespace mesh {
 
                 sElements.clear();
 
+                Integer iter = 0;
+
                 do {
                     const CMshFace<Real>& aNextFace = m_surfaceMesh.face(aNextFaceId);
 
@@ -1538,6 +1540,11 @@ namespace mesh {
                             break;
                         }
                     }
+
+                    iter++;
+
+                    if (iter > 1000)
+                        return;
 
                 } while (aNextFaceId != aFirstFaceId);
 
