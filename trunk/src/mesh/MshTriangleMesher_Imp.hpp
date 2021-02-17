@@ -1087,11 +1087,10 @@ namespace mesh {
 
             Integer aNodeId1 = aFace.nodeId(0);
             Integer aNodeId2 = aFace.nodeId(1);
-
             Integer aNodeId3;
+            Integer aNodeId4;
 
             bool bNodeId3 = false;
-
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                 if (anElement.nodeId(j) != aNodeId1 && anElement.nodeId(j) != aNodeId2) {
                     aNodeId3 = anElement.nodeId(j);
@@ -1117,10 +1116,7 @@ namespace mesh {
                 if (aNeighbor.elementType() != ET_TRIANGLE)
                     continue;
 
-                Integer aNodeId4;
-
                 bool bNodeId4 = false;
-
                 for (Integer j = 0; j < aNeighbor.nbNodeIds(); ++j) {
                     if (aNeighbor.nodeId(j) != aNodeId1 && aNeighbor.nodeId(j) != aNodeId2) {
                         aNodeId4 = aNeighbor.nodeId(j);
@@ -1132,10 +1128,10 @@ namespace mesh {
                 if (!bNodeId4)
                     continue;
 
-                CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
-                CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
-                CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
-                CMshNode<Real>& aNode4 = m_surfaceMesh.node(aNodeId4);
+                const CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
+                const CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
+                const CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
+                const CMshNode<Real>& aNode4 = m_surfaceMesh.node(aNodeId4);
 
                 // Original
                 CMshTriangle<Real> aTriangle1;
@@ -1173,7 +1169,9 @@ namespace mesh {
                 aTriangle4.calculateQuality();
                 Real q4 = aTriangle4.quality();
 
-                if (std::min(q3, q4) > std::min(q1, q2) && aTriangle3.normal().z() > aTolerance && aTriangle4.normal().z() > aTolerance) {
+                if (std::min(q3, q4) > std::min(q1, q2) && 
+                    aTriangle3.normal().z() > aTolerance && 
+                    aTriangle4.normal().z() > aTolerance) {
                     // Do flip
                     m_surfaceMesh.element(anElementId).setNodeId(0, aNodeId3);
                     m_surfaceMesh.element(anElementId).setNodeId(1, aNodeId4);
