@@ -105,11 +105,12 @@ namespace sph {
     void CSphParticles<Real>::addDiffusion(CPdeField<Real>& aField, CGeoHashGrid<Real>& aHashGrid)
     {
         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i) {
-            Integer aNodeId1 = aField.mesh().nodeId(i);
-            CMshNode<Real>& aNode1 = aField.mesh().node(aNodeId1);
 
             if (aField.uFixed.find(i) == aField.uFixed.end()) {
                 Real fd = 0.0;
+
+                Integer aNodeId1 = aField.mesh().nodeId(i);
+                CMshNode<Real>& aNode1 = aField.mesh().node(aNodeId1);
 
                 std::vector<Integer> sNodeIds;
                 aHashGrid.find(sNodeIds, aNode1, m_h);
@@ -129,7 +130,7 @@ namespace sph {
                 aField.u(i) += m_particles[i].conductivity * fd * m_dt;
 
             } else
-                aField.u(i) = aField.uFixed[i];
+                aField.u(i) = aField.uFixed.at(i);
         }
     }
 
