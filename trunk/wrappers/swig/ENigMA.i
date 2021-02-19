@@ -764,7 +764,7 @@ namespace std
 
 %template(CSphSpikyDouble) ENigMA::sph::CSphSpiky<double>;
 
-// SPH 
+// SPH
 
 %include "SphParticles.hpp"
 

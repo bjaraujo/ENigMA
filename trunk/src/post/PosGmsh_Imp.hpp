@@ -129,6 +129,11 @@ namespace post {
                         anElement.setElementType(ENigMA::mesh::ET_TRIANGULAR_PRISM);
                         nbNodeIds = 6;
                         break;
+                    case 15:
+                        // line
+                        anElement.setElementType(ENigMA::mesh::ET_NODE);
+                        nbNodeIds = 1;
+                        break;
                     }
 
                     Integer aNodeId;
@@ -195,6 +200,9 @@ namespace post {
                 Integer nElemType;
 
                 switch (anElement.elementType()) {
+                case ENigMA::mesh::ET_NODE:
+                    nElemType = 15;
+                    break;
                 case ENigMA::mesh::ET_BEAM:
                     nElemType = 1;
                     break;
