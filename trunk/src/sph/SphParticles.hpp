@@ -45,6 +45,7 @@ namespace sph {
 
         void buildHashGrid(CPdeField<Real>& aField, ENigMA::geometry::CGeoHashGrid<Real>& aHashGrid);
 
+        void calculateDensity(CPdeField<Real>& aField, CGeoHashGrid<Real>& aHashGrid);
         void advectParticles(CPdeField<Real>& aField);
         void addDiffusion(CPdeField<Real>& aField, ENigMA::geometry::CGeoHashGrid<Real>& aHashGrid);
 
@@ -52,10 +53,12 @@ namespace sph {
         explicit CSphParticles(CSphKernel<Real>& kernel);
         virtual ~CSphParticles();
 
+        Real density(Integer anIndex);
+
         void setBoundary(const ENigMA::geometry::CGeoBoundingBox<Real>& aBoundary);
         void setInitialVelocity(CPdeField<Real>& aField, const ENigMA::geometry::CGeoVector<Real>& aVelocity);
 
-        void init(CPdeField<Real>& aField, Real mass, Real rho, Real diff, Real h, Real dt, bool bCyclic = false);
+        void init(CPdeField<Real>& aField, Real mass, Real diff, Real h, Real dt, bool bCyclic = false);
         void solve(CPdeField<Real>& aField);
     };
 }
