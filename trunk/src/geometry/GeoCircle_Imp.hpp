@@ -85,7 +85,7 @@ namespace geometry {
     void CGeoCircle<Real>::calculateArea(bool bReCalculate)
     {
         if (!this->m_bArea || bReCalculate) {
-            const Real pi = std::acos(-1.0);
+            static const Real pi = std::acos(-1.0);
             CGeoArea<Real>::area() = pi * this->m_radius * this->m_radius;
 
             this->m_bArea = true;

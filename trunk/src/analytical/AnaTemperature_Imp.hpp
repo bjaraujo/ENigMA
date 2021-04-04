@@ -47,7 +47,7 @@ namespace analytical {
 
         // T: [0, 1]
 
-        const Real pi = std::acos(-1.0);
+        static const Real pi = std::acos(-1.0);
 
         T = 0.0;
 
@@ -69,7 +69,7 @@ namespace analytical {
 
         // T: [0, 1]
 
-        const Real pi = std::acos(-1.0);
+        static const Real pi = std::acos(-1.0);
 
         T = 0.0;
 
@@ -132,7 +132,7 @@ namespace analytical {
         // Case: transient heat conduction in beam length = 1.
         // Initial temperature Ti=1. Side x=0 is adiabatic, x=1 is set to T=0.
 
-        const Real pi = std::acos(-1.0);
+        static const Real pi = std::acos(-1.0);
 
         T = 0.0;
 
@@ -149,7 +149,7 @@ namespace analytical {
         // Case: transient heat conduction in 1x1 square with center at 0,0.
         // All sides are at T=0. Initial temperature Ti=1.
 
-        const Real pi = std::acos(-1.0);
+        static const Real pi = std::acos(-1.0);
 
         T = 0.0;
 
@@ -170,7 +170,7 @@ namespace analytical {
         // Case: transient heat conduction in 1x1x1 cube with center at 0,0,0.
         // All sides at T=0. Initial temperature Ti=1.
 
-        const Real pi = std::acos(-1.0);
+        static const Real pi = std::acos(-1.0);
 
         T = 0.0;
 

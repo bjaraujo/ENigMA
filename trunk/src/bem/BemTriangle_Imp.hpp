@@ -119,7 +119,8 @@ namespace bem {
                 g_sum += 2.0 * area * wk / sqrt((xk - xi) * (xk - xi) + (yk - yi) * (yk - yi) + (zk - zi) * (zk - zi));
             }
         }
-        const Real pi = std::acos(-1.0);
+        
+        static const Real pi = std::acos(-1.0);
 
         h = -1.0 / (4.0 * pi) * h_sum;
         g = +1.0 / (4.0 * pi) * g_sum;

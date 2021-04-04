@@ -743,7 +743,7 @@ namespace mesh {
         meshSizeFunc.defineVariable("x", x);
         meshSizeFunc.defineVariable("y", y);
 
-        const Real pi = std::acos(-1.0);
+        static const Real pi = std::acos(-1.0);
 
         for (Integer i = firstIndex; i < static_cast<Integer>(m_anAdvFront.size()); ++i) {
             this->checkUpdate();
