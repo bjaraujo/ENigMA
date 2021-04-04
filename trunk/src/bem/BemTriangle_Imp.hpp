@@ -125,7 +125,6 @@ namespace bem {
         h = -1.0 / (4.0 * pi) * h_sum;
         g = +1.0 / (4.0 * pi) * g_sum;
 
-        return;
     }
 }
 }

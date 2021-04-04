@@ -385,8 +385,9 @@ void solve3()
 
     CMshMesh<double> aSurfaceMesh1 = aMesh1.extractBoundary(1E-12);
     CMshMesh<double> aSurfaceMesh2 = aMesh2;
-    aMesh2.invert();
-    CMshMesh<double> aSurfaceMesh3 = aMesh2;
+   
+    //aMesh2.invert();
+    //CMshMesh<double> aSurfaceMesh3 = aMesh2;
 
     aSurfaceMesh1.invert();
 
@@ -394,7 +395,7 @@ void solve3()
 
     aSurfaceMesh.addMesh(aSurfaceMesh1);
     aSurfaceMesh.addMesh(aSurfaceMesh2);
-    aSurfaceMesh.addMesh(aSurfaceMesh3);
+    //aSurfaceMesh.addMesh(aSurfaceMesh3);
 
     std::vector<CBemTriangle<double>> aBemMesh;
 
@@ -440,12 +441,12 @@ void solve3()
         aBemMesh[i].calculateCentroid();
 
         if (fabs(aBemMesh[i].centroid().x() - 0.0) < 1E-12) {
-            Tf[i] = 0.0;
+            Tf[i] = 296.15;
             Tfixed[i] = true;
         }
 
         if (fabs(aBemMesh[i].centroid().x() - 1.0) < 1E-12) {
-            Tf[i] = 1.0;
+            Tf[i] = 296.15;
             Tfixed[i] = true;
         }
     }
