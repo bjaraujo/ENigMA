@@ -93,7 +93,7 @@ namespace geometry {
     {
         if (!this->m_bSurfaceArea || bReCalculate) {
             static const Real pi = std::acos(-1.0);
-            CGeoVolume<Real>::surfaceArea() += 4.0 * pi * this->m_radius * this->m_radius;
+            this->m_surfaceArea = 4.0 * pi * this->m_radius * this->m_radius;
             this->m_bSurfaceArea = true;
         }
     }
@@ -102,14 +102,8 @@ namespace geometry {
     void CGeoSphere<Real>::calculateVolume(bool bReCalculate)
     {
         if (!this->m_bVolume || bReCalculate) {
-<<<<<<< HEAD
             static const Real pi = std::acos(-1.0);
-            CGeoVolume<Real>::volume() = 4.0 / 3.0 * pi * this->m_radius * this->m_radius * this->m_radius;
-
-=======
-            const Real pi = std::acos(-1.0);
             this->m_volume = 4.0 / 3.0 * pi * m_radius * m_radius * m_radius;
->>>>>>> b462d8e1671a36035af190a988ad3b84b96d0405
             this->m_bVolume = true;
         }
     }
