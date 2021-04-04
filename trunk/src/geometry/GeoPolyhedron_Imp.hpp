@@ -275,15 +275,15 @@ namespace geometry {
     void CGeoPolyhedron<Real>::calculateCentroid(bool bReCalculate)
     {
         if (!this->m_bCentroid || bReCalculate) {
-            CGeoVolume<Real>::centroid() << 0.0, 0.0, 0.0;
+            this->m_centroid << 0.0, 0.0, 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
                 m_polygons[m_polygonIds[i]].calculateCentroid();
-                CGeoVolume<Real>::centroid() += m_polygons[m_polygonIds[i]].centroid();
+                this->m_centroid += m_polygons[m_polygonIds[i]].centroid();
             }
 
             if (m_polygons.size() > 0)
-                CGeoVolume<Real>::centroid() /= static_cast<Real>(m_polygonIds.size());
+                this->m_centroid /= static_cast<Real>(m_polygonIds.size());
 
             this->m_bCentroid = true;
         }
@@ -293,11 +293,11 @@ namespace geometry {
     void CGeoPolyhedron<Real>::calculateSurfaceArea(bool bReCalculate)
     {
         if (!this->m_bSurfaceArea || bReCalculate) {
-            CGeoVolume<Real>::surfaceArea() = 0.0;
+            this->m_surfaceArea = 0.0;
 
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i) {
                 m_polygons[m_polygonIds[i]].calculateArea();
-                CGeoVolume<Real>::surfaceArea() += m_polygons[m_polygonIds[i]].area();
+                this->m_surfaceArea += m_polygons[m_polygonIds[i]].area();
             }
 
             this->m_bSurfaceArea = true;
@@ -311,7 +311,7 @@ namespace geometry {
             // see: http://en.wikipedia.org/wiki/Polyhedron#Volume
             // see: http://g3d.sourceforge.net/
 
-            CGeoVolume<Real>::volume() = 0.0;
+            this->m_volume = 0.0;
 
             if (m_polygons.size() >= 4) {
                 if (m_polygons[m_polygonIds[0]].polyline().nbVertices() > 0) {
@@ -321,13 +321,12 @@ namespace geometry {
                         m_polygons[m_polygonIds[i]].calculateArea();
 
                         if (m_polygons[m_polygonIds[i]].polyline().nbVertices() > 0)
-                            CGeoVolume<Real>::volume() += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
+                            this->m_volume += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
                     }
                 }
             }
 
-            CGeoVolume<Real>::volume() /= 3.0;
-
+            this->m_volume /= 3.0;
             this->m_bVolume = true;
         }
     }

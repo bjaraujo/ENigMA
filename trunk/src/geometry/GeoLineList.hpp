@@ -28,7 +28,7 @@ namespace geometry {
 
         void reset();
 
-        void addLine(CGeoLine<Real>& aLine);
+        void addLine(const CGeoLine<Real>& aLine);
         CGeoLine<Real>& line(const Integer aLineIndex);
 
         inline void calculateLength(bool bReCalculate = false);

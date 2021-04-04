@@ -28,7 +28,7 @@ namespace material {
     }
 
     template <typename Real>
-    void CMatMaterial<Real>::addProperty(EPropertyType aPropertyType, CAnaFunction<Real>& aPropertyFunction)
+    void CMatMaterial<Real>::addProperty(EPropertyType aPropertyType, const CAnaFunction<Real>& aPropertyFunction)
     {
         m_propertyFunc[aPropertyType] = aPropertyFunction;
     }

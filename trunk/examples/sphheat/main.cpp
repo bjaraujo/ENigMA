@@ -188,8 +188,8 @@ void steadyHeatConduction2D()
 
     CSphParticles<double> sParticles(aKernel);
 
-    double dt = 0.01;
-    Integer nIter = 10;
+    double dt = 0.001;
+    Integer nIter = 20;
 
     double h = 1.0 / nu * 5.0;
     double diff = 1.0;

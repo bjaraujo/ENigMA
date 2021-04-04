@@ -26,19 +26,19 @@ namespace fem {
         }
 
         template <typename Real>
-        Real& CFemThermalElement<Real>::specificHeat()
+        Real CFemThermalElement<Real>::specificHeat()
         {
             return m_specificHeat;
         }
 
         template <typename Real>
-        Real& CFemThermalElement<Real>::density()
+        Real CFemThermalElement<Real>::density()
         {
             return m_density;
         }
 
         template <typename Real>
-        Real& CFemThermalElement<Real>::thermalConductivity()
+        Real CFemThermalElement<Real>::thermalConductivity()
         {
             return m_thermalConductivity;
         }

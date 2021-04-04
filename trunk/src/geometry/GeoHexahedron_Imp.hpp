@@ -59,8 +59,7 @@ namespace geometry {
             v2 = this->m_vertices[3] - this->m_vertices[0];
             v3 = this->m_vertices[4] - this->m_vertices[0];
 
-            CGeoVolume<Real>::volume() = v1.dot(v2.cross(v3));
-
+            this->m_volume = v1.dot(v2.cross(v3));
             this->m_bVolume = true;
         }
     }

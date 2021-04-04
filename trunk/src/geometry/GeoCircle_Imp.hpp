@@ -68,7 +68,7 @@ namespace geometry {
     template <typename Real>
     void CGeoCircle<Real>::calculateCentroid(bool bReCalculate)
     {
-        CGeoArea<Real>::centroid() = this->m_center;
+        this->m_centroid = this->m_center;
     }
 
     template <typename Real>
@@ -76,7 +76,6 @@ namespace geometry {
     {
         if (!this->m_bNormal || bReCalculate) {
             CGeoArea<Real>::normal() << 1.0, 0.0, 0.0;
-
             this->m_bNormal = true;
         }
     }
@@ -87,7 +86,6 @@ namespace geometry {
         if (!this->m_bArea || bReCalculate) {
             static const Real pi = std::acos(-1.0);
             CGeoArea<Real>::area() = pi * this->m_radius * this->m_radius;
-
             this->m_bArea = true;
         }
     }

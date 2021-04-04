@@ -694,7 +694,7 @@ namespace std
 
 %extend ENigMA::fvm::CFvmFace<double> {
     
-    ENigMA::geometry::CGeoCoordinate<double>& centroid() { 
+    ENigMA::geometry::CGeoCoordinate<double> centroid() { 
         return (*$self).centroid();
     }
 
@@ -764,7 +764,7 @@ namespace std
 
 %template(CSphSpikyDouble) ENigMA::sph::CSphSpiky<double>;
 
-// SPH 
+// SPH
 
 %include "SphParticles.hpp"
 

@@ -32,7 +32,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    Real& CGeoArea<Real>::area()
+    Real CGeoArea<Real>::area()
     {
         return m_area;
     }

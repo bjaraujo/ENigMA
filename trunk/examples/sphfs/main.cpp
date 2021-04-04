@@ -33,15 +33,15 @@ const int NX = 80;         // x
 const int NY = 80;         // y
 
 const int NPX = 40;
-const int NPY = 40;
+const int NPY = 60;
 
 int MOVING_PARTICLES = NPX * NPY;
 
-float dt = 1E-2f;      // time step
+float dt = 5E-3f;      // time step
 float h = 2.5f;
-float m0 = 200.0f;
+float m0 = 300.0f;
 float rho0 = 1000.0f;
-float visc0 = 100.0f;
+float visc0 = 200.0f;
 
 struct Particle
 {
@@ -360,7 +360,7 @@ void init()
             Particle pi;
 
             pi.pos.x() = 5 + ((float)i / NPX * (NX - 8) * 0.50f);
-            pi.pos.y() = 5 + ((float)j / NPY * (NY - 8) * 0.50f);
+            pi.pos.y() = 5 + ((float)j / NPY * (NY - 8) * 0.75f);
 
             pi.vel.x() = 0.0;
             pi.vel.y() = 0.0;

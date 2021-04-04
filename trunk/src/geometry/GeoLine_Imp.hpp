@@ -98,7 +98,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    CGeoLine<Real> CGeoLine<Real>::clip(CGeoPlane<Real>& aPlane)
+    CGeoLine<Real> CGeoLine<Real>::clip(CGeoPlane<Real> aPlane)
     {
         CGeoLine<Real> aLine;
         CGeoCoordinate<Real> p1, p2;
@@ -147,7 +147,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    bool CGeoLine<Real>::intersects(CGeoPlane<Real>& aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
+    bool CGeoLine<Real>::intersects(CGeoPlane<Real> aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
         anIntersectionType = IT_NONE;
 
@@ -178,7 +178,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
+    bool CGeoLine<Real>::intersects(CGeoLine<Real> aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
         CGeoCoordinate<Real> aPoint;
 
@@ -186,7 +186,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
+    bool CGeoLine<Real>::intersects(CGeoLine<Real> aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
     {
         CGeoIntersectionType anIntersectionType;
 
@@ -194,7 +194,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
+    bool CGeoLine<Real>::intersects(CGeoLine<Real> aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
     {
         // http://mathworld.wolfram.com/Line-LineIntersection.html
         // in 3d; will also work in 2d if z components are 0

@@ -23,9 +23,9 @@ namespace fem {
             CFemThermalElement();
             ~CFemThermalElement();
 
-            Real& specificHeat();
-            Real& density();
-            Real& thermalConductivity();
+            Real specificHeat();
+            Real density();
+            Real thermalConductivity();
         };
     }
 }

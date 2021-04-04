@@ -166,7 +166,7 @@ namespace fvm {
     }
 
     template <typename Real>
-    void CFvmControlVolume<Real>::clip(CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+    void CFvmControlVolume<Real>::clip(CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
     {
         CGeoPolygon<Real> aPolygon;
         Real d;
@@ -183,10 +183,10 @@ namespace fvm {
         if (!this->m_bSurfaceArea || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateSurfaceArea();
-                CGeoVolume<Real>::surfaceArea() = m_clippedPolyhedron.surfaceArea();
+                this->m_surfaceArea = m_clippedPolyhedron.surfaceArea();
             } else {
                 m_polyhedron.calculateSurfaceArea();
-                CGeoVolume<Real>::surfaceArea() = m_polyhedron.surfaceArea();
+                this->m_surfaceArea = m_polyhedron.surfaceArea();
             }
 
             this->m_bSurfaceArea = true;
@@ -199,10 +199,10 @@ namespace fvm {
         if (!this->m_bCentroid || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateCentroid();
-                CGeoVolume<Real>::centroid() = m_clippedPolyhedron.centroid();
+                this->m_centroid = m_clippedPolyhedron.centroid();
             } else {
                 m_polyhedron.calculateCentroid();
-                CGeoVolume<Real>::centroid() = m_polyhedron.centroid();
+                this->m_centroid = m_polyhedron.centroid();
             }
 
             this->m_bCentroid = true;
@@ -215,10 +215,10 @@ namespace fvm {
         if (!this->m_bVolume || bReCalculate) {
             if (m_clipped) {
                 m_clippedPolyhedron.calculateVolume(bReCalculate);
-                CGeoVolume<Real>::volume() = m_clippedPolyhedron.volume();
+                this->m_volume = m_clippedPolyhedron.volume();
             } else {
                 m_polyhedron.calculateVolume(bReCalculate);
-                CGeoVolume<Real>::volume() = m_polyhedron.volume();
+                this->m_volume = m_polyhedron.volume();
             }
 
             this->m_bVolume = true;

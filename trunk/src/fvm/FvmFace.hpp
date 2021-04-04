@@ -64,10 +64,10 @@ namespace fvm {
 
     public:
         CFvmFace();
-        explicit CFvmFace(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
+        explicit CFvmFace(ENigMA::geometry::CGeoPolygon<Real> aPolygon);
         virtual ~CFvmFace();
 
-        void set(ENigMA::geometry::CGeoPolygon<Real>& aPolygon);
+        void set(ENigMA::geometry::CGeoPolygon<Real> aPolygon);
 
         void addNode(const CFvmNode<Real>& aNode);
 

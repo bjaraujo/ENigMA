@@ -48,10 +48,10 @@ namespace geometry {
 
         if (fabs(m11) <= aTolerance * aTolerance) {
             this->m_center << 0.0, 0.0, 0.0;
-            this->m_radius = 0.0;
+            m_radius = 0.0;
         } else {
             this->m_center << 0.5 * m12 / m11, 0.5 * m13 / m11, 0.5 * m14 / m11;
-            this->m_radius = sqrt(m_center.squaredNorm() - m15 / m11);
+            m_radius = sqrt(m_center.squaredNorm() - m15 / m11);
         }
     }
 
@@ -59,7 +59,7 @@ namespace geometry {
     CGeoSphere<Real>::CGeoSphere(const CGeoCoordinate<Real>& aCenter, const Real aRadius)
     {
         this->m_center = aCenter;
-        this->m_radius = aRadius;
+        m_radius = aRadius;
     }
 
     template <typename Real>
@@ -76,15 +76,14 @@ namespace geometry {
     template <typename Real>
     Real CGeoSphere<Real>::radius()
     {
-        return this->m_radius;
+        return m_radius;
     }
 
     template <typename Real>
     void CGeoSphere<Real>::calculateCentroid(bool bReCalculate)
     {
         if (!this->m_bCentroid || bReCalculate) {
-            CGeoVolume<Real>::centroid() = this->m_center;
-
+            this->m_centroid = this->m_center;
             this->m_bCentroid = true;
         }
     }
@@ -95,7 +94,6 @@ namespace geometry {
         if (!this->m_bSurfaceArea || bReCalculate) {
             static const Real pi = std::acos(-1.0);
             CGeoVolume<Real>::surfaceArea() += 4.0 * pi * this->m_radius * this->m_radius;
-
             this->m_bSurfaceArea = true;
         }
     }
@@ -104,9 +102,14 @@ namespace geometry {
     void CGeoSphere<Real>::calculateVolume(bool bReCalculate)
     {
         if (!this->m_bVolume || bReCalculate) {
+<<<<<<< HEAD
             static const Real pi = std::acos(-1.0);
             CGeoVolume<Real>::volume() = 4.0 / 3.0 * pi * this->m_radius * this->m_radius * this->m_radius;
 
+=======
+            const Real pi = std::acos(-1.0);
+            this->m_volume = 4.0 / 3.0 * pi * m_radius * m_radius * m_radius;
+>>>>>>> b462d8e1671a36035af190a988ad3b84b96d0405
             this->m_bVolume = true;
         }
     }
@@ -117,8 +120,8 @@ namespace geometry {
         if (!this->m_bBoundingBox || bReCalculate) {
             CGeoVolume<Real>::boundingBox().reset();
 
-            CGeoCoordinate<Real> aCoordinate1(-this->m_radius, -this->m_radius, -this->m_radius);
-            CGeoCoordinate<Real> aCoordinate2(+this->m_radius, +this->m_radius, +this->m_radius);
+            CGeoCoordinate<Real> aCoordinate1(-m_radius, -m_radius, -m_radius);
+            CGeoCoordinate<Real> aCoordinate2(+m_radius, +m_radius, +m_radius);
 
             CGeoVolume<Real>::boundingBox().addCoordinate(aCoordinate1);
             CGeoVolume<Real>::boundingBox().addCoordinate(aCoordinate2);
@@ -132,7 +135,7 @@ namespace geometry {
     {
         Real aDistance = (aPoint - this->m_center).norm();
 
-        if (aDistance <= this->m_radius + aTolerance)
+        if (aDistance <= m_radius + aTolerance)
             return true;
         else
             return false;

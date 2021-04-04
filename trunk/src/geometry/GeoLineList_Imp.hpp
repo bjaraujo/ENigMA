@@ -35,7 +35,7 @@ namespace geometry {
     }
 
     template <typename Real>
-    void CGeoLineList<Real>::addLine(CGeoLine<Real>& aLine)
+    void CGeoLineList<Real>::addLine(const CGeoLine<Real>& aLine)
     {
         m_lines.push_back(aLine);
     }

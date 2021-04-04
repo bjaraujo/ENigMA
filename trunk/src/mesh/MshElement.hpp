@@ -15,6 +15,7 @@ namespace ENigMA {
 namespace mesh {
     enum EElementType {
         ET_NONE = 0,
+        ET_NODE,
         ET_BEAM,
         ET_TRIANGLE,
         ET_QUADRILATERAL,

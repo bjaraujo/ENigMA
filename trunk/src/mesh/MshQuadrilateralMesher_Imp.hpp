@@ -1289,11 +1289,11 @@ namespace mesh {
 
             Integer aNodeId1 = aFace.nodeId(0);
             Integer aNodeId2 = aFace.nodeId(1);
-
             Integer aNodeId3;
+            Integer aNodeId4;
+            Integer aNodeId5;
 
             bool bNodeId3 = false;
-
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
                 if (anElement.nodeId(j) != aNodeId1 && anElement.nodeId(j) != aNodeId2) {
                     aNodeId3 = anElement.nodeId(j);
@@ -1307,7 +1307,7 @@ namespace mesh {
 
             if (aFace.hasPair()) {
                 Integer pairFaceId = aFace.pairFaceId();
-                CMshFace<Real> aPairFace = m_surfaceMesh.face(pairFaceId);
+                const CMshFace<Real> aPairFace = m_surfaceMesh.face(pairFaceId);
 
                 Integer aNeighborId = aPairFace.elementId();
 
@@ -1316,28 +1316,29 @@ namespace mesh {
 
                 CMshElement<Real>& aNeighbor = m_surfaceMesh.element(aNeighborId);
 
-                if (aNeighbor.elementType() != ET_TRIANGLE)
+                if (aNeighbor.elementType() != ET_QUADRILATERAL)
                     continue;
 
-                Integer aNodeId4;
-
-                bool bNodeId4 = false;
-
+                Integer wIndex = -1;
                 for (Integer j = 0; j < aNeighbor.nbNodeIds(); ++j) {
-                    if (aNeighbor.nodeId(j) != aNodeId1 && aNeighbor.nodeId(j) != aNodeId2) {
-                        aNodeId4 = aNeighbor.nodeId(j);
-                        bNodeId4 = true;
+                    if (aNeighbor.nodeId((j + 1) % 4) == aNodeId1 && aNeighbor.nodeId((j + 0) % 4) == aNodeId2) {
+                        wIndex = j;
                         break;
                     }
                 }
 
-                if (!bNodeId4)
+                if (wIndex == -1) {
                     continue;
+                }
 
-                CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
-                CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
-                CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
-                CMshNode<Real>& aNode4 = m_surfaceMesh.node(aNodeId4);
+                aNodeId4 = aNeighbor.nodeId((wIndex + 3) % 4);
+                aNodeId5 = aNeighbor.nodeId((wIndex + 2) % 4);
+
+                const CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
+                const CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
+                const CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
+                const CMshNode<Real>& aNode4 = m_surfaceMesh.node(aNodeId4);
+                const CMshNode<Real>& aNode5 = m_surfaceMesh.node(aNodeId5);
 
                 // Original
                 CMshTriangle<Real> aTriangle1;
@@ -1345,48 +1346,131 @@ namespace mesh {
                 aTriangle1.addVertex(aNode2);
                 aTriangle1.addVertex(aNode3);
 
+                aTriangle1.calculateArea();
                 aTriangle1.calculateQuality();
                 Real q1 = aTriangle1.quality();
 
+                CMshQuadrilateral<Real> aQuadrilateral1;
+                aQuadrilateral1.addVertex(aNode2);
+                aQuadrilateral1.addVertex(aNode1);
+                aQuadrilateral1.addVertex(aNode5);
+                aQuadrilateral1.addVertex(aNode4);
+
+                aQuadrilateral1.calculateQuality();
+                Real q2 = aQuadrilateral1.quality();
+
+                // Modified 1
                 CMshTriangle<Real> aTriangle2;
                 aTriangle2.addVertex(aNode2);
-                aTriangle2.addVertex(aNode1);
+                aTriangle2.addVertex(aNode3);
                 aTriangle2.addVertex(aNode4);
 
+                aTriangle2.calculateArea();
                 aTriangle2.calculateQuality();
-                Real q2 = aTriangle2.quality();
+                Real q3 = aTriangle2.quality();
 
-                // Modified
+                CMshQuadrilateral<Real> aQuadrilateral2;
+                aQuadrilateral2.addVertex(aNode1);
+                aQuadrilateral2.addVertex(aNode5);
+                aQuadrilateral2.addVertex(aNode4);
+                aQuadrilateral2.addVertex(aNode3);
+
+                aQuadrilateral2.calculateQuality();
+                Real q4 = aQuadrilateral2.quality();
+
+                if (std::min(q3, q4) > std::min(q1, q2) && 
+                    aTriangle2.normal().z() > aTolerance && 
+                    aQuadrilateral2.normal().z() > aTolerance) {
+                    
+                    // Check if convex
+                    std::vector<Integer> sNodes = { aNodeId1, aNodeId5, aNodeId4, aNodeId3 };
+
+                    bool isConvex = true;
+                    for (Integer i = 0; i < 4; i++) {
+
+                        CGeoVector<Real> v1 = m_surfaceMesh.node(sNodes[(i + 1) % 4]) - m_surfaceMesh.node(sNodes[(i + 0) % 4]);
+                        CGeoVector<Real> v2 = m_surfaceMesh.node(sNodes[(i + 2) % 4]) - m_surfaceMesh.node(sNodes[(i + 1) % 4]);
+
+                        Real z = v1.cross(v2).z();
+
+                        if (z <= 0.0) {
+                            isConvex = false;
+                            break;
+                        }
+                    }
+
+                    if (isConvex) {
+                        // Do flip
+                        m_surfaceMesh.element(anElementId).setNodeId(0, aNodeId2);
+                        m_surfaceMesh.element(anElementId).setNodeId(1, aNodeId3);
+                        m_surfaceMesh.element(anElementId).setNodeId(2, aNodeId4);
+
+                        m_surfaceMesh.element(aNeighborId).setNodeId(0, aNodeId1);
+                        m_surfaceMesh.element(aNeighborId).setNodeId(1, aNodeId5);
+                        m_surfaceMesh.element(aNeighborId).setNodeId(2, aNodeId4);
+                        m_surfaceMesh.element(aNeighborId).setNodeId(3, aNodeId3);
+
+                        sFlipped[anElementId] = true;
+                        sFlipped[aNeighborId] = true;
+                        continue;
+                    }
+                }
+
+                // Modified 2
                 CMshTriangle<Real> aTriangle3;
+                aTriangle3.addVertex(aNode1);
+                aTriangle3.addVertex(aNode5);
                 aTriangle3.addVertex(aNode3);
-                aTriangle3.addVertex(aNode4);
-                aTriangle3.addVertex(aNode2);
 
                 aTriangle3.calculateArea();
                 aTriangle3.calculateQuality();
-                Real q3 = aTriangle3.quality();
+                Real q5 = aTriangle3.quality();
 
-                CMshTriangle<Real> aTriangle4;
-                aTriangle4.addVertex(aNode4);
-                aTriangle4.addVertex(aNode3);
-                aTriangle4.addVertex(aNode1);
+                CMshQuadrilateral<Real> aQuadrilateral3;
+                aQuadrilateral3.addVertex(aNode3);
+                aQuadrilateral3.addVertex(aNode5);
+                aQuadrilateral3.addVertex(aNode4);
+                aQuadrilateral3.addVertex(aNode2);
 
-                aTriangle4.calculateArea();
-                aTriangle4.calculateQuality();
-                Real q4 = aTriangle4.quality();
+                aQuadrilateral3.calculateQuality();
+                Real q6 = aQuadrilateral3.quality();
 
-                if (std::min(q3, q4) > std::min(q1, q2) && aTriangle3.normal().z() > aTolerance && aTriangle4.normal().z() > aTolerance) {
-                    // Do flip
-                    m_surfaceMesh.element(anElementId).setNodeId(0, aNodeId3);
-                    m_surfaceMesh.element(anElementId).setNodeId(1, aNodeId4);
-                    m_surfaceMesh.element(anElementId).setNodeId(2, aNodeId2);
+                if (std::min(q6, q5) > std::min(q1, q2) && 
+                    aTriangle3.normal().z() > aTolerance && 
+                    aQuadrilateral3.normal().z() > aTolerance) {
+                    
+                    // Check if convex
+                    std::vector<Integer> sNodes = { aNodeId3, aNodeId5, aNodeId4, aNodeId2 };
 
-                    m_surfaceMesh.element(aNeighborId).setNodeId(0, aNodeId4);
-                    m_surfaceMesh.element(aNeighborId).setNodeId(1, aNodeId3);
-                    m_surfaceMesh.element(aNeighborId).setNodeId(2, aNodeId1);
+                    bool isConvex = true;
+                    for (Integer i = 0; i < 4; i++) {
 
-                    sFlipped[anElementId] = true;
-                    sFlipped[aNeighborId] = true;
+                        CGeoVector<Real> v1 = m_surfaceMesh.node(sNodes[(i + 1) % 4]) - m_surfaceMesh.node(sNodes[(i + 0) % 4]);
+                        CGeoVector<Real> v2 = m_surfaceMesh.node(sNodes[(i + 2) % 4]) - m_surfaceMesh.node(sNodes[(i + 1) % 4]);
+
+                        Real z = v1.cross(v2).z();
+
+                        if (z <= 0.0) {
+                            isConvex = false;
+                            break;
+                        }
+                    }
+
+                    if (isConvex) {
+                        // Do flip
+                        m_surfaceMesh.element(anElementId).setNodeId(0, aNodeId1);
+                        m_surfaceMesh.element(anElementId).setNodeId(1, aNodeId5);
+                        m_surfaceMesh.element(anElementId).setNodeId(2, aNodeId3);
+
+                        m_surfaceMesh.element(aNeighborId).setNodeId(0, aNodeId3);
+                        m_surfaceMesh.element(aNeighborId).setNodeId(1, aNodeId5);
+                        m_surfaceMesh.element(aNeighborId).setNodeId(2, aNodeId4);
+                        m_surfaceMesh.element(aNeighborId).setNodeId(3, aNodeId2);
+
+                        sFlipped[anElementId] = true;
+                        sFlipped[aNeighborId] = true;
+                        continue;
+                    }
                 }
             }
         }
@@ -1401,9 +1485,9 @@ namespace mesh {
 
         for (Integer i = 0; i < m_surfaceMesh.nbElements(); ++i) {
             Integer anElementId = m_surfaceMesh.elementId(i);
-            CMshElement<Real>& anElement = m_surfaceMesh.element(anElementId);
+            const CMshElement<Real>& anElement = m_surfaceMesh.element(anElementId);
 
-            if (anElement.elementType() != ET_TRIANGLE)
+            if (anElement.elementType() != ET_TRIANGLE && anElement.elementType() != ET_QUADRILATERAL)
                 continue;
 
             for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
@@ -1419,8 +1503,10 @@ namespace mesh {
 
                 sElements.clear();
 
+                Integer iter = 0;
+
                 do {
-                    CMshFace<Real>& aNextFace = m_surfaceMesh.face(aNextFaceId);
+                    const CMshFace<Real>& aNextFace = m_surfaceMesh.face(aNextFaceId);
 
                     if (!aNextFace.hasPair()) {
                         sNodes.clear();
@@ -1429,12 +1515,12 @@ namespace mesh {
                     }
 
                     Integer aNextPairFaceId = aNextFace.pairFaceId();
-                    CMshFace<Real>& aNextPairFace = m_surfaceMesh.face(aNextPairFaceId);
+                    const CMshFace<Real>& aNextPairFace = m_surfaceMesh.face(aNextPairFaceId);
 
                     Integer aNextElementId = aNextPairFace.elementId();
-                    CMshElement<Real>& aNextElement = m_surfaceMesh.element(aNextElementId);
+                    const CMshElement<Real>& aNextElement = m_surfaceMesh.element(aNextElementId);
 
-                    if (aNextElement.elementType() != ET_TRIANGLE)
+                    if (aNextElement.elementType() != ET_TRIANGLE && aNextElement.elementType() != ET_QUADRILATERAL)
                         continue;
 
                     for (Integer k = 0; k < aNextPairFace.nbNodeIds(); ++k) {
@@ -1454,6 +1540,11 @@ namespace mesh {
                             break;
                         }
                     }
+
+                    iter++;
+
+                    if (iter > 1000)
+                        return;
 
                 } while (aNextFaceId != aFirstFaceId);
 

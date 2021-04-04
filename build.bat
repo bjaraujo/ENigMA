@@ -1,0 +1,1 @@
+python BuildRelease.py -c -b -i -p -a 64 -s=D:\Libraries\Swig\swigwin-4.0.2\swig.exe
