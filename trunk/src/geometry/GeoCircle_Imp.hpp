@@ -75,7 +75,7 @@ namespace geometry {
     void CGeoCircle<Real>::calculateNormal(bool bReCalculate)
     {
         if (!this->m_bNormal || bReCalculate) {
-            CGeoArea<Real>::normal() << 1.0, 0.0, 0.0;
+            this->m_normal << 1.0, 0.0, 0.0;
             this->m_bNormal = true;
         }
     }
@@ -94,13 +94,13 @@ namespace geometry {
     void CGeoCircle<Real>::calculateBoundingBox(bool bReCalculate)
     {
         if (!this->m_bBoundingBox || bReCalculate) {
-            CGeoArea<Real>::boundingBox().reset();
+            this->m_boundingBox.reset();
 
             CGeoCoordinate<Real> aCoordinate1(-this->m_radius, -this->m_radius, 0.0);
             CGeoCoordinate<Real> aCoordinate2(+this->m_radius, +this->m_radius, 0.0);
 
-            CGeoArea<Real>::boundingBox().addCoordinate(aCoordinate1);
-            CGeoArea<Real>::boundingBox().addCoordinate(aCoordinate2);
+            this->m_boundingBox.addCoordinate(aCoordinate1);
+            this->m_boundingBox.addCoordinate(aCoordinate2);
 
             this->m_bBoundingBox = true;
         }

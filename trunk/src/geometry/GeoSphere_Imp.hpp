@@ -112,13 +112,13 @@ namespace geometry {
     void CGeoSphere<Real>::calculateBoundingBox(bool bReCalculate)
     {
         if (!this->m_bBoundingBox || bReCalculate) {
-            CGeoVolume<Real>::boundingBox().reset();
+            this->m_boundingBox.reset();
 
             CGeoCoordinate<Real> aCoordinate1(-m_radius, -m_radius, -m_radius);
             CGeoCoordinate<Real> aCoordinate2(+m_radius, +m_radius, +m_radius);
 
-            CGeoVolume<Real>::boundingBox().addCoordinate(aCoordinate1);
-            CGeoVolume<Real>::boundingBox().addCoordinate(aCoordinate2);
+            this->m_boundingBox.addCoordinate(aCoordinate1);
+            this->m_boundingBox.addCoordinate(aCoordinate2);
 
             this->m_bBoundingBox = true;
         }
