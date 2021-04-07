@@ -535,12 +535,166 @@ void solve3()
     std::cout << "Done." << std::endl;
 }
 
+void solve4()
+{
+
+    std::cout << "Meshing..." << std::endl;
+    
+    CPdeField<double> Ti;
+    CPosGmsh<double> aPosGmsh;
+
+    aPosGmsh.load(Ti, "bem_cool.msh");
+
+    CMshMesh<double> aSurfaceMesh = Ti.mesh();
+    aSurfaceMesh.invert();
+
+    std::vector<CBemTriangle<double>> aBemMesh;
+
+    for (Integer i = 0; i < aSurfaceMesh.nbElements(); ++i) {
+
+        Integer anElementId = aSurfaceMesh.elementId(i);
+
+        CMshElement<double> anElement = aSurfaceMesh.element(anElementId);
+
+        if (anElement.elementType() != ET_TRIANGLE)
+            continue;
+
+        CBemTriangle<double> aTriangle;
+
+        for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
+
+            Integer aNodeId = anElement.nodeId(i);
+
+            CMshNode<double> aNode = aSurfaceMesh.node(aNodeId);
+
+            CGeoCoordinate<double> aVertex = aNode;
+
+            aTriangle.addVertex(aVertex);
+        }
+
+        aBemMesh.push_back(aTriangle);
+    }
+
+    // Set boundary conditions
+
+    std::cout << "Setting boundary conditions..." << std::endl;
+
+    std::vector<double> q;
+    std::vector<double> Tf;
+    std::vector<bool> Tfixed;
+
+    for (Integer i = 0; i < static_cast<Integer>(aBemMesh.size()); ++i) {
+
+        Tf.push_back(0.0);
+        Tfixed.push_back(false);
+        q.push_back(0.0);
+
+        aBemMesh[i].calculateCentroid();
+
+        if (fabs(aBemMesh[i].centroid().x() > 0.1)) {
+            Tf[i] = 23.0;
+            Tfixed[i] = true;
+        }
+
+        if (fabs(aBemMesh[i].centroid().y() > 0.1)) {
+            Tf[i] = 23.0;
+            Tfixed[i] = true;
+        }
+
+        if (fabs(aBemMesh[i].centroid().z() > 0.03)) {
+            Tf[i] = 23.0;
+            Tfixed[i] = true;
+        }
+    }
+
+    // Solve
+    std::cout << "Assembling system..." << std::endl;
+
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> A;
+    Eigen::Matrix<double, Eigen::Dynamic, 1> b;
+    Eigen::Matrix<double, Eigen::Dynamic, 1> T;
+
+    std::cout << aBemMesh.size() << " x " << aBemMesh.size() << std::endl;
+
+    A.resize(aBemMesh.size(), aBemMesh.size());
+    A.setZero();
+
+    b.resize(aBemMesh.size());
+    b.setZero();
+
+    const double hcoeff = 1.0;
+    const double thcond = 1.0;
+
+    double perc;
+
+    for (Integer i = 0; i < static_cast<Integer>(aBemMesh.size()); ++i) {
+
+        perc = (double)i / aBemMesh.size() * 100;
+
+        if (i % 50 == 0) {
+            std::cout << perc << " %..." << std::endl;
+        }
+
+        for (Integer j = 0; j < static_cast<Integer>(aBemMesh.size()); ++j) {
+
+            double hij, gij;
+
+            aBemMesh[i].laplacianCoeff(i, j, aBemMesh[j], hij, gij);
+
+            double Delta = aBemMesh[j].area();
+
+            //std::cout << "Delta = " << Delta << std::endl;
+
+            /*
+            if (i >= aBemMesh.size() - 144*2)
+            {
+                hij *= 0.5;
+                gij *= 0.5;
+                q[j] = 1;
+            }
+            */
+
+            // H
+            if (i == j)
+                A(i, j) += hij - 0.5;
+            else
+                A(i, j) += hij;
+
+            if (Tfixed[j]) {
+                // H^
+                A(i, j) += -hcoeff / thcond / Delta * gij;
+
+                b[i] += -hcoeff / thcond / Delta * gij * Tf[j];
+            } else {
+                b[i] += -q[j] / thcond * gij;
+            }
+        }
+    }
+
+    std::cout << "Solving system..." << std::endl;
+
+    T = A.lu().solve(b);
+
+    Ti.setMesh(aSurfaceMesh);
+    Ti.setDiscretLocation(DL_ELEMENT_CENTER);
+    Ti.setNbDofs(1);
+
+    Ti.u = T;
+
+    std::cout << "Saving results..." << std::endl;
+
+    aPosGmsh.save(Ti, "bem_heat4.pos", "heat");
+
+    std::cout << "Done." << std::endl;
+}
+
 int main(int argc, char** argv)
 {
 
     //solve1();
     //solve2();
-    solve3();
+    //solve3();
+    solve4();
 
 }
 
