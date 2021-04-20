@@ -821,6 +821,7 @@ namespace mesh {
         res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.05, false, 0, aTolerance) : res = false;
         res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
         res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 2.50, 0.00, false, 0, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 3.50, 0.00, false, 0, aTolerance) : res = false;
 
         if (this->frontSize() > 0) {
             std::cout << "Meshing error!" << std::endl;

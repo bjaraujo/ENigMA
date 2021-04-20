@@ -52,63 +52,104 @@ void addCircle(CMshMesh<double>& anEdgeMesh, double cx, double cy, double radius
 
 void GenerateMesh(const double meshSize, const int maxEle, const double tol)
 {
-
     CPdeField<double> T;
     CPosGmsh<double> aPosGmsh;
     CMshMesh<double> aSurfaceMesh;
 
     CMshQuadrilateralMesher<double> aQuadrilateralMesher;
 
-    CMshMesh<double> anEdgeMesh;
+    /*
+    CMshMesh<double> anEdgeMesh1;
 
     CMshNode<double> aNode1;
-    aNode1 << 0.0, 0.0, 0.0;
-    anEdgeMesh.addNode(0, aNode1);
+    aNode1 << 0.0, 15.1, 0.0;
+    anEdgeMesh1.addNode(0, aNode1);
 
     CMshNode<double> aNode2;
-    aNode2 << 400.0, 0.0, 0.0;
-    anEdgeMesh.addNode(1, aNode2);
-
-    CMshNode<double> aNode3;
-    aNode3 << 400.0, 400.0, 0.0;
-    anEdgeMesh.addNode(2, aNode3);
-
-    CMshNode<double> aNode4;
-    aNode4 << 0.0, 400.0, 0.0;
-    anEdgeMesh.addNode(3, aNode4);
+    aNode2 << 26.5, 15.1, 0.0;
+    anEdgeMesh1.addNode(1, aNode2);
 
     CMshElement<double> anElement1(ET_BEAM);
     anElement1.addNodeId(0);
     anElement1.addNodeId(1);
-    anEdgeMesh.addElement(0, anElement1);
+    anEdgeMesh1.addElement(0, anElement1);
+
+    aQuadrilateralMesher.remesh(anEdgeMesh1, 4.5);
+
+    CMshMesh<double> anEdgeMesh2;
+
+    CMshNode<double> aNode3;
+    aNode3 << 26.5, 15.1, 0.0;
+    anEdgeMesh2.addNode(0, aNode3);
+
+    CMshNode<double> aNode4;
+    aNode4 << 26.5, 30.3, 0.0;
+    anEdgeMesh2.addNode(1, aNode4);
 
     CMshElement<double> anElement2(ET_BEAM);
+    anElement2.addNodeId(0);
     anElement2.addNodeId(1);
-    anElement2.addNodeId(2);
-    anEdgeMesh.addElement(1, anElement2);
+    anEdgeMesh2.addElement(0, anElement2);
+
+    aQuadrilateralMesher.remesh(anEdgeMesh2, 1.9);
+
+    CMshMesh<double> anEdgeMesh3;
+
+    CMshNode<double> aNode5;
+    aNode5 << 26.5, 30.3, 0.0;
+    anEdgeMesh3.addNode(0, aNode5);
+
+    CMshNode<double> aNode6;
+    aNode6 << 0.0, 30.3, 0.0;
+    anEdgeMesh3.addNode(1, aNode6);
 
     CMshElement<double> anElement3(ET_BEAM);
-    anElement3.addNodeId(2);
-    anElement3.addNodeId(3);
-    anEdgeMesh.addElement(2, anElement3);
+    anElement3.addNodeId(0);
+    anElement3.addNodeId(1);
+    anEdgeMesh3.addElement(0, anElement3);
+
+    aQuadrilateralMesher.remesh(anEdgeMesh3, 1.2);
+
+    CMshMesh<double> anEdgeMesh4;
+
+    CMshNode<double> aNode7;
+    aNode7 << 0.0, 30.3, 0.0;
+    anEdgeMesh4.addNode(0, aNode7);
+
+    CMshNode<double> aNode8;
+    aNode8 << 0.0, 15.1, 0.0;
+    anEdgeMesh4.addNode(1, aNode8);
 
     CMshElement<double> anElement4(ET_BEAM);
-    anElement4.addNodeId(3);
     anElement4.addNodeId(0);
-    anEdgeMesh.addElement(3, anElement4);
+    anElement4.addNodeId(1);
+    anEdgeMesh4.addElement(0, anElement4);
 
-    addCircle(anEdgeMesh, 200, 200, 100);
+    aQuadrilateralMesher.remesh(anEdgeMesh4, 1.9);
 
-    anEdgeMesh.generateFaces(1E-3);
+    anEdgeMesh.addMesh(anEdgeMesh1);
+    anEdgeMesh.addMesh(anEdgeMesh2);
+    anEdgeMesh.addMesh(anEdgeMesh3);
+    anEdgeMesh.addMesh(anEdgeMesh4);
+    */
+
+    aPosGmsh.load(T, "_edge472.msh");
+    CMshMesh<double> anEdgeMesh = T.mesh();
+
+    anEdgeMesh.mergeNodes(1E-2);
+    anEdgeMesh.generateFaces(1E-2);
+
+    T.setMesh(anEdgeMesh);
+    aPosGmsh.save(T, "edge_quads.msh", "beams");
 
     clock_t start, finish;
 
     start = clock();
 
-    aQuadrilateralMesher.remesh(anEdgeMesh, meshSize);
+    //aQuadrilateralMesher.remesh(anEdgeMesh, meshSize);
 
     try {
-        aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1, tol);
+        aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1 * meshSize, 10.0 * meshSize, tol);
     } catch (std::vector<SMshQuadrilateralAdvancingFrontEdge<double>> advFront) {
 
         CMshMesh<double> aMesh;
@@ -145,14 +186,11 @@ void GenerateMesh(const double meshSize, const int maxEle, const double tol)
 
     std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
 
-    T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "edge_quads.msh", "beams");
-
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "surface_quads.msh", "quads");
 }
 
 int main(int argc, char* argv[])
 {
-    GenerateMesh(20, 499, 1E-4);
+    GenerateMesh(1.25, 499, 1E-2);
 }
