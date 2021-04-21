@@ -739,15 +739,21 @@ namespace mesh {
 
         m_tree.reset();
 
-        m_nextEdgeId = 0;
-
         std::map<Integer, Integer> newEdgeIds;
 
         for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
             Integer anAdvEdgeId = anEdgeMesh.elementId(i);
+            const CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
 
-            newEdgeIds[anAdvEdgeId] = i;
+            if (anElement.elementType() == ET_BEAM) {
+                newEdgeIds[anAdvEdgeId] = i;
+            }
         }
+
+        Real smallestEdgeLength = std::numeric_limits<Real>::max();
+        Integer aFirstIndex = 0;
+
+        m_nextEdgeId = 0;
 
         for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
             Integer anAdvEdgeId = anEdgeMesh.elementId(i);
@@ -816,12 +822,14 @@ namespace mesh {
         Integer maxElem = maxNbElements;
 
         bool res = true;
-
-        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.05, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 2.50, 0.00, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 3.50, 0.00, false, 0, aTolerance) : res = false;
+      
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, aFirstIndex, aTolerance) : res = false;
+        aFirstIndex = 0;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, aFirstIndex, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.02, false, aFirstIndex, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, false, aFirstIndex, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 2.50, 0.00, false, aFirstIndex, aTolerance) : res = false;
+        res ? res = this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 3.50, 0.00, false, aFirstIndex, aTolerance) : res = false;
 
         if (this->frontSize() > 0) {
             std::cout << "Meshing error!" << std::endl;

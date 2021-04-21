@@ -43,6 +43,7 @@ namespace mesh {
             this->line.reset();
             this->line.setStartPoint(aMesh.node(this->nodeId[0]));
             this->line.setEndPoint(aMesh.node(this->nodeId[1]));
+            this->line.calculateLength();
         }
     };
 

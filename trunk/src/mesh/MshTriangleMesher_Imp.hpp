@@ -622,16 +622,17 @@ namespace mesh {
 
         std::map<Integer, Integer> newEdgeIds;
 
-        m_nextEdgeId = 0;
-
         for (Integer i = 0; i < anEdgeMesh.nbElements(); ++i) {
             Integer anAdvEdgeId = anEdgeMesh.elementId(i);
-
             const CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
 
-            if (anElement.elementType() == ET_BEAM)
-                newEdgeIds[anAdvEdgeId] = m_nextEdgeId++;
+            if (anElement.elementType() == ET_BEAM) {
+                newEdgeIds[anAdvEdgeId] = i;
+            }
         }
+
+        Real smallestEdgeLength = std::numeric_limits<Real>::max();
+        Integer aFirstIndex = 0;
 
         m_nextEdgeId = 0;
 
@@ -675,9 +676,14 @@ namespace mesh {
                     }
                 }
 
+                if (anAdvEdge.line.length() < smallestEdgeLength) {
+                    smallestEdgeLength = anAdvEdge.line.length();
+                    aFirstIndex = static_cast<Integer>(m_anAdvFront.size());
+                }
+
                 m_anAdvFront.push_back(anAdvEdge);
 
-                this->addEdgeToRtree(anAdvEdge, aTolerance);
+                this->addEdgeToRtree(anAdvEdge, aTolerance);                
             }
         }
 
@@ -702,10 +708,12 @@ namespace mesh {
         Integer maxElem = maxNbElements;
 
         bool res = true;
-
-        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.10, false, 0, aTolerance) : res = false;
-        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, false, 0, aTolerance) : res = false;
-
+        
+        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, aFirstIndex, aTolerance) : res = false;
+        aFirstIndex = 0;
+        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, false, aFirstIndex, aTolerance) : res = false;
+        res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, false, aFirstIndex, aTolerance) : res = false;
+        
         if (this->frontSize() > 0) {
             std::cout << "Meshing error!" << std::endl;
             throw(m_anAdvFront);

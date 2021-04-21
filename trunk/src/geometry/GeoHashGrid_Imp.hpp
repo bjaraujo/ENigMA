@@ -182,7 +182,7 @@ namespace geometry {
         jmax = std::min(std::max(0, jmax), static_cast<Integer>(m_nbCellsY - 1));
         kmax = std::min(std::max(0, kmax), static_cast<Integer>(m_nbCellsZ - 1));
 
-        // Loop over cells Intersecting node Bounding Box
+        // Loop over cells intersecting node Bounding Box
         for (int i = imin; i <= imax; ++i) {
             for (int j = jmin; j <= jmax; ++j) {
                 Integer j_off = j * m_nbCellsX;

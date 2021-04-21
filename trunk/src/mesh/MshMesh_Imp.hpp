@@ -290,7 +290,21 @@ namespace mesh {
                 if (sCoordinates.at(j) != aFaceId) {
                     Integer aPairFaceId = sCoordinates.at(j);
 
-                    if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType()) {
+                    std::vector<Integer> n1;
+                    for (Integer k = 0; k < m_faces.at(aFaceId).nbNodeIds(); ++k) {
+                        Integer aNodeId = m_faces.at(aFaceId).nodeId(k);
+                        n1.push_back(aNodeId);
+                    }
+                    std::sort(n1.begin(), n1.end());
+
+                    std::vector<Integer> n2;
+                    for (Integer k = 0; k < m_faces.at(aPairFaceId).nbNodeIds(); ++k) {
+                        Integer aNodeId = m_faces.at(aPairFaceId).nodeId(k);
+                        n2.push_back(aNodeId);
+                    }
+                    std::sort(n2.begin(), n2.end());
+
+                    if (m_faces.at(aFaceId).faceType() == m_faces.at(aPairFaceId).faceType() && n1 == n2) {
                         m_faces.at(aFaceId).setPairFaceId(aPairFaceId);
                         m_faces.at(aPairFaceId).setPairFaceId(aFaceId);
                         break;
