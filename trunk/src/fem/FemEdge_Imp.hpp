@@ -9,28 +9,30 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace fem {
-    template <typename Real>
-    CFemEdge<Real>::CFemEdge()
+namespace ENigMA
+{
+    namespace fem
     {
-    }
+        template <typename Real>
+        CFemEdge<Real>::CFemEdge()
+        {
+        }
 
-    template <typename Real>
-    CFemEdge<Real>::~CFemEdge()
-    {
-    }
+        template <typename Real>
+        CFemEdge<Real>::~CFemEdge()
+        {
+        }
 
-    template <typename Real>
-    Real CFemEdge<Real>::sectionArea() const
-    {
-        return m_sectionArea;
-    }
+        template <typename Real>
+        Real CFemEdge<Real>::sectionArea() const
+        {
+            return m_sectionArea;
+        }
 
-    template <typename Real>
-    Real CFemEdge<Real>::perimeter() const
-    {
-        return m_perimeter;
+        template <typename Real>
+        Real CFemEdge<Real>::perimeter() const
+        {
+            return m_perimeter;
+        }
     }
-}
 }

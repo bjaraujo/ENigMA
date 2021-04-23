@@ -9,20 +9,22 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace geometry {
-    template <typename Real>
-    inline void CGeoCoordinate<Real>::transform(const CGeoCoordinateSystem<Real>& cs)
+namespace ENigMA
+{
+    namespace geometry
     {
-        *this = (cs * *this);
-    }
+        template <typename Real>
+        inline void CGeoCoordinate<Real>::transform(const CGeoCoordinateSystem<Real>& cs)
+        {
+            *this = (cs * *this);
+        }
 
-    template <typename Real>
-    std::ostream& operator<<(std::ostream& output, const CGeoCoordinate<Real>& aCoordinate)
-    {
-        output << aCoordinate.x() << ", " << aCoordinate.y() << ", " << aCoordinate.z();
+        template <typename Real>
+        std::ostream& operator<<(std::ostream& output, const CGeoCoordinate<Real>& aCoordinate)
+        {
+            output << aCoordinate.x() << ", " << aCoordinate.y() << ", " << aCoordinate.z();
 
-        return output;
+            return output;
+        }
     }
-}
 }

@@ -9,9 +9,11 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace fdm {
-}
+namespace ENigMA
+{
+    namespace fdm
+    {
+    }
 }
 
 #include "FdmGrid_Imp.hpp"

@@ -17,16 +17,14 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
+        template <typename Real>
         class CCsgCylinder
         {
         public:
-
             static ENigMA::geometry::CGeoCoordinate<Real> point(ENigMA::geometry::CGeoCoordinate<Real>& aStart, ENigMA::geometry::CGeoVector<Real>& axisX, ENigMA::geometry::CGeoVector<Real>& axisY, ENigMA::geometry::CGeoVector<Real>& axisZ, ENigMA::geometry::CGeoVector<Real>& aRay, Real aRadius, Real stack, Real slice, Real normalBlend);
             static ENigMA::csg::CCsgBoolean<Real> create(ENigMA::geometry::CGeoCoordinate<Real>& aStart, ENigMA::geometry::CGeoCoordinate<Real>& anEnd, Real aRadius, Integer nSlices);
-
         };
     }
 }
-    
+
 #include "CsgCylinder_Imp.hpp"

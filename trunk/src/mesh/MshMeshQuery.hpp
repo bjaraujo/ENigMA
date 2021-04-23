@@ -14,23 +14,26 @@
 
 #include "MshMesh.hpp"
 
-namespace ENigMA {
-namespace mesh {
-    template <typename Real>
-    class CMshMeshQuery {
-    private:
-        typedef std::map<Integer, std::vector<Integer>> mapNodeToElement;
+namespace ENigMA
+{
+    namespace mesh
+    {
+        template <typename Real>
+        class CMshMeshQuery
+        {
+        private:
+            typedef std::map<Integer, std::vector<Integer>> mapNodeToElement;
 
-        mapNodeToElement m_nodeToElement;
+            mapNodeToElement m_nodeToElement;
 
-    public:
-        explicit CMshMeshQuery(CMshMesh<Real>& aMesh);
-        virtual ~CMshMeshQuery();
+        public:
+            explicit CMshMeshQuery(CMshMesh<Real>& aMesh);
+            virtual ~CMshMeshQuery();
 
-        void elementsSharingNode(const Integer aNodeId, std::vector<Integer>& sElementIds);
-        void elementsSharingNodes(const Integer aNodeId1, const Integer aNodeId2, std::vector<Integer>& sElementIds);
-    };
-}
+            void elementsSharingNode(const Integer aNodeId, std::vector<Integer>& sElementIds);
+            void elementsSharingNodes(const Integer aNodeId1, const Integer aNodeId2, std::vector<Integer>& sElementIds);
+        };
+    }
 }
 
 #include "MshMeshQuery_Imp.hpp"

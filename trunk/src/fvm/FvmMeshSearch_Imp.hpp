@@ -9,73 +9,79 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace fvm {
-    template <typename Real>
-    CFvmMeshSearch<Real>::CFvmMeshSearch()
+namespace ENigMA
+{
+    namespace fvm
     {
-    }
-
-    template <typename Real>
-    CFvmMeshSearch<Real>::CFvmMeshSearch(CFvmMesh<Real>& aMesh)
-    {
-        this->set(aMesh);
-    }
-
-    template <typename Real>
-    CFvmMeshSearch<Real>::~CFvmMeshSearch()
-    {
-    }
-
-    template <typename Real>
-    void CFvmMeshSearch<Real>::set(CFvmMesh<Real>& aMesh)
-    {
-        m_mesh = &aMesh;
-        m_boundaryFaceHashGrid.reset();
-    }
-
-    template <typename Real>
-    void CFvmMeshSearch<Real>::build()
-    {
-        for (Integer i = 0; i < m_mesh->nbFaces(); ++i) {
-            m_mesh->face(m_mesh->faceId(i)).calculateCentroid();
-
-            if (!m_mesh->face(m_mesh->faceId(i)).hasPair())
-                m_boundaryFaceHashGrid.addGeometricObject(m_mesh->faceId(i), m_mesh->face(m_mesh->faceId(i)).centroid());
+        template <typename Real>
+        CFvmMeshSearch<Real>::CFvmMeshSearch()
+        {
         }
 
-        m_boundaryFaceHashGrid.build();
-    }
+        template <typename Real>
+        CFvmMeshSearch<Real>::CFvmMeshSearch(CFvmMesh<Real>& aMesh)
+        {
+            this->set(aMesh);
+        }
 
-    template <typename Real>
-    void CFvmMeshSearch<Real>::findClosestBoundaryFace(CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance)
-    {
-        Integer wFaceId = 0;
+        template <typename Real>
+        CFvmMeshSearch<Real>::~CFvmMeshSearch()
+        {
+        }
 
-        std::vector<Integer> sCoordinates;
+        template <typename Real>
+        void CFvmMeshSearch<Real>::set(CFvmMesh<Real>& aMesh)
+        {
+            m_mesh = &aMesh;
+            m_boundaryFaceHashGrid.reset();
+        }
 
-        m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aTolerance);
+        template <typename Real>
+        void CFvmMeshSearch<Real>::build()
+        {
+            for (Integer i = 0; i < m_mesh->nbFaces(); ++i)
+            {
+                m_mesh->face(m_mesh->faceId(i)).calculateCentroid();
 
-        if (sCoordinates.size() > 0) {
-            Real minDist = std::numeric_limits<Real>::max();
+                if (!m_mesh->face(m_mesh->faceId(i)).hasPair())
+                    m_boundaryFaceHashGrid.addGeometricObject(m_mesh->faceId(i), m_mesh->face(m_mesh->faceId(i)).centroid());
+            }
 
-            for (Integer i = 0; i < static_cast<Integer>(sCoordinates.size()); ++i) {
-                aFaceId = sCoordinates[i];
+            m_boundaryFaceHashGrid.build();
+        }
 
-                m_mesh->face(aFaceId).calculateCentroid();
+        template <typename Real>
+        void CFvmMeshSearch<Real>::findClosestBoundaryFace(CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance)
+        {
+            Integer wFaceId = 0;
 
-                CGeoVector<Real> d = m_mesh->face(aFaceId).centroid() - aCoordinate;
+            std::vector<Integer> sCoordinates;
 
-                Real thisDist = d.norm();
+            m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aTolerance);
 
-                if (thisDist < minDist) {
-                    wFaceId = aFaceId;
-                    minDist = thisDist;
+            if (sCoordinates.size() > 0)
+            {
+                Real minDist = std::numeric_limits<Real>::max();
+
+                for (Integer i = 0; i < static_cast<Integer>(sCoordinates.size()); ++i)
+                {
+                    aFaceId = sCoordinates[i];
+
+                    m_mesh->face(aFaceId).calculateCentroid();
+
+                    CGeoVector<Real> d = m_mesh->face(aFaceId).centroid() - aCoordinate;
+
+                    Real thisDist = d.norm();
+
+                    if (thisDist < minDist)
+                    {
+                        wFaceId = aFaceId;
+                        minDist = thisDist;
+                    }
                 }
             }
-        }
 
-        aFaceId = wFaceId;
+            aFaceId = wFaceId;
+        }
     }
-}
 }

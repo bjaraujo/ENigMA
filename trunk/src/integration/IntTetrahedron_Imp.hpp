@@ -7,18 +7,20 @@
 // <Author> Billy Araujo </Author>
 // *****************************************************************************
 
-namespace ENigMA {
+namespace ENigMA
+{
 
-namespace integration {
-
-    template <typename Real>
-    CIntTetrahedron<Real>::CIntTetrahedron()
+    namespace integration
     {
-    }
 
-    template <typename Real>
-    CIntTetrahedron<Real>::~CIntTetrahedron()
-    {
+        template <typename Real>
+        CIntTetrahedron<Real>::CIntTetrahedron()
+        {
+        }
+
+        template <typename Real>
+        CIntTetrahedron<Real>::~CIntTetrahedron()
+        {
+        }
     }
-}
 }

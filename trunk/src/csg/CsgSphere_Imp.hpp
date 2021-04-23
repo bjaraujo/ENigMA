@@ -17,7 +17,7 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
+        template <typename Real>
         CGeoCoordinate<Real> CCsgSphere<Real>::vertex(CGeoCoordinate<Real>& aCenter, Real aRadius, Real theta, Real phi)
         {
             const Real pi = std::acos(-1.0);
@@ -30,14 +30,14 @@ namespace ENigMA
             return aCenter + (dir * aRadius);
         }
 
-        template<typename Real> 
+        template <typename Real>
         ENigMA::csg::CCsgBoolean<Real> CCsgSphere<Real>::create(CGeoCoordinate<Real>& aCenter, Real aRadius, Integer nSlices, Integer nStacks)
         {
             std::vector<CGeoPolygon<Real>> sPolygons;
 
-            for (Integer i = 0; i < nSlices; ++i) 
+            for (Integer i = 0; i < nSlices; ++i)
             {
-                for (Integer j = 0; j < nStacks; ++j) 
+                for (Integer j = 0; j < nStacks; ++j)
                 {
                     CGeoPolygon<Real> aPolygon;
 
@@ -48,8 +48,10 @@ namespace ENigMA
 
                     aPolygon.polyline().addVertex(aVertex1);
 
-                    if (j > 0) aPolygon.polyline().addVertex(aVertex2);
-                    if (j < nStacks - 1) aPolygon.polyline().addVertex(aVertex3);
+                    if (j > 0)
+                        aPolygon.polyline().addVertex(aVertex2);
+                    if (j < nStacks - 1)
+                        aPolygon.polyline().addVertex(aVertex3);
 
                     aPolygon.polyline().addVertex(aVertex4);
 

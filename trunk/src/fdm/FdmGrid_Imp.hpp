@@ -9,7 +9,9 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace fdm {
-}
+namespace ENigMA
+{
+    namespace fdm
+    {
+    }
 }

@@ -11,23 +11,26 @@
 
 #include "IntGaussIntegration.hpp"
 
-namespace ENigMA {
+namespace ENigMA
+{
 
-namespace integration {
+    namespace integration
+    {
 
-    template <typename Real>
-    class CIntQuadrilateral : public CIntGaussIntegration<Real> {
-    protected:
-        std::vector<Real> m_xi, m_eta;
-        std::vector<Real> m_wxi, m_weta;
+        template <typename Real>
+        class CIntQuadrilateral : public CIntGaussIntegration<Real>
+        {
+        protected:
+            std::vector<Real> m_xi, m_eta;
+            std::vector<Real> m_wxi, m_weta;
 
-        void setGaussPoints();
+            void setGaussPoints();
 
-    public:
-        CIntQuadrilateral();
-        virtual ~CIntQuadrilateral();
-    };
-}
+        public:
+            CIntQuadrilateral();
+            virtual ~CIntQuadrilateral();
+        };
+    }
 }
 
 #include "IntQuadrilateral_Imp.hpp"

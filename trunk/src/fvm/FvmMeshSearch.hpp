@@ -16,27 +16,30 @@
 
 #include "FvmMesh.hpp"
 
-namespace ENigMA {
-namespace fvm {
-    template <typename Real>
-    class CFvmMeshSearch {
-    private:
-        CFvmMesh<Real>* m_mesh;
+namespace ENigMA
+{
+    namespace fvm
+    {
+        template <typename Real>
+        class CFvmMeshSearch
+        {
+        private:
+            CFvmMesh<Real>* m_mesh;
 
-        CGeoHashGrid<Real> m_boundaryFaceHashGrid;
+            CGeoHashGrid<Real> m_boundaryFaceHashGrid;
 
-    public:
-        CFvmMeshSearch();
-        explicit CFvmMeshSearch(CFvmMesh<Real>& aMesh);
-        virtual ~CFvmMeshSearch();
+        public:
+            CFvmMeshSearch();
+            explicit CFvmMeshSearch(CFvmMesh<Real>& aMesh);
+            virtual ~CFvmMeshSearch();
 
-        void set(CFvmMesh<Real>& aMesh);
+            void set(CFvmMesh<Real>& aMesh);
 
-        void build();
+            void build();
 
-        void findClosestBoundaryFace(CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance);
-    };
-}
+            void findClosestBoundaryFace(CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance);
+        };
+    }
 }
 
 #include "FvmMeshSearch_Imp.hpp"

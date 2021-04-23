@@ -11,27 +11,30 @@
 
 #include <Eigen/Dense>
 
-namespace ENigMA {
-namespace geometry {
-    template <typename Real>
-    struct CGeoCoordinateSystem : public Eigen::Matrix<Real, 3, 3> {
-    public:
-        typedef Eigen::Matrix<Real, 3, 3> Base;
-
-        inline CGeoCoordinateSystem(Real value = (Real)0) { this->setConstant(value); }
-
-        template <typename Derived>
-        inline CGeoCoordinateSystem(const Eigen::MatrixBase<Derived>& p)
-            : Base(p)
+namespace ENigMA
+{
+    namespace geometry
+    {
+        template <typename Real>
+        struct CGeoCoordinateSystem : public Eigen::Matrix<Real, 3, 3>
         {
-        }
+        public:
+            typedef Eigen::Matrix<Real, 3, 3> Base;
 
-        template <typename Derived>
-        CGeoCoordinateSystem& operator=(const Eigen::MatrixBase<Derived>& p)
-        {
-            this->Base::operator=(p);
-            return *this;
-        }
-    };
-}
+            inline CGeoCoordinateSystem(Real value = (Real)0) { this->setConstant(value); }
+
+            template <typename Derived>
+            inline CGeoCoordinateSystem(const Eigen::MatrixBase<Derived>& p)
+                : Base(p)
+            {
+            }
+
+            template <typename Derived>
+            CGeoCoordinateSystem& operator=(const Eigen::MatrixBase<Derived>& p)
+            {
+                this->Base::operator=(p);
+                return *this;
+            }
+        };
+    }
 }

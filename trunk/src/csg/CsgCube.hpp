@@ -17,15 +17,13 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
+        template <typename Real>
         class CCsgCube
         {
         public:
-
             static ENigMA::csg::CCsgBoolean<Real> create(ENigMA::geometry::CGeoCoordinate<Real> aCenter, ENigMA::geometry::CGeoVector<Real> aRadius);
-
         };
-    }         
+    }
 }
-    
+
 #include "CsgCube_Imp.hpp"

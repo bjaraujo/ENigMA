@@ -11,40 +11,43 @@
 
 #include <Eigen/Dense>
 
-namespace ENigMA {
-namespace geometry {
-    template <typename Real>
-    struct CGeoVector : public Eigen::Matrix<Real, 3, 1> {
-    public:
-        typedef Eigen::Matrix<Real, 3, 1> Base;
-
-        inline CGeoVector(Real value = (Real)0) { this->setConstant(value); }
-
-        inline CGeoVector(const Real x, const Real y, const Real z)
-            : Base(x, y, z)
+namespace ENigMA
+{
+    namespace geometry
+    {
+        template <typename Real>
+        struct CGeoVector : public Eigen::Matrix<Real, 3, 1>
         {
-        }
+        public:
+            typedef Eigen::Matrix<Real, 3, 1> Base;
 
-        template <typename Derived>
-        inline CGeoVector(const Eigen::MatrixBase<Derived>& p)
-            : Base(p)
-        {
-        }
+            inline CGeoVector(Real value = (Real)0) { this->setConstant(value); }
 
-        template <typename Derived>
-        CGeoVector& operator=(const Eigen::MatrixBase<Derived>& p)
-        {
-            this->Base::operator=(p);
-            return *this;
-        }
+            inline CGeoVector(const Real x, const Real y, const Real z)
+                : Base(x, y, z)
+            {
+            }
 
-        inline Real angle(const CGeoVector<Real>& vec);
-        inline void rotate(const Real angle);
-    };
+            template <typename Derived>
+            inline CGeoVector(const Eigen::MatrixBase<Derived>& p)
+                : Base(p)
+            {
+            }
 
-    template <typename Real>
-    std::ostream& operator<<(std::ostream& output, CGeoVector<Real>& aVector);
-}
+            template <typename Derived>
+            CGeoVector& operator=(const Eigen::MatrixBase<Derived>& p)
+            {
+                this->Base::operator=(p);
+                return *this;
+            }
+
+            inline Real angle(const CGeoVector<Real>& vec);
+            inline void rotate(const Real angle);
+        };
+
+        template <typename Real>
+        std::ostream& operator<<(std::ostream& output, CGeoVector<Real>& aVector);
+    }
 }
 
 #include "GeoVector_Imp.hpp"

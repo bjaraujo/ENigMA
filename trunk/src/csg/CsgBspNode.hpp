@@ -17,11 +17,10 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
+        template <typename Real>
         class CCsgBspNode
         {
         private:
-
             Real m_tolerance;
 
             CCsgBspNode<Real>* m_front;
@@ -30,9 +29,8 @@ namespace ENigMA
             ENigMA::geometry::CGeoPlane<Real> m_plane;
 
             std::vector<ENigMA::geometry::CGeoPolygon<Real>> m_polygons;
-            
-        public:
 
+        public:
             CCsgBspNode(std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sPolygons, const Real aTolerance);
             explicit CCsgBspNode(const Real aTolerance);
 
@@ -51,9 +49,8 @@ namespace ENigMA
             void splitPolygon(ENigMA::geometry::CGeoPolygon<Real> aPolygon, std::vector<ENigMA::geometry::CGeoPolygon<Real>>& sCoplanarFront, std::vector<CGeoPolygon<Real>>& sCoplanarBack, std::vector<CGeoPolygon<Real>>& sFront, std::vector<CGeoPolygon<Real>>& sBack);
 
             void clear();
-
         };
     }
 }
-    
+
 #include "CsgBspNode_Imp.hpp"

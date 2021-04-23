@@ -17,120 +17,126 @@
 #include "GeoTriangle.hpp"
 #include "MshMesh.hpp"
 
-namespace ENigMA {
-namespace mesh {
+namespace ENigMA
+{
+    namespace mesh
+    {
 
-    // Advancing front
-    template <typename Real>
-    struct SMshTetrahedronAdvancingFrontTriangle {
-        Integer id;
-
-        bool remove;
-        bool boundary;
-
-        Integer nodeId[3];
-
-        Integer neighborId[3];
-        Integer nodeNotId[3];
-
-        Integer tetrahedronId;
-        Integer nodeNotId4;
-
-        CGeoTriangle<Real> triangle;
-
-        void build(const CMshMesh<Real>& aMesh)
+        // Advancing front
+        template <typename Real>
+        struct SMshTetrahedronAdvancingFrontTriangle
         {
-            this->triangle.reset();
-            this->triangle.addVertex(aMesh.node(this->nodeId[0]));
-            this->triangle.addVertex(aMesh.node(this->nodeId[1]));
-            this->triangle.addVertex(aMesh.node(this->nodeId[2]));
-        }
-    };
-
-    template <typename Real>
-    class CMshTetrahedronMesher {
-    private:
-        // Inner points
-        struct SNode {
             Integer id;
-            bool remove;
 
-            Integer nodeId;
+            bool remove;
+            bool boundary;
+
+            Integer nodeId[3];
+
+            Integer neighborId[3];
+            Integer nodeNotId[3];
+
+            Integer tetrahedronId;
+            Integer nodeNotId4;
+
+            CGeoTriangle<Real> triangle;
+
+            void build(const CMshMesh<Real>& aMesh)
+            {
+                this->triangle.reset();
+                this->triangle.addVertex(aMesh.node(this->nodeId[0]));
+                this->triangle.addVertex(aMesh.node(this->nodeId[1]));
+                this->triangle.addVertex(aMesh.node(this->nodeId[2]));
+                this->triangle.calculateArea(true);
+            }
         };
 
-        std::vector<SNode> m_innerNodes;
+        template <typename Real>
+        class CMshTetrahedronMesher
+        {
+        private:
+            // Inner points
+            struct SNode
+            {
+                Integer id;
+                bool remove;
 
-        std::vector<SMshTetrahedronAdvancingFrontTriangle<Real>> m_anAdvFront;
+                Integer nodeId;
+            };
 
-        CGeoBoundingBox<Real> m_boundingBox;
+            std::vector<SNode> m_innerNodes;
 
-        clock_t m_begin;
-        clock_t m_end;
+            std::vector<SMshTetrahedronAdvancingFrontTriangle<Real>> m_anAdvFront;
 
-        bool m_bStop;
-        Integer m_dataInterval;
-        Integer m_timeInterval;
-        Integer m_previousNbElements;
+            CGeoBoundingBox<Real> m_boundingBox;
 
-        Integer m_nextTriangleId;
+            clock_t m_begin;
+            clock_t m_end;
 
-        CGeoRtree<Real> m_tree;
-        CMshMesh<Real> m_volumeMesh;
+            bool m_bStop;
+            Integer m_dataInterval;
+            Integer m_timeInterval;
+            Integer m_previousNbElements;
 
-        void checkUpdate();
+            Integer m_nextTriangleId;
 
-        inline bool triangleExists(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles);
-        inline bool triangleOk(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
-        inline bool tetrahedronContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
-        inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
+            CGeoRtree<Real> m_tree;
+            CMshMesh<Real> m_volumeMesh;
 
-        bool pairEdges(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle2);
+            void checkUpdate();
 
-        void cleanDuplicateTriangles(std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
-        void adjustConnectivity(std::vector<Integer>& sTriangles);
-        void findClosestNodes(std::vector<Integer>& sTriangles, std::vector<Integer>& sNodes);
-        Real findShortestDistance(std::vector<Integer>& sTriangles, CGeoLine<Real>& aLine, Integer anAdvTriangleId, const Real aTolerance = 0.0);
+            inline bool triangleExists(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles);
+            inline bool triangleOk(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+            inline bool tetrahedronContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
+            inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
-        void addTriangleToRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
-        void removeTriangleFromRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
+            bool pairEdges(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle2);
 
-        void removeTriangle(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance);
+            void cleanDuplicateTriangles(std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+            void adjustConnectivity(std::vector<Integer>& sTriangles);
+            void findClosestNodes(std::vector<Integer>& sTriangles, std::vector<Integer>& sNodes);
+            Real findShortestDistance(std::vector<Integer>& sTriangles, CGeoLine<Real>& aLine, Integer anAdvTriangleId, const Real aTolerance = 0.0);
 
-        void addTetrahedron(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+            void addTriangleToRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
+            void removeTriangleFromRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
 
-        bool advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
+            void removeTriangle(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance);
 
-        Integer getFirstIndex();
+            void addTetrahedron(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
 
-        bool repair(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real sizeFactor = 1.0, const Real minQuality = 0.0, const Real aTolerance = 0.0);
+            bool advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bAddNodes = true, const bool bCheckDelaunay = false, const Real aTolerance = 0.0);
 
-        bool rebuildConnectivity(const Real aTolerance = 0.0);
+            Integer getFirstIndex();
 
-        void reduceFront(const Real aTolerance = 0.0);
+            bool repair(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real sizeFactor = 1.0, const Real minQuality = 0.0, const Real aTolerance = 0.0);
 
-        Integer frontSize();
+            bool rebuildConnectivity(const Real aTolerance = 0.0);
 
-    public:
-        CMshTetrahedronMesher();
-        virtual ~CMshTetrahedronMesher();
+            void reduceFront(const Real aTolerance = 0.0);
 
-        bool generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-        bool generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-        bool generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            Integer frontSize();
 
-        CMshMesh<Real>& mesh();
+        public:
+            CMshTetrahedronMesher();
+            virtual ~CMshTetrahedronMesher();
 
-        void setIntervals(const Integer timeInterval, const Integer dataInterval);
-        void stopMeshing();
+            bool generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            bool generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            bool generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
 
-        void relaxNodes(const Real aFactor, const Real aTolerance = 0.0);
-        void flipEdges23(const Real aTolerance = 0.0);
-        void flipEdges32(const Real aTolerance = 0.0);
+            CMshMesh<Real>& mesh();
 
-        // callback
-        std::function<bool(bool)> onUpdate;
-    };
-}
+            void setIntervals(const Integer timeInterval, const Integer dataInterval);
+            void stopMeshing();
+
+            void relaxNodes(const Real aFactor, const Real aTolerance = 0.0);
+            void flipEdges23(const Real aTolerance = 0.0);
+            void flipEdges32(const Real aTolerance = 0.0);
+
+            // callback
+            std::function<bool(bool)> onUpdate;
+        };
+    }
 }
 
 #include "MshTetrahedronMesher_Imp.hpp"

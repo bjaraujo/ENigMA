@@ -11,24 +11,27 @@
 
 #include "CmnTypes.hpp"
 
-namespace ENigMA {
-namespace fem {
-    template <typename Real>
-    class CFemEdge {
-    protected:
-        Real m_sectionArea;
-        Real m_perimeter;
+namespace ENigMA
+{
+    namespace fem
+    {
+        template <typename Real>
+        class CFemEdge
+        {
+        protected:
+            Real m_sectionArea;
+            Real m_perimeter;
 
-    public:
-        CFemEdge();
-        virtual ~CFemEdge();
+        public:
+            CFemEdge();
+            virtual ~CFemEdge();
 
-        Real sectionArea() const;
-        Real perimeter() const;
+            Real sectionArea() const;
+            Real perimeter() const;
 
-        virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
-    };
-}
+            virtual void setSourceOnNode(const Integer aNodeIndex, const Real aValue) = 0;
+        };
+    }
 }
 
 #include "FemEdge_Imp.hpp"

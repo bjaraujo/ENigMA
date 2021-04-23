@@ -17,7 +17,7 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
+        template <typename Real>
         ENigMA::csg::CCsgBoolean<Real> CCsgCube<Real>::create(CGeoCoordinate<Real> aCenter, CGeoVector<Real> aRadius)
         {
             std::vector<CGeoCoordinate<Real>> sVertices;
@@ -31,7 +31,6 @@ namespace ENigMA
                 CGeoCoordinate<Real> aVertex(x, y, z);
 
                 sVertices.push_back(aVertex);
-
             }
 
             std::vector<CGeoPolygon<Real>> sPolygons;

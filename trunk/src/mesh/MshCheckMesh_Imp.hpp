@@ -9,117 +9,130 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace mesh {
-    template <typename Real>
-    CMshCheckMesh<Real>::CMshCheckMesh()
+namespace ENigMA
+{
+    namespace mesh
     {
-    }
-
-    template <typename Real>
-    CMshCheckMesh<Real>::~CMshCheckMesh()
-    {
-    }
-
-    template <typename Real>
-    bool CMshCheckMesh<Real>::checkOpen(const CMshMesh<Real>& aMesh)
-    {
-        for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-            Integer anElementId = aMesh.elementId(i);
-
-            CMshElement<Real>& anElement = aMesh.element(anElementId);
-
-            for (Integer j = 0; j < anElement.nbFaceIds(); ++j) {
-                Integer aFaceId = anElement.faceId(j);
-                CMshFace<Real>& aFace = aMesh.face(aFaceId);
-
-                if (!aFace.hasPair())
-                    return true;
-            }
+        template <typename Real>
+        CMshCheckMesh<Real>::CMshCheckMesh()
+        {
         }
 
-        return false;
-    }
-
-    template <typename Real>
-    bool CMshCheckMesh<Real>::checkIntersections(const CMshMesh<Real>& aMesh, const Real aTolerance)
-    {
-        CGeoRtree<Real> aRtree;
-
-        for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-            Integer anElementId = aMesh.elementId(i);
-
-            aRtree.addGeometricObject(anElementId, aMesh.boundingBox(anElementId));
+        template <typename Real>
+        CMshCheckMesh<Real>::~CMshCheckMesh()
+        {
         }
 
-        std::vector<Integer> sElements;
+        template <typename Real>
+        bool CMshCheckMesh<Real>::checkOpen(const CMshMesh<Real>& aMesh)
+        {
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
+            {
+                Integer anElementId = aMesh.elementId(i);
 
-        for (Integer i = 0; i < aMesh.nbElements(); ++i) {
-            Integer anElementId = aMesh.elementId(i);
+                CMshElement<Real>& anElement = aMesh.element(anElementId);
 
-            CMshElement<Real> anElement = aMesh.element(anElementId);
+                for (Integer j = 0; j < anElement.nbFaceIds(); ++j)
+                {
+                    Integer aFaceId = anElement.faceId(j);
+                    CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
-            Integer nLines = 0;
-            Integer nTriangles = 0;
-
-            CGeoLine<Real> aLine1;
-            CGeoTriangle<Real> aTriangle1;
-
-            if (anElement.elementType() == ET_BEAM) {
-                aLine1.setStartPoint(aMesh.node(anElement.nodeId(0)));
-                aLine1.setEndPoint(aMesh.node(anElement.nodeId(1)));
-                nLines++;
-
-            } else if (anElement.elementType() == ET_TRIANGLE) {
-                aTriangle1.addVertex(aMesh.node(anElement.nodeId(0)));
-                aTriangle1.addVertex(aMesh.node(anElement.nodeId(1)));
-                aTriangle1.addVertex(aMesh.node(anElement.nodeId(2)));
-                nTriangles++;
+                    if (!aFace.hasPair())
+                        return true;
+                }
             }
 
-            aRtree.find(sElements, aMesh.boundingBox(anElementId));
+            return false;
+        }
 
-            for (Integer j = 0; j < sElements.size(); ++j) {
-                Integer anotherElementId = sElements[j];
+        template <typename Real>
+        bool CMshCheckMesh<Real>::checkIntersections(const CMshMesh<Real>& aMesh, const Real aTolerance)
+        {
+            CGeoRtree<Real> aRtree;
 
-                if (anElementId == anotherElementId)
-                    continue;
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
+            {
+                Integer anElementId = aMesh.elementId(i);
 
-                CMshElement<Real> anotherElement = aMesh.element(anotherElementId);
+                aRtree.addGeometricObject(anElementId, aMesh.boundingBox(anElementId));
+            }
 
-                CGeoLine<Real> aLine2;
-                CGeoTriangle<Real> aTriangle2;
+            std::vector<Integer> sElements;
 
-                if (anotherElement.elementType() == ET_BEAM) {
-                    aLine2.setStartPoint(aMesh.node(anotherElement.nodeId(0)));
-                    aLine2.setEndPoint(aMesh.node(anotherElement.nodeId(1)));
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
+            {
+                Integer anElementId = aMesh.elementId(i);
+
+                CMshElement<Real> anElement = aMesh.element(anElementId);
+
+                Integer nLines = 0;
+                Integer nTriangles = 0;
+
+                CGeoLine<Real> aLine1;
+                CGeoTriangle<Real> aTriangle1;
+
+                if (anElement.elementType() == ET_BEAM)
+                {
+                    aLine1.setStartPoint(aMesh.node(anElement.nodeId(0)));
+                    aLine1.setEndPoint(aMesh.node(anElement.nodeId(1)));
                     nLines++;
-
-                } else if (anotherElement.elementType() == ET_TRIANGLE) {
-                    aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(0)));
-                    aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(1)));
-                    aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(2)));
+                }
+                else if (anElement.elementType() == ET_TRIANGLE)
+                {
+                    aTriangle1.addVertex(aMesh.node(anElement.nodeId(0)));
+                    aTriangle1.addVertex(aMesh.node(anElement.nodeId(1)));
+                    aTriangle1.addVertex(aMesh.node(anElement.nodeId(2)));
                     nTriangles++;
                 }
 
-                CGeoIntersectionType anIntersectionType;
+                aRtree.find(sElements, aMesh.boundingBox(anElementId));
 
-                if (nLines == 2) {
-                    CGeoCoordinate<Real> aPoint;
-                    if (aLine1.intersects(aLine2, aPoint, anIntersectionType, aTolerance))
-                        if (anIntersectionType == IT_EDGE || anIntersectionType == IT_COINCIDENT || anIntersectionType == IT_INTERNAL || anIntersectionType == IT_SWAP)
-                            return true;
-                }
+                for (Integer j = 0; j < sElements.size(); ++j)
+                {
+                    Integer anotherElementId = sElements[j];
 
-                if (nTriangles == 2) {
-                    if (aTriangle1.intersects(aTriangle2, anIntersectionType, aTolerance))
-                        if (anIntersectionType == IT_EDGE || anIntersectionType == IT_COINCIDENT || anIntersectionType == IT_INTERNAL || anIntersectionType == IT_SWAP)
-                            return true;
+                    if (anElementId == anotherElementId)
+                        continue;
+
+                    CMshElement<Real> anotherElement = aMesh.element(anotherElementId);
+
+                    CGeoLine<Real> aLine2;
+                    CGeoTriangle<Real> aTriangle2;
+
+                    if (anotherElement.elementType() == ET_BEAM)
+                    {
+                        aLine2.setStartPoint(aMesh.node(anotherElement.nodeId(0)));
+                        aLine2.setEndPoint(aMesh.node(anotherElement.nodeId(1)));
+                        nLines++;
+                    }
+                    else if (anotherElement.elementType() == ET_TRIANGLE)
+                    {
+                        aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(0)));
+                        aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(1)));
+                        aTriangle2.addVertex(aMesh.node(anotherElement.nodeId(2)));
+                        nTriangles++;
+                    }
+
+                    CGeoIntersectionType anIntersectionType;
+
+                    if (nLines == 2)
+                    {
+                        CGeoCoordinate<Real> aPoint;
+                        if (aLine1.intersects(aLine2, aPoint, anIntersectionType, aTolerance))
+                            if (anIntersectionType == IT_EDGE || anIntersectionType == IT_COINCIDENT || anIntersectionType == IT_INTERNAL || anIntersectionType == IT_SWAP)
+                                return true;
+                    }
+
+                    if (nTriangles == 2)
+                    {
+                        if (aTriangle1.intersects(aTriangle2, anIntersectionType, aTolerance))
+                            if (anIntersectionType == IT_EDGE || anIntersectionType == IT_COINCIDENT || anIntersectionType == IT_INTERNAL || anIntersectionType == IT_SWAP)
+                                return true;
+                    }
                 }
             }
-        }
 
-        return false;
+            return false;
+        }
     }
-}
 }

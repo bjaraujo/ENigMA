@@ -14,33 +14,36 @@
 #include "GeoPlane.hpp"
 #include "GeoVertexList.hpp"
 
-namespace ENigMA {
-namespace geometry {
-    template <typename Real>
-    class CGeoPolyline : public CGeoLength<Real>, public CGeoVertexList<Real> {
-    public:
-        CGeoPolyline();
-        explicit CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
-        virtual ~CGeoPolyline();
+namespace ENigMA
+{
+    namespace geometry
+    {
+        template <typename Real>
+        class CGeoPolyline : public CGeoLength<Real>, public CGeoVertexList<Real>
+        {
+        public:
+            CGeoPolyline();
+            explicit CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
+            virtual ~CGeoPolyline();
 
-        void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
+            void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
 
-        Integer nbLines() const;
-        CGeoLine<Real> line(Integer aLineIndex);
+            Integer nbLines() const;
+            CGeoLine<Real> line(Integer aLineIndex);
 
-        bool isClosed(const Real aTolerance = 0);
-        void close(const Real aTolerance = 0);
+            bool isClosed(const Real aTolerance = 0);
+            void close(const Real aTolerance = 0);
 
-        inline void calculateLength(bool bReCalculate = false);
-        inline void calculateBoundingBox(bool bReCalculate = false);
+            inline void calculateLength(bool bReCalculate = false);
+            inline void calculateBoundingBox(bool bReCalculate = false);
 
-        inline CGeoLineList<Real> clip(CGeoPlane<Real> aPlane);
+            inline CGeoLineList<Real> clip(CGeoPlane<Real> aPlane);
 
-        inline bool intersects(CGeoPlane<Real> aPlane);
+            inline bool intersects(CGeoPlane<Real> aPlane);
 
-        void invert();
-    };
-}
+            void invert();
+        };
+    }
 }
 
 #include "GeoPolyline_Imp.hpp"

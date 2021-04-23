@@ -15,15 +15,18 @@
 
 #include "GeoVector.hpp"
 
-namespace ENigMA {
-namespace fvm {
-    template <typename Real>
-    class CFvmCell {
-    public:
-        CFvmCell();
-        virtual ~CFvmCell();
-    };
-}
+namespace ENigMA
+{
+    namespace fvm
+    {
+        template <typename Real>
+        class CFvmCell
+        {
+        public:
+            CFvmCell();
+            virtual ~CFvmCell();
+        };
+    }
 }
 
 #include "FvmCell_Imp.hpp"

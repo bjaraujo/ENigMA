@@ -143,7 +143,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume2.msh", "tetras");
 
-    EXPECT_EQ(124, aVolumeMesh.nbElements());
+    EXPECT_EQ(95, aVolumeMesh.nbElements());
 
 }
 
@@ -199,7 +199,7 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume3.msh", "tetras");
 
-    EXPECT_EQ(320, aVolumeMesh.nbElements());
+    EXPECT_EQ(281, aVolumeMesh.nbElements());
 
 }
 

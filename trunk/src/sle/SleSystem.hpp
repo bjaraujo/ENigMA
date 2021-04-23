@@ -11,50 +11,54 @@
 
 #include <Eigen/Sparse>
 
-namespace ENigMA {
-namespace sle {
-    enum EMatrixType {
-        MT_UNKNOWN = -1,
-        MT_SPARSE_SYMMETRIC,
-        MT_SPARSE,
-        MT_DENSE
-    };
+namespace ENigMA
+{
+    namespace sle
+    {
+        enum EMatrixType
+        {
+            MT_UNKNOWN = -1,
+            MT_SPARSE_SYMMETRIC,
+            MT_SPARSE,
+            MT_DENSE
+        };
 
-    template <typename Real>
-    class CSleSystem {
-    public:
-        CSleSystem();
-        virtual ~CSleSystem();
+        template <typename Real>
+        class CSleSystem
+        {
+        public:
+            CSleSystem();
+            virtual ~CSleSystem();
 
-        EMatrixType matrixType;
+            EMatrixType matrixType;
 
-        Eigen::SparseMatrix<Real> matrixA;
-        Eigen::Matrix<Real, Eigen::Dynamic, 1> vectorB;
+            Eigen::SparseMatrix<Real> matrixA;
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> vectorB;
 
-        Eigen::Matrix<Real, Eigen::Dynamic, 1> solve();
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> solve();
 
-        CSleSystem<Real>& operator=(const Real right);
-        CSleSystem<Real>& operator=(Eigen::Matrix<Real, Eigen::Dynamic, 1> right);
-    };
+            CSleSystem<Real>& operator=(const Real right);
+            CSleSystem<Real>& operator=(Eigen::Matrix<Real, Eigen::Dynamic, 1> right);
+        };
 
-    template <typename Real>
-    CSleSystem<Real> operator-(const CSleSystem<Real>& left, const Real right);
+        template <typename Real>
+        CSleSystem<Real> operator-(const CSleSystem<Real>& left, const Real right);
 
-    template <typename Real>
-    CSleSystem<Real> operator+(const CSleSystem<Real>& left, const Real right);
+        template <typename Real>
+        CSleSystem<Real> operator+(const CSleSystem<Real>& left, const Real right);
 
-    template <typename Real>
-    CSleSystem<Real> operator+(const CSleSystem<Real>& left, const CSleSystem<Real>& right);
+        template <typename Real>
+        CSleSystem<Real> operator+(const CSleSystem<Real>& left, const CSleSystem<Real>& right);
 
-    template <typename Real>
-    CSleSystem<Real> operator-(const CSleSystem<Real>& left, const CSleSystem<Real>& right);
+        template <typename Real>
+        CSleSystem<Real> operator-(const CSleSystem<Real>& left, const CSleSystem<Real>& right);
 
-    template <typename Real>
-    CSleSystem<Real> operator*(const Real left, const CSleSystem<Real>& right);
+        template <typename Real>
+        CSleSystem<Real> operator*(const Real left, const CSleSystem<Real>& right);
 
-    template <typename Real>
-    CSleSystem<Real> operator*(const Eigen::Matrix<Real, Eigen::Dynamic, 1>& left, const CSleSystem<Real>& right);
-}
+        template <typename Real>
+        CSleSystem<Real> operator*(const Eigen::Matrix<Real, Eigen::Dynamic, 1>& left, const CSleSystem<Real>& right);
+    }
 }
 
 #include "SleSystem_Imp.hpp"

@@ -13,18 +13,21 @@
 
 using namespace ENigMA::pde;
 
-namespace ENigMA {
-namespace post {
-    template <typename Real>
-    class CPosVtk {
-    public:
-        CPosVtk();
-        virtual ~CPosVtk();
+namespace ENigMA
+{
+    namespace post
+    {
+        template <typename Real>
+        class CPosVtk
+        {
+        public:
+            CPosVtk();
+            virtual ~CPosVtk();
 
-        bool load(CPdeField<Real>& aField, const std::string& strFileName);
-        bool save(CPdeField<Real>& aField, const std::string& strFileName);
-    };
-}
+            bool load(CPdeField<Real>& aField, const std::string& strFileName);
+            bool save(CPdeField<Real>& aField, const std::string& strFileName);
+        };
+    }
 }
 
 #include "PosVtk_Imp.hpp"

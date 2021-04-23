@@ -9,27 +9,31 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace fem {
-    namespace flow {
-        template <typename Real>
-        class CFemFlowElement {
-        private:
-            Real m_density;
-            Real m_viscosity;
+namespace ENigMA
+{
+    namespace fem
+    {
+        namespace flow
+        {
+            template <typename Real>
+            class CFemFlowElement
+            {
+            private:
+                Real m_density;
+                Real m_viscosity;
 
-        public:
-            CFemFlowElement();
-            ~CFemFlowElement();
+            public:
+                CFemFlowElement();
+                ~CFemFlowElement();
 
-            void setDensity(const Real aValue);
-            Real density() const;
+                void setDensity(const Real aValue);
+                Real density() const;
 
-            void setViscosity(const Real aValue);
-            Real viscosity() const;
-        };
+                void setViscosity(const Real aValue);
+                Real viscosity() const;
+            };
+        }
     }
-}
 }
 
 #include "FemFlowElement_Imp.hpp"

@@ -9,42 +9,45 @@
 
 #pragma once
 
-namespace ENigMA {
-namespace geometry {
-    template <typename Real>
-    inline Real CGeoVector<Real>::angle(const CGeoVector<Real>& vec)
+namespace ENigMA
+{
+    namespace geometry
     {
-        Real rad = 0.0;
+        template <typename Real>
+        inline Real CGeoVector<Real>::angle(const CGeoVector<Real>& vec)
+        {
+            Real rad = 0.0;
 
-        if (this->squaredNorm() > std::numeric_limits<Real>::epsilon() && vec.squaredNorm() > std::numeric_limits<Real>::epsilon()) {
-            rad = this->dot(vec) / std::sqrt(this->squaredNorm() * vec.squaredNorm());
+            if (this->squaredNorm() > std::numeric_limits<Real>::epsilon() && vec.squaredNorm() > std::numeric_limits<Real>::epsilon())
+            {
+                rad = this->dot(vec) / std::sqrt(this->squaredNorm() * vec.squaredNorm());
+            }
+
+            if (rad < -1.0)
+                rad = -1.0;
+            if (rad > +1.0)
+                rad = +1.0;
+
+            return (acos(rad));
         }
 
-        if (rad < -1.0)
-            rad = -1.0;
-        if (rad > +1.0)
-            rad = +1.0;
+        template <typename Real>
+        inline void CGeoVector<Real>::rotate(const Real angle)
+        {
+            Real r;
+            Real theta;
 
-        return (acos(rad));
+            r = std::sqrt((this->x() * this->x()) + (this->y() * this->y()));
+            theta = atan2(this->y(), this->x());
+            this->x() = r * std::cos(theta + angle);
+            this->y() = r * std::sin(theta + angle);
+        }
+
+        template <typename Real>
+        std::ostream& operator<<(std::ostream& output, CGeoVector<Real>& aVector)
+        {
+            output << aVector.x() << ", " << aVector.y() << ", " << aVector.z();
+            return output;
+        }
     }
-
-    template <typename Real>
-    inline void CGeoVector<Real>::rotate(const Real angle)
-    {
-        Real r;
-        Real theta;
-
-        r = std::sqrt((this->x() * this->x()) + (this->y() * this->y()));
-        theta = atan2(this->y(), this->x());
-        this->x() = r * std::cos(theta + angle);
-        this->y() = r * std::sin(theta + angle);
-    }
-
-    template <typename Real>
-    std::ostream& operator<<(std::ostream& output, CGeoVector<Real>& aVector)
-    {
-        output << aVector.x() << ", " << aVector.y() << ", " << aVector.z();
-        return output;
-    }
-}
 }

@@ -17,19 +17,19 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
+        template <typename Real>
         CGeoCoordinate<Real> CCsgCylinder<Real>::point(CGeoCoordinate<Real>& aStart, CGeoVector<Real>& axisX, CGeoVector<Real>& axisY, CGeoVector<Real>& axisZ, CGeoVector<Real>& aRay, Real aRadius, Real stack, Real slice, Real normalBlend)
-        {            
+        {
             const Real pi = std::acos(-1.0);
 
             Real angle = slice * pi * 2;
 
             CGeoVector<Real> out = axisX * cos(angle) + axisY * sin(angle);
-        
+
             return aStart + aRay * stack + out * aRadius;
         }
 
-        template<typename Real> 
+        template <typename Real>
         ENigMA::csg::CCsgBoolean<Real> CCsgCylinder<Real>::create(CGeoCoordinate<Real>& aStart, CGeoCoordinate<Real>& anEnd, Real aRadius, Integer nSlices)
         {
             std::vector<CGeoPolygon<Real>> sPolygons;
@@ -47,15 +47,15 @@ namespace ENigMA
 
             CGeoVector<Real> axisX = v.cross(axisZ);
             axisX.normalize();
-            
+
             CGeoVector<Real> axisY = axisX.cross(axisZ);
             axisY.normalize();
 
-            for (Integer i = 0; i < nSlices; ++i) 
+            for (Integer i = 0; i < nSlices; ++i)
             {
-                
-                Real t0 = ((Real) i) / nSlices; 
-                Real t1 = ((Real) (i + 1)) / nSlices;
+
+                Real t0 = ((Real)i) / nSlices;
+                Real t1 = ((Real)(i + 1)) / nSlices;
 
                 CGeoPolygon<Real> aPolygon1;
 
@@ -103,7 +103,6 @@ namespace ENigMA
                 aPolygon3.calculateNormal();
 
                 sPolygons.push_back(aPolygon3);
-
             }
 
             ENigMA::csg::CCsgBoolean<Real> result(sPolygons);

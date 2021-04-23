@@ -17,36 +17,38 @@ namespace ENigMA
 {
     namespace csg
     {
-        template<typename Real> 
-        CCsgBoolean<Real>::CCsgBoolean(const Real aTolerance) : m_tolerance(aTolerance)
+        template <typename Real>
+        CCsgBoolean<Real>::CCsgBoolean(const Real aTolerance)
+            : m_tolerance(aTolerance)
         {
         }
 
-        template<typename Real> 
-        CCsgBoolean<Real>::CCsgBoolean(std::vector<CGeoPolygon<Real>>& sPolygons, const Real aTolerance) : m_tolerance(aTolerance)
+        template <typename Real>
+        CCsgBoolean<Real>::CCsgBoolean(std::vector<CGeoPolygon<Real>>& sPolygons, const Real aTolerance)
+            : m_tolerance(aTolerance)
         {
-            for (Integer i = 0; i < static_cast<Integer> (sPolygons.size()); ++i)
+            for (Integer i = 0; i < static_cast<Integer>(sPolygons.size()); ++i)
                 m_polygons.push_back(sPolygons[i]);
         }
 
-        template<typename Real> 
+        template <typename Real>
         CCsgBoolean<Real>::~CCsgBoolean()
-        {        
+        {
         }
 
-        template<typename Real> 
+        template <typename Real>
         void CCsgBoolean<Real>::setTolerance(const Real aTolerance)
-        {        
+        {
             m_tolerance = aTolerance;
         }
 
-        template<typename Real> 
+        template <typename Real>
         Integer CCsgBoolean<Real>::nbPolygons() const
         {
             return static_cast<Integer>(m_polygons.size());
         }
-        
-        template<typename Real> 
+
+        template <typename Real>
         std::vector<CGeoPolygon<Real>>& CCsgBoolean<Real>::polygons()
         {
             return this->m_polygons;
@@ -67,7 +69,7 @@ namespace ENigMA
         //          +-------+            +-------+
         //
 
-        template<typename Real> 
+        template <typename Real>
         CCsgBoolean<Real> CCsgBoolean<Real>::add(CCsgBoolean<Real> aCSg)
         {
             CCsgBspNode<Real> a(this->m_polygons, m_tolerance);
@@ -101,7 +103,7 @@ namespace ENigMA
         //          |       |
         //          +-------+
 
-        template<typename Real> 
+        template <typename Real>
         CCsgBoolean<Real> CCsgBoolean<Real>::subtract(CCsgBoolean<Real> aCSg)
         {
             CCsgBspNode<Real> a(this->m_polygons, m_tolerance);
@@ -134,7 +136,7 @@ namespace ENigMA
         //          |       |
         //          +-------+
 
-        template<typename Real> 
+        template <typename Real>
         CCsgBoolean<Real> CCsgBoolean<Real>::intersect(CCsgBoolean<Real> aCSg)
         {
             CCsgBspNode<Real> a(this->m_polygons, m_tolerance);
@@ -155,7 +157,7 @@ namespace ENigMA
             return result;
         };
 
-        template<typename Real> 
+        template <typename Real>
         void CCsgBoolean<Real>::fromSTL(ENigMA::stl::CStlUtils<Real>& aStl)
         {
             for (Integer i = 0; i < aStl.stlFile().nbFacets(); ++i)
@@ -175,7 +177,7 @@ namespace ENigMA
             }
         }
 
-        template<typename Real> 
+        template <typename Real>
         ENigMA::stl::CStlUtils<Real> CCsgBoolean<Real>::toStl()
         {
             ENigMA::stl::CStlUtils<Real> aStl;
@@ -184,11 +186,11 @@ namespace ENigMA
 
             Integer n = 0;
 
-            for (Integer i = 0; i < static_cast<Integer> (this->m_polygons.size()); ++i)
+            for (Integer i = 0; i < static_cast<Integer>(this->m_polygons.size()); ++i)
             {
                 std::vector<CGeoTriangle<Real>> sTriangles = this->m_polygons[i].triangulate();
 
-                for (Integer j = 0; j < static_cast<Integer> (sTriangles.size()); ++j)
+                for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j)
                 {
                     ENigMA::stl::CStlFacet<Real> aFacet;
 

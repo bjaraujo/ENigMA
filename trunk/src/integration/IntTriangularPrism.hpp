@@ -11,20 +11,23 @@
 
 #include "IntGaussIntegration.hpp"
 
-namespace ENigMA {
-namespace integration {
-    template <typename Real>
-    class CIntTriangularPrism : public CIntGaussIntegration<Real> {
-    protected:
-        std::vector<Real> m_xi, m_eta, m_zeta;
-        std::vector<Real> m_wxi, m_weta, m_wzeta;
+namespace ENigMA
+{
+    namespace integration
+    {
+        template <typename Real>
+        class CIntTriangularPrism : public CIntGaussIntegration<Real>
+        {
+        protected:
+            std::vector<Real> m_xi, m_eta, m_zeta;
+            std::vector<Real> m_wxi, m_weta, m_wzeta;
 
-        void setGaussPoints();
+            void setGaussPoints();
 
-    public:
-        CIntTriangularPrism();
-        virtual ~CIntTriangularPrism();
-    };
-}
+        public:
+            CIntTriangularPrism();
+            virtual ~CIntTriangularPrism();
+        };
+    }
 }
 #include "IntTriangularPrism_Imp.hpp"

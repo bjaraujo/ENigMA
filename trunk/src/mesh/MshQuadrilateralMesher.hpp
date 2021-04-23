@@ -17,111 +17,117 @@
 #include "GeoRtree.hpp"
 #include "MshMesh.hpp"
 
-namespace ENigMA {
-namespace mesh {
+namespace ENigMA
+{
+    namespace mesh
+    {
 
-    // Advancing front
-    template <typename Real>
-    struct SMshQuadrilateralAdvancingFrontEdge {
-        Integer id;
-
-        bool remove;
-        bool boundary;
-
-        Integer nodeId[2];
-
-        Integer neighborId[2];
-
-        Integer quadrilateralId;
-
-        CGeoLine<Real> line;
-
-        void build(const CMshMesh<Real>& aMesh)
+        // Advancing front
+        template <typename Real>
+        struct SMshQuadrilateralAdvancingFrontEdge
         {
-            this->line.reset();
-            this->line.setStartPoint(aMesh.node(this->nodeId[0]));
-            this->line.setEndPoint(aMesh.node(this->nodeId[1]));
-        }
-    };
-
-    template <typename Real>
-    class CMshQuadrilateralMesher {
-    private:
-        // Inner points
-        struct SNode {
             Integer id;
-            bool remove;
 
-            Integer nodeId;
+            bool remove;
+            bool boundary;
+
+            Integer nodeId[2];
+
+            Integer neighborId[2];
+
+            Integer quadrilateralId;
+
+            CGeoLine<Real> line;
+
+            void build(const CMshMesh<Real>& aMesh)
+            {
+                this->line.reset();
+                this->line.setStartPoint(aMesh.node(this->nodeId[0]));
+                this->line.setEndPoint(aMesh.node(this->nodeId[1]));
+                this->line.calculateLength(true);
+            }
         };
 
-        std::vector<SNode> m_interiorNodes;
+        template <typename Real>
+        class CMshQuadrilateralMesher
+        {
+        private:
+            // Inner points
+            struct SNode
+            {
+                Integer id;
+                bool remove;
 
-        std::vector<SMshQuadrilateralAdvancingFrontEdge<Real>> m_anAdvFront;
+                Integer nodeId;
+            };
 
-        CGeoBoundingBox<Real> m_boundingBox;
+            std::vector<SNode> m_interiorNodes;
 
-        clock_t m_begin;
-        clock_t m_end;
+            std::vector<SMshQuadrilateralAdvancingFrontEdge<Real>> m_anAdvFront;
 
-        bool m_bStop;
-        Integer m_dataInterval;
-        Integer m_timeInterval;
-        Integer m_previousNbElements;
+            CGeoBoundingBox<Real> m_boundingBox;
 
-        Integer m_nextEdgeId;
+            clock_t m_begin;
+            clock_t m_end;
 
-        CGeoRtree<Real> m_tree;
-        CMshMesh<Real> m_surfaceMesh;
+            bool m_bStop;
+            Integer m_dataInterval;
+            Integer m_timeInterval;
+            Integer m_previousNbElements;
 
-        void checkUpdate();
+            Integer m_nextEdgeId;
 
-        inline bool edgeExists(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
-        inline bool edgeOk(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
-        inline bool quadrilateralContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
-        inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
+            CGeoRtree<Real> m_tree;
+            CMshMesh<Real> m_surfaceMesh;
 
-        void cleanDuplicateEdges(std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
-        void adjustConnectivity(std::vector<Integer>& sEdges);
-        void findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes);
-        Real findShortestDistance(std::vector<Integer>& sEdges, CGeoLine<Real>& aLine, Integer anAdvEdgeId, const Real aTolerance);
+            void checkUpdate();
 
-        void addQuadrilateral(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId3, const Integer aNodeId4, std::vector<Integer>& sEdges, const Real aTolerance);
+            inline bool edgeExists(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+            inline bool edgeOk(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+            inline bool quadrilateralContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
+            inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
-        void addEdgeToRtree(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
-        void removeEdgeFromRtree(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+            void cleanDuplicateEdges(std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+            void adjustConnectivity(std::vector<Integer>& sEdges);
+            void findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes);
+            Real findShortestDistance(std::vector<Integer>& sEdges, CGeoLine<Real>& aLine, Integer anAdvEdgeId, const Real aTolerance);
 
-        void removeEdge(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+            void addQuadrilateral(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId3, const Integer aNodeId4, std::vector<Integer>& sEdges, const Real aTolerance);
 
-        bool advancingFrontQuadMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bCheckDelaunay = false, Integer firstIndex = 0, const Real aTolerance = 0.0);
+            void addEdgeToRtree(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+            void removeEdgeFromRtree(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
-        Integer frontSize();
+            void removeEdge(SMshQuadrilateralAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
-    public:
-        CMshQuadrilateralMesher();
-        virtual ~CMshQuadrilateralMesher();
+            bool advancingFrontQuadMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bAddNodes = true, const bool bCheckDelaunay = false, const Real aTolerance = 0.0);
 
-        bool remesh(CMshMesh<Real>& anEdgeMesh, Real meshSize);
-        bool remesh(CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);
+            Integer frontSize();
 
-        bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-        bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-        bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+        public:
+            CMshQuadrilateralMesher();
+            virtual ~CMshQuadrilateralMesher();
 
-        CMshMesh<Real>& mesh();
+            bool remesh(CMshMesh<Real>& anEdgeMesh, Real meshSize);
+            bool remesh(CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);
 
-        void setIntervals(const Integer timeInterval, const Integer dataInterval);
-        void stopMeshing();
+            bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
 
-        void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0);
+            CMshMesh<Real>& mesh();
 
-        void flipEdges(const Real aTolerance = 0.0);
-        void relaxNodes(const Real aTolerance = 0.0);
+            void setIntervals(const Integer timeInterval, const Integer dataInterval);
+            void stopMeshing();
 
-        // callback
-        std::function<int(int)> onUpdate;
-    };
-}
+            void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0);
+
+            void flipEdges(const Real aTolerance = 0.0);
+            void relaxNodes(const Real aTolerance = 0.0);
+
+            // callback
+            std::function<int(int)> onUpdate;
+        };
+    }
 }
 
 #include "MshQuadrilateralMesher_Imp.hpp"

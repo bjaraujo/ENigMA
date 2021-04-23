@@ -11,22 +11,25 @@
 
 #include "SphKernel.hpp"
 
-namespace ENigMA {
-namespace sph {
-    template <typename Real>
-    class CSphConvex : public CSphKernel<Real> {
-    public:
-        CSphConvex();
-        explicit CSphConvex(const Integer nDimension);
-        virtual ~CSphConvex();
+namespace ENigMA
+{
+    namespace sph
+    {
+        template <typename Real>
+        class CSphConvex : public CSphKernel<Real>
+        {
+        public:
+            CSphConvex();
+            explicit CSphConvex(const Integer nDimension);
+            virtual ~CSphConvex();
 
-        void setDimension(const Integer nDimension);
+            void setDimension(const Integer nDimension);
 
-        Real W(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
-        ENigMA::geometry::CGeoVector<Real> gradientW(const ENigMA::geometry::CGeoVector<Real> r, const Real h, const Real aTolerance = 0.0);
-        Real laplacianW(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
-    };
-}
+            Real W(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
+            ENigMA::geometry::CGeoVector<Real> gradientW(const ENigMA::geometry::CGeoVector<Real> r, const Real h, const Real aTolerance = 0.0);
+            Real laplacianW(const ENigMA::geometry::CGeoVector<Real> r, const Real h);
+        };
+    }
 }
 
 #include "SphConvex_Imp.hpp"

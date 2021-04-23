@@ -11,17 +11,20 @@
 
 #include "IntGaussIntegration.hpp"
 
-namespace ENigMA {
+namespace ENigMA
+{
 
-namespace integration {
+    namespace integration
+    {
 
-    template <typename Real>
-    class CIntTetrahedron : public CIntGaussIntegration<Real> {
-    public:
-        CIntTetrahedron();
-        virtual ~CIntTetrahedron();
-    };
-}
+        template <typename Real>
+        class CIntTetrahedron : public CIntGaussIntegration<Real>
+        {
+        public:
+            CIntTetrahedron();
+            virtual ~CIntTetrahedron();
+        };
+    }
 }
 
 #include "IntTetrahedron_Imp.hpp"

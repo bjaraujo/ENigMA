@@ -11,20 +11,23 @@
 
 #include "AnaFunction.hpp"
 
-namespace ENigMA {
-namespace analytical {
-    template <typename Real>
-    class CAnaFlow : public CAnaFunction<Real> {
-    private:
-        Real phi(const Real x, const Real t, const Real L, const Real mu);
+namespace ENigMA
+{
+    namespace analytical
+    {
+        template <typename Real>
+        class CAnaFlow : public CAnaFunction<Real>
+        {
+        private:
+            Real phi(const Real x, const Real t, const Real L, const Real mu);
 
-    public:
-        CAnaFlow();
-        virtual ~CAnaFlow();
+        public:
+            CAnaFlow();
+            virtual ~CAnaFlow();
 
-        void viscousBurgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u);
-    };
-}
+            void viscousBurgersEquation(Real x, Real dx, Real t, Real L, Real mu, Real& u);
+        };
+    }
 }
 
 #include "AnaFlow_Imp.hpp"
