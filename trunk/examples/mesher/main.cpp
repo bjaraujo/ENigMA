@@ -30,14 +30,14 @@ void GenerateMesh(const double meshSize, const int maxEle, const double tol)
     CPosGmsh<double> aPosGmsh;
     CMshMesh<double> aSurfaceMesh;
 
-    //CMshQuadrilateralMesher<double> aQuadrilateralMesher;
-    CMshTriangleMesher<double> aTriangularMesher;
+    CMshQuadrilateralMesher<double> aQuadrilateralMesher;
+    //CMshTriangleMesher<double> aTriangularMesher;
 
-    aPosGmsh.load(T, "_edge947.msh");
+    aPosGmsh.load(T, "_edge1.msh");
     CMshMesh<double> anEdgeMesh = T.mesh();
 
-    anEdgeMesh.mergeNodes(1E-2);
-    anEdgeMesh.generateFaces(1E-2);
+    anEdgeMesh.mergeNodes(tol);
+    anEdgeMesh.generateFaces(tol);
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "edge_quads.msh", "beams");
@@ -49,12 +49,12 @@ void GenerateMesh(const double meshSize, const int maxEle, const double tol)
     //aTriangularMesher.remesh(anEdgeMesh, meshSize);
 
     try {
-        aTriangularMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1 * meshSize, 10.0 * meshSize, tol);
-    } catch (std::vector<SMshTriangleAdvancingFrontEdge<double>>& advFront) {
+        aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1 * meshSize, 10.0 * meshSize, tol);
+    } catch (std::vector<SMshAdvancingFrontEdge<double>>& advFront) {
 
         CMshMesh<double> aMesh;
 
-		aSurfaceMesh = aTriangularMesher.mesh();
+		aSurfaceMesh = aQuadrilateralMesher.mesh();
 
         for (int i = 0; i < aSurfaceMesh.nbNodes(); i++) {
             int aNodeId = aSurfaceMesh.nodeId(i);
@@ -82,7 +82,7 @@ void GenerateMesh(const double meshSize, const int maxEle, const double tol)
 
     std::cout << "Finished in about " << std::setprecision(2) << (double)(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
 
-    aSurfaceMesh = aTriangularMesher.mesh();
+    aSurfaceMesh = aQuadrilateralMesher.mesh();
 
     std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
 
@@ -92,5 +92,5 @@ void GenerateMesh(const double meshSize, const int maxEle, const double tol)
 
 int main(int argc, char* argv[])
 {
-    GenerateMesh(1.0, 999, 1E-2);
+    GenerateMesh(1.0, 999, 1E-3);
 }

@@ -61,14 +61,14 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::removeTriangle(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::removeTriangle(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
         {
             anAdvTriangle.remove = true;
             this->removeTriangleFromRtree(anAdvTriangle, aTolerance);
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::addTriangleToRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::addTriangleToRtree(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
         {
             Integer aNodeId1 = anAdvTriangle.nodeId[0];
             Integer aNodeId2 = anAdvTriangle.nodeId[1];
@@ -90,7 +90,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::removeTriangleFromRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::removeTriangleFromRtree(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance)
         {
             Integer aNodeId1 = anAdvTriangle.nodeId[0];
             Integer aNodeId2 = anAdvTriangle.nodeId[1];
@@ -108,7 +108,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTetrahedronMesher<Real>::triangleExists(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles)
+        bool CMshTetrahedronMesher<Real>::triangleExists(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles)
         {
             std::vector<Integer> sNodeIds;
 
@@ -124,7 +124,7 @@ namespace ENigMA
                 if (sTriangles[j] == anAdvTriangle.id)
                     continue;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[sTriangles[j]];
+                SMshAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[sTriangles[j]];
 
                 std::vector<Integer> sOtherNodeIds;
 
@@ -145,7 +145,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTetrahedronMesher<Real>::triangleOk(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance)
+        bool CMshTetrahedronMesher<Real>::triangleOk(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance)
         {
             CGeoTriangle<Real> aTriangle1;
 
@@ -159,7 +159,7 @@ namespace ENigMA
                 if (sTriangles[j] == anAdvTriangle.id)
                     continue;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[sTriangles[j]];
+                SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[sTriangles[j]];
 
                 if (anotherAdvTriangle.remove)
                     continue;
@@ -294,7 +294,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTetrahedronMesher<Real>::pairEdges(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle2)
+        bool CMshTetrahedronMesher<Real>::pairEdges(SMshAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshAdvancingFrontTriangle<Real>& anAdvTriangle2)
         {
             for (Integer k = 0; k < 3; ++k)
             {
@@ -322,7 +322,7 @@ namespace ENigMA
             {
                 Integer anAdvTriangleId = i;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -349,7 +349,7 @@ namespace ENigMA
                         if (anotherAdvTriangleId == anAdvTriangle.id)
                             continue;
 
-                        SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
+                        SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
 
                         if (anotherAdvTriangle.remove)
                             continue;
@@ -378,7 +378,7 @@ namespace ENigMA
             {
                 Integer anAdvTriangleId = m_nextTriangleId - i - 1;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -387,7 +387,7 @@ namespace ENigMA
 
                 if (this->triangleExists(anAdvTriangle, aDuplicateTriangleId, sTriangles))
                 {
-                    SMshTetrahedronAdvancingFrontTriangle<Real>& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
+                    SMshAdvancingFrontTriangle<Real>& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
 
                     this->removeTriangle(anAdvTriangle, aTolerance);
                     this->removeTriangle(aDuplicateTriangle, aTolerance);
@@ -401,7 +401,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::addTetrahedron(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::addTetrahedron(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance)
         {
             Integer aNodeId1 = anAdvTriangle.nodeId[0];
             Integer aNodeId2 = anAdvTriangle.nodeId[1];
@@ -424,16 +424,16 @@ namespace ENigMA
 
             m_volumeMesh.addElement(aNewElementId, aNewElement);
 
-            SMshTetrahedronAdvancingFrontTriangle<Real>& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
-            SMshTetrahedronAdvancingFrontTriangle<Real>& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
-            SMshTetrahedronAdvancingFrontTriangle<Real>& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
+            SMshAdvancingFrontTriangle<Real>& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
+            SMshAdvancingFrontTriangle<Real>& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
+            SMshAdvancingFrontTriangle<Real>& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
 
             Integer aNewTriangleId1 = m_nextTriangleId++;
             Integer aNewTriangleId2 = m_nextTriangleId++;
             Integer aNewTriangleId3 = m_nextTriangleId++;
 
             // Add triangle 1
-            SMshTetrahedronAdvancingFrontTriangle<Real> aNewTriangle1;
+            SMshAdvancingFrontTriangle<Real> aNewTriangle1;
             aNewTriangle1.id = aNewTriangleId1;
             aNewTriangle1.remove = false;
             aNewTriangle1.boundary = false;
@@ -446,7 +446,7 @@ namespace ENigMA
             aNewTriangle1.nodeNotId[0] = anAdvTriangle.nodeNotId[0];
             aNewTriangle1.nodeNotId[1] = 1;
             aNewTriangle1.nodeNotId[2] = 0;
-            aNewTriangle1.tetrahedronId = aNewElementId;
+            aNewTriangle1.elementId = aNewElementId;
             aNewTriangle1.nodeNotId4 = aNodeId3;
 
             aNewTriangle1.build(m_volumeMesh);
@@ -459,7 +459,7 @@ namespace ENigMA
             this->addTriangleToRtree(aNewTriangle1, aTolerance);
 
             // Add triangle 2
-            SMshTetrahedronAdvancingFrontTriangle<Real> aNewTriangle2;
+            SMshAdvancingFrontTriangle<Real> aNewTriangle2;
             aNewTriangle2.id = aNewTriangleId2;
             aNewTriangle2.remove = false;
             aNewTriangle2.boundary = false;
@@ -472,7 +472,7 @@ namespace ENigMA
             aNewTriangle2.nodeNotId[0] = anAdvTriangle.nodeNotId[1];
             aNewTriangle2.nodeNotId[1] = 1;
             aNewTriangle2.nodeNotId[2] = 0;
-            aNewTriangle2.tetrahedronId = aNewElementId;
+            aNewTriangle2.elementId = aNewElementId;
             aNewTriangle2.nodeNotId4 = aNodeId1;
 
             aNewTriangle2.build(m_volumeMesh);
@@ -485,7 +485,7 @@ namespace ENigMA
             this->addTriangleToRtree(aNewTriangle2, aTolerance);
 
             // Add triangle 3
-            SMshTetrahedronAdvancingFrontTriangle<Real> aNewTriangle3;
+            SMshAdvancingFrontTriangle<Real> aNewTriangle3;
             aNewTriangle3.id = aNewTriangleId3;
             aNewTriangle3.remove = false;
             aNewTriangle3.boundary = false;
@@ -498,7 +498,7 @@ namespace ENigMA
             aNewTriangle3.nodeNotId[0] = anAdvTriangle.nodeNotId[2];
             aNewTriangle3.nodeNotId[1] = 1;
             aNewTriangle3.nodeNotId[2] = 0;
-            aNewTriangle3.tetrahedronId = aNewElementId;
+            aNewTriangle3.elementId = aNewElementId;
             aNewTriangle3.nodeNotId4 = aNodeId2;
 
             aNewTriangle3.build(m_volumeMesh);
@@ -595,7 +595,7 @@ namespace ENigMA
 
                 if (anElement.elementType() == ET_TRIANGLE)
                 {
-                    SMshTetrahedronAdvancingFrontTriangle<Real> anAdvTriangle;
+                    SMshAdvancingFrontTriangle<Real> anAdvTriangle;
 
                     anAdvTriangle.id = m_nextTriangleId++;
                     anAdvTriangle.remove = false;
@@ -604,7 +604,7 @@ namespace ENigMA
                     for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
                         anAdvTriangle.nodeId[j] = anElement.nodeId(j);
 
-                    anAdvTriangle.tetrahedronId = std::numeric_limits<Integer>::max();
+                    anAdvTriangle.elementId = std::numeric_limits<Integer>::max();
                     anAdvTriangle.nodeNotId4 = std::numeric_limits<Integer>::max();
 
                     anAdvTriangle.build(aSurfaceMesh);
@@ -673,44 +673,36 @@ namespace ENigMA
 
             Integer maxElem = maxNbElements;
 
-            bool res = true;
+            this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, false, false, aTolerance);
+            this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, true, false, aTolerance);
+            this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.01, true, false, aTolerance);
 
-            res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, false, false, aTolerance) : res = false;
-            res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, true, false, aTolerance) : res = false;
-            res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.01, true, false, aTolerance) : res = false;
-
-            if (res)
+            for (Integer i = 0; i < 30; ++i)
             {
-                for (Integer i = 0; i < 30; ++i)
+                if (this->frontSize() == 0)
+                    break;
+
+                if (i < 10)
+                    this->repair(meshSizeFunc, 0.90 + i * 0.05, 0.0, aTolerance);
+                else
+                    this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance);
+
+                if (i < 4)
                 {
-                    if (i < 10)
-                        res ? res = this->repair(meshSizeFunc, 0.90 + i * 0.05, 0.0, aTolerance) : res = false;
-                    else
-                        res ? res = this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance) : res = false;
-
-                    if (i < 4)
-                    {
-                        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, false, false, aTolerance) : res = false;
-                        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, true, false, aTolerance) : res = false;
-                    }
-                    else if (i < 8)
-                    {
-                        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, false, aTolerance) : res = false;
-                        res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, true, false, aTolerance) : res = false;
-                    }
-
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, false, false, aTolerance) : res = false;
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, true, false, aTolerance) : res = false;
-
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, false, false, aTolerance) : res = false;
-                    res ? res = this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, true, false, aTolerance) : res = false;
-
-                    if (!res)
-                        break;
-
-                    if (this->frontSize() == 0)
-                        break;
+                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, false, false, aTolerance);
+                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, true, false, aTolerance);
                 }
+                else if (i < 8)
+                {
+                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, false, aTolerance);
+                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, true, false, aTolerance);
+                }
+
+                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, false, false, aTolerance);
+                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, true, false, aTolerance);
+
+                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, false, false, aTolerance);
+                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, true, false, aTolerance);
             }
 
             if (this->frontSize() > 0)
@@ -777,7 +769,7 @@ namespace ENigMA
                 if (m_anAdvFront[anAdvTriangleId].remove)
                     continue;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
                 if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max())
                     continue;
@@ -1022,7 +1014,7 @@ namespace ENigMA
             {
                 Integer anAdvTriangleId = i;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1054,7 +1046,7 @@ namespace ENigMA
                     if (anotherTriangleId == anAdvTriangle.id)
                         continue;
 
-                    SMshTetrahedronAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[anotherTriangleId];
+                    SMshAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[anotherTriangleId];
 
                     if (anotherTriangle.remove)
                         continue;
@@ -1074,7 +1066,7 @@ namespace ENigMA
         template <typename Real>
         void CMshTetrahedronMesher<Real>::reduceFront(const Real aTolerance)
         {
-            std::vector<SMshTetrahedronAdvancingFrontTriangle<Real>> aReducedAdvFront;
+            std::vector<SMshAdvancingFrontTriangle<Real>> aReducedAdvFront;
 
             std::map<Integer, Integer> aAdvFrontMapId;
 
@@ -1082,7 +1074,7 @@ namespace ENigMA
 
             for (Integer i = 0; i < m_anAdvFront.size(); ++i)
             {
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1101,7 +1093,7 @@ namespace ENigMA
 
             for (Integer i = 0; i < aReducedAdvFront.size(); ++i)
             {
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = aReducedAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = aReducedAdvFront[i];
 
                 anAdvTriangle.id = aAdvFrontMapId.at(anAdvTriangle.id);
                 anAdvTriangle.neighborId[0] = aAdvFrontMapId.at(anAdvTriangle.neighborId[0]);
@@ -1136,29 +1128,29 @@ namespace ENigMA
                 if (m_bStop)
                     return false;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
                 if (anAdvTriangle.remove)
                     continue;
 
-                if (anAdvTriangle.tetrahedronId == std::numeric_limits<Integer>::max())
+                if (anAdvTriangle.elementId == std::numeric_limits<Integer>::max())
                     continue;
 
                 for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j)
                 {
-                    SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
+                    SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
 
                     if (anotherAdvTriangle.remove)
                         continue;
 
-                    if (anotherAdvTriangle.tetrahedronId == std::numeric_limits<Integer>::max())
+                    if (anotherAdvTriangle.elementId == std::numeric_limits<Integer>::max())
                         continue;
 
-                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anAdvTriangle.tetrahedronId) == sElementsToRemove.end())
-                        sElementsToRemove.push_back(anAdvTriangle.tetrahedronId);
+                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anAdvTriangle.elementId) == sElementsToRemove.end())
+                        sElementsToRemove.push_back(anAdvTriangle.elementId);
 
-                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anotherAdvTriangle.tetrahedronId) == sElementsToRemove.end())
-                        sElementsToRemove.push_back(anotherAdvTriangle.tetrahedronId);
+                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anotherAdvTriangle.elementId) == sElementsToRemove.end())
+                        sElementsToRemove.push_back(anotherAdvTriangle.elementId);
 
                     for (Integer k = 0; k < 3; ++k)
                     {
@@ -1272,7 +1264,7 @@ namespace ENigMA
 
                 for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j)
                 {
-                    SMshTetrahedronAdvancingFrontTriangle<Real> anAdvTriangle;
+                    SMshAdvancingFrontTriangle<Real> anAdvTriangle;
 
                     anAdvTriangle.id = m_nextTriangleId++;
                     anAdvTriangle.remove = false;
@@ -1286,7 +1278,7 @@ namespace ENigMA
                     anAdvTriangle.neighborId[1] = std::numeric_limits<Integer>::max();
                     anAdvTriangle.neighborId[2] = std::numeric_limits<Integer>::max();
 
-                    anAdvTriangle.tetrahedronId = std::numeric_limits<Integer>::max();
+                    anAdvTriangle.elementId = std::numeric_limits<Integer>::max();
                     anAdvTriangle.nodeNotId4 = std::numeric_limits<Integer>::max();
 
                     anAdvTriangle.build(m_volumeMesh);
@@ -1304,7 +1296,7 @@ namespace ENigMA
                 if (m_bStop)
                     return false;
 
-                SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1319,7 +1311,7 @@ namespace ENigMA
 
                 for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j)
                 {
-                    SMshTetrahedronAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
+                    SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
 
                     if (anotherAdvTriangle.remove)
                         continue;

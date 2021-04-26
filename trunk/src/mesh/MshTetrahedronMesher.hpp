@@ -24,7 +24,7 @@ namespace ENigMA
 
         // Advancing front
         template <typename Real>
-        struct SMshTetrahedronAdvancingFrontTriangle
+        struct SMshAdvancingFrontTriangle
         {
             Integer id;
 
@@ -36,7 +36,7 @@ namespace ENigMA
             Integer neighborId[3];
             Integer nodeNotId[3];
 
-            Integer tetrahedronId;
+            Integer elementId;
             Integer nodeNotId4;
 
             CGeoTriangle<Real> triangle;
@@ -66,7 +66,7 @@ namespace ENigMA
 
             std::vector<SNode> m_innerNodes;
 
-            std::vector<SMshTetrahedronAdvancingFrontTriangle<Real>> m_anAdvFront;
+            std::vector<SMshAdvancingFrontTriangle<Real>> m_anAdvFront;
 
             CGeoBoundingBox<Real> m_boundingBox;
 
@@ -85,24 +85,24 @@ namespace ENigMA
 
             void checkUpdate();
 
-            inline bool triangleExists(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles);
-            inline bool triangleOk(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+            inline bool triangleExists(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, Integer& aDuplicateTriangleId, std::vector<Integer>& sTriangles);
+            inline bool triangleOk(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
             inline bool tetrahedronContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
             inline bool checkDelaunay(CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
-            bool pairEdges(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle2);
+            bool pairEdges(SMshAdvancingFrontTriangle<Real>& anAdvTriangle1, SMshAdvancingFrontTriangle<Real>& anAdvTriangle2);
 
             void cleanDuplicateTriangles(std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
             void adjustConnectivity(std::vector<Integer>& sTriangles);
             void findClosestNodes(std::vector<Integer>& sTriangles, std::vector<Integer>& sNodes);
             Real findShortestDistance(std::vector<Integer>& sTriangles, CGeoLine<Real>& aLine, Integer anAdvTriangleId, const Real aTolerance = 0.0);
 
-            void addTriangleToRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
-            void removeTriangleFromRtree(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
+            void addTriangleToRtree(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
+            void removeTriangleFromRtree(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance = 0.0);
 
-            void removeTriangle(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance);
+            void removeTriangle(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Real aTolerance);
 
-            void addTetrahedron(SMshTetrahedronAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
+            void addTetrahedron(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, const Integer aNodeId, std::vector<Integer>& sTriangles, const Real aTolerance = 0.0);
 
             bool advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bAddNodes = true, const bool bCheckDelaunay = false, const Real aTolerance = 0.0);
 

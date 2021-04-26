@@ -64,14 +64,14 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTriangleMesher<Real>::removeEdge(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
+        void CMshTriangleMesher<Real>::removeEdge(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
         {
             anAdvEdge.remove = true;
             removeEdgeFromRtree(anAdvEdge, aTolerance);
         }
 
         template <typename Real>
-        void CMshTriangleMesher<Real>::addEdgeToRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
+        void CMshTriangleMesher<Real>::addEdgeToRtree(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
         {
             Integer aNodeId1 = anAdvEdge.nodeId[0];
             Integer aNodeId2 = anAdvEdge.nodeId[1];
@@ -90,7 +90,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTriangleMesher<Real>::removeEdgeFromRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
+        void CMshTriangleMesher<Real>::removeEdgeFromRtree(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance)
         {
             Integer aNodeId1 = anAdvEdge.nodeId[0];
             Integer aNodeId2 = anAdvEdge.nodeId[1];
@@ -106,7 +106,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::edgeExists(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges)
+        bool CMshTriangleMesher<Real>::edgeExists(SMshAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges)
         {
             std::vector<Integer> sNodeIds;
 
@@ -121,7 +121,7 @@ namespace ENigMA
                 if (sEdges[j] == anAdvEdge.id)
                     continue;
 
-                SMshTriangleAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
+                SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
 
                 std::vector<Integer> sOtherNodeIds;
 
@@ -141,7 +141,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::edgeOk(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::edgeOk(SMshAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance)
         {
             CGeoCoordinate<Real> aPoint;
 
@@ -153,7 +153,7 @@ namespace ENigMA
                 if (sEdges[j] == anAdvEdge.id)
                     continue;
 
-                SMshTriangleAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
+                SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
 
                 if (anotherEdge.remove)
                     continue;
@@ -298,7 +298,7 @@ namespace ENigMA
             {
                 Integer anAdvEdgeId = i;
 
-                SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
                 if (anAdvEdge.remove)
                     continue;
@@ -314,8 +314,8 @@ namespace ENigMA
                     throw std::out_of_range("Connectivity is out of range!");
                 }
 
-                SMshTriangleAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-                SMshTriangleAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+                SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+                SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
                 if (aPrevEdge.remove || aNextEdge.remove)
                 {
@@ -327,7 +327,7 @@ namespace ENigMA
                         if (anotherEdgeId == anAdvEdge.id)
                             continue;
 
-                        SMshTriangleAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[anotherEdgeId];
+                        SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[anotherEdgeId];
 
                         if (anotherEdge.remove)
                             continue;
@@ -360,7 +360,7 @@ namespace ENigMA
             {
                 Integer anAdvEdgeId = m_nextEdgeId - i - 1;
 
-                SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
                 if (anAdvEdge.remove)
                     continue;
@@ -369,7 +369,7 @@ namespace ENigMA
 
                 if (edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges))
                 {
-                    SMshTriangleAdvancingFrontEdge<Real>& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
+                    SMshAdvancingFrontEdge<Real>& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
 
                     this->removeEdge(anAdvEdge, aTolerance);
                     this->removeEdge(aDuplicateEdge, aTolerance);
@@ -383,7 +383,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTriangleMesher<Real>::addTriangle(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance)
+        void CMshTriangleMesher<Real>::addTriangle(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance)
         {
             Integer aNodeId1 = anAdvEdge.nodeId[0];
             Integer aNodeId2 = anAdvEdge.nodeId[1];
@@ -405,14 +405,14 @@ namespace ENigMA
 
             m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-            SMshTriangleAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-            SMshTriangleAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+            SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
+            SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
 
             Integer aNewEdgeId1 = m_nextEdgeId++;
             Integer aNewEdgeId2 = m_nextEdgeId++;
 
             // Add edge 1
-            SMshTriangleAdvancingFrontEdge<Real> aNewEdge1;
+            SMshAdvancingFrontEdge<Real> aNewEdge1;
             aNewEdge1.id = aNewEdgeId1;
             aNewEdge1.remove = false;
             aNewEdge1.boundary = false;
@@ -420,7 +420,7 @@ namespace ENigMA
             aNewEdge1.nodeId[1] = aNodeId3;
             aNewEdge1.neighborId[0] = anAdvEdge.neighborId[0];
             aNewEdge1.neighborId[1] = aNewEdgeId2;
-            aNewEdge1.triangleId = aNewElementId;
+            aNewEdge1.elementId = aNewElementId;
             aNewEdge1.nodeNotId3 = aNodeId2;
 
             aNewEdge1.build(m_surfaceMesh);
@@ -432,7 +432,7 @@ namespace ENigMA
             addEdgeToRtree(aNewEdge1, aTolerance);
 
             // Add edge 2
-            SMshTriangleAdvancingFrontEdge<Real> aNewEdge2;
+            SMshAdvancingFrontEdge<Real> aNewEdge2;
             aNewEdge2.id = aNewEdgeId2;
             aNewEdge2.remove = false;
             aNewEdge2.boundary = false;
@@ -440,7 +440,7 @@ namespace ENigMA
             aNewEdge2.nodeId[1] = aNodeId2;
             aNewEdge2.neighborId[0] = aNewEdgeId1;
             aNewEdge2.neighborId[1] = anAdvEdge.neighborId[1];
-            aNewEdge2.triangleId = aNewElementId;
+            aNewEdge2.elementId = aNewElementId;
             aNewEdge2.nodeNotId3 = aNodeId1;
 
             aNewEdge2.build(m_surfaceMesh);
@@ -685,7 +685,7 @@ namespace ENigMA
 
                 if (anElement.elementType() == ET_BEAM)
                 {
-                    SMshTriangleAdvancingFrontEdge<Real> anAdvEdge;
+                    SMshAdvancingFrontEdge<Real> anAdvEdge;
 
                     anAdvEdge.id = m_nextEdgeId++;
                     anAdvEdge.remove = false;
@@ -694,7 +694,7 @@ namespace ENigMA
                     for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
                         anAdvEdge.nodeId[j] = anElement.nodeId(j);
 
-                    anAdvEdge.triangleId = std::numeric_limits<Integer>::max();
+                    anAdvEdge.elementId = std::numeric_limits<Integer>::max();
                     anAdvEdge.nodeNotId3 = std::numeric_limits<Integer>::max();
 
                     anAdvEdge.build(anEdgeMesh);
@@ -757,11 +757,9 @@ namespace ENigMA
             // Start meshing interior
             Integer maxElem = maxNbElements;
 
-            bool res = true;
-
-            res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, false, aTolerance) : res = false;
-            res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, true, false, aTolerance) : res = false;
-            res ? res = this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance) : res = false;
+            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
 
             if (this->frontSize() > 0)
             {
@@ -824,7 +822,7 @@ namespace ENigMA
                 {
                     Integer anAdvEdgeId = i;
 
-                    SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                    SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
 
                     Integer aNodeId1 = anAdvEdge.nodeId[0];
                     Integer aNodeId2 = anAdvEdge.nodeId[1];

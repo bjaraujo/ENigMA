@@ -21,10 +21,8 @@ namespace ENigMA
 {
     namespace mesh
     {
-
-        // Advancing front
         template <typename Real>
-        struct SMshTriangleAdvancingFrontEdge
+        struct SMshAdvancingFrontEdge
         {
             Integer id;
 
@@ -35,7 +33,7 @@ namespace ENigMA
 
             Integer neighborId[2];
 
-            Integer triangleId;
+            Integer elementId;
 
             Integer nodeNotId3;
 
@@ -53,8 +51,7 @@ namespace ENigMA
         template <typename Real>
         class CMshTriangleMesher
         {
-        private:
-            // Inner points
+        protected:
             struct SNode
             {
                 Integer id;
@@ -65,7 +62,7 @@ namespace ENigMA
 
             std::vector<SNode> m_interiorNodes;
 
-            std::vector<SMshTriangleAdvancingFrontEdge<Real>> m_anAdvFront;
+            std::vector<SMshAdvancingFrontEdge<Real>> m_anAdvFront;
 
             ENigMA::geometry::CGeoBoundingBox<Real> m_boundingBox;
 
@@ -79,27 +76,27 @@ namespace ENigMA
 
             Integer m_nextEdgeId;
 
-            ENigMA::geometry::CGeoRtree<Real> m_tree;
-            ENigMA::mesh::CMshMesh<Real> m_surfaceMesh;
+            CGeoRtree<Real> m_tree;
+            CMshMesh<Real> m_surfaceMesh;
 
             void checkUpdate();
 
-            inline bool edgeExists(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges);
-            inline bool edgeOk(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+            inline bool edgeExists(SMshAdvancingFrontEdge<Real>& anAdvEdge, Integer& aDuplicateEdgeId, std::vector<Integer>& sEdges);
+            inline bool edgeOk(SMshAdvancingFrontEdge<Real>& anAdvEdge, ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
             inline bool triangleContainsNode(ENigMA::mesh::CMshNode<Real>& aNode1, ENigMA::mesh::CMshNode<Real>& aNode2, ENigMA::mesh::CMshNode<Real>& aNode3, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance = 0.0);
             inline bool checkDelaunay(ENigMA::mesh::CMshNode<Real>& aNewNode, const Real aTolerance = 0.0);
 
-            void cleanDuplicateEdges(std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+            virtual void cleanDuplicateEdges(std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
             void adjustConnectivity(std::vector<Integer>& sEdges);
             void findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes);
             Real findShortestDistance(std::vector<Integer>& sEdges, ENigMA::geometry::CGeoLine<Real>& aLine, Integer anAdvEdgeId, const Real aTolerance);
 
-            void addTriangle(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
+            void addTriangle(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Integer aNodeId, std::vector<Integer>& sEdges, const Real aTolerance = 0.0);
 
-            void addEdgeToRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
-            void removeEdgeFromRtree(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+            void addEdgeToRtree(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+            void removeEdgeFromRtree(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
-            void removeEdge(SMshTriangleAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
+            void removeEdge(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
             bool advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bAddNodes = true, const bool bCheckDelaunay = false, const Real aTolerance = 0.0);
 
@@ -109,23 +106,23 @@ namespace ENigMA
             CMshTriangleMesher();
             virtual ~CMshTriangleMesher();
 
-            bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, Real meshSize);
-            bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);
+            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, Real meshSize);
+            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);
 
-            bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-            bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-            bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
 
             ENigMA::mesh::CMshMesh<Real>& mesh();
 
             void setIntervals(const Integer timeInterval, const Integer dataInterval);
             void stopMeshing();
 
-            void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0);
+            virtual void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0);
 
-            void flipEdges(const Real aTolerance = 0.0);
-            void relaxNodes(const Real aTolerance = 0.0);
-            void collapseEdges(Real collapseSize, const Real aTolerance = 0.0);
+            virtual void flipEdges(const Real aTolerance = 0.0);
+            virtual void relaxNodes(const Real aTolerance = 0.0);
+            virtual void collapseEdges(Real collapseSize, const Real aTolerance = 0.0);
 
             // callback
             std::function<int(int)> onUpdate;
