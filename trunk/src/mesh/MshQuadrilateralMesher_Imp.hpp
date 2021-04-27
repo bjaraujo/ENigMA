@@ -51,7 +51,7 @@ namespace ENigMA
 
                 Integer aDuplicateEdgeId;
 
-                if (edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges))
+                if (this->edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges))
                 {
                     SMshAdvancingFrontEdge<Real>& aDuplicateEdge = this->m_anAdvFront[aDuplicateEdgeId];
 
@@ -581,7 +581,7 @@ namespace ENigMA
 
                 this->m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
-                CMshTriangleMesher<Real>::SNode anInteriorNode;
+                SNode<Real> anInteriorNode;
 
                 anInteriorNode.id = i;
                 anInteriorNode.remove = false;

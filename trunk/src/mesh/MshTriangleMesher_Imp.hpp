@@ -744,7 +744,7 @@ namespace ENigMA
 
                 m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
-                SNode anInteriorNode;
+                SNode<Real> anInteriorNode;
 
                 anInteriorNode.id = i;
                 anInteriorNode.remove = false;

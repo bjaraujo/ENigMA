@@ -49,18 +49,19 @@ namespace ENigMA
         };
 
         template <typename Real>
+        struct SNode
+        {
+            Integer id;
+            bool remove;
+
+            Integer nodeId;
+        };
+
+        template <typename Real>
         class CMshTriangleMesher
         {
         protected:
-            struct SNode
-            {
-                Integer id;
-                bool remove;
-
-                Integer nodeId;
-            };
-
-            std::vector<SNode> m_interiorNodes;
+            std::vector<SNode<Real>> m_interiorNodes;
 
             std::vector<SMshAdvancingFrontEdge<Real>> m_anAdvFront;
 
