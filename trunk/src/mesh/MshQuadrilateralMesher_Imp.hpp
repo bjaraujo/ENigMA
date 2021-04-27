@@ -144,7 +144,7 @@ namespace ENigMA
                 aPrevEdge.neighborId[1] = aNewEdgeId1;
 
                 // Add edge to rtree
-                addEdgeToRtree(aNewEdge1, aTolerance);
+                this->addEdgeToRtree(aNewEdge1, aTolerance);
 
                 // Add edge 2
                 SMshAdvancingFrontEdge<Real> aNewEdge2;
@@ -163,7 +163,7 @@ namespace ENigMA
                 aNextEdge.neighborId[0] = aNewEdgeId2;
 
                 // Add edge to rtree
-                addEdgeToRtree(aNewEdge2, aTolerance);
+                this->addEdgeToRtree(aNewEdge2, aTolerance);
 
                 // Remove this edge
                 this->removeEdge(anAdvEdge, aTolerance);
@@ -256,7 +256,7 @@ namespace ENigMA
                 aPrevEdge.neighborId[1] = aNewEdgeId1;
 
                 // Add edge to rtree
-                addEdgeToRtree(aNewEdge1, aTolerance);
+                this->addEdgeToRtree(aNewEdge1, aTolerance);
 
                 // Add edge 2
                 SMshAdvancingFrontEdge<Real> aNewEdge2;
@@ -272,7 +272,7 @@ namespace ENigMA
                 aNewEdge2.build(this->m_surfaceMesh);
 
                 // Add edge to rtree
-                addEdgeToRtree(aNewEdge2, aTolerance);
+                this->addEdgeToRtree(aNewEdge2, aTolerance);
 
                 // Add edge 3
                 SMshAdvancingFrontEdge<Real> aNewEdge3;
@@ -291,7 +291,7 @@ namespace ENigMA
                 aNextEdge.neighborId[0] = aNewEdgeId3;
 
                 // Add edge to rtree
-                addEdgeToRtree(aNewEdge3, aTolerance);
+                this->addEdgeToRtree(aNewEdge3, aTolerance);
 
                 // Remove this edge
                 this->removeEdge(anAdvEdge, aTolerance);
@@ -581,7 +581,7 @@ namespace ENigMA
 
                 this->m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
-                SNode anInteriorNode;
+                CMshTriangleMesher<Real>::SNode anInteriorNode;
 
                 anInteriorNode.id = i;
                 anInteriorNode.remove = false;
@@ -960,14 +960,14 @@ namespace ENigMA
                     {
                         CGeoLine<Real> aLine1(aMidNode, aNewNode1);
 
-                        Real dmin1 = findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
+                        Real dmin1 = this->findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
 
                         if (dmin1 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < baseHeightSize * sizeFactor * expandFactor)
                             aNewNode1 = aNode1 + v * dmin1 * 0.5;
 
                         CGeoLine<Real> aLine2(aMidNode, aNewNode2);
 
-                        Real dmin2 = findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
+                        Real dmin2 = this->findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
 
                         if (dmin2 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < baseHeightSize * sizeFactor * expandFactor)
                             aNewNode2 = aNode2 + v * dmin2 * 0.5;
