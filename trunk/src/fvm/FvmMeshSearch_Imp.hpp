@@ -51,7 +51,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFvmMeshSearch<Real>::findClosestBoundaryFace(CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance)
+        void CFvmMeshSearch<Real>::findClosestBoundaryFace(const CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance)
         {
             Integer wFaceId = 0;
 
