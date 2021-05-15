@@ -24,37 +24,92 @@ using namespace ENigMA::post;
 using namespace ENigMA::pde;
 using namespace ENigMA::stl;
 
-void GenerateMesh(const double meshSize, const int maxEle, const double tol)
+CMshMesh<double> GenerateBoundary(const double tol)
 {
+    CMshMesh<double> anEdgeMesh;
+
+    CMshNode<double> aNode1;
+    aNode1 << 0.0, 0.0, 0.0;
+    anEdgeMesh.addNode(0, aNode1);
+
+    CMshNode<double> aNode2;
+    aNode2 << 1.0, 0.0, 0.0;
+    anEdgeMesh.addNode(1, aNode2);
+
+    CMshNode<double> aNode3;
+    aNode3 << 1.0, 1.0, 0.0;
+    anEdgeMesh.addNode(2, aNode3);
+
+    CMshNode<double> aNode4;
+    aNode4 << 0.0, 1.0, 0.0;
+    anEdgeMesh.addNode(3, aNode4);
+
+    CMshElement<double> anElement1(ET_BEAM);
+    anElement1.addNodeId(0);
+    anElement1.addNodeId(1);
+    anEdgeMesh.addElement(0, anElement1);
+
+    CMshElement<double> anElement2(ET_BEAM);
+    anElement2.addNodeId(1);
+    anElement2.addNodeId(2);
+    anEdgeMesh.addElement(1, anElement2);
+
+    CMshElement<double> anElement3(ET_BEAM);
+    anElement3.addNodeId(2);
+    anElement3.addNodeId(3);
+    anEdgeMesh.addElement(2, anElement3);
+
+    CMshElement<double> anElement4(ET_BEAM);
+    anElement4.addNodeId(3);
+    anElement4.addNodeId(0);
+    anEdgeMesh.addElement(3, anElement4);
+
+    anEdgeMesh.generateFaces(tol);
+    anEdgeMesh.mergeNodes(tol);
+
+    return anEdgeMesh;
+}
+
+CMshMesh<double> LoadBoundary(std::string fileName, const double tol)
+{
+    CMshMesh<double> anEdgeMesh;
+
     CPdeField<double> T;
     CPosGmsh<double> aPosGmsh;
-    CMshMesh<double> aSurfaceMesh;
 
-    CMshQuadrilateralMesher<double> aQuadrilateralMesher;
-    //CMshTriangleMesher<double> aTriangularMesher;
-
-    aPosGmsh.load(T, "_edge1.msh");
-    CMshMesh<double> anEdgeMesh = T.mesh();
+    aPosGmsh.load(T, fileName);
+    anEdgeMesh = T.mesh();
 
     anEdgeMesh.mergeNodes(tol);
     anEdgeMesh.generateFaces(tol);
 
-    T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "edge_quads.msh", "beams");
+    return anEdgeMesh;
+}
+
+void GenerateMesh(CMshMesh<double> anEdgeMesh, const double meshSize, const int maxEle, const double tol)
+{
+    CMshMesh<double> aSurfaceMesh;
+
+    CPdeField<double> T;
+    CPosGmsh<double> aPosGmsh;
+
+    CMshTriangleMesher<double> aTriangularMesher;
 
     clock_t start, finish;
 
     start = clock();
 
-    //aTriangularMesher.remesh(anEdgeMesh, meshSize);
+    aTriangularMesher.remesh(anEdgeMesh, meshSize);
 
-    try {
-        aQuadrilateralMesher.generate(anEdgeMesh, maxEle, meshSize, 0.1 * meshSize, 10.0 * meshSize, tol);
-    } catch (std::vector<SMshAdvancingFrontEdge<double>>& advFront) {
-
+    try 
+    {
+        aTriangularMesher.generate(anEdgeMesh, maxEle, 1.0, 1.0, 1.0, tol);
+    } 
+    catch (std::vector<SMshAdvancingFrontEdge<double>>& advFront) 
+    {
         CMshMesh<double> aMesh;
 
-		aSurfaceMesh = aQuadrilateralMesher.mesh();
+		aSurfaceMesh = aTriangularMesher.mesh();
 
         for (int i = 0; i < aSurfaceMesh.nbNodes(); i++) {
             int aNodeId = aSurfaceMesh.nodeId(i);
@@ -82,15 +137,18 @@ void GenerateMesh(const double meshSize, const int maxEle, const double tol)
 
     std::cout << "Finished in about " << std::setprecision(2) << (double)(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
 
-    aSurfaceMesh = aQuadrilateralMesher.mesh();
+    aSurfaceMesh = aTriangularMesher.mesh();
 
     std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "surface_quads.msh", "quads");
+    aPosGmsh.save(T, "surface.msh", "tris");
 }
 
 int main(int argc, char* argv[])
 {
-    GenerateMesh(1.0, 999, 1E-3);
+    CMshMesh<double> anEdgeMesh = GenerateBoundary(1E-3);
+    //CMshMesh<double> anEdgeMesh = LoadBoundary("_edge.msh", 1E-3);
+
+    GenerateMesh(anEdgeMesh, 0.1, 999, 1E-3);
 }

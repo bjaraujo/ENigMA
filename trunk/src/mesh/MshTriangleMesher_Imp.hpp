@@ -461,7 +461,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, Real meshSize)
+        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, Real meshSize)
         {
             std::stringstream ss(std::stringstream::in | std::stringstream::out);
 
@@ -471,11 +471,11 @@ namespace ENigMA
 
             aAnaFunction.set(ss.str());
 
-            return this->remesh(anEdgeMesh, aAnaFunction);
+            return this->remesh(aMesh, aAnaFunction);
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc)
+        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc)
         {
             Real x, y;
 
@@ -485,106 +485,107 @@ namespace ENigMA
             meshSizeFunc.defineVariable("y", y);
 
             // Split edge mesh according to local mesh size
-            Integer nbEdges = anEdgeMesh.nbElements();
-
-            for (Integer i = 0; i < nbEdges; ++i)
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                Integer anAdvEdgeId = anEdgeMesh.elementId(i);
+                Integer anAdvEdgeId = aMesh.elementId(i);
 
-                CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
+                CMshElement<Real>& anElement = aMesh.element(anAdvEdgeId);
 
-                Integer aNodeId1 = anElement.nodeId(0);
-                Integer aNodeId2 = anElement.nodeId(1);
-
-                CMshNode<Real> aNode1 = anEdgeMesh.node(aNodeId1);
-                CMshNode<Real> aNode2 = anEdgeMesh.node(aNodeId2);
-
-                bool bConnectivity = true;
-
-                Integer aFaceId1 = 0;
-                Integer aFaceId2 = 0;
-
-                if (anElement.nbFaceIds() == 2)
+                if (anElement.elementType() == EElementType::ET_BEAM)
                 {
-                    aFaceId1 = anElement.faceId(0);
-                    aFaceId2 = anElement.faceId(1);
-                }
-                else
-                    bConnectivity = false;
+                    Integer aNodeId1 = anElement.nodeId(0);
+                    Integer aNodeId2 = anElement.nodeId(1);
 
-                CGeoVector<Real> v = aNode2 - aNode1;
+                    CMshNode<Real> aNode1 = aMesh.node(aNodeId1);
+                    CMshNode<Real> aNode2 = aMesh.node(aNodeId2);
 
-                CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
+                    bool bConnectivity = true;
 
-                x = aMidNode.x();
-                y = aMidNode.y();
+                    Integer aFaceId1 = 0;
+                    Integer aFaceId2 = 0;
 
-                Real localMeshSize = meshSizeFunc.evaluate();
-
-                Integer ne = static_cast<Integer>(floor(v.norm() / localMeshSize + 0.5));
-
-                if (ne > 0)
-                {
-                    Real de = v.norm() / ne;
-
-                    CGeoNormal<Real> n = v;
-
-                    n.normalize();
-
-                    Integer aPrevNodeId = aNodeId1;
-                    Integer aPrevFaceId = aFaceId1;
-
-                    for (Integer j = 0; j < ne - 1; ++j)
+                    if (anElement.nbFaceIds() == 2)
                     {
-                        // Create new node
-                        CMshNode<Real> aNode = aNode1 + (j + 1) * de * n;
+                        aFaceId1 = anElement.faceId(0);
+                        aFaceId2 = anElement.faceId(1);
+                    }
+                    else
+                        bConnectivity = false;
 
-                        Integer aNewNodeId = anEdgeMesh.nextNodeId();
-                        anEdgeMesh.addNode(aNewNodeId, aNode);
+                    CGeoVector<Real> v = aNode2 - aNode1;
 
-                        CMshElement<Real> aNewElement(ET_BEAM);
-                        aNewElement.addNodeId(aPrevNodeId);
-                        aNewElement.addNodeId(aNewNodeId);
+                    CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
 
-                        Integer aNewElementId = anEdgeMesh.nextElementId();
+                    x = aMidNode.x();
+                    y = aMidNode.y();
 
-                        if (bConnectivity)
+                    Real localMeshSize = meshSizeFunc.evaluate();
+
+                    Integer ne = static_cast<Integer>(floor(v.norm() / localMeshSize + 0.5));
+
+                    if (ne > 0)
+                    {
+                        Real de = v.norm() / ne;
+
+                        CGeoNormal<Real> n = v;
+
+                        n.normalize();
+
+                        Integer aPrevNodeId = aNodeId1;
+                        Integer aPrevFaceId = aFaceId1;
+
+                        for (Integer j = 0; j < ne - 1; ++j)
                         {
-                            std::vector<CMshFace<Real>> sFaces;
-                            aNewElement.generateFaces(sFaces);
+                            // Create new node
+                            CMshNode<Real> aNode = aNode1 + (j + 1) * de * n;
 
-                            for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j)
+                            Integer aNewNodeId = aMesh.nextNodeId();
+                            aMesh.addNode(aNewNodeId, aNode);
+
+                            CMshElement<Real> aNewElement(ET_BEAM);
+                            aNewElement.addNodeId(aPrevNodeId);
+                            aNewElement.addNodeId(aNewNodeId);
+
+                            Integer aNewElementId = aMesh.nextElementId();
+
+                            if (bConnectivity)
                             {
-                                CMshFace<Real> aNewFace = sFaces[j];
+                                std::vector<CMshFace<Real>> sFaces;
+                                aNewElement.generateFaces(sFaces);
 
-                                Integer aNewFaceId = anEdgeMesh.nextFaceId();
+                                for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j)
+                                {
+                                    CMshFace<Real> aNewFace = sFaces[j];
 
-                                aNewFace.setElementId(aNewElementId);
+                                    Integer aNewFaceId = aMesh.nextFaceId();
 
-                                if (j == 0)
-                                    aNewFace.setPairFaceId(aPrevFaceId);
-                                else
-                                    aNewFace.setPairFaceId(aNewFaceId + 1);
+                                    aNewFace.setElementId(aNewElementId);
 
-                                anEdgeMesh.addFace(aNewFaceId, aNewFace);
-                                aNewElement.addFaceId(aNewFaceId);
+                                    if (j == 0)
+                                        aNewFace.setPairFaceId(aPrevFaceId);
+                                    else
+                                        aNewFace.setPairFaceId(aNewFaceId + 1);
 
-                                aPrevFaceId = aNewFaceId;
+                                    aMesh.addFace(aNewFaceId, aNewFace);
+                                    aNewElement.addFaceId(aNewFaceId);
+
+                                    aPrevFaceId = aNewFaceId;
+                                }
                             }
-                        }
 
-                        aPrevNodeId = aNewNodeId;
+                            aPrevNodeId = aNewNodeId;
 
-                        anEdgeMesh.addElement(aNewElementId, aNewElement);
+                            aMesh.addElement(aNewElementId, aNewElement);
 
-                        // Split element
-                        anEdgeMesh.element(anAdvEdgeId).setNodeId(0, aNewNodeId);
-                        anEdgeMesh.element(anAdvEdgeId).setNodeId(1, aNodeId2);
+                            // Split element
+                            aMesh.element(anAdvEdgeId).setNodeId(0, aNewNodeId);
+                            aMesh.element(anAdvEdgeId).setNodeId(1, aNodeId2);
 
-                        if (bConnectivity)
-                        {
-                            anEdgeMesh.element(anAdvEdgeId).setFaceId(0, aPrevFaceId);
-                            anEdgeMesh.element(anAdvEdgeId).setFaceId(1, aFaceId2);
+                            if (bConnectivity)
+                            {
+                                aMesh.element(anAdvEdgeId).setFaceId(0, aPrevFaceId);
+                                aMesh.element(anAdvEdgeId).setFaceId(1, aFaceId2);
+                            }
                         }
                     }
                 }
@@ -592,16 +593,16 @@ namespace ENigMA
 
             Integer aFirstFaceId = 0;
 
-            for (Integer i = 0; i < anEdgeMesh.nbFaces(); ++i)
+            for (Integer i = 0; i < aMesh.nbFaces(); ++i)
             {
-                Integer aFaceId = anEdgeMesh.faceId(i);
+                Integer aFaceId = aMesh.faceId(i);
 
                 if (i == 0)
                     aFirstFaceId = aFaceId;
 
-                CMshFace<Real>& aFace = anEdgeMesh.face(aFaceId);
+                CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
-                if (aFace.pairFaceId() >= anEdgeMesh.nextFaceId())
+                if (aFace.pairFaceId() >= aMesh.nextFaceId())
                     aFace.setPairFaceId(aFirstFaceId);
             }
 
