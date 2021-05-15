@@ -139,6 +139,13 @@ void GenerateMesh(CMshMesh<double> anEdgeMesh, const double meshSize, const int 
 
     aSurfaceMesh = aTriangularMesher.mesh();
 
+    for (int i = 0; i < 3; i++)
+    {
+        aTriangularMesher.remesh(aSurfaceMesh, meshSize, tol);
+        aTriangularMesher.flipEdges(aSurfaceMesh, tol);
+        aTriangularMesher.relaxNodes(aSurfaceMesh, tol);
+    }
+
     std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
 
     T.setMesh(aSurfaceMesh);

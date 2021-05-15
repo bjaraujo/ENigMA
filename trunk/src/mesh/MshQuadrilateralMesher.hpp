@@ -38,17 +38,12 @@ namespace ENigMA
             CMshQuadrilateralMesher();
             virtual ~CMshQuadrilateralMesher();
 
-            bool remesh(CMshMesh<Real>& anEdgeMesh, Real meshSize) override;
-            bool remesh(CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc) override;
-
             bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0) override;
             bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0) override;
             bool generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0) override;
 
-            void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0) override;
-
-            void flipEdges(const Real aTolerance = 0.0) override;
-            void relaxNodes(const Real aTolerance = 0.0) override;
+            void flipEdges(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance = 0.0) override;
+            void relaxNodes(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance = 0.0) override;
         };
     }
 }

@@ -107,8 +107,8 @@ namespace ENigMA
             CMshTriangleMesher();
             virtual ~CMshTriangleMesher();
 
-            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, Real meshSize);
-            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc);
+            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, Real meshSize, const Real aTolerance = 0.0);
+            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real aTolerance = 0.0);
 
             virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
             virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
@@ -119,11 +119,11 @@ namespace ENigMA
             void setIntervals(const Integer timeInterval, const Integer dataInterval);
             void stopMeshing();
 
-            virtual void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0);
+            virtual void applyFixedBoundary(ENigMA::mesh::CMshMesh<Real>& aSurfaceMesh, ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Real aTolerance = 0.0);
 
-            virtual void flipEdges(const Real aTolerance = 0.0);
-            virtual void relaxNodes(const Real aTolerance = 0.0);
-            virtual void collapseEdges(Real collapseSize, const Real aTolerance = 0.0);
+            virtual void flipEdges(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
+            virtual void relaxNodes(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
+            virtual void collapseEdges(ENigMA::mesh::CMshMesh<Real>& aMesh, Real collapseSize, const Real aTolerance = 0.0);
 
             // callback
             std::function<int(int)> onUpdate;

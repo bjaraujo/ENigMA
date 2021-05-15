@@ -457,9 +457,6 @@ TEST_F(CTestMshQuadrilateralMesher, mesh3)
 
     aQuadrilateralMesher.generate(anEdgeMesh, 999, 0.5, 0.5, 0.5, 1E-3);
 
-    aQuadrilateralMesher.flipEdges(1E-3);
-    aQuadrilateralMesher.relaxNodes(1E-3);
-
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aQuadrilateralMesher.mesh();
 
@@ -516,20 +513,18 @@ TEST_F(CTestMshQuadrilateralMesher, flip1)
 
     aSurfaceMesh.generateFaces(1E-3);
 
-    aQuadrilateralMesher.mesh().addMesh(aSurfaceMesh);
-
-    aQuadrilateralMesher.flipEdges(1E-3);
+    aQuadrilateralMesher.flipEdges(aSurfaceMesh, 1E-3);
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
 
-    T.setMesh(aQuadrilateralMesher.mesh());
+    T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "quad_surface4.msh", "quads");
 
-    EXPECT_EQ(2, aQuadrilateralMesher.mesh().element(0).nodeId(0));
-    EXPECT_EQ(3, aQuadrilateralMesher.mesh().element(0).nodeId(1));
-    EXPECT_EQ(0, aQuadrilateralMesher.mesh().element(0).nodeId(2));
-    EXPECT_EQ(4, aQuadrilateralMesher.mesh().element(0).nodeId(3));
+    EXPECT_EQ(2, aSurfaceMesh.element(0).nodeId(0));
+    EXPECT_EQ(3, aSurfaceMesh.element(0).nodeId(1));
+    EXPECT_EQ(0, aSurfaceMesh.element(0).nodeId(2));
+    EXPECT_EQ(4, aSurfaceMesh.element(0).nodeId(3));
 }
 
 TEST_F(CTestMshQuadrilateralMesher, flip2)
@@ -578,10 +573,7 @@ TEST_F(CTestMshQuadrilateralMesher, flip2)
     CMshQuadrilateralMesher<decimal> aQuadrilateralMesher;
 
     aSurfaceMesh.generateFaces(1E-3);
-
-    aQuadrilateralMesher.mesh().addMesh(aSurfaceMesh);
-
-    aQuadrilateralMesher.flipEdges(1E-3);
+    aQuadrilateralMesher.flipEdges(aSurfaceMesh, 1E-3);
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
@@ -589,8 +581,8 @@ TEST_F(CTestMshQuadrilateralMesher, flip2)
     T.setMesh(aQuadrilateralMesher.mesh());
     aPosGmsh.save(T, "quad_surface5.msh", "quads");
 
-    EXPECT_EQ(3, aQuadrilateralMesher.mesh().element(0).nodeId(0));
-    EXPECT_EQ(0, aQuadrilateralMesher.mesh().element(0).nodeId(1));
-    EXPECT_EQ(1, aQuadrilateralMesher.mesh().element(0).nodeId(2));
-    EXPECT_EQ(4, aQuadrilateralMesher.mesh().element(0).nodeId(3));
+    EXPECT_EQ(3, aSurfaceMesh.element(0).nodeId(0));
+    EXPECT_EQ(0, aSurfaceMesh.element(0).nodeId(1));
+    EXPECT_EQ(1, aSurfaceMesh.element(0).nodeId(2));
+    EXPECT_EQ(4, aSurfaceMesh.element(0).nodeId(3));
 }

@@ -305,154 +305,6 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshQuadrilateralMesher<Real>::remesh(CMshMesh<Real>& anEdgeMesh, Real meshSize)
-        {
-            std::stringstream ss(std::stringstream::in | std::stringstream::out);
-
-            ss << meshSize;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-
-            aAnaFunction.set(ss.str());
-
-            return this->remesh(anEdgeMesh, aAnaFunction);
-        }
-
-        template <typename Real>
-        bool CMshQuadrilateralMesher<Real>::remesh(CMshMesh<Real>& anEdgeMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc)
-        {
-            Real x, y;
-
-            meshSizeFunc.removeAllVariables();
-
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
-
-            // Split edge mesh according to local mesh size
-            Integer nbEdges = anEdgeMesh.nbElements();
-
-            for (Integer i = 0; i < nbEdges; ++i)
-            {
-                Integer anAdvEdgeId = anEdgeMesh.elementId(i);
-
-                CMshElement<Real>& anElement = anEdgeMesh.element(anAdvEdgeId);
-
-                Integer aNodeId1 = anElement.nodeId(0);
-                Integer aNodeId2 = anElement.nodeId(1);
-
-                CMshNode<Real> aNode1 = anEdgeMesh.node(aNodeId1);
-                CMshNode<Real> aNode2 = anEdgeMesh.node(aNodeId2);
-
-                bool bConnectivity = true;
-
-                Integer aFaceId1 = 0;
-                Integer aFaceId2 = 0;
-
-                if (anElement.nbFaceIds() == 2)
-                {
-                    aFaceId1 = anElement.faceId(0);
-                    aFaceId2 = anElement.faceId(1);
-                }
-                else
-                    bConnectivity = false;
-
-                CGeoVector<Real> v = aNode2 - aNode1;
-
-                CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
-
-                x = aMidNode.x();
-                y = aMidNode.y();
-
-                Real localMeshSize = meshSizeFunc.evaluate();
-
-                Integer ne = static_cast<Integer>(floor(v.norm() / localMeshSize + 0.5));
-
-                if (ne > 0)
-                {
-                    Real de = v.norm() / ne;
-
-                    CGeoNormal<Real> n = v;
-
-                    n.normalize();
-
-                    Integer aPrevNodeId = aNodeId1;
-                    Integer aPrevFaceId = aFaceId1;
-
-                    for (Integer j = 0; j < ne - 1; ++j)
-                    {
-                        // Create new node
-                        CMshNode<Real> aNode = aNode1 + (j + 1) * de * n;
-
-                        Integer aNewNodeId = anEdgeMesh.nextNodeId();
-                        anEdgeMesh.addNode(aNewNodeId, aNode);
-
-                        CMshElement<Real> aNewElement(ET_BEAM);
-                        aNewElement.addNodeId(aPrevNodeId);
-                        aNewElement.addNodeId(aNewNodeId);
-
-                        Integer aNewElementId = anEdgeMesh.nextElementId();
-
-                        if (bConnectivity)
-                        {
-                            std::vector<CMshFace<Real>> sFaces;
-                            aNewElement.generateFaces(sFaces);
-
-                            for (Integer k = 0; k < static_cast<Integer>(sFaces.size()); ++k)
-                            {
-                                CMshFace<Real> aNewFace = sFaces[k];
-
-                                Integer aNewFaceId = anEdgeMesh.nextFaceId();
-
-                                aNewFace.setElementId(aNewElementId);
-
-                                if (k == 0)
-                                    aNewFace.setPairFaceId(aPrevFaceId);
-                                else
-                                    aNewFace.setPairFaceId(aNewFaceId + 1);
-
-                                anEdgeMesh.addFace(aNewFaceId, aNewFace);
-                                aNewElement.addFaceId(aNewFaceId);
-
-                                aPrevFaceId = aNewFaceId;
-                            }
-                        }
-
-                        aPrevNodeId = aNewNodeId;
-
-                        anEdgeMesh.addElement(aNewElementId, aNewElement);
-
-                        // Split element
-                        anEdgeMesh.element(anAdvEdgeId).setNodeId(0, aNewNodeId);
-                        anEdgeMesh.element(anAdvEdgeId).setNodeId(1, aNodeId2);
-
-                        if (bConnectivity)
-                        {
-                            anEdgeMesh.element(anAdvEdgeId).setFaceId(0, aPrevFaceId);
-                            anEdgeMesh.element(anAdvEdgeId).setFaceId(1, aFaceId2);
-                        }
-                    }
-                }
-            }
-
-            Integer aFirstFaceId = 0;
-
-            for (Integer i = 0; i < anEdgeMesh.nbFaces(); ++i)
-            {
-                Integer aFaceId = anEdgeMesh.faceId(i);
-
-                if (i == 0)
-                    aFirstFaceId = aFaceId;
-
-                CMshFace<Real>& aFace = anEdgeMesh.face(aFaceId);
-
-                if (aFace.pairFaceId() >= anEdgeMesh.nextFaceId())
-                    aFace.setPairFaceId(aFirstFaceId);
-            }
-
-            return true;
-        }
-
-        template <typename Real>
         bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
         {
             std::vector<CGeoCoordinate<Real>> sInteriorPoints;
@@ -1030,26 +882,20 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshQuadrilateralMesher<Real>::applyFixedBoundary(CMshMesh<Real>& anEdgeMesh, const Real aTolerance)
-        {
-            // TODO:
-        }
-
-        template <typename Real>
-        void CMshQuadrilateralMesher<Real>::flipEdges(const Real aTolerance)
+        void CMshQuadrilateralMesher<Real>::flipEdges(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance)
         {
             std::map<Integer, bool> sFlipped;
 
-            for (Integer i = 0; i < this->m_surfaceMesh.nbElements(); ++i)
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                Integer anElementId = this->m_surfaceMesh.elementId(i);
+                Integer anElementId = aMesh.elementId(i);
                 sFlipped[anElementId] = false;
             }
 
-            for (Integer i = 0; i < this->m_surfaceMesh.nbFaces(); ++i)
+            for (Integer i = 0; i < aMesh.nbFaces(); ++i)
             {
-                Integer aFaceId = this->m_surfaceMesh.faceId(i);
-                CMshFace<Real> aFace = this->m_surfaceMesh.face(aFaceId);
+                Integer aFaceId = aMesh.faceId(i);
+                CMshFace<Real> aFace = aMesh.face(aFaceId);
 
                 if (aFace.faceType() != FT_LINE)
                     continue;
@@ -1059,7 +905,7 @@ namespace ENigMA
                 if (sFlipped[anElementId])
                     continue;
 
-                CMshElement<Real>& anElement = this->m_surfaceMesh.element(anElementId);
+                CMshElement<Real>& anElement = aMesh.element(anElementId);
 
                 if (anElement.elementType() != ET_TRIANGLE)
                     continue;
@@ -1087,14 +933,14 @@ namespace ENigMA
                 if (aFace.hasPair())
                 {
                     Integer pairFaceId = aFace.pairFaceId();
-                    const CMshFace<Real> aPairFace = this->m_surfaceMesh.face(pairFaceId);
+                    const CMshFace<Real> aPairFace = aMesh.face(pairFaceId);
 
                     Integer aNeighborId = aPairFace.elementId();
 
                     if (sFlipped[aNeighborId])
                         continue;
 
-                    CMshElement<Real>& aNeighbor = this->m_surfaceMesh.element(aNeighborId);
+                    CMshElement<Real>& aNeighbor = aMesh.element(aNeighborId);
 
                     if (aNeighbor.elementType() != ET_QUADRILATERAL)
                         continue;
@@ -1117,11 +963,11 @@ namespace ENigMA
                     aNodeId4 = aNeighbor.nodeId((wIndex + 3) % 4);
                     aNodeId5 = aNeighbor.nodeId((wIndex + 2) % 4);
 
-                    const CMshNode<Real>& aNode1 = this->m_surfaceMesh.node(aNodeId1);
-                    const CMshNode<Real>& aNode2 = this->m_surfaceMesh.node(aNodeId2);
-                    const CMshNode<Real>& aNode3 = this->m_surfaceMesh.node(aNodeId3);
-                    const CMshNode<Real>& aNode4 = this->m_surfaceMesh.node(aNodeId4);
-                    const CMshNode<Real>& aNode5 = this->m_surfaceMesh.node(aNodeId5);
+                    const CMshNode<Real>& aNode1 = aMesh.node(aNodeId1);
+                    const CMshNode<Real>& aNode2 = aMesh.node(aNodeId2);
+                    const CMshNode<Real>& aNode3 = aMesh.node(aNodeId3);
+                    const CMshNode<Real>& aNode4 = aMesh.node(aNodeId4);
+                    const CMshNode<Real>& aNode5 = aMesh.node(aNodeId5);
 
                     // Original
                     CMshTriangle<Real> aTriangle1;
@@ -1171,8 +1017,8 @@ namespace ENigMA
                         for (Integer i = 0; i < 4; i++)
                         {
 
-                            CGeoVector<Real> v1 = this->m_surfaceMesh.node(sNodes[(i + 1) % 4]) - this->m_surfaceMesh.node(sNodes[(i + 0) % 4]);
-                            CGeoVector<Real> v2 = this->m_surfaceMesh.node(sNodes[(i + 2) % 4]) - this->m_surfaceMesh.node(sNodes[(i + 1) % 4]);
+                            CGeoVector<Real> v1 = aMesh.node(sNodes[(i + 1) % 4]) - aMesh.node(sNodes[(i + 0) % 4]);
+                            CGeoVector<Real> v2 = aMesh.node(sNodes[(i + 2) % 4]) - aMesh.node(sNodes[(i + 1) % 4]);
 
                             Real z = v1.cross(v2).z();
 
@@ -1186,14 +1032,14 @@ namespace ENigMA
                         if (isConvex)
                         {
                             // Do flip
-                            this->m_surfaceMesh.element(anElementId).setNodeId(0, aNodeId2);
-                            this->m_surfaceMesh.element(anElementId).setNodeId(1, aNodeId3);
-                            this->m_surfaceMesh.element(anElementId).setNodeId(2, aNodeId4);
+                            aMesh.element(anElementId).setNodeId(0, aNodeId2);
+                            aMesh.element(anElementId).setNodeId(1, aNodeId3);
+                            aMesh.element(anElementId).setNodeId(2, aNodeId4);
 
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(0, aNodeId1);
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(1, aNodeId5);
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(2, aNodeId4);
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(3, aNodeId3);
+                            aMesh.element(aNeighborId).setNodeId(0, aNodeId1);
+                            aMesh.element(aNeighborId).setNodeId(1, aNodeId5);
+                            aMesh.element(aNeighborId).setNodeId(2, aNodeId4);
+                            aMesh.element(aNeighborId).setNodeId(3, aNodeId3);
 
                             sFlipped[anElementId] = true;
                             sFlipped[aNeighborId] = true;
@@ -1230,8 +1076,8 @@ namespace ENigMA
                         for (Integer i = 0; i < 4; i++)
                         {
 
-                            CGeoVector<Real> v1 = this->m_surfaceMesh.node(sNodes[(i + 1) % 4]) - this->m_surfaceMesh.node(sNodes[(i + 0) % 4]);
-                            CGeoVector<Real> v2 = this->m_surfaceMesh.node(sNodes[(i + 2) % 4]) - this->m_surfaceMesh.node(sNodes[(i + 1) % 4]);
+                            CGeoVector<Real> v1 = aMesh.node(sNodes[(i + 1) % 4]) - aMesh.node(sNodes[(i + 0) % 4]);
+                            CGeoVector<Real> v2 = aMesh.node(sNodes[(i + 2) % 4]) - aMesh.node(sNodes[(i + 1) % 4]);
 
                             Real z = v1.cross(v2).z();
 
@@ -1245,14 +1091,14 @@ namespace ENigMA
                         if (isConvex)
                         {
                             // Do flip
-                            this->m_surfaceMesh.element(anElementId).setNodeId(0, aNodeId1);
-                            this->m_surfaceMesh.element(anElementId).setNodeId(1, aNodeId5);
-                            this->m_surfaceMesh.element(anElementId).setNodeId(2, aNodeId3);
+                            aMesh.element(anElementId).setNodeId(0, aNodeId1);
+                            aMesh.element(anElementId).setNodeId(1, aNodeId5);
+                            aMesh.element(anElementId).setNodeId(2, aNodeId3);
 
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(0, aNodeId3);
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(1, aNodeId5);
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(2, aNodeId4);
-                            this->m_surfaceMesh.element(aNeighborId).setNodeId(3, aNodeId2);
+                            aMesh.element(aNeighborId).setNodeId(0, aNodeId3);
+                            aMesh.element(aNeighborId).setNodeId(1, aNodeId5);
+                            aMesh.element(aNeighborId).setNodeId(2, aNodeId4);
+                            aMesh.element(aNeighborId).setNodeId(3, aNodeId2);
 
                             sFlipped[anElementId] = true;
                             sFlipped[aNeighborId] = true;
@@ -1262,18 +1108,18 @@ namespace ENigMA
                 }
             }
 
-            this->m_surfaceMesh.generateFaces(aTolerance);
+            aMesh.generateFaces(aTolerance);
         }
 
         template <typename Real>
-        void CMshQuadrilateralMesher<Real>::relaxNodes(const Real aTolerance)
+        void CMshQuadrilateralMesher<Real>::relaxNodes(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance)
         {
             std::vector<Integer> sElements;
 
-            for (Integer i = 0; i < this->m_surfaceMesh.nbElements(); ++i)
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                Integer anElementId = this->m_surfaceMesh.elementId(i);
-                const CMshElement<Real>& anElement = this->m_surfaceMesh.element(anElementId);
+                Integer anElementId = aMesh.elementId(i);
+                const CMshElement<Real>& anElement = aMesh.element(anElementId);
 
                 if (anElement.elementType() != ET_TRIANGLE && anElement.elementType() != ET_QUADRILATERAL)
                     continue;
@@ -1285,7 +1131,7 @@ namespace ENigMA
 
                     Integer aFirstFaceId = aNextFaceId;
 
-                    CMshNode<Real>& aPivotNode = this->m_surfaceMesh.node(aPivotNodeId);
+                    CMshNode<Real>& aPivotNode = aMesh.node(aPivotNodeId);
 
                     std::vector<Integer> sNodes;
                     sNodes.push_back(aPivotNodeId);
@@ -1296,7 +1142,7 @@ namespace ENigMA
 
                     do
                     {
-                        const CMshFace<Real>& aNextFace = this->m_surfaceMesh.face(aNextFaceId);
+                        const CMshFace<Real>& aNextFace = aMesh.face(aNextFaceId);
 
                         if (!aNextFace.hasPair())
                         {
@@ -1306,10 +1152,10 @@ namespace ENigMA
                         }
 
                         Integer aNextPairFaceId = aNextFace.pairFaceId();
-                        const CMshFace<Real>& aNextPairFace = this->m_surfaceMesh.face(aNextPairFaceId);
+                        const CMshFace<Real>& aNextPairFace = aMesh.face(aNextPairFaceId);
 
                         Integer aNextElementId = aNextPairFace.elementId();
-                        const CMshElement<Real>& aNextElement = this->m_surfaceMesh.element(aNextElementId);
+                        const CMshElement<Real>& aNextElement = aMesh.element(aNextElementId);
 
                         if (aNextElement.elementType() != ET_TRIANGLE && aNextElement.elementType() != ET_QUADRILATERAL)
                             continue;
@@ -1348,7 +1194,7 @@ namespace ENigMA
 
                         for (Integer k = 0; k < static_cast<Integer>(sNodes.size()); ++k)
                         {
-                            aMshNode += this->m_surfaceMesh.node(sNodes[k]);
+                            aMshNode += aMesh.node(sNodes[k]);
                         }
 
                         aMshNode /= static_cast<Real>(sNodes.size());
@@ -1360,15 +1206,15 @@ namespace ENigMA
 
                         for (Integer k = 0; k < static_cast<Integer>(sElements.size()); ++k)
                         {
-                            CMshElement<Real>& aModElement = this->m_surfaceMesh.element(sElements[k]);
+                            CMshElement<Real>& aModElement = aMesh.element(sElements[k]);
 
                             Integer aNodeId1 = aModElement.nodeId(0);
                             Integer aNodeId2 = aModElement.nodeId(1);
                             Integer aNodeId3 = aModElement.nodeId(2);
 
-                            CMshNode<Real>& aNode1 = this->m_surfaceMesh.node(aNodeId1);
-                            CMshNode<Real>& aNode2 = this->m_surfaceMesh.node(aNodeId2);
-                            CMshNode<Real>& aNode3 = this->m_surfaceMesh.node(aNodeId3);
+                            CMshNode<Real>& aNode1 = aMesh.node(aNodeId1);
+                            CMshNode<Real>& aNode2 = aMesh.node(aNodeId2);
+                            CMshNode<Real>& aNode3 = aMesh.node(aNodeId3);
 
                             CGeoCoordinate<Real> aVertex1 = aNode1;
                             CGeoCoordinate<Real> aVertex2 = aNode2;

@@ -189,9 +189,6 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 0.1);
 
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.relaxNodes();
-
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
 
@@ -303,9 +300,6 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
 
     aTriangleMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 10.0, 1E-3);
 
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.relaxNodes();
-
     EXPECT_EQ(52, anEdgeMesh.nbElements());
 
     CMshMesh<decimal> aSurfaceMesh;
@@ -389,13 +383,13 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
 
     aTriangleMesher.generate(anEdgeMesh, 99, 2.0, 0.1, 10.0, 1E-3);
 
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.relaxNodes();
-
     EXPECT_EQ(6, anEdgeMesh.nbElements());
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
+
+    aTriangleMesher.flipEdges(aSurfaceMesh);
+    aTriangleMesher.relaxNodes(aSurfaceMesh);
 
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface4.msh", "tris");
@@ -513,9 +507,6 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     aPosGmsh.save(T, "tri_edge5.msh", "beams");
 
     aTriangleMesher.generate(anEdgeMesh, 999, 10.0, 1.0, 100.0, 1E-3);
-
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.relaxNodes();
 
     EXPECT_EQ(64, anEdgeMesh.nbElements());
 
@@ -654,16 +645,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge6.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, 10.0, 1.0, 50.0, 1E-3);
-    aTriangleMesher.applyFixedBoundary(anEdgeMesh, 1E-3);
-
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.applyFixedBoundary(anEdgeMesh, 1E-3);
-
-    aTriangleMesher.relaxNodes();
-
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.applyFixedBoundary(anEdgeMesh, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, 10.0, 1.0, 50.0, 1E-3);   
 
     EXPECT_EQ(66, anEdgeMesh.nbElements());
 
@@ -745,9 +727,6 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
 
     aTriangleMesher.remesh(anEdgeMesh, 2.0);
     aTriangleMesher.generate(anEdgeMesh, 9999, 2.0, 0.1, 10.0, 1E-4);
-    
-    aTriangleMesher.flipEdges();
-    aTriangleMesher.relaxNodes();
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
