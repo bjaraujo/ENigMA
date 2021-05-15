@@ -484,10 +484,10 @@ namespace ENigMA
             meshSizeFunc.defineVariable("x", x);
             meshSizeFunc.defineVariable("y", y);
 
-            std::vector<bool> processedElements;
+            std::vector<bool> sRemeshed;
             for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                processedElements.push_back(false);
+                sRemeshed.push_back(false);
             }
 
             // Split edge mesh according to local mesh size
@@ -621,7 +621,7 @@ namespace ENigMA
 
                             Real localMeshSize = meshSizeFunc.evaluate();
 
-                            if (v.norm() > localMeshSize)
+                            if (v.norm() > localMeshSize * 1.5)
                             {
                                 Integer aNodeId3 = -1;
                                 for (int k = 0; k < anElement.nbNodeIds(); k++)
@@ -643,10 +643,10 @@ namespace ENigMA
                                     }
                                 }
 
-                                if (aNodeId3 != -1 && aNodeId4 != -1 && !processedElements[anElementId] && !processedElements[aPairElementId])
+                                if (aNodeId3 != -1 && aNodeId4 != -1 && !sRemeshed[anElementId] && !sRemeshed[aPairElementId])
                                 {
-                                    processedElements[anElementId] = true; 
-                                    processedElements[aPairElementId] = true;
+                                    sRemeshed[anElementId] = true; 
+                                    sRemeshed[aPairElementId] = true;
 
                                     Integer aNewNodeId = aMesh.nextNodeId();
                                     aMesh.addNode(aNewNodeId, aMidNode);

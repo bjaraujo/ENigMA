@@ -103,7 +103,7 @@ void GenerateMesh(CMshMesh<double> anEdgeMesh, const double meshSize, const int 
 
     try 
     {
-        aTriangularMesher.generate(anEdgeMesh, maxEle, 1.0, 1.0, 1.0, tol);
+        aTriangularMesher.generate(anEdgeMesh, maxEle, meshSize, meshSize, meshSize, tol);
     } 
     catch (std::vector<SMshAdvancingFrontEdge<double>>& advFront) 
     {
@@ -133,18 +133,20 @@ void GenerateMesh(CMshMesh<double> anEdgeMesh, const double meshSize, const int 
         aPosGmsh.save(T, "adv_front.msh", "beams");
     }
 
-    finish = clock();
-
-    std::cout << "Finished in about " << std::setprecision(2) << (double)(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
-
     aSurfaceMesh = aTriangularMesher.mesh();
 
     for (int i = 0; i < 3; i++)
     {
         aTriangularMesher.remesh(aSurfaceMesh, meshSize, tol);
-        aTriangularMesher.flipEdges(aSurfaceMesh, tol);
-        aTriangularMesher.relaxNodes(aSurfaceMesh, tol);
+        for (int j = 0; j < 2; j++)
+        {
+            aTriangularMesher.flipEdges(aSurfaceMesh, tol);
+            aTriangularMesher.relaxNodes(aSurfaceMesh, tol);
+        }
     }
+
+    finish = clock();
+    std::cout << "Finished in about " << std::setprecision(2) << (double)(finish - start) / CLOCKS_PER_SEC << " seconds." << std::endl;
 
     std::cout << "Number of elements: " << aSurfaceMesh.nbElements() << std::endl;
 
