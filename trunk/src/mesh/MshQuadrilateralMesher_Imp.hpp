@@ -490,6 +490,7 @@ namespace ENigMA
             CGeoVector<Real> v;
 
             CGeoLine<Real> aLine1;
+            CGeoLine<Real> aLine2;
 
             CMshNode<Real> aMidNode;
             CMshNode<Real> aMidNode1;
@@ -526,23 +527,25 @@ namespace ENigMA
                     }
                 }
 
-                if (!this->m_anAdvFront[i].remove)
+                Integer anAdvEdgeId = i;
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = this->m_anAdvFront.at(anAdvEdgeId);
+
+                if (!anAdvEdge.remove)
                 {
-                    Integer anAdvEdgeId = i;
-
-                    SMshAdvancingFrontEdge<Real>& anAdvEdge = this->m_anAdvFront[anAdvEdgeId];
-
                     Integer aNodeId1 = anAdvEdge.nodeId[0];
                     Integer aNodeId2 = anAdvEdge.nodeId[1];
 
                     CMshNode<Real>& aNode1 = this->m_surfaceMesh.node(aNodeId1);
                     CMshNode<Real>& aNode2 = this->m_surfaceMesh.node(aNodeId2);
 
-                    Integer aNodeId3 = this->m_anAdvFront[anAdvEdge.neighborId[0]].nodeId[0];
-                    Integer aNodeId4 = this->m_anAdvFront[anAdvEdge.neighborId[1]].nodeId[1];
+                    SMshAdvancingFrontEdge<Real>& anAdvEdge1 = this->m_anAdvFront.at(anAdvEdge.neighborId[0]);
+                    SMshAdvancingFrontEdge<Real>& anAdvEdge2 = this->m_anAdvFront.at(anAdvEdge.neighborId[1]);
 
-                    Integer prevPrevEdge = this->m_anAdvFront[anAdvEdge.neighborId[0]].neighborId[0];
-                    Integer nextNextEdge = this->m_anAdvFront[anAdvEdge.neighborId[1]].neighborId[1];
+                    Integer aNodeId3 = anAdvEdge1.nodeId[0];
+                    Integer aNodeId4 = anAdvEdge2.nodeId[1];
+
+                    Integer prevPrevEdge = anAdvEdge1.neighborId[0];
+                    Integer nextNextEdge = anAdvEdge2.neighborId[1];
 
                     Integer aNodeId5 = this->m_anAdvFront[prevPrevEdge].nodeId[0];
                     Integer aNodeId6 = this->m_anAdvFront[nextNextEdge].nodeId[1];
@@ -837,7 +840,9 @@ namespace ENigMA
                         if (dmin1 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < baseHeightSize * sizeFactor * expandFactor)
                             aNewNode1 = aNode1 + v * dmin1 * 0.5;
 
-                        CGeoLine<Real> aLine2(aMidNode, aNewNode2);
+                        aLine2.reset();
+                        aLine2.setStartPoint(aMidNode);
+                        aLine2.setEndPoint(aNewNode2);
 
                         Real dmin2 = this->findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
 

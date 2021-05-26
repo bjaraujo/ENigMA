@@ -942,20 +942,22 @@ namespace ENigMA
                     }
                 }
 
-                if (!m_anAdvFront[i].remove)
+                Integer anAdvEdgeId = i;
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront.at(anAdvEdgeId);
+
+                if (!anAdvEdge.remove)
                 {
-                    Integer anAdvEdgeId = i;
-
-                    SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
-
                     Integer aNodeId1 = anAdvEdge.nodeId[0];
                     Integer aNodeId2 = anAdvEdge.nodeId[1];
 
                     CMshNode<Real>& aNode1 = m_surfaceMesh.node(aNodeId1);
                     CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
 
-                    Integer aNodeId3 = m_anAdvFront[anAdvEdge.neighborId[0]].nodeId[0];
-                    Integer aNodeId4 = m_anAdvFront[anAdvEdge.neighborId[1]].nodeId[1];
+                    SMshAdvancingFrontEdge<Real>& anAdvEdge1 = this->m_anAdvFront.at(anAdvEdge.neighborId[0]);
+                    SMshAdvancingFrontEdge<Real>& anAdvEdge2 = this->m_anAdvFront.at(anAdvEdge.neighborId[1]);
+
+                    Integer aNodeId3 = anAdvEdge1.nodeId[0];
+                    Integer aNodeId4 = anAdvEdge2.nodeId[1];
 
                     aMidNode = (aNode1 + aNode2) * 0.5;
 
@@ -1047,7 +1049,7 @@ namespace ENigMA
 
                         if (aNodeId == aNodeId3)
                         {
-                            Real angle = anAdvEdge.line.vector().angle(m_anAdvFront[anAdvEdge.neighborId[0]].line.vector());
+                            Real angle = anAdvEdge.line.vector().angle(anAdvEdge1.line.vector());
 
                             if (angle > pi * 0.5)
                                 factor = 1.5;
@@ -1055,7 +1057,7 @@ namespace ENigMA
 
                         if (aNodeId == aNodeId4)
                         {
-                            Real angle = anAdvEdge.line.vector().angle(m_anAdvFront[anAdvEdge.neighborId[1]].line.vector());
+                            Real angle = anAdvEdge.line.vector().angle(anAdvEdge2.line.vector());
 
                             if (angle > pi * 0.5)
                                 factor = 1.5;
