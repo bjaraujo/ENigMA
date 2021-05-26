@@ -26,6 +26,8 @@ namespace ENigMA
             CGeoCentroid();
             virtual ~CGeoCentroid();
 
+            virtual void reset();
+
             virtual void calculateCentroid(bool bReCalculate = false) = 0;
 
             CGeoCoordinate<Real> centroid() const;

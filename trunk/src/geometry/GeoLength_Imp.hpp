@@ -27,15 +27,23 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CGeoLength<Real>::reset()
+        {
+            m_length =0.0;
+            m_bLength = false;
+            m_bBoundingBox = false;
+        }
+
+        template <typename Real>
         Real CGeoLength<Real>::length()
         {
-            return this->m_length;
+            return m_length;
         }
 
         template <typename Real>
         CGeoBoundingBox<Real>& CGeoLength<Real>::boundingBox()
         {
-            return this->m_boundingBox;
+            return m_boundingBox;
         }
     }
 }

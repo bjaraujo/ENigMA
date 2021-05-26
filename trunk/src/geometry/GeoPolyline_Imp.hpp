@@ -32,6 +32,13 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CGeoPolyline<Real>::reset()
+        {
+            CGeoVertexList<Real>::reset();
+            CGeoLength<Real>::reset();
+        }
+
+        template <typename Real>
         void CGeoPolyline<Real>::set(CGeoLineList<Real>& aLineList, bool sort, const Real aTolerance)
         {
             CGeoVertexList<Real>::reset();

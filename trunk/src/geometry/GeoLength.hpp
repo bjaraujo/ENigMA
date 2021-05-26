@@ -29,6 +29,8 @@ namespace ENigMA
             CGeoLength();
             virtual ~CGeoLength();
 
+            virtual void reset();
+
             virtual void calculateLength(bool bReCalculate = false) = 0;
             virtual void calculateBoundingBox(bool bReCalculate = false) = 0;
 

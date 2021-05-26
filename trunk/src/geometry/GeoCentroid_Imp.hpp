@@ -26,6 +26,12 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CGeoCentroid<Real>::reset()
+        {
+            m_bCentroid = false;
+        }
+
+        template <typename Real>
         CGeoCoordinate<Real> CGeoCentroid<Real>::centroid() const
         {
             return m_centroid;

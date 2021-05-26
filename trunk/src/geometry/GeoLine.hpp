@@ -39,6 +39,11 @@ namespace ENigMA
             explicit CGeoIntersectionType(const EIntersectionType anIntersectionType)
                 : m_intersectionType(anIntersectionType) {};
 
+            void reset()
+            {
+                m_intersectionType = IT_NONE;
+            }
+
             CGeoIntersectionType& operator=(const EIntersectionType& anIntersectionType)
             {
                 this->m_intersectionType = anIntersectionType;

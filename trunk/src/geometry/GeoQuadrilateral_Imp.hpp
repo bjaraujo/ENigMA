@@ -30,11 +30,7 @@ namespace ENigMA
         void CGeoQuadrilateral<Real>::reset()
         {
             CGeoVertexList<Real>::reset();
-
-            this->m_bCentroid = false;
-            this->m_bNormal = false;
-            this->m_bArea = false;
-            this->m_bBoundingBox = false;
+            CGeoArea<Real>::reset();
         }
 
         template <typename Real>

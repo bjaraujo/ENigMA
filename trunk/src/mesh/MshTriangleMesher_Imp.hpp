@@ -143,9 +143,12 @@ namespace ENigMA
         template <typename Real>
         bool CMshTriangleMesher<Real>::edgeOk(SMshAdvancingFrontEdge<Real>& anAdvEdge, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, std::vector<Integer>& sEdges, const Real aTolerance)
         {
-            CGeoCoordinate<Real> aPoint;
+            static CGeoCoordinate<Real> aPoint;
 
-            CGeoLine<Real> aLine1(aNode1, aNode2);
+            static CGeoLine<Real> aLine1;            
+            aLine1.reset();            
+            aLine1.setStartPoint(aNode1);
+            aLine1.setEndPoint(aNode2);
 
             for (Integer j = 0; j < static_cast<Integer>(sEdges.size()); ++j)
             {
@@ -235,8 +238,8 @@ namespace ENigMA
         template <typename Real>
         bool CMshTriangleMesher<Real>::triangleContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance)
         {
-            CMshTriangle<Real> aTriangle;
-
+            static CMshTriangle<Real> aTriangle;
+            aTriangle.reset();
             aTriangle.addVertex(aNode1);
             aTriangle.addVertex(aNode2);
             aTriangle.addVertex(aNode3);
@@ -250,7 +253,9 @@ namespace ENigMA
                 if ((aNode - aNode1).norm() < aTolerance || (aNode - aNode2).norm() < aTolerance || (aNode - aNode3).norm() < aTolerance)
                     continue;
 
-                CGeoIntersectionType anIntersectionType;
+                static CGeoIntersectionType anIntersectionType;
+
+                anIntersectionType.reset();
 
                 if (aTriangle.contains(aNode, anIntersectionType, aTolerance))
                 {
@@ -396,7 +401,9 @@ namespace ENigMA
             }
 
             // Add new triangle
-            CMshElement<Real> aNewElement(ET_TRIANGLE);
+            static CMshElement<Real> aNewElement;
+            aNewElement.reset();
+            aNewElement.setElementType(ET_TRIANGLE);
             aNewElement.addNodeId(aNodeId1);
             aNewElement.addNodeId(aNodeId2);
             aNewElement.addNodeId(aNodeId3);
@@ -412,7 +419,7 @@ namespace ENigMA
             Integer aNewEdgeId2 = m_nextEdgeId++;
 
             // Add edge 1
-            SMshAdvancingFrontEdge<Real> aNewEdge1;
+            static SMshAdvancingFrontEdge<Real> aNewEdge1;
             aNewEdge1.id = aNewEdgeId1;
             aNewEdge1.remove = false;
             aNewEdge1.boundary = false;
@@ -432,7 +439,7 @@ namespace ENigMA
             addEdgeToRtree(aNewEdge1, aTolerance);
 
             // Add edge 2
-            SMshAdvancingFrontEdge<Real> aNewEdge2;
+            static SMshAdvancingFrontEdge<Real> aNewEdge2;
             aNewEdge2.id = aNewEdgeId2;
             aNewEdge2.remove = false;
             aNewEdge2.boundary = false;
@@ -785,7 +792,7 @@ namespace ENigMA
 
                 if (anElement.elementType() == ET_BEAM)
                 {
-                    SMshAdvancingFrontEdge<Real> anAdvEdge;
+                    static SMshAdvancingFrontEdge<Real> anAdvEdge;
 
                     anAdvEdge.id = m_nextEdgeId++;
                     anAdvEdge.remove = false;
@@ -844,7 +851,7 @@ namespace ENigMA
 
                 m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
-                SNode<Real> anInteriorNode;
+                static SNode<Real> anInteriorNode;
 
                 anInteriorNode.id = i;
                 anInteriorNode.remove = false;
@@ -933,12 +940,14 @@ namespace ENigMA
                     Integer aNodeId3 = m_anAdvFront[anAdvEdge.neighborId[0]].nodeId[0];
                     Integer aNodeId4 = m_anAdvFront[anAdvEdge.neighborId[1]].nodeId[1];
 
-                    CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
+                    static CMshNode<Real> aMidNode;
+                    aMidNode = (aNode1 + aNode2) * 0.5;
 
                     x = aMidNode.x();
                     y = aMidNode.y();
 
-                    CGeoVector<Real> a = aNode2 - aNode1;
+                    static CGeoVector<Real> a;
+                    a = aNode2 - aNode1;
 
                     Real requiredMeshSize = meshSizeFunc.evaluate();
                     Real localMeshSize = static_cast<Real>(a.norm());
@@ -952,28 +961,33 @@ namespace ENigMA
                     Real baseHeightSize = localMeshSize * sqrt(3.0) / 2.0; // Equilateral triangle (height to edge ratio)
 
                     // Rotate vector by 90 degrees
-                    CGeoVector<Real> v = a;
+                    static CGeoVector<Real> v;
+                    v = a;
                     v.rotate(pi * 0.5);
                     v.normalize();
 
                     // Add point to form triangle with correct spacing
-                    CMshNode<Real> aNewNode = aMidNode + v * baseHeightSize * sizeFactor;
+                    static CMshNode<Real> aNewNode;
+                    aNewNode = aMidNode + v * baseHeightSize * sizeFactor;
                     Integer aNewNodeId = m_surfaceMesh.nextNodeId();
 
                     // Get closest edges
-                    CGeoBoundingBox<Real> aBoundingBox;
+                    static CGeoBoundingBox<Real> aBoundingBox;
+                    aBoundingBox.reset();
                     aBoundingBox.addCoordinate(aNode1);
                     aBoundingBox.addCoordinate(aNode2);
                     aBoundingBox.addCoordinate(aNewNode);
                     aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
 
-                    std::vector<Integer> sEdges;
+                    static std::vector<Integer> sEdges;
+                    sEdges.clear();
                     m_tree.find(sEdges, aBoundingBox);
 
                     sEdges.erase(std::remove(sEdges.begin(), sEdges.end(), anAdvEdgeId), sEdges.end());
 
                     // Check if a node exists in proximity
-                    std::vector<Integer> sNodes;
+                    static std::vector<Integer> sNodes;
+                    sNodes.clear();
                     this->findClosestNodes(sEdges, sNodes);
 
                     // Meshing priority
@@ -985,8 +999,8 @@ namespace ENigMA
                     {
                         CMshNode<Real>& aNode3 = m_surfaceMesh.node(aNodeId3);
 
-                        CMshTriangle<Real> aNewTriangle;
-
+                        static CMshTriangle<Real> aNewTriangle;
+                        aNewTriangle.reset();
                         aNewTriangle.addVertex(aNode1);
                         aNewTriangle.addVertex(aNode2);
                         aNewTriangle.addVertex(aNode3);
@@ -1009,7 +1023,7 @@ namespace ENigMA
                     Real qmax = 0.0;
 
                     // If a node exists snap to that node
-                    CMshNode<Real> anExistingNode;
+                    static CMshNode<Real> anExistingNode;
                     Integer anExistingNodeId = std::numeric_limits<Integer>::max();
 
                     for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
@@ -1044,8 +1058,8 @@ namespace ENigMA
                         // Use closest node
                         if (d < baseHeightSize * sizeFactor * expandFactor * factor)
                         {
-                            CMshTriangle<Real> aNewTriangle1;
-
+                            static CMshTriangle<Real> aNewTriangle1;
+                            aNewTriangle1.reset();
                             aNewTriangle1.addVertex(aNode1);
                             aNewTriangle1.addVertex(aNode2);
                             aNewTriangle1.addVertex(aNode);
@@ -1096,15 +1110,18 @@ namespace ENigMA
                     }
                     else if (bAddNodes)
                     {
-                        CGeoLine<Real> aLine(aMidNode, aNewNode);
+                        static CGeoLine<Real> aLine;
+                        aLine.reset();
+                        aLine.setStartPoint(aMidNode);
+                        aLine.setEndPoint(aNewNode);
 
                         Real dmin = findShortestDistance(sEdges, aLine, anAdvEdgeId, aTolerance);
 
                         if (dmin > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin < baseHeightSize * sizeFactor * expandFactor)
                             aNewNode = aMidNode + v * dmin * 0.5;
 
-                        CMshTriangle<Real> aNewTriangle2;
-
+                        static CMshTriangle<Real> aNewTriangle2;
+                        aNewTriangle2.reset();
                         aNewTriangle2.addVertex(aNode1);
                         aNewTriangle2.addVertex(aNode2);
                         aNewTriangle2.addVertex(aNewNode);

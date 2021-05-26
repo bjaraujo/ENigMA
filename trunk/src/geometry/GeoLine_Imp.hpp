@@ -36,7 +36,7 @@ namespace ENigMA
         template <typename Real>
         void CGeoLine<Real>::reset()
         {
-            this->m_bLength = false;
+            CGeoLength<Real>::reset();
         }
 
         template <typename Real>

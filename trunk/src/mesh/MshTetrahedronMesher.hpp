@@ -52,19 +52,19 @@ namespace ENigMA
         };
 
         template <typename Real>
+        struct SNode
+        {
+            Integer id;
+            bool remove;
+
+            Integer nodeId;
+        };
+
+        template <typename Real>
         class CMshTetrahedronMesher
         {
         private:
-            // Inner points
-            struct SNode
-            {
-                Integer id;
-                bool remove;
-
-                Integer nodeId;
-            };
-
-            std::vector<SNode> m_innerNodes;
+            std::vector<SNode<Real>> m_innerNodes;
 
             std::vector<SMshAdvancingFrontTriangle<Real>> m_anAdvFront;
 

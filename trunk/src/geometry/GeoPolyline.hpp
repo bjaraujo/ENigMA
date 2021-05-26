@@ -26,6 +26,8 @@ namespace ENigMA
             explicit CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
             virtual ~CGeoPolyline();
 
+            virtual void reset();
+
             void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
 
             Integer nbLines() const;

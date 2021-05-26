@@ -28,6 +28,16 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CGeoArea<Real>::reset()
+        {
+            CGeoCentroid<Real>::reset();
+            m_area = 0.0;
+            m_bNormal = false; 
+            m_bArea = false;
+            m_bBoundingBox = false;
+        }
+
+        template <typename Real>
         CGeoNormal<Real>& CGeoArea<Real>::normal()
         {
             return m_normal;
