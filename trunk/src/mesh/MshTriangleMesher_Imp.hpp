@@ -864,8 +864,9 @@ namespace ENigMA
             // Start meshing interior
             Integer maxElem = maxNbElements;
 
-            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, false, aTolerance);
-            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.50, 0.03, false, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, false, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.01, true, false, aTolerance);
             this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
 
             if (this->frontSize() > 0)
@@ -1431,6 +1432,15 @@ namespace ENigMA
 
             std::vector<Integer> sElementIds;
 
+            CMshNode<Real> aNewNode;
+
+            CGeoCoordinate<Real> aVertex1;
+            CGeoCoordinate<Real> aVertex2;
+            CGeoCoordinate<Real> aVertex3;
+
+            CMshTriangle<Real> aTriangle1;
+            CMshTriangle<Real> aTriangle2;
+
             for (Integer i = 0; i < aMesh.nbNodes(); ++i)
             {
                 Integer aMovingNodeId = aMesh.nodeId(i);
@@ -1439,6 +1449,7 @@ namespace ENigMA
                 if (bBoundaryNode.at(aMovingNodeId))
                     continue;
 
+                sElementIds.clear();
                 aMeshQuery.elementsSharingNode(aMovingNodeId, sElementIds);
 
                 std::vector<Integer> sNodeIds;
@@ -1447,7 +1458,6 @@ namespace ENigMA
                 for (Integer j = 0; j < static_cast<Integer>(sElementIds.size()); ++j)
                 {
                     Integer anElementId = sElementIds[j];
-
                     CMshElement<Real>& anElement = aMesh.element(anElementId);
 
                     if (anElement.elementType() != ET_TRIANGLE)
@@ -1464,7 +1474,7 @@ namespace ENigMA
 
                 if (sNodeIds.size() > 1)
                 {
-                    CMshNode<Real> aNewNode(0.0, 0.0, 0.0);
+                    aNewNode << 0.0, 0.0, 0.0;
 
                     for (Integer k = 0; k < static_cast<Integer>(sNodeIds.size()); ++k)
                         aNewNode += aMesh.node(sNodeIds[k]);
@@ -1491,12 +1501,11 @@ namespace ENigMA
                         CMshNode<Real>& aNode2 = aMesh.node(aNodeId2);
                         CMshNode<Real>& aNode3 = aMesh.node(aNodeId3);
 
-                        CGeoCoordinate<Real> aVertex1 = aNode1;
-                        CGeoCoordinate<Real> aVertex2 = aNode2;
-                        CGeoCoordinate<Real> aVertex3 = aNode3;
+                        aVertex1 = aNode1;
+                        aVertex2 = aNode2;
+                        aVertex3 = aNode3;
 
-                        CMshTriangle<Real> aTriangle1;
-
+                        aTriangle1.reset();
                         aTriangle1.addVertex(aVertex1);
                         aTriangle1.addVertex(aVertex2);
                         aTriangle1.addVertex(aVertex3);
@@ -1514,8 +1523,7 @@ namespace ENigMA
                         if (aNodeId3 == aMovingNodeId)
                             aVertex3 = aNewNode;
 
-                        CMshTriangle<Real> aTriangle2;
-
+                        aTriangle2.reset();
                         aTriangle2.addVertex(aVertex1);
                         aTriangle2.addVertex(aVertex2);
                         aTriangle2.addVertex(aVertex3);
