@@ -121,7 +121,7 @@ namespace ENigMA
                 if (sEdges[j] == anAdvEdge.id)
                     continue;
 
-                SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
+                SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront.at(sEdges[j]);
 
                 std::vector<Integer> sOtherNodeIds;
 
@@ -156,7 +156,7 @@ namespace ENigMA
                 if (sEdges[j] == anAdvEdge.id)
                     continue;
 
-                SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[sEdges[j]];
+                SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront.at(sEdges[j]);
 
                 if (anotherEdge.remove)
                     continue;
@@ -182,12 +182,12 @@ namespace ENigMA
 
             for (Integer j = 0; j < static_cast<Integer>(sEdges.size()); ++j)
             {
-                if (m_anAdvFront[sEdges[j]].remove)
+                if (m_anAdvFront.at(sEdges[j]).remove)
                     continue;
 
                 for (Integer k = 0; k < 2; ++k)
                 {
-                    Integer aNodeId = m_anAdvFront[sEdges[j]].nodeId[k];
+                    Integer aNodeId = m_anAdvFront.at(sEdges[j]).nodeId[k];
 
                     if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
                         sNodes.push_back(aNodeId);
@@ -216,14 +216,14 @@ namespace ENigMA
                 if (sEdges[j] == anAdvEdgeId)
                     continue;
 
-                if (m_anAdvFront[sEdges[j]].remove)
+                if (m_anAdvFront.at(sEdges[j]).remove)
                     continue;
 
                 CGeoCoordinate<Real> aNewPoint;
 
                 CGeoIntersectionType anIntersectionType;
 
-                if (m_anAdvFront[sEdges[j]].line.intersects(aLine, aNewPoint, anIntersectionType, aTolerance))
+                if (m_anAdvFront.at(sEdges[j]).line.intersects(aLine, aNewPoint, anIntersectionType, aTolerance))
                 {
                     Real distance = (aNewPoint - aLine.startPoint()).norm();
 
@@ -303,7 +303,7 @@ namespace ENigMA
             {
                 Integer anAdvEdgeId = i;
 
-                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront.at(anAdvEdgeId);
 
                 if (anAdvEdge.remove)
                     continue;
@@ -319,8 +319,8 @@ namespace ENigMA
                     throw std::out_of_range("Connectivity is out of range!");
                 }
 
-                SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-                SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+                SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront.at(anAdvEdge.neighborId[0]);
+                SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront.at(anAdvEdge.neighborId[1]);
 
                 if (aPrevEdge.remove || aNextEdge.remove)
                 {
@@ -332,7 +332,7 @@ namespace ENigMA
                         if (anotherEdgeId == anAdvEdge.id)
                             continue;
 
-                        SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront[anotherEdgeId];
+                        SMshAdvancingFrontEdge<Real>& anotherEdge = m_anAdvFront.at(anotherEdgeId);
 
                         if (anotherEdge.remove)
                             continue;
@@ -365,7 +365,7 @@ namespace ENigMA
             {
                 Integer anAdvEdgeId = m_nextEdgeId - i - 1;
 
-                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront[anAdvEdgeId];
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = m_anAdvFront.at(anAdvEdgeId);
 
                 if (anAdvEdge.remove)
                     continue;
@@ -374,7 +374,7 @@ namespace ENigMA
 
                 if (edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges))
                 {
-                    SMshAdvancingFrontEdge<Real>& aDuplicateEdge = m_anAdvFront[aDuplicateEdgeId];
+                    SMshAdvancingFrontEdge<Real>& aDuplicateEdge = m_anAdvFront.at(aDuplicateEdgeId);
 
                     this->removeEdge(anAdvEdge, aTolerance);
                     this->removeEdge(aDuplicateEdge, aTolerance);
@@ -412,8 +412,8 @@ namespace ENigMA
 
             m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-            SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront[anAdvEdge.neighborId[0]];
-            SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront[anAdvEdge.neighborId[1]];
+            SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront.at(anAdvEdge.neighborId[0]);
+            SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront.at(anAdvEdge.neighborId[1]);
 
             Integer aNewEdgeId1 = m_nextEdgeId++;
             Integer aNewEdgeId2 = m_nextEdgeId++;
@@ -888,7 +888,7 @@ namespace ENigMA
 
             for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i)
             {
-                if (!m_anAdvFront[i].remove)
+                if (!m_anAdvFront.at(i).remove)
                     n++;
             }
 

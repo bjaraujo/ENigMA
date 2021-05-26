@@ -56,6 +56,7 @@ namespace ENigMA
             std::vector<SNode<Real>> m_interiorNodes;
 
             std::vector<SMshAdvancingFrontEdge<Real>> m_anAdvFront;
+            std::vector<ENigMA::geometry::CGeoLine<Real>> m_anAdvFrontLines;
 
             ENigMA::geometry::CGeoBoundingBox<Real> m_boundingBox;
 

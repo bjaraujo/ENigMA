@@ -124,7 +124,7 @@ namespace ENigMA
                 if (sTriangles[j] == anAdvTriangle.id)
                     continue;
 
-                SMshAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[sTriangles[j]];
+                SMshAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront.at(sTriangles[j]);
 
                 std::vector<Integer> sOtherNodeIds;
 
@@ -159,7 +159,7 @@ namespace ENigMA
                 if (sTriangles[j] == anAdvTriangle.id)
                     continue;
 
-                SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[sTriangles[j]];
+                SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront.at(sTriangles[j]);
 
                 if (anotherAdvTriangle.remove)
                     continue;
@@ -183,12 +183,12 @@ namespace ENigMA
         {
             for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j)
             {
-                if (m_anAdvFront[sTriangles[j]].remove)
+                if (m_anAdvFront.at(sTriangles[j]).remove)
                     continue;
 
                 for (Integer k = 0; k < 3; ++k)
                 {
-                    Integer aNodeId = m_anAdvFront[sTriangles[j]].nodeId[k];
+                    Integer aNodeId = m_anAdvFront.at(sTriangles[j]).nodeId[k];
 
                     if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
                         sNodes.push_back(aNodeId);
@@ -217,14 +217,14 @@ namespace ENigMA
                 if (sTriangles[j] == anAdvTriangleId)
                     continue;
 
-                if (m_anAdvFront[sTriangles[j]].remove)
+                if (m_anAdvFront.at(sTriangles[j]).remove)
                     continue;
 
                 CGeoCoordinate<Real> aNewPoint;
 
                 CGeoIntersectionType anIntersectionType;
 
-                if (m_anAdvFront[sTriangles[j]].triangle.intersects(aLine, aNewPoint, anIntersectionType, aTolerance))
+                if (m_anAdvFront.at(sTriangles[j]).triangle.intersects(aLine, aNewPoint, anIntersectionType, aTolerance))
                 {
                     Real distance = (aNewPoint - aLine.startPoint()).norm();
 
@@ -322,7 +322,7 @@ namespace ENigMA
             {
                 Integer anAdvTriangleId = i;
 
-                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(anAdvTriangleId);
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -339,7 +339,7 @@ namespace ENigMA
                     throw std::out_of_range("Connectivity is out of range!");
                 }
 
-                if (m_anAdvFront[anAdvTriangle.neighborId[0]].remove || m_anAdvFront[anAdvTriangle.neighborId[1]].remove || m_anAdvFront[anAdvTriangle.neighborId[2]].remove)
+                if (m_anAdvFront.at(anAdvTriangle.neighborId[0]).remove || m_anAdvFront.at(anAdvTriangle.neighborId[1]).remove || m_anAdvFront.at(anAdvTriangle.neighborId[2]).remove)
                 {
                     for (Integer j = 0; j < static_cast<Integer>(sTriangles.size()); ++j)
                     {
@@ -349,7 +349,7 @@ namespace ENigMA
                         if (anotherAdvTriangleId == anAdvTriangle.id)
                             continue;
 
-                        SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[anotherAdvTriangleId];
+                        SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront.at(anotherAdvTriangleId);
 
                         if (anotherAdvTriangle.remove)
                             continue;
@@ -378,7 +378,7 @@ namespace ENigMA
             {
                 Integer anAdvTriangleId = m_nextTriangleId - i - 1;
 
-                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(anAdvTriangleId);
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -387,7 +387,7 @@ namespace ENigMA
 
                 if (this->triangleExists(anAdvTriangle, aDuplicateTriangleId, sTriangles))
                 {
-                    SMshAdvancingFrontTriangle<Real>& aDuplicateTriangle = m_anAdvFront[aDuplicateTriangleId];
+                    SMshAdvancingFrontTriangle<Real>& aDuplicateTriangle = m_anAdvFront.at(aDuplicateTriangleId);
 
                     this->removeTriangle(anAdvTriangle, aTolerance);
                     this->removeTriangle(aDuplicateTriangle, aTolerance);
@@ -426,9 +426,9 @@ namespace ENigMA
 
             m_volumeMesh.addElement(aNewElementId, aNewElement);
 
-            SMshAdvancingFrontTriangle<Real>& aTriangle1 = m_anAdvFront[anAdvTriangle.neighborId[0]];
-            SMshAdvancingFrontTriangle<Real>& aTriangle2 = m_anAdvFront[anAdvTriangle.neighborId[1]];
-            SMshAdvancingFrontTriangle<Real>& aTriangle3 = m_anAdvFront[anAdvTriangle.neighborId[2]];
+            SMshAdvancingFrontTriangle<Real>& aTriangle1 = m_anAdvFront.at(anAdvTriangle.neighborId[0]);
+            SMshAdvancingFrontTriangle<Real>& aTriangle2 = m_anAdvFront.at(anAdvTriangle.neighborId[1]);
+            SMshAdvancingFrontTriangle<Real>& aTriangle3 = m_anAdvFront.at(anAdvTriangle.neighborId[2]);
 
             Integer aNewTriangleId1 = m_nextTriangleId++;
             Integer aNewTriangleId2 = m_nextTriangleId++;
@@ -729,7 +729,7 @@ namespace ENigMA
 
             for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i)
             {
-                if (!m_anAdvFront[i].remove)
+                if (!m_anAdvFront.at(i).remove)
                     n++;
             }
 
@@ -805,9 +805,9 @@ namespace ENigMA
                 CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
                 CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
 
-                Integer aNodeId4 = m_anAdvFront[anAdvTriangle.neighborId[0]].nodeId[anAdvTriangle.nodeNotId[0]];
-                Integer aNodeId5 = m_anAdvFront[anAdvTriangle.neighborId[1]].nodeId[anAdvTriangle.nodeNotId[1]];
-                Integer aNodeId6 = m_anAdvFront[anAdvTriangle.neighborId[2]].nodeId[anAdvTriangle.nodeNotId[2]];
+                Integer aNodeId4 = m_anAdvFront.at(anAdvTriangle.neighborId[0]).nodeId[anAdvTriangle.nodeNotId[0]];
+                Integer aNodeId5 = m_anAdvFront.at(anAdvTriangle.neighborId[1]).nodeId[anAdvTriangle.nodeNotId[1]];
+                Integer aNodeId6 = m_anAdvFront.at(anAdvTriangle.neighborId[2]).nodeId[anAdvTriangle.nodeNotId[2]];
 
                 CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
 
@@ -1034,8 +1034,7 @@ namespace ENigMA
             for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i)
             {
                 Integer anAdvTriangleId = i;
-
-                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(anAdvTriangleId);
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1067,7 +1066,7 @@ namespace ENigMA
                     if (anotherTriangleId == anAdvTriangle.id)
                         continue;
 
-                    SMshAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront[anotherTriangleId];
+                    SMshAdvancingFrontTriangle<Real>& anotherTriangle = m_anAdvFront.at(anotherTriangleId);
 
                     if (anotherTriangle.remove)
                         continue;
@@ -1095,7 +1094,7 @@ namespace ENigMA
 
             for (Integer i = 0; i < m_anAdvFront.size(); ++i)
             {
-                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(i);
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1103,7 +1102,7 @@ namespace ENigMA
                 aAdvFrontMapId[i] = aNewAdvFrontId;
                 aNewAdvFrontId++;
 
-                aReducedAdvFront.push_back(m_anAdvFront[i]);
+                aReducedAdvFront.push_back(m_anAdvFront.at(i));
             }
 
             m_tree.reset();
@@ -1149,7 +1148,7 @@ namespace ENigMA
                 if (m_bStop)
                     return false;
 
-                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(i);
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1159,7 +1158,7 @@ namespace ENigMA
 
                 for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j)
                 {
-                    SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront[j];
+                    SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront.at(j);
 
                     if (anotherAdvTriangle.remove)
                         continue;
@@ -1317,8 +1316,7 @@ namespace ENigMA
                 if (m_bStop)
                     return false;
 
-                SMshAdvancingFrontTriangle<Real> anAdvTriangle;
-                anAdvTriangle = m_anAdvFront[i];
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(i);
 
                 if (anAdvTriangle.remove)
                     continue;
@@ -1333,8 +1331,7 @@ namespace ENigMA
 
                 for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j)
                 {
-                    SMshAdvancingFrontTriangle<Real> anotherAdvTriangle;
-                    anotherAdvTriangle = m_anAdvFront[j];
+                    SMshAdvancingFrontTriangle<Real>& anotherAdvTriangle = m_anAdvFront.at(j);
 
                     if (anotherAdvTriangle.remove)
                         continue;

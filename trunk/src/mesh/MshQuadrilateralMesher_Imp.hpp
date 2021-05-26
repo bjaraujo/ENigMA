@@ -43,8 +43,7 @@ namespace ENigMA
             for (Integer i = 0; i < 3; ++i)
             {
                 Integer anAdvEdgeId = this->m_nextEdgeId - i - 1;
-
-                SMshAdvancingFrontEdge<Real>& anAdvEdge = this->m_anAdvFront[anAdvEdgeId];
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = this->m_anAdvFront.at(anAdvEdgeId);
 
                 if (anAdvEdge.remove)
                     continue;
@@ -53,7 +52,7 @@ namespace ENigMA
 
                 if (this->edgeExists(anAdvEdge, aDuplicateEdgeId, sEdges))
                 {
-                    SMshAdvancingFrontEdge<Real>& aDuplicateEdge = this->m_anAdvFront[aDuplicateEdgeId];
+                    SMshAdvancingFrontEdge<Real>& aDuplicateEdge = this->m_anAdvFront.at(aDuplicateEdgeId);
 
                     this->removeEdge(anAdvEdge, aTolerance);
                     this->removeEdge(aDuplicateEdge, aTolerance);
@@ -121,8 +120,8 @@ namespace ENigMA
 
                 this->m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-                SMshAdvancingFrontEdge<Real>& aPrevEdge = this->m_anAdvFront[anAdvEdge.neighborId[0]];
-                SMshAdvancingFrontEdge<Real>& aNextEdge = this->m_anAdvFront[anAdvEdge.neighborId[1]];
+                SMshAdvancingFrontEdge<Real>& aPrevEdge = this->m_anAdvFront.at(anAdvEdge.neighborId[0]);
+                SMshAdvancingFrontEdge<Real>& aNextEdge = this->m_anAdvFront.at(anAdvEdge.neighborId[1]);
 
                 Integer aNewEdgeId1 = this->m_nextEdgeId++;
                 Integer aNewEdgeId2 = this->m_nextEdgeId++;
@@ -232,8 +231,8 @@ namespace ENigMA
                     this->m_surfaceMesh.addElement(aNewElementId, aNewElement2);
                 }
 
-                SMshAdvancingFrontEdge<Real>& aPrevEdge = this->m_anAdvFront[anAdvEdge.neighborId[0]];
-                SMshAdvancingFrontEdge<Real>& aNextEdge = this->m_anAdvFront[anAdvEdge.neighborId[1]];
+                SMshAdvancingFrontEdge<Real>& aPrevEdge = this->m_anAdvFront.at(anAdvEdge.neighborId[0]);
+                SMshAdvancingFrontEdge<Real>& aNextEdge = this->m_anAdvFront.at(anAdvEdge.neighborId[1]);
 
                 Integer aNewEdgeId1 = this->m_nextEdgeId++;
                 Integer aNewEdgeId2 = this->m_nextEdgeId++;
@@ -548,8 +547,8 @@ namespace ENigMA
                 Integer prevPrevEdge = anAdvEdge1.neighborId[0];
                 Integer nextNextEdge = anAdvEdge2.neighborId[1];
 
-                Integer aNodeId5 = this->m_anAdvFront[prevPrevEdge].nodeId[0];
-                Integer aNodeId6 = this->m_anAdvFront[nextNextEdge].nodeId[1];
+                Integer aNodeId5 = this->m_anAdvFront.at(prevPrevEdge).nodeId[0];
+                Integer aNodeId6 = this->m_anAdvFront.at(nextNextEdge).nodeId[1];
 
                 if ((aNodeId1 == aNodeId6 || aNodeId2 == aNodeId5) && anAdvEdge.neighborId[0] != nextNextEdge && anAdvEdge.neighborId[1] != prevPrevEdge)
                     continue;
