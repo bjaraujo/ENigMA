@@ -513,6 +513,12 @@ namespace ENigMA
 
             for (Integer i = 0; i < static_cast<Integer>(this->m_anAdvFront.size()); ++i)
             {
+                Integer anAdvEdgeId = i;
+                SMshAdvancingFrontEdge<Real>& anAdvEdge = this->m_anAdvFront.at(anAdvEdgeId);
+
+                if (anAdvEdge.remove)
+                    continue;
+
                 this->checkUpdate();
 
                 if (this->m_bStop)
@@ -527,375 +533,369 @@ namespace ENigMA
                     }
                 }
 
-                Integer anAdvEdgeId = i;
-                SMshAdvancingFrontEdge<Real>& anAdvEdge = this->m_anAdvFront.at(anAdvEdgeId);
+                Integer aNodeId1 = anAdvEdge.nodeId[0];
+                Integer aNodeId2 = anAdvEdge.nodeId[1];
 
-                if (!anAdvEdge.remove)
+                CMshNode<Real>& aNode1 = this->m_surfaceMesh.node(aNodeId1);
+                CMshNode<Real>& aNode2 = this->m_surfaceMesh.node(aNodeId2);
+
+                SMshAdvancingFrontEdge<Real>& anAdvEdge1 = this->m_anAdvFront.at(anAdvEdge.neighborId[0]);
+                SMshAdvancingFrontEdge<Real>& anAdvEdge2 = this->m_anAdvFront.at(anAdvEdge.neighborId[1]);
+
+                Integer aNodeId3 = anAdvEdge1.nodeId[0];
+                Integer aNodeId4 = anAdvEdge2.nodeId[1];
+
+                Integer prevPrevEdge = anAdvEdge1.neighborId[0];
+                Integer nextNextEdge = anAdvEdge2.neighborId[1];
+
+                Integer aNodeId5 = this->m_anAdvFront[prevPrevEdge].nodeId[0];
+                Integer aNodeId6 = this->m_anAdvFront[nextNextEdge].nodeId[1];
+
+                if ((aNodeId1 == aNodeId6 || aNodeId2 == aNodeId5) && anAdvEdge.neighborId[0] != nextNextEdge && anAdvEdge.neighborId[1] != prevPrevEdge)
+                    continue;
+
+                aMidNode = (aNode1 + aNode2) * 0.5;
+
+                x = aMidNode.x();
+                y = aMidNode.y();
+
+                a = aNode2 - aNode1;
+
+                Real requiredMeshSize = meshSizeFunc.evaluate();
+                Real localMeshSize = static_cast<Real>(a.norm());
+
+                Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
+
+                localMeshSize *= aFactor;
+                localMeshSize = std::max(localMeshSize, minMeshSize);
+                localMeshSize = std::min(localMeshSize, maxMeshSize);
+
+                Real baseHeightSize = localMeshSize; // Equilateral rectangle (height to edge ratio)
+
+                v = a;
+                v.normalize();
+
+                aMidNode1 = aMidNode - v * baseHeightSize * sizeFactor * 0.5;
+                aMidNode2 = aMidNode + v * baseHeightSize * sizeFactor * 0.5;
+
+                // Rotate vector by 90 degrees
+                v.rotate(pi * 0.5);
+
+                // Add point to form rectangle with correct spacing
+                aNewNode1 = aMidNode1 + v * baseHeightSize * sizeFactor;
+                aNewNode2 = aMidNode2 + v * baseHeightSize * sizeFactor;
+
+                Integer aNewNodeId1 = this->m_surfaceMesh.nextNodeId() + 0;
+                Integer aNewNodeId2 = this->m_surfaceMesh.nextNodeId() + 1;
+
+                // Get closest edges
+                aBoundingBox.reset();
+                aBoundingBox.addCoordinate(aNode1);
+                aBoundingBox.addCoordinate(aNode2);
+                aBoundingBox.addCoordinate(aNewNode1);
+                aBoundingBox.addCoordinate(aNewNode2);
+                aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
+
+                sEdges.clear();
+                this->m_tree.find(sEdges, aBoundingBox);
+
+                // Check if a node exists in proximity
+                this->findClosestNodes(sEdges, sNodes);
+
+                // Meshing priority
+                // Priority = 1: close quadrilateral hole
+                // Priority = 2: close triangular hole
+                // Priority = 3: other nodes in vicinity (3, 4, other node)
+                // Priority = 4: new node forming correct spacing
+
+                if ((aNodeId3 == aNodeId5 && aNodeId4 == aNodeId6) || (aNodeId3 == aNodeId6 && aNodeId4 == aNodeId5))
                 {
-                    Integer aNodeId1 = anAdvEdge.nodeId[0];
-                    Integer aNodeId2 = anAdvEdge.nodeId[1];
+                    this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
+                    res = true;
+                    continue;
+                }
 
-                    CMshNode<Real>& aNode1 = this->m_surfaceMesh.node(aNodeId1);
-                    CMshNode<Real>& aNode2 = this->m_surfaceMesh.node(aNodeId2);
+                if (aNodeId3 == aNodeId4)
+                {
+                    CMshNode<Real>& aNode3 = this->m_surfaceMesh.node(aNodeId3);
+                    CMshNode<Real>& aNode4 = this->m_surfaceMesh.node(aNodeId4);
 
-                    SMshAdvancingFrontEdge<Real>& anAdvEdge1 = this->m_anAdvFront.at(anAdvEdge.neighborId[0]);
-                    SMshAdvancingFrontEdge<Real>& anAdvEdge2 = this->m_anAdvFront.at(anAdvEdge.neighborId[1]);
+                    aNewTriangle.reset();
+                    aNewTriangle.addVertex(aNode1);
+                    aNewTriangle.addVertex(aNode2);
+                    aNewTriangle.addVertex(aNode3);
 
-                    Integer aNodeId3 = anAdvEdge1.nodeId[0];
-                    Integer aNodeId4 = anAdvEdge2.nodeId[1];
+                    aNewTriangle.calculateArea();
 
-                    Integer prevPrevEdge = anAdvEdge1.neighborId[0];
-                    Integer nextNextEdge = anAdvEdge2.neighborId[1];
+                    if (aNewTriangle.normal().z() > aTolerance)
+                    {
+                        Integer wNodeId;
 
-                    Integer aNodeId5 = this->m_anAdvFront[prevPrevEdge].nodeId[0];
-                    Integer aNodeId6 = this->m_anAdvFront[nextNextEdge].nodeId[1];
+                        Real q0 = 1.0;
 
-                    if ((aNodeId1 == aNodeId6 || aNodeId2 == aNodeId5) && anAdvEdge.neighborId[0] != nextNextEdge && anAdvEdge.neighborId[1] != prevPrevEdge)
+                        if (q0 > 0.0)
+                            q0 += this->edgeOk(anAdvEdge, aNode1, aNode3, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q0 > 0.0)
+                            q0 += this->edgeOk(anAdvEdge, aNode2, aNode4, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (!this->quadrilateralContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance) && q0 > 0.0)
+                        {
+                            this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
+                            res = true;
+                            continue;
+                        }
+                    }
+                }
+
+                Real q1max = 0.0;
+
+                // If a node exists snap to that node
+                Integer anExistingNodeId1 = std::numeric_limits<Integer>::max();
+
+                for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
+                {
+                    Integer aNodeId = sNodes[j];
+
+                    if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
                         continue;
 
-                    aMidNode = (aNode1 + aNode2) * 0.5;
+                    CMshNode<Real>& aNode = this->m_surfaceMesh.node(aNodeId);
 
-                    x = aMidNode.x();
-                    y = aMidNode.y();
-
-                    a = aNode2 - aNode1;
-
-                    Real requiredMeshSize = meshSizeFunc.evaluate();
-                    Real localMeshSize = static_cast<Real>(a.norm());
-
-                    Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
-
-                    localMeshSize *= aFactor;
-                    localMeshSize = std::max(localMeshSize, minMeshSize);
-                    localMeshSize = std::min(localMeshSize, maxMeshSize);
-
-                    Real baseHeightSize = localMeshSize; // Equilateral rectangle (height to edge ratio)
-
-                    v = a;
-                    v.normalize();
-
-                    aMidNode1 = aMidNode - v * baseHeightSize * sizeFactor * 0.5;
-                    aMidNode2 = aMidNode + v * baseHeightSize * sizeFactor * 0.5;
-
-                    // Rotate vector by 90 degrees
-                    v.rotate(pi * 0.5);
-
-                    // Add point to form rectangle with correct spacing
-                    aNewNode1 = aMidNode1 + v * baseHeightSize * sizeFactor;
-                    aNewNode2 = aMidNode2 + v * baseHeightSize * sizeFactor;
-
-                    Integer aNewNodeId1 = this->m_surfaceMesh.nextNodeId() + 0;
-                    Integer aNewNodeId2 = this->m_surfaceMesh.nextNodeId() + 1;
-
-                    // Get closest edges
-                    aBoundingBox.reset();
-                    aBoundingBox.addCoordinate(aNode1);
-                    aBoundingBox.addCoordinate(aNode2);
-                    aBoundingBox.addCoordinate(aNewNode1);
-                    aBoundingBox.addCoordinate(aNewNode2);
-                    aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
-
-                    sEdges.clear();
-                    this->m_tree.find(sEdges, aBoundingBox);
-
-                    // Check if a node exists in proximity
-                    this->findClosestNodes(sEdges, sNodes);
-
-                    // Meshing priority
-                    // Priority = 1: close quadrilateral hole
-                    // Priority = 2: close triangular hole
-                    // Priority = 3: other nodes in vicinity (3, 4, other node)
-                    // Priority = 4: new node forming correct spacing
-
-                    if ((aNodeId3 == aNodeId5 && aNodeId4 == aNodeId6) || (aNodeId3 == aNodeId6 && aNodeId4 == aNodeId5))
-                    {
-                        this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
-                        res = true;
+                    if (!aBoundingBox.contains(aNode, aTolerance))
                         continue;
+
+                    aNewTriangle1.reset();
+                    aNewTriangle1.addVertex(aNode1);
+                    aNewTriangle1.addVertex(aNode2);
+                    aNewTriangle1.addVertex(aNode);
+
+                    aNewTriangle1.calculateArea();
+
+                    if (aNewTriangle1.normal().z() > aTolerance)
+                    {
+                        aNewQuadrilateral1.reset();
+                        aNewQuadrilateral1.addVertex(aNode1);
+                        aNewQuadrilateral1.addVertex(aNode2);
+                        aNewQuadrilateral1.addVertex(aNewNode2);
+                        aNewQuadrilateral1.addVertex(aNode);
+
+                        aNewQuadrilateral1.calculateArea();
+
+                        aNewQuadrilateral1.calculateQuality();
+
+                        Real q1 = aNewQuadrilateral1.quality();
+
+                        if (q1 > q1max)
+                            q1 += this->edgeOk(anAdvEdge, aNode1, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        Real d = (aNode - aNewNode1).norm();
+
+                        // Use closest node
+                        if (d < baseHeightSize * sizeFactor * expandFactor * 0.75 && q1 > q1max)
+                        {
+                            q1max = q1;
+                            anExistingNodeId1 = aNodeId;
+                            anExistingNode1 = aNode;
+                        }
+                    }
+                }
+
+                if (q1max > minQuality)
+                {
+                    aNewNode1 = anExistingNode1;
+                    aNewNodeId1 = anExistingNodeId1;
+                }
+
+                Real q2max = 0.0;
+
+                Integer anExistingNodeId2 = std::numeric_limits<Integer>::max();
+
+                for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
+                {
+                    Integer aNodeId = sNodes[j];
+
+                    if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
+                        continue;
+
+                    CMshNode<Real>& aNode = this->m_surfaceMesh.node(aNodeId);
+
+                    if (!aBoundingBox.contains(aNode, aTolerance))
+                        continue;
+
+                    aNewTriangle2.reset();
+                    aNewTriangle2.addVertex(aNode1);
+                    aNewTriangle2.addVertex(aNode2);
+                    aNewTriangle2.addVertex(aNode);
+
+                    aNewTriangle2.calculateArea();
+
+                    if (aNewTriangle2.normal().z() > aTolerance)
+                    {
+                        aNewQuadrilateral2.reset();
+                        aNewQuadrilateral2.addVertex(aNode1);
+                        aNewQuadrilateral2.addVertex(aNode2);
+                        aNewQuadrilateral2.addVertex(aNode);
+                        aNewQuadrilateral2.addVertex(aNewNode1);
+
+                        aNewQuadrilateral2.calculateArea();
+
+                        aNewQuadrilateral2.calculateQuality();
+
+                        Real q2 = aNewQuadrilateral2.quality();
+
+                        if (q2 > q2max)
+                            q2 += this->edgeOk(anAdvEdge, aNode2, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        Real d = (aNode - aNewNode2).norm();
+
+                        // Use closest node
+                        if (d < baseHeightSize * sizeFactor * expandFactor * 0.75 && q2 > q2max)
+                        {
+                            q2max = q2;
+                            anExistingNodeId2 = aNodeId;
+                            anExistingNode2 = aNode;
+                        }
+                    }
+                }
+
+                if (q2max > minQuality)
+                {
+                    aNewNode2 = anExistingNode2;
+                    aNewNodeId2 = anExistingNodeId2;
+                }
+
+                Real q3max = 0.0;
+
+                aNewQuadrilateral3.reset();
+                aNewQuadrilateral3.addVertex(aNode1);
+                aNewQuadrilateral3.addVertex(aNode2);
+                aNewQuadrilateral3.addVertex(aNewNode2);
+                aNewQuadrilateral3.addVertex(aNewNode1);
+
+                aNewQuadrilateral3.calculateArea();
+
+                if (aNewQuadrilateral3.normal().z() > aTolerance)
+                {
+                    aNewQuadrilateral3.calculateQuality();
+
+                    Real q3 = aNewQuadrilateral3.quality();
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                        q3 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                    if (q3 > q3max)
+                    {
+                        Integer wNodeId;
+                        q3 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
                     }
 
-                    if (aNodeId3 == aNodeId4)
+                    q3max = q3;
+                }
+
+                if (q3max > minQuality)
+                {
+                    Integer aNextNodeId = this->m_surfaceMesh.nextNodeId();
+
+                    if (aNewNodeId1 == aNextNodeId + 0)
+                        this->m_surfaceMesh.addNode(aNewNodeId1, aNewNode1);
+
+                    if (aNewNodeId2 == aNextNodeId + 1)
+                        this->m_surfaceMesh.addNode(aNewNodeId2, aNewNode2);
+
+                    for (Integer k = 0; k < static_cast<Integer>(this->m_interiorNodes.size()); ++k)
                     {
-                        CMshNode<Real>& aNode3 = this->m_surfaceMesh.node(aNodeId3);
-                        CMshNode<Real>& aNode4 = this->m_surfaceMesh.node(aNodeId4);
+                        if (this->m_interiorNodes[k].remove)
+                            continue;
 
-                        aNewTriangle.reset();
-                        aNewTriangle.addVertex(aNode1);
-                        aNewTriangle.addVertex(aNode2);
-                        aNewTriangle.addVertex(aNode3);
+                        if (this->m_interiorNodes[k].nodeId == aNewNodeId1)
+                            this->m_interiorNodes[k].remove = true;
 
-                        aNewTriangle.calculateArea();
+                        if (this->m_interiorNodes[k].nodeId == aNewNodeId2)
+                            this->m_interiorNodes[k].remove = true;
+                    }
 
-                        if (aNewTriangle.normal().z() > aTolerance)
+                    this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
+                    res = true;
+                }
+                else if (bAddNodes)
+                {
+                    aLine1.reset();
+                    aLine1.setStartPoint(aMidNode);
+                    aLine1.setEndPoint(aNewNode1);
+
+                    Real dmin1 = this->findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
+
+                    if (dmin1 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < baseHeightSize * sizeFactor * expandFactor)
+                        aNewNode1 = aNode1 + v * dmin1 * 0.5;
+
+                    aLine2.reset();
+                    aLine2.setStartPoint(aMidNode);
+                    aLine2.setEndPoint(aNewNode2);
+
+                    Real dmin2 = this->findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
+
+                    if (dmin2 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < baseHeightSize * sizeFactor * expandFactor)
+                        aNewNode2 = aNode2 + v * dmin2 * 0.5;
+
+                    aNewQuadrilateral4.reset();
+                    aNewQuadrilateral4.addVertex(aNode1);
+                    aNewQuadrilateral4.addVertex(aNode2);
+                    aNewQuadrilateral4.addVertex(aNewNode1);
+                    aNewQuadrilateral4.addVertex(aNewNode2);
+
+                    aNewQuadrilateral4.calculateArea();
+
+                    if (aNewQuadrilateral4.normal().z() > aTolerance)
+                    {
+                        aNewQuadrilateral4.calculateQuality();
+
+                        Real q4 = aNewQuadrilateral4.quality();
+
+                        if (q4 > 1.5 * minQuality)
+                            q4 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q4 > 1.5 * minQuality)
+                            q4 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q4 > 1.5 * minQuality)
+                            q4 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
+
+                        if (q4 > 1.5 * minQuality)
                         {
                             Integer wNodeId;
-
-                            Real q0 = 1.0;
-
-                            if (q0 > 0.0)
-                                q0 += this->edgeOk(anAdvEdge, aNode1, aNode3, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q0 > 0.0)
-                                q0 += this->edgeOk(anAdvEdge, aNode2, aNode4, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (!this->quadrilateralContainsNode(aNode1, aNode2, aNode3, aNode4, wNodeId, sNodes, aTolerance) && q0 > 0.0)
-                            {
-                                this->addQuadrilateral(anAdvEdge, aNodeId3, aNodeId4, sEdges, aTolerance);
-                                res = true;
-                                continue;
-                            }
+                            q4 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
                         }
-                    }
 
-                    Real q1max = 0.0;
-
-                    // If a node exists snap to that node
-                    Integer anExistingNodeId1 = std::numeric_limits<Integer>::max();
-
-                    for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
-                    {
-                        Integer aNodeId = sNodes[j];
-
-                        if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
-                            continue;
-
-                        CMshNode<Real>& aNode = this->m_surfaceMesh.node(aNodeId);
-
-                        if (!aBoundingBox.contains(aNode, aTolerance))
-                            continue;
-
-                        aNewTriangle1.reset();
-                        aNewTriangle1.addVertex(aNode1);
-                        aNewTriangle1.addVertex(aNode2);
-                        aNewTriangle1.addVertex(aNode);
-
-                        aNewTriangle1.calculateArea();
-
-                        if (aNewTriangle1.normal().z() > aTolerance)
+                        if (q4 > 1.5 * minQuality)
                         {
-                            aNewQuadrilateral1.reset();
-                            aNewQuadrilateral1.addVertex(aNode1);
-                            aNewQuadrilateral1.addVertex(aNode2);
-                            aNewQuadrilateral1.addVertex(aNewNode2);
-                            aNewQuadrilateral1.addVertex(aNode);
-
-                            aNewQuadrilateral1.calculateArea();
-
-                            aNewQuadrilateral1.calculateQuality();
-
-                            Real q1 = aNewQuadrilateral1.quality();
-
-                            if (q1 > q1max)
-                                q1 += this->edgeOk(anAdvEdge, aNode1, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            Real d = (aNode - aNewNode1).norm();
-
-                            // Use closest node
-                            if (d < baseHeightSize * sizeFactor * expandFactor * 0.75 && q1 > q1max)
-                            {
-                                q1max = q1;
-                                anExistingNodeId1 = aNodeId;
-                                anExistingNode1 = aNode;
-                            }
-                        }
-                    }
-
-                    if (q1max > minQuality)
-                    {
-                        aNewNode1 = anExistingNode1;
-                        aNewNodeId1 = anExistingNodeId1;
-                    }
-
-                    Real q2max = 0.0;
-
-                    Integer anExistingNodeId2 = std::numeric_limits<Integer>::max();
-
-                    for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
-                    {
-                        Integer aNodeId = sNodes[j];
-
-                        if (aNodeId == aNodeId1 || aNodeId == aNodeId2)
-                            continue;
-
-                        CMshNode<Real>& aNode = this->m_surfaceMesh.node(aNodeId);
-
-                        if (!aBoundingBox.contains(aNode, aTolerance))
-                            continue;
-
-                        aNewTriangle2.reset();
-                        aNewTriangle2.addVertex(aNode1);
-                        aNewTriangle2.addVertex(aNode2);
-                        aNewTriangle2.addVertex(aNode);
-
-                        aNewTriangle2.calculateArea();
-
-                        if (aNewTriangle2.normal().z() > aTolerance)
-                        {
-                            aNewQuadrilateral2.reset();
-                            aNewQuadrilateral2.addVertex(aNode1);
-                            aNewQuadrilateral2.addVertex(aNode2);
-                            aNewQuadrilateral2.addVertex(aNode);
-                            aNewQuadrilateral2.addVertex(aNewNode1);
-
-                            aNewQuadrilateral2.calculateArea();
-
-                            aNewQuadrilateral2.calculateQuality();
-
-                            Real q2 = aNewQuadrilateral2.quality();
-
-                            if (q2 > q2max)
-                                q2 += this->edgeOk(anAdvEdge, aNode2, aNode, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            Real d = (aNode - aNewNode2).norm();
-
-                            // Use closest node
-                            if (d < baseHeightSize * sizeFactor * expandFactor * 0.75 && q2 > q2max)
-                            {
-                                q2max = q2;
-                                anExistingNodeId2 = aNodeId;
-                                anExistingNode2 = aNode;
-                            }
-                        }
-                    }
-
-                    if (q2max > minQuality)
-                    {
-                        aNewNode2 = anExistingNode2;
-                        aNewNodeId2 = anExistingNodeId2;
-                    }
-
-                    Real q3max = 0.0;
-
-                    aNewQuadrilateral3.reset();
-                    aNewQuadrilateral3.addVertex(aNode1);
-                    aNewQuadrilateral3.addVertex(aNode2);
-                    aNewQuadrilateral3.addVertex(aNewNode2);
-                    aNewQuadrilateral3.addVertex(aNewNode1);
-
-                    aNewQuadrilateral3.calculateArea();
-
-                    if (aNewQuadrilateral3.normal().z() > aTolerance)
-                    {
-                        aNewQuadrilateral3.calculateQuality();
-
-                        Real q3 = aNewQuadrilateral3.quality();
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNode2, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                            q3 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                        if (q3 > q3max)
-                        {
-                            Integer wNodeId;
-                            q3 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
-                        }
-
-                        q3max = q3;
-                    }
-
-                    if (q3max > minQuality)
-                    {
-                        Integer aNextNodeId = this->m_surfaceMesh.nextNodeId();
-
-                        if (aNewNodeId1 == aNextNodeId + 0)
+                            // Create a new node
                             this->m_surfaceMesh.addNode(aNewNodeId1, aNewNode1);
-
-                        if (aNewNodeId2 == aNextNodeId + 1)
                             this->m_surfaceMesh.addNode(aNewNodeId2, aNewNode2);
 
-                        for (Integer k = 0; k < static_cast<Integer>(this->m_interiorNodes.size()); ++k)
-                        {
-                            if (this->m_interiorNodes[k].remove)
-                                continue;
+                            this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
+                            res = true;
 
-                            if (this->m_interiorNodes[k].nodeId == aNewNodeId1)
-                                this->m_interiorNodes[k].remove = true;
-
-                            if (this->m_interiorNodes[k].nodeId == aNewNodeId2)
-                                this->m_interiorNodes[k].remove = true;
-                        }
-
-                        this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
-                        res = true;
-                    }
-                    else if (bAddNodes)
-                    {
-                        aLine1.reset();
-                        aLine1.setStartPoint(aMidNode);
-                        aLine1.setEndPoint(aNewNode1);
-
-                        Real dmin1 = this->findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
-
-                        if (dmin1 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin1 < baseHeightSize * sizeFactor * expandFactor)
-                            aNewNode1 = aNode1 + v * dmin1 * 0.5;
-
-                        aLine2.reset();
-                        aLine2.setStartPoint(aMidNode);
-                        aLine2.setEndPoint(aNewNode2);
-
-                        Real dmin2 = this->findShortestDistance(sEdges, aLine2, anAdvEdgeId, aTolerance);
-
-                        if (dmin2 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < baseHeightSize * sizeFactor * expandFactor)
-                            aNewNode2 = aNode2 + v * dmin2 * 0.5;
-
-                        aNewQuadrilateral4.reset();
-                        aNewQuadrilateral4.addVertex(aNode1);
-                        aNewQuadrilateral4.addVertex(aNode2);
-                        aNewQuadrilateral4.addVertex(aNewNode1);
-                        aNewQuadrilateral4.addVertex(aNewNode2);
-
-                        aNewQuadrilateral4.calculateArea();
-
-                        if (aNewQuadrilateral4.normal().z() > aTolerance)
-                        {
-                            aNewQuadrilateral4.calculateQuality();
-
-                            Real q4 = aNewQuadrilateral4.quality();
-
-                            if (q4 > 1.5 * minQuality)
-                                q4 += this->edgeOk(anAdvEdge, aNode1, aNewNode1, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q4 > 1.5 * minQuality)
-                                q4 += this->edgeOk(anAdvEdge, aNode2, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q4 > 1.5 * minQuality)
-                                q4 += this->edgeOk(anAdvEdge, aNewNode1, aNewNode2, sEdges, aTolerance) ? 0.0 : -2.0;
-
-                            if (q4 > 1.5 * minQuality)
+                            if (!this->m_boundingBox.contains(aNewNode1, aTolerance))
                             {
-                                Integer wNodeId;
-                                q4 += !this->quadrilateralContainsNode(aNode1, aNode2, aNewNode2, aNewNode1, wNodeId, sNodes, aTolerance) ? 0.0 : -2.0;
+                                throw std::runtime_error("Node is outside boundary!");
                             }
 
-                            if (q4 > 1.5 * minQuality)
+                            if (!this->m_boundingBox.contains(aNewNode2, aTolerance))
                             {
-                                // Create a new node
-                                this->m_surfaceMesh.addNode(aNewNodeId1, aNewNode1);
-                                this->m_surfaceMesh.addNode(aNewNodeId2, aNewNode2);
-
-                                this->addQuadrilateral(anAdvEdge, aNewNodeId1, aNewNodeId2, sEdges, aTolerance);
-                                res = true;
-
-                                if (!this->m_boundingBox.contains(aNewNode1, aTolerance))
-                                {
-                                    throw std::runtime_error("Node is outside boundary!");
-                                }
-
-                                if (!this->m_boundingBox.contains(aNewNode2, aTolerance))
-                                {
-                                    throw std::runtime_error("Node is outside boundary!");
-                                }
+                                throw std::runtime_error("Node is outside boundary!");
                             }
                         }
                     }

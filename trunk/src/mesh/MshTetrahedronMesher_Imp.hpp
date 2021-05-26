@@ -774,6 +774,15 @@ namespace ENigMA
 
             for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i)
             {
+                Integer anAdvTriangleId = i;
+                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront.at(anAdvTriangleId);
+
+                if (anAdvTriangle.remove)
+                    continue;
+
+                if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max())
+                    continue;
+
                 this->checkUpdate();
 
                 if (m_bStop)
@@ -787,16 +796,6 @@ namespace ENigMA
                         return false;
                     }
                 }
-
-                Integer anAdvTriangleId = i;
-
-                if (m_anAdvFront[anAdvTriangleId].remove)
-                    continue;
-
-                SMshAdvancingFrontTriangle<Real>& anAdvTriangle = m_anAdvFront[anAdvTriangleId];
-
-                if (anAdvTriangle.neighborId[0] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[1] == std::numeric_limits<Integer>::max() || anAdvTriangle.neighborId[2] == std::numeric_limits<Integer>::max())
-                    continue;
 
                 Integer aNodeId1 = anAdvTriangle.nodeId[0];
                 Integer aNodeId2 = anAdvTriangle.nodeId[1];
