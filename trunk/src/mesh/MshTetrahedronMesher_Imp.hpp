@@ -147,8 +147,7 @@ namespace ENigMA
         template <typename Real>
         bool CMshTetrahedronMesher<Real>::triangleOk(SMshAdvancingFrontTriangle<Real>& anAdvTriangle, CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, std::vector<Integer>& sTriangles, const Real aTolerance)
         {
-            static CGeoTriangle<Real> aTriangle1;
-
+            CGeoTriangle<Real> aTriangle1;
             aTriangle1.reset();
             aTriangle1.addVertex(aNode1);
             aTriangle1.addVertex(aNode2);
@@ -240,7 +239,7 @@ namespace ENigMA
         template <typename Real>
         bool CMshTetrahedronMesher<Real>::tetrahedronContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance)
         {
-            static CMshTetrahedron<Real> aTetrahedron;
+            CMshTetrahedron<Real> aTetrahedron;
             aTetrahedron.reset();
             aTetrahedron.addVertex(aNode1);
             aTetrahedron.addVertex(aNode2);
@@ -415,7 +414,7 @@ namespace ENigMA
                 return;
             }
 
-            static CMshElement<Real> aNewElement;
+            CMshElement<Real> aNewElement;
             aNewElement.reset();
             aNewElement.setElementType(ET_TETRAHEDRON);
             aNewElement.addNodeId(aNodeId1);
@@ -436,7 +435,7 @@ namespace ENigMA
             Integer aNewTriangleId3 = m_nextTriangleId++;
 
             // Add triangle 1
-            static SMshAdvancingFrontTriangle<Real> aNewTriangle1;
+            SMshAdvancingFrontTriangle<Real> aNewTriangle1;
             aNewTriangle1.id = aNewTriangleId1;
             aNewTriangle1.remove = false;
             aNewTriangle1.boundary = false;
@@ -462,7 +461,7 @@ namespace ENigMA
             this->addTriangleToRtree(aNewTriangle1, aTolerance);
 
             // Add triangle 2
-            static SMshAdvancingFrontTriangle<Real> aNewTriangle2;
+            SMshAdvancingFrontTriangle<Real> aNewTriangle2;
             aNewTriangle2.id = aNewTriangleId2;
             aNewTriangle2.remove = false;
             aNewTriangle2.boundary = false;
@@ -488,7 +487,7 @@ namespace ENigMA
             this->addTriangleToRtree(aNewTriangle2, aTolerance);
 
             // Add triangle 3
-            static SMshAdvancingFrontTriangle<Real> aNewTriangle3;
+            SMshAdvancingFrontTriangle<Real> aNewTriangle3;
             aNewTriangle3.id = aNewTriangleId3;
             aNewTriangle3.remove = false;
             aNewTriangle3.boundary = false;
@@ -598,7 +597,7 @@ namespace ENigMA
 
                 if (anElement.elementType() == ET_TRIANGLE)
                 {
-                    static SMshAdvancingFrontTriangle<Real> anAdvTriangle;
+                    SMshAdvancingFrontTriangle<Real> anAdvTriangle;
 
                     anAdvTriangle.id = m_nextTriangleId++;
                     anAdvTriangle.remove = false;
@@ -655,16 +654,16 @@ namespace ENigMA
             }
 
             // Add interior nodes
+            SNode<Real> anInteriorNode;
+
             for (Integer i = 0; i < static_cast<Integer>(sInteriorPoints.size()); ++i)
             {
                 Integer aNewNodeId = m_volumeMesh.nextNodeId();
                 
-                static CMshNode<Real> aNewNode;
+                CMshNode<Real> aNewNode;
                 aNewNode = sInteriorPoints[i];
 
                 m_volumeMesh.addNode(aNewNodeId, aNewNode);
-
-                static SNode<Real> anInteriorNode;
 
                 anInteriorNode.id = static_cast<Integer>(m_innerNodes.size());
                 anInteriorNode.remove = false;
@@ -752,7 +751,27 @@ namespace ENigMA
 
             Real sumMeshSize = 0;
             Integer nMeshSize = 0;
-                                                                      
+
+            std::vector<Integer> sNodes;
+            std::vector<Integer> sTriangles;
+
+            CGeoVector<Real> a;
+            CGeoVector<Real> b;
+            CGeoVector<Real> v;
+
+            CGeoLine<Real> aLine;
+
+            CMshNode<Real> aMidNode;
+            CMshNode<Real> aNewNode;
+            CMshNode<Real> anAuxNode;
+            CMshNode<Real> anExistingNode;
+
+            CGeoBoundingBox<Real> aBoundingBox;
+
+            CMshTetrahedron<Real> aNewTetrahedron;
+            CMshTetrahedron<Real> aNewTetrahedron1;
+            CMshTetrahedron<Real> aNewTetrahedron2;
+
             for (Integer i = 0; i < static_cast<Integer>(m_anAdvFront.size()); ++i)
             {
                 this->checkUpdate();
@@ -793,7 +812,6 @@ namespace ENigMA
 
                 CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
 
-                static CMshNode<Real> aMidNode;
                 aMidNode = (aNode1 + aNode2 + aNode3) / 3.0;
 
                 x = aMidNode.x();
@@ -801,9 +819,6 @@ namespace ENigMA
                 z = aMidNode.z();
 
                 // Use inverse of normal vector
-                static CGeoVector<Real> a;
-                static CGeoVector<Real> b;
-
                 a = aNode2 - aNode1;
                 b = aNode3 - aNode1;
 
@@ -819,20 +834,16 @@ namespace ENigMA
                 Real baseHeightSize = localMeshSize * sqrt(2.0 / 3.0); // Equilateral tetrahedron (height to edge ratio)
 
                 // Regular tetrahedron (height to edge ratio)
-                static CGeoVector<Real> v;
                 v = -a.cross(b);
                 v.normalize();
 
                 // Add point to form tetrahedra with correct spacing
-                static CMshNode<Real> aNewNode;
                 aNewNode = aMidNode + v * baseHeightSize * sizeFactor;
                 Integer aNewNodeId = m_volumeMesh.nextNodeId();
 
                 // Get closest triangles
-                static CMshNode<Real> anAuxNode;
                 anAuxNode = aMidNode + v * baseHeightSize * sizeFactor * 1.5;
 
-                static CGeoBoundingBox<Real> aBoundingBox;
                 aBoundingBox.reset();
                 aBoundingBox.addCoordinate(aNode1);
                 aBoundingBox.addCoordinate(aNode2);
@@ -840,14 +851,12 @@ namespace ENigMA
                 aBoundingBox.addCoordinate(anAuxNode);
                 aBoundingBox.grow(aTolerance);
 
-                static std::vector<Integer> sTriangles;
                 sTriangles.clear();
                 m_tree.find(sTriangles, aBoundingBox);
 
                 sTriangles.erase(std::remove(sTriangles.begin(), sTriangles.end(), anAdvTriangleId), sTriangles.end());
 
                 // Check if a node exists in proximity
-                static std::vector<Integer> sNodes;
                 sNodes.clear();
                 this->findClosestNodes(sTriangles, sNodes);
 
@@ -858,7 +867,6 @@ namespace ENigMA
 
                 if (aNodeId4 == aNodeId5 && aNodeId5 == aNodeId6)
                 {
-                    static CMshTetrahedron<Real> aNewTetrahedron;
                     aNewTetrahedron.reset();
                     aNewTetrahedron.addVertex(aNode1);
                     aNewTetrahedron.addVertex(aNode2);
@@ -883,7 +891,6 @@ namespace ENigMA
                 Real qmax = 0.0;
 
                 // If a node exists snap to that node   
-                static CMshNode<Real> anExistingNode;
                 Integer anExistingNodeId = std::numeric_limits<Integer>::max();
 
                 for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
@@ -900,7 +907,6 @@ namespace ENigMA
                     // Use closest node
                     if (d < baseHeightSize * sizeFactor * expandFactor)
                     {
-                        static CMshTetrahedron<Real> aNewTetrahedron1;
                         aNewTetrahedron1.reset();
                         aNewTetrahedron1.addVertex(aNode1);
                         aNewTetrahedron1.addVertex(aNode2);
@@ -956,7 +962,6 @@ namespace ENigMA
                 }
                 else if (bAddNodes)
                 {
-                    static CGeoLine<Real> aLine;
                     aLine.reset();
                     aLine.setStartPoint(aMidNode);
                     aLine.setEndPoint(aNewNode);
@@ -966,7 +971,6 @@ namespace ENigMA
                     if (dmin > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin < baseHeightSize * sizeFactor * expandFactor)
                         aNewNode = aMidNode + v * dmin * 0.5;
 
-                    static CMshTetrahedron<Real> aNewTetrahedron2;
                     aNewTetrahedron2.reset();
                     aNewTetrahedron2.addVertex(aNode1);
                     aNewTetrahedron2.addVertex(aNode2);
@@ -1265,6 +1269,8 @@ namespace ENigMA
                 }
             }
 
+            std::vector<CMshFace<Real>> sFaces;
+
             for (Integer i = 0; i < static_cast<Integer>(sElementsToRemove.size()); ++i)
             {
                 this->checkUpdate();
@@ -1276,13 +1282,12 @@ namespace ENigMA
 
                 auto anElement = m_volumeMesh.element(anElementId);
 
-                static std::vector<CMshFace<Real>> sFaces;
                 sFaces.clear();
                 anElement.generateFaces(sFaces);
 
                 for (Integer j = 0; j < static_cast<Integer>(sFaces.size()); ++j)
                 {
-                    static SMshAdvancingFrontTriangle<Real> anAdvTriangle;
+                    SMshAdvancingFrontTriangle<Real> anAdvTriangle;
                     anAdvTriangle.id = m_nextTriangleId++;
                     anAdvTriangle.remove = false;
                     anAdvTriangle.boundary = false;
@@ -1313,7 +1318,7 @@ namespace ENigMA
                 if (m_bStop)
                     return false;
 
-                static SMshAdvancingFrontTriangle<Real> anAdvTriangle;
+                SMshAdvancingFrontTriangle<Real> anAdvTriangle;
                 anAdvTriangle = m_anAdvFront[i];
 
                 if (anAdvTriangle.remove)
@@ -1329,7 +1334,7 @@ namespace ENigMA
 
                 for (Integer j = i + 1; j < static_cast<Integer>(m_anAdvFront.size()); ++j)
                 {
-                    static SMshAdvancingFrontTriangle<Real> anotherAdvTriangle;
+                    SMshAdvancingFrontTriangle<Real> anotherAdvTriangle;
                     anotherAdvTriangle = m_anAdvFront[j];
 
                     if (anotherAdvTriangle.remove)

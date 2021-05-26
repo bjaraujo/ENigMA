@@ -123,6 +123,11 @@ namespace ENigMA
         void CMshFace<Real>::reset()
         {
             m_nodeIds.clear();
+
+            m_faceType = FT_NONE;
+            m_hasPair = false;
+            m_pairFaceId = 0;
+            m_elementId = 0;
         }
 
         template <typename Real>

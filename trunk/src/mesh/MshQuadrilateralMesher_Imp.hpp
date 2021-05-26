@@ -70,7 +70,7 @@ namespace ENigMA
         bool CMshQuadrilateralMesher<Real>::quadrilateralContainsNode(CMshNode<Real>& aNode1, CMshNode<Real>& aNode2, CMshNode<Real>& aNode3, CMshNode<Real>& aNode4, Integer& aNodeId, std::vector<Integer>& sNodes, const Real aTolerance)
         {
             CMshQuadrilateral<Real> aQuadrilateral;
-
+            aQuadrilateral.reset();
             aQuadrilateral.addVertex(aNode1);
             aQuadrilateral.addVertex(aNode2);
             aQuadrilateral.addVertex(aNode3);
@@ -483,6 +483,33 @@ namespace ENigMA
 
             static const Real pi = std::acos(-1.0);
 
+            std::vector<Integer> sNodes;
+            std::vector<Integer> sEdges;
+
+            CGeoVector<Real> a;
+            CGeoVector<Real> v;
+
+            CGeoLine<Real> aLine1;
+
+            CMshNode<Real> aMidNode;
+            CMshNode<Real> aMidNode1;
+            CMshNode<Real> aMidNode2;
+            CMshNode<Real> aNewNode1;
+            CMshNode<Real> aNewNode2;
+            CMshNode<Real> anExistingNode1;
+            CMshNode<Real> anExistingNode2;
+
+            CGeoBoundingBox<Real> aBoundingBox;
+
+            CMshTriangle<Real> aNewTriangle;
+            CMshTriangle<Real> aNewTriangle1;
+            CMshTriangle<Real> aNewTriangle2;
+
+            CMshQuadrilateral<Real> aNewQuadrilateral1;
+            CMshQuadrilateral<Real> aNewQuadrilateral2;
+            CMshQuadrilateral<Real> aNewQuadrilateral3;
+            CMshQuadrilateral<Real> aNewQuadrilateral4;
+
             for (Integer i = 0; i < static_cast<Integer>(this->m_anAdvFront.size()); ++i)
             {
                 this->checkUpdate();
@@ -523,12 +550,12 @@ namespace ENigMA
                     if ((aNodeId1 == aNodeId6 || aNodeId2 == aNodeId5) && anAdvEdge.neighborId[0] != nextNextEdge && anAdvEdge.neighborId[1] != prevPrevEdge)
                         continue;
 
-                    CMshNode<Real> aMidNode = (aNode1 + aNode2) * 0.5;
+                    aMidNode = (aNode1 + aNode2) * 0.5;
 
                     x = aMidNode.x();
                     y = aMidNode.y();
 
-                    CGeoVector<Real> a = aNode2 - aNode1;
+                    a = aNode2 - aNode1;
 
                     Real requiredMeshSize = meshSizeFunc.evaluate();
                     Real localMeshSize = static_cast<Real>(a.norm());
@@ -541,35 +568,34 @@ namespace ENigMA
 
                     Real baseHeightSize = localMeshSize; // Equilateral rectangle (height to edge ratio)
 
-                    CGeoVector<Real> v = a;
+                    v = a;
                     v.normalize();
 
-                    CMshNode<Real> aMidNode1 = aMidNode - v * baseHeightSize * sizeFactor * 0.5;
-                    CMshNode<Real> aMidNode2 = aMidNode + v * baseHeightSize * sizeFactor * 0.5;
+                    aMidNode1 = aMidNode - v * baseHeightSize * sizeFactor * 0.5;
+                    aMidNode2 = aMidNode + v * baseHeightSize * sizeFactor * 0.5;
 
                     // Rotate vector by 90 degrees
                     v.rotate(pi * 0.5);
 
                     // Add point to form rectangle with correct spacing
-                    CMshNode<Real> aNewNode1 = aMidNode1 + v * baseHeightSize * sizeFactor;
-                    CMshNode<Real> aNewNode2 = aMidNode2 + v * baseHeightSize * sizeFactor;
+                    aNewNode1 = aMidNode1 + v * baseHeightSize * sizeFactor;
+                    aNewNode2 = aMidNode2 + v * baseHeightSize * sizeFactor;
 
                     Integer aNewNodeId1 = this->m_surfaceMesh.nextNodeId() + 0;
                     Integer aNewNodeId2 = this->m_surfaceMesh.nextNodeId() + 1;
 
                     // Get closest edges
-                    CGeoBoundingBox<Real> aBoundingBox;
+                    aBoundingBox.reset();
                     aBoundingBox.addCoordinate(aNode1);
                     aBoundingBox.addCoordinate(aNode2);
                     aBoundingBox.addCoordinate(aNewNode1);
                     aBoundingBox.addCoordinate(aNewNode2);
                     aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
 
-                    std::vector<Integer> sEdges;
+                    sEdges.clear();
                     this->m_tree.find(sEdges, aBoundingBox);
 
                     // Check if a node exists in proximity
-                    std::vector<Integer> sNodes;
                     this->findClosestNodes(sEdges, sNodes);
 
                     // Meshing priority
@@ -590,8 +616,7 @@ namespace ENigMA
                         CMshNode<Real>& aNode3 = this->m_surfaceMesh.node(aNodeId3);
                         CMshNode<Real>& aNode4 = this->m_surfaceMesh.node(aNodeId4);
 
-                        CMshTriangle<Real> aNewTriangle;
-
+                        aNewTriangle.reset();
                         aNewTriangle.addVertex(aNode1);
                         aNewTriangle.addVertex(aNode2);
                         aNewTriangle.addVertex(aNode3);
@@ -622,7 +647,6 @@ namespace ENigMA
                     Real q1max = 0.0;
 
                     // If a node exists snap to that node
-                    CMshNode<Real> anExistingNode1;
                     Integer anExistingNodeId1 = std::numeric_limits<Integer>::max();
 
                     for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
@@ -637,8 +661,7 @@ namespace ENigMA
                         if (!aBoundingBox.contains(aNode, aTolerance))
                             continue;
 
-                        CMshTriangle<Real> aNewTriangle1;
-
+                        aNewTriangle1.reset();
                         aNewTriangle1.addVertex(aNode1);
                         aNewTriangle1.addVertex(aNode2);
                         aNewTriangle1.addVertex(aNode);
@@ -647,8 +670,7 @@ namespace ENigMA
 
                         if (aNewTriangle1.normal().z() > aTolerance)
                         {
-                            CMshQuadrilateral<Real> aNewQuadrilateral1;
-
+                            aNewQuadrilateral1.reset();
                             aNewQuadrilateral1.addVertex(aNode1);
                             aNewQuadrilateral1.addVertex(aNode2);
                             aNewQuadrilateral1.addVertex(aNewNode2);
@@ -683,7 +705,6 @@ namespace ENigMA
 
                     Real q2max = 0.0;
 
-                    CMshNode<Real> anExistingNode2;
                     Integer anExistingNodeId2 = std::numeric_limits<Integer>::max();
 
                     for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
@@ -698,8 +719,7 @@ namespace ENigMA
                         if (!aBoundingBox.contains(aNode, aTolerance))
                             continue;
 
-                        CMshTriangle<Real> aNewTriangle2;
-
+                        aNewTriangle2.reset();
                         aNewTriangle2.addVertex(aNode1);
                         aNewTriangle2.addVertex(aNode2);
                         aNewTriangle2.addVertex(aNode);
@@ -708,8 +728,7 @@ namespace ENigMA
 
                         if (aNewTriangle2.normal().z() > aTolerance)
                         {
-                            CMshQuadrilateral<Real> aNewQuadrilateral2;
-
+                            aNewQuadrilateral2.reset();
                             aNewQuadrilateral2.addVertex(aNode1);
                             aNewQuadrilateral2.addVertex(aNode2);
                             aNewQuadrilateral2.addVertex(aNode);
@@ -744,8 +763,7 @@ namespace ENigMA
 
                     Real q3max = 0.0;
 
-                    CMshQuadrilateral<Real> aNewQuadrilateral3;
-
+                    aNewQuadrilateral3.reset();
                     aNewQuadrilateral3.addVertex(aNode1);
                     aNewQuadrilateral3.addVertex(aNode2);
                     aNewQuadrilateral3.addVertex(aNewNode2);
@@ -810,7 +828,9 @@ namespace ENigMA
                     }
                     else if (bAddNodes)
                     {
-                        CGeoLine<Real> aLine1(aMidNode, aNewNode1);
+                        aLine1.reset();
+                        aLine1.setStartPoint(aMidNode);
+                        aLine1.setEndPoint(aNewNode1);
 
                         Real dmin1 = this->findShortestDistance(sEdges, aLine1, anAdvEdgeId, aTolerance);
 
@@ -824,8 +844,7 @@ namespace ENigMA
                         if (dmin2 > baseHeightSize * sizeFactor * shrinkFactor * 0.25 && dmin2 < baseHeightSize * sizeFactor * expandFactor)
                             aNewNode2 = aNode2 + v * dmin2 * 0.5;
 
-                        CMshQuadrilateral<Real> aNewQuadrilateral4;
-
+                        aNewQuadrilateral4.reset();
                         aNewQuadrilateral4.addVertex(aNode1);
                         aNewQuadrilateral4.addVertex(aNode2);
                         aNewQuadrilateral4.addVertex(aNewNode1);
