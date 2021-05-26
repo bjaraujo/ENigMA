@@ -16,6 +16,7 @@
 #include "GeoLine.hpp"
 #include "GeoRtree.hpp"
 #include "MshMesh.hpp"
+#include "MshSNode.hpp"
 
 namespace ENigMA
 {
@@ -46,15 +47,6 @@ namespace ENigMA
                 this->line.setEndPoint(aMesh.node(this->nodeId[1]));
                 this->line.calculateLength();
             }
-        };
-
-        template <typename Real>
-        struct SNode
-        {
-            Integer id;
-            bool remove;
-
-            Integer nodeId;
         };
 
         template <typename Real>

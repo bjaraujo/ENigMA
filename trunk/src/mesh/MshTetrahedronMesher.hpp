@@ -16,6 +16,7 @@
 #include "GeoRtree.hpp"
 #include "GeoTriangle.hpp"
 #include "MshMesh.hpp"
+#include "MshSNode.hpp"
 
 namespace ENigMA
 {
@@ -49,15 +50,6 @@ namespace ENigMA
                 this->triangle.addVertex(aMesh.node(this->nodeId[2]));
                 this->triangle.calculateArea(true);
             }
-        };
-
-        template <typename Real>
-        struct SNode
-        {
-            Integer id;
-            bool remove;
-
-            Integer nodeId;
         };
 
         template <typename Real>
