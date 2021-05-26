@@ -203,3 +203,58 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
 
 }
 
+TEST_F(CTestMshTetrahedronMesher, mesh4)
+{
+
+    const decimal d = 0.125;
+
+    const Integer nu = 10;
+    const Integer nv = 6;
+    const Integer nw = 6;
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, nw * d);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    CMshBasicMesher<decimal> aBasicMesher;
+
+    aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
+
+    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
+
+    aSurfaceMesh.generateFaces(1E-5);
+
+    CPdeField<decimal> T;
+    CPosGmsh<decimal> aPosGmsh;
+
+    T.setMesh(aSurfaceMesh);
+    aPosGmsh.save(T, "tetra_surface4.msh", "tris");
+
+    CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+
+    aTetrahedronMesher.generate(aSurfaceMesh, 99999, d * 1.1, d * 1.0, d * 1.2, 1E-3);
+
+    CMshMesh<decimal> aVolumeMesh;
+    aVolumeMesh = aTetrahedronMesher.mesh();
+
+    T.setMesh(aVolumeMesh);
+    aPosGmsh.save(T, "tetra_volume4.msh", "tetras");
+
+    EXPECT_EQ(2306, aVolumeMesh.nbElements());
+}

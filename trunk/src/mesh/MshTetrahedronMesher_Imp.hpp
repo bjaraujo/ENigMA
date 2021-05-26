@@ -1362,20 +1362,20 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::relaxNodes(const Real aFactor, const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::relaxNodes(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aFactor, const Real aTolerance)
         {
             std::map<Integer, bool> bBoundaryNode;
 
-            for (Integer i = 0; i < m_volumeMesh.nbNodes(); ++i)
+            for (Integer i = 0; i < aMesh.nbNodes(); ++i)
             {
-                Integer aNodeId = m_volumeMesh.nodeId(i);
+                Integer aNodeId = aMesh.nodeId(i);
                 bBoundaryNode[aNodeId] = false;
             }
 
-            for (Integer i = 0; i < m_volumeMesh.nbFaces(); ++i)
+            for (Integer i = 0; i < aMesh.nbFaces(); ++i)
             {
-                Integer aFaceId = m_volumeMesh.faceId(i);
-                CMshFace<Real>& aFace = m_volumeMesh.face(aFaceId);
+                Integer aFaceId = aMesh.faceId(i);
+                CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
                 if (aFace.hasPair())
                     continue;
@@ -1387,14 +1387,14 @@ namespace ENigMA
                 }
             }
 
-            CMshMeshQuery<Real> aMeshQuery(m_volumeMesh);
+            CMshMeshQuery<Real> aMeshQuery(aMesh);
 
             std::vector<Integer> sElementIds;
 
-            for (Integer i = 0; i < m_volumeMesh.nbNodes(); ++i)
+            for (Integer i = 0; i < aMesh.nbNodes(); ++i)
             {
-                Integer aMovingNodeId = m_volumeMesh.nodeId(i);
-                CMshNode<Real>& aMovingNode = m_volumeMesh.node(aMovingNodeId);
+                Integer aMovingNodeId = aMesh.nodeId(i);
+                CMshNode<Real>& aMovingNode = aMesh.node(aMovingNodeId);
 
                 if (bBoundaryNode.at(aMovingNodeId))
                     continue;
@@ -1409,15 +1409,15 @@ namespace ENigMA
                 {
                     Integer anElementId = sElementIds[j];
 
-                    CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
+                    CMshElement<Real>& anElement = aMesh.element(anElementId);
 
                     if (anElement.elementType() != ET_TETRAHEDRON)
                         continue;
 
-                    CMshNode<Real> aNode1 = m_volumeMesh.node(anElement.nodeId(0));
-                    CMshNode<Real> aNode2 = m_volumeMesh.node(anElement.nodeId(1));
-                    CMshNode<Real> aNode3 = m_volumeMesh.node(anElement.nodeId(2));
-                    CMshNode<Real> aNode4 = m_volumeMesh.node(anElement.nodeId(3));
+                    CMshNode<Real> aNode1 = aMesh.node(anElement.nodeId(0));
+                    CMshNode<Real> aNode2 = aMesh.node(anElement.nodeId(1));
+                    CMshNode<Real> aNode3 = aMesh.node(anElement.nodeId(2));
+                    CMshNode<Real> aNode4 = aMesh.node(anElement.nodeId(3));
 
                     CMshTetrahedron<Real> aTetrahedron;
 
@@ -1459,7 +1459,7 @@ namespace ENigMA
 
                     for (Integer k = 0; k < static_cast<Integer>(sElementIds.size()); ++k)
                     {
-                        CMshElement<Real>& aModElement = m_volumeMesh.element(sElementIds[k]);
+                        CMshElement<Real>& aModElement = aMesh.element(sElementIds[k]);
 
                         if (aModElement.elementType() != ET_TETRAHEDRON)
                             continue;
@@ -1469,10 +1469,10 @@ namespace ENigMA
                         Integer aNodeId3 = aModElement.nodeId(2);
                         Integer aNodeId4 = aModElement.nodeId(3);
 
-                        CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
-                        CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
-                        CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
-                        CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
+                        CMshNode<Real>& aNode1 = aMesh.node(aNodeId1);
+                        CMshNode<Real>& aNode2 = aMesh.node(aNodeId2);
+                        CMshNode<Real>& aNode3 = aMesh.node(aNodeId3);
+                        CMshNode<Real>& aNode4 = aMesh.node(aNodeId4);
 
                         CGeoCoordinate<Real> aVertex1 = aNode1;
                         CGeoCoordinate<Real> aVertex2 = aNode2;
@@ -1534,20 +1534,20 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::flipEdges23(const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::flipEdges23(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance)
         {
             std::map<Integer, bool> sFlipped;
 
-            for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i)
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                Integer anElementId = m_volumeMesh.elementId(i);
+                Integer anElementId = aMesh.elementId(i);
                 sFlipped[anElementId] = false;
             }
 
-            for (Integer i = 0; i < m_volumeMesh.nbFaces(); ++i)
+            for (Integer i = 0; i < aMesh.nbFaces(); ++i)
             {
-                Integer aFaceId = m_volumeMesh.faceId(i);
-                CMshFace<Real> aFace = m_volumeMesh.face(aFaceId);
+                Integer aFaceId = aMesh.faceId(i);
+                CMshFace<Real> aFace = aMesh.face(aFaceId);
 
                 if (aFace.faceType() != FT_TRIANGLE)
                     continue;
@@ -1557,7 +1557,7 @@ namespace ENigMA
                 if (sFlipped[anElementId])
                     continue;
 
-                CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
+                CMshElement<Real>& anElement = aMesh.element(anElementId);
 
                 if (anElement.elementType() != ET_TETRAHEDRON)
                     continue;
@@ -1586,14 +1586,14 @@ namespace ENigMA
                 if (aFace.hasPair())
                 {
                     Integer pairFaceId = aFace.pairFaceId();
-                    CMshFace<Real> aPairFace = m_volumeMesh.face(pairFaceId);
+                    CMshFace<Real> aPairFace = aMesh.face(pairFaceId);
 
                     Integer aNeighborId = aPairFace.elementId();
 
                     if (sFlipped[aNeighborId])
                         continue;
 
-                    CMshElement<Real>& aNeighbor = m_volumeMesh.element(aNeighborId);
+                    CMshElement<Real>& aNeighbor = aMesh.element(aNeighborId);
 
                     if (aNeighbor.elementType() != ET_TETRAHEDRON)
                         continue;
@@ -1615,11 +1615,11 @@ namespace ENigMA
                     if (!bNodeId5)
                         continue;
 
-                    CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
-                    CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
-                    CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
-                    CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
-                    CMshNode<Real>& aNode5 = m_volumeMesh.node(aNodeId5);
+                    CMshNode<Real>& aNode1 = aMesh.node(aNodeId1);
+                    CMshNode<Real>& aNode2 = aMesh.node(aNodeId2);
+                    CMshNode<Real>& aNode3 = aMesh.node(aNodeId3);
+                    CMshNode<Real>& aNode4 = aMesh.node(aNodeId4);
+                    CMshNode<Real>& aNode5 = aMesh.node(aNodeId5);
 
                     // Original
                     CMshTetrahedron<Real> aTetrahedron1;
@@ -1674,15 +1674,15 @@ namespace ENigMA
                     if (std::min(q3, std::min(q4, q5)) > std::min(q1, q2) && aTetrahedron3.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron4.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron5.volume() > aTolerance * aTolerance * aTolerance)
                     {
                         // Do flip
-                        m_volumeMesh.element(anElementId).setNodeId(0, aNodeId1);
-                        m_volumeMesh.element(anElementId).setNodeId(1, aNodeId2);
-                        m_volumeMesh.element(anElementId).setNodeId(2, aNodeId5);
-                        m_volumeMesh.element(anElementId).setNodeId(3, aNodeId4);
+                        aMesh.element(anElementId).setNodeId(0, aNodeId1);
+                        aMesh.element(anElementId).setNodeId(1, aNodeId2);
+                        aMesh.element(anElementId).setNodeId(2, aNodeId5);
+                        aMesh.element(anElementId).setNodeId(3, aNodeId4);
 
-                        m_volumeMesh.element(aNeighborId).setNodeId(0, aNodeId2);
-                        m_volumeMesh.element(aNeighborId).setNodeId(1, aNodeId3);
-                        m_volumeMesh.element(aNeighborId).setNodeId(2, aNodeId5);
-                        m_volumeMesh.element(aNeighborId).setNodeId(3, aNodeId4);
+                        aMesh.element(aNeighborId).setNodeId(0, aNodeId2);
+                        aMesh.element(aNeighborId).setNodeId(1, aNodeId3);
+                        aMesh.element(aNeighborId).setNodeId(2, aNodeId5);
+                        aMesh.element(aNeighborId).setNodeId(3, aNodeId4);
 
                         // Create one more and add it
                         CMshElement<Real> aNewElement;
@@ -1694,9 +1694,9 @@ namespace ENigMA
                         aNewElement.addNodeId(aNodeId4);
                         aNewElement.addNodeId(aNodeId5);
 
-                        Integer aNewElementId = m_volumeMesh.nextElementId();
+                        Integer aNewElementId = aMesh.nextElementId();
 
-                        m_volumeMesh.addElement(aNewElementId, aNewElement);
+                        aMesh.addElement(aNewElementId, aNewElement);
 
                         sFlipped[anElementId] = true;
                         sFlipped[aNeighborId] = true;
@@ -1705,27 +1705,27 @@ namespace ENigMA
                 }
             }
 
-            m_volumeMesh.generateFaces(aTolerance);
+            aMesh.generateFaces(aTolerance);
         }
 
         template <typename Real>
-        void CMshTetrahedronMesher<Real>::flipEdges32(const Real aTolerance)
+        void CMshTetrahedronMesher<Real>::flipEdges32(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance)
         {
             std::map<Integer, bool> sFlipped;
             std::map<Integer, bool> bDeleteElement;
 
             std::map<Integer, bool> bBoundaryNode;
 
-            for (Integer i = 0; i < m_volumeMesh.nbNodes(); ++i)
+            for (Integer i = 0; i < aMesh.nbNodes(); ++i)
             {
-                Integer aNodeId = m_volumeMesh.nodeId(i);
+                Integer aNodeId = aMesh.nodeId(i);
                 bBoundaryNode[aNodeId] = false;
             }
 
-            for (Integer i = 0; i < m_volumeMesh.nbFaces(); ++i)
+            for (Integer i = 0; i < aMesh.nbFaces(); ++i)
             {
-                Integer aFaceId = m_volumeMesh.faceId(i);
-                CMshFace<Real>& aFace = m_volumeMesh.face(aFaceId);
+                Integer aFaceId = aMesh.faceId(i);
+                CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
                 if (aFace.hasPair())
                     continue;
@@ -1737,20 +1737,20 @@ namespace ENigMA
                 }
             }
 
-            for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i)
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                Integer anElementId = m_volumeMesh.elementId(i);
+                Integer anElementId = aMesh.elementId(i);
                 sFlipped[anElementId] = false;
 
                 bDeleteElement[anElementId] = false;
             }
 
-            CMshMeshQuery<Real> aMeshQuery(m_volumeMesh);
+            CMshMeshQuery<Real> aMeshQuery(aMesh);
 
-            for (Integer i = 0; i < m_volumeMesh.nbElements(); ++i)
+            for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                Integer anElementId = m_volumeMesh.elementId(i);
-                CMshElement<Real>& anElement = m_volumeMesh.element(anElementId);
+                Integer anElementId = aMesh.elementId(i);
+                CMshElement<Real>& anElement = aMesh.element(anElementId);
 
                 if (anElement.elementType() != ET_TETRAHEDRON)
                     continue;
@@ -1769,7 +1769,7 @@ namespace ENigMA
                         continue;
 
                     Integer aFaceId = anElement.faceId(j);
-                    CMshFace<Real>& aFace = m_volumeMesh.face(aFaceId);
+                    CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
                     if (aFace.faceType() != FT_TRIANGLE)
                         continue;
@@ -1796,7 +1796,7 @@ namespace ENigMA
                             for (Integer l = 0; l < static_cast<Integer>(sElementIds.size()); l++)
                             {
                                 Integer anOtherElementId = sElementIds[l];
-                                CMshElement<Real>& anOtherElement = m_volumeMesh.element(anOtherElementId);
+                                CMshElement<Real>& anOtherElement = aMesh.element(anOtherElementId);
 
                                 if (anOtherElement.elementType() != ET_TETRAHEDRON)
                                     continue;
@@ -1820,11 +1820,11 @@ namespace ENigMA
                             if (!bNodeFound)
                                 continue;
 
-                            CMshNode<Real>& aNode1 = m_volumeMesh.node(aNodeId1);
-                            CMshNode<Real>& aNode2 = m_volumeMesh.node(aNodeId2);
-                            CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
-                            CMshNode<Real>& aNode4 = m_volumeMesh.node(aNodeId4);
-                            CMshNode<Real>& aNode5 = m_volumeMesh.node(aNodeId5);
+                            CMshNode<Real>& aNode1 = aMesh.node(aNodeId1);
+                            CMshNode<Real>& aNode2 = aMesh.node(aNodeId2);
+                            CMshNode<Real>& aNode3 = aMesh.node(aNodeId3);
+                            CMshNode<Real>& aNode4 = aMesh.node(aNodeId4);
+                            CMshNode<Real>& aNode5 = aMesh.node(aNodeId5);
 
                             // Original
                             CMshTetrahedron<Real> aTetrahedron1;
@@ -1882,21 +1882,21 @@ namespace ENigMA
                                 Integer anElementId3 = sElementIds[2];
 
                                 // Do flip
-                                m_volumeMesh.element(anElementId1).setNodeId(0, aNodeId1);
-                                m_volumeMesh.element(anElementId1).setNodeId(1, aNodeId2);
-                                m_volumeMesh.element(anElementId1).setNodeId(2, aNodeId5);
-                                m_volumeMesh.element(anElementId1).setNodeId(3, aNodeId4);
+                                aMesh.element(anElementId1).setNodeId(0, aNodeId1);
+                                aMesh.element(anElementId1).setNodeId(1, aNodeId2);
+                                aMesh.element(anElementId1).setNodeId(2, aNodeId5);
+                                aMesh.element(anElementId1).setNodeId(3, aNodeId4);
 
-                                m_volumeMesh.element(anElementId2).setNodeId(0, aNodeId1);
-                                m_volumeMesh.element(anElementId2).setNodeId(1, aNodeId2);
-                                m_volumeMesh.element(anElementId2).setNodeId(2, aNodeId3);
-                                m_volumeMesh.element(anElementId2).setNodeId(3, aNodeId5);
+                                aMesh.element(anElementId2).setNodeId(0, aNodeId1);
+                                aMesh.element(anElementId2).setNodeId(1, aNodeId2);
+                                aMesh.element(anElementId2).setNodeId(2, aNodeId3);
+                                aMesh.element(anElementId2).setNodeId(3, aNodeId5);
 
                                 // Contract one of them
-                                m_volumeMesh.element(anElementId3).setNodeId(0, aNodeId1);
-                                m_volumeMesh.element(anElementId3).setNodeId(1, aNodeId1);
-                                m_volumeMesh.element(anElementId3).setNodeId(2, aNodeId1);
-                                m_volumeMesh.element(anElementId3).setNodeId(3, aNodeId1);
+                                aMesh.element(anElementId3).setNodeId(0, aNodeId1);
+                                aMesh.element(anElementId3).setNodeId(1, aNodeId1);
+                                aMesh.element(anElementId3).setNodeId(2, aNodeId1);
+                                aMesh.element(anElementId3).setNodeId(3, aNodeId1);
 
                                 sFlipped[anElementId1] = true;
                                 sFlipped[anElementId2] = true;
@@ -1914,10 +1914,10 @@ namespace ENigMA
                 Integer anElementId = itr->first;
 
                 if (itr->second)
-                    m_volumeMesh.removeElement(anElementId);
+                    aMesh.removeElement(anElementId);
             }
 
-            m_volumeMesh.generateFaces(aTolerance);
+            aMesh.generateFaces(aTolerance);
         }
     }
 }

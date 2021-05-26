@@ -33,6 +33,8 @@ namespace ENigMA
             CGeoVolume();
             virtual ~CGeoVolume();
 
+            virtual void reset();
+
             virtual void calculateSurfaceArea(bool bReCalculate = false) = 0;
             virtual void calculateVolume(bool bReCalculate = false) = 0;
             virtual void calculateBoundingBox(bool bReCalculate = false) = 0;

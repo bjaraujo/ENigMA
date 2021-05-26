@@ -29,6 +29,17 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CGeoVolume<Real>::reset()
+        {
+            m_surfaceArea = 0.0;
+            m_volume = 0.0;
+
+            m_bSurfaceArea = false;
+            m_bVolume = false;
+            m_bBoundingBox = false;
+        }
+
+        template <typename Real>
         Real CGeoVolume<Real>::volume() const
         {
             return m_volume;

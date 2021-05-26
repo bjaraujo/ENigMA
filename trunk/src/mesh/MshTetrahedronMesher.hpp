@@ -129,9 +129,9 @@ namespace ENigMA
             void setIntervals(const Integer timeInterval, const Integer dataInterval);
             void stopMeshing();
 
-            void relaxNodes(const Real aFactor, const Real aTolerance = 0.0);
-            void flipEdges23(const Real aTolerance = 0.0);
-            void flipEdges32(const Real aTolerance = 0.0);
+            void relaxNodes(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aFactor, const Real aTolerance = 0.0);
+            void flipEdges23(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
+            void flipEdges32(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real aTolerance = 0.0);
 
             // callback
             std::function<bool(bool)> onUpdate;

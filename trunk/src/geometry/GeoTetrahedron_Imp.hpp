@@ -28,7 +28,8 @@ namespace ENigMA
         template <typename Real>
         void CGeoTetrahedron<Real>::reset()
         {
-            // TODO:
+            CGeoVertexList<Real>::reset();
+            CGeoVolume<Real>::reset();
         }
 
         template <typename Real>
