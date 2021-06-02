@@ -11,61 +11,75 @@
 
 namespace ENigMA
 {
+
     namespace fvm
     {
+
         template <typename Real>
         CFvmMeshSearch<Real>::CFvmMeshSearch()
         {
+
         }
 
         template <typename Real>
         CFvmMeshSearch<Real>::CFvmMeshSearch(CFvmMesh<Real>& aMesh)
         {
+
             this->set(aMesh);
+
         }
 
         template <typename Real>
         CFvmMeshSearch<Real>::~CFvmMeshSearch()
         {
+
         }
 
         template <typename Real>
         void CFvmMeshSearch<Real>::set(CFvmMesh<Real>& aMesh)
         {
+
             m_mesh = &aMesh;
             m_boundaryFaceHashGrid.reset();
+
         }
 
         template <typename Real>
         void CFvmMeshSearch<Real>::build()
         {
+
             for (Integer i = 0; i < m_mesh->nbFaces(); ++i)
             {
+
                 m_mesh->face(m_mesh->faceId(i)).calculateCentroid();
 
                 if (!m_mesh->face(m_mesh->faceId(i)).hasPair())
                     m_boundaryFaceHashGrid.addGeometricObject(m_mesh->faceId(i), m_mesh->face(m_mesh->faceId(i)).centroid());
+
             }
 
             m_boundaryFaceHashGrid.build();
+
         }
 
         template <typename Real>
-        void CFvmMeshSearch<Real>::findClosestBoundaryFace(const CGeoCoordinate<Real>& aCoordinate, Integer& aFaceId, const Real aTolerance)
+        void CFvmMeshSearch<Real>::findClosestBoundaryFaces(CGeoCoordinate<Real>& aCoordinate, std::vector<Integer>& sFaceIds, const Real aRadius)
         {
+
             Integer wFaceId = 0;
 
             std::vector<Integer> sCoordinates;
-
-            m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aTolerance);
+            m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aRadius * 2.0);
 
             if (sCoordinates.size() > 0)
             {
+
                 Real minDist = std::numeric_limits<Real>::max();
 
-                for (Integer i = 0; i < static_cast<Integer>(sCoordinates.size()); ++i)
+                for (Integer i = 0; i < static_cast<Integer> (sCoordinates.size()); ++i)
                 {
-                    aFaceId = sCoordinates[i];
+
+                    Integer aFaceId = sCoordinates[i];
 
                     m_mesh->face(aFaceId).calculateCentroid();
 
@@ -73,15 +87,18 @@ namespace ENigMA
 
                     Real thisDist = d.norm();
 
-                    if (thisDist < minDist)
+                    if (thisDist < aRadius)
                     {
-                        wFaceId = aFaceId;
-                        minDist = thisDist;
+                        sFaceIds.push_back(aFaceId);
                     }
                 }
+
             }
 
-            aFaceId = wFaceId;
         }
+
     }
+
 }
+
+

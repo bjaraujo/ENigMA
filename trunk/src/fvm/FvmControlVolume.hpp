@@ -9,18 +9,21 @@
 
 #pragma once
 
+#include "GeoPolyhedron.hpp"
 #include "FvmCell.hpp"
 #include "FvmFace.hpp"
-#include "GeoPolyhedron.hpp"
 
 namespace ENigMA
 {
+
     namespace fvm
     {
+
         template <typename Real>
         class CFvmControlVolume : public CFvmCell<Real>, public ENigMA::geometry::CGeoVolume<Real>
         {
         private:
+
             bool m_clipped;
 
             Integer m_clippedFaceId;
@@ -35,8 +38,8 @@ namespace ENigMA
 
         public:
             CFvmControlVolume();
-            explicit CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
-            virtual ~CFvmControlVolume();
+            CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
+            ~CFvmControlVolume();
 
             void setControlVolumeId(const Integer aControlVolumeId);
             Integer controlVolumeId();
@@ -47,12 +50,13 @@ namespace ENigMA
 
             bool containsFace(const Integer aFaceId);
 
+            void calculateFaceNormal(const Integer aFaceId, bool bRecalculate = false);
             void calculateFaceArea(const Integer aFaceId, bool bRecalculate = false);
             void calculateFaceCentroid(const Integer aFaceId, bool bRecalculate = false);
 
             Real faceArea(const Integer aFaceId);
             ENigMA::geometry::CGeoNormal<Real>& faceNormal(const Integer aFaceId);
-            Real faceDist(const Integer aFaceId);
+            CGeoVector<Real> faceDist(const Integer aFaceId);
 
             void reset();
 
@@ -60,7 +64,7 @@ namespace ENigMA
             void setClippedFaceId(Integer aFaceId);
             Integer clippedFaceId();
             CFvmFace<Real>& clippedFace();
-            inline void clip(ENigMA::geometry::CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
+            inline void clip(ENigMA::geometry::CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
 
             void calculateOriginalVolume(bool bReCalculate = false);
             Real originalVolume();
@@ -73,8 +77,11 @@ namespace ENigMA
 
             bool isClipped();
             void setClipped(bool clipped);
+
         };
+
     }
+
 }
 
 #include "FvmControlVolume_Imp.hpp"
