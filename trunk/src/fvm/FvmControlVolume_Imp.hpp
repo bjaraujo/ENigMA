@@ -18,16 +18,17 @@ namespace ENigMA
     {
 
         template <typename Real>
-        CFvmControlVolume<Real>::CFvmControlVolume() : m_clipped(false), m_controlVolumeId(0)
+        CFvmControlVolume<Real>::CFvmControlVolume()
+            : m_clipped(false)
+            , m_clippedFaceId(-1)
+            , m_controlVolumeId(0)
+            , m_originalVolume(0.0)
         {
-
-            m_clippedFaceId = -1;
 
         }
 
         template <typename Real>
-        CFvmControlVolume<Real>::CFvmControlVolume(CGeoPolyhedron<Real>& aPolyhedron) : 
-            m_clipped(false), m_controlVolumeId(0), m_clippedFaceId(0)
+        CFvmControlVolume<Real>::CFvmControlVolume(CGeoPolyhedron<Real>& aPolyhedron) : CFvmControlVolume() 
         {
 
         }
@@ -174,9 +175,9 @@ namespace ENigMA
             const Integer aPolygonId = aFaceId;
 
             if (m_clipped)
-                return CGeoVector<Real>(m_clippedPolyhedron.polygon(aPolygonId).centroid() - CGeoVolume<Real>::centroid());
+                return CGeoVector<Real>(m_clippedPolyhedron.polygon(aPolygonId).centroid() - this->m_centroid);
             else
-                return CGeoVector<Real>(m_polyhedron.polygon(aPolygonId).centroid() - CGeoVolume<Real>::centroid());
+                return CGeoVector<Real>(m_polyhedron.polygon(aPolygonId).centroid() - this->m_centroid);
         }
 
         template <typename Real>
@@ -204,7 +205,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFvmControlVolume<Real>::clip(CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+        void CFvmControlVolume<Real>::clip(CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
         {
 
             CGeoPolygon<Real> aPolygon;
@@ -251,12 +252,12 @@ namespace ENigMA
                 if (m_clipped)
                 {
                     m_clippedPolyhedron.calculateCentroid();
-                    CGeoVolume<Real>::centroid() = m_clippedPolyhedron.centroid();
+                    this->m_centroid = m_clippedPolyhedron.centroid();
                 }
                 else
                 {
                     m_polyhedron.calculateCentroid();
-                    CGeoVolume<Real>::centroid() = m_polyhedron.centroid();
+                    this->m_centroid = m_polyhedron.centroid();
                 }
 
                 this->m_bCentroid = true;

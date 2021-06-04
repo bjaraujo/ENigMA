@@ -38,8 +38,8 @@ namespace ENigMA
 
         public:
             CFvmControlVolume();
-            CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
-            ~CFvmControlVolume();
+            explicit CFvmControlVolume(ENigMA::geometry::CGeoPolyhedron<Real>& aPolyhedron);
+            virtual ~CFvmControlVolume();
 
             void setControlVolumeId(const Integer aControlVolumeId);
             Integer controlVolumeId();
@@ -64,7 +64,7 @@ namespace ENigMA
             void setClippedFaceId(Integer aFaceId);
             Integer clippedFaceId();
             CFvmFace<Real>& clippedFace();
-            inline void clip(ENigMA::geometry::CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
+            inline void clip(ENigMA::geometry::CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
 
             void calculateOriginalVolume(bool bReCalculate = false);
             Real originalVolume();
