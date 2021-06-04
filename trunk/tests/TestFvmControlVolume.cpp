@@ -312,9 +312,9 @@ TEST_F(CTestFvmControlVolume, clip2) {
         // Distance
         aControlVolume.calculateFaceCentroid(aFaceId);
 
-        EXPECT_NEAR(0.5, aControlVolume.faceDist(aFaceId), 1E-3);
+        EXPECT_NEAR(0.5, aControlVolume.faceDist(aFaceId).norm(), 1E-3);
 
-        sumDistance1 += aControlVolume.faceDist(aFaceId);
+        sumDistance1 += aControlVolume.faceDist(aFaceId).norm();
 
     }
 
@@ -360,7 +360,7 @@ TEST_F(CTestFvmControlVolume, clip2) {
 
         aControlVolume.calculateFaceCentroid(aFaceId);
 
-        sumDistance2 += aControlVolume.faceDist(aFaceId);
+        sumDistance2 += aControlVolume.faceDist(aFaceId).norm();
 
     }
 
