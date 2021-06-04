@@ -240,7 +240,7 @@ namespace ENigMA
                     CGeoNormal<Real>& aNormal = m_fvmMesh.controlVolume(aControlVolumeId).faceNormal(aFaceId);
 
                     Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
-                    Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId);
+                    Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId).norm();
 
                     Real flux;
 
@@ -261,7 +261,7 @@ namespace ENigMA
 
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
-                            dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
+                            dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
                             dens += m_dens.at(aNeighborId);
                             dens *= 0.5;
@@ -387,7 +387,7 @@ namespace ENigMA
                     CGeoNormal<Real>& aNormal = m_fvmMesh.controlVolume(aControlVolumeId).faceNormal(aFaceId);
 
                     Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
-                    Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId);
+                    Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId).norm();
 
                     Real apj = m_ap.at(aControlVolumeId);
 
@@ -407,7 +407,7 @@ namespace ENigMA
 
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
-                            dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
+                            dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
                             apj += m_ap.at(aNeighborId);
                             apj *= 0.5;
@@ -517,7 +517,7 @@ namespace ENigMA
                     Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                     Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
-                    Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId);
+                    Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId).norm();
 
                     Real apj = m_ap.at(aControlVolumeId);
 
@@ -531,7 +531,7 @@ namespace ENigMA
 
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
-                            dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
+                            dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
                             apj += m_ap.at(aNeighborId);
                             apj *= 0.5;
