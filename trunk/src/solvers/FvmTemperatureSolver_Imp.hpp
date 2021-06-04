@@ -106,7 +106,7 @@ namespace ENigMA
                     Integer aFaceId = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                     Real area = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
-                    Real dist = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId);
+                    Real dist = CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId).norm();
 
                     Real flux;
 
@@ -125,7 +125,7 @@ namespace ENigMA
                         {
                             area += CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
-                            dist += CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId);
+                            dist += CFvmPisoSolver<Real>::m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
                             dens += CFvmPisoSolver<Real>::m_dens[aNeighborId];
                             dens *= 0.5;
