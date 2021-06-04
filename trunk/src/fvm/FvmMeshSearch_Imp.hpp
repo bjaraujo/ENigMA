@@ -64,13 +64,13 @@ namespace ENigMA
             std::vector<Integer> sCoordinates;
             m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aDistance * 2.0);
 
+            sFaceIds.clear();
             if (sCoordinates.size() > 0)
             {
                 Real minDist = std::numeric_limits<Real>::max();
 
                 for (Integer i = 0; i < static_cast<Integer> (sCoordinates.size()); ++i)
                 {
-
                     Integer aFaceId = sCoordinates[i];
 
                     m_mesh->face(aFaceId).calculateCentroid();
