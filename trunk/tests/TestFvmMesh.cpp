@@ -162,17 +162,17 @@ TEST_F(CTestFvmMesh, clip1) {
 
     EXPECT_EQ(6, aControlVolume.nbFaces());
 
-    Integer aFaceId;
-
     CFvmMeshSearch<decimal> aFvmMeshSearch(aFvmMesh);
 
     aFvmMeshSearch.build();
 
     CGeoCoordinate<decimal> aCoordinate(0.5, 0.75, 1.0);
 
-    aFvmMeshSearch.findClosestBoundaryFace(aCoordinate, aFaceId, 1E-2);
+    std::vector<Integer> sFaceIds;
 
-    EXPECT_EQ(46, aFaceId);
+    aFvmMeshSearch.findClosestBoundaryFaces(aCoordinate, 1E-2, sFaceIds);
+
+    EXPECT_EQ(46, sFaceIds.at(0));
 
     // Current CV
     aControlId = 5;
