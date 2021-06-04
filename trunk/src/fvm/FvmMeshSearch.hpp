@@ -37,7 +37,7 @@ namespace ENigMA
 
             void build();
 
-            void findClosestBoundaryFaces(CGeoCoordinate<Real>& aCoordinate, std::vector<Integer>& sFaceIds, const Real aRadius);
+            void findClosestBoundaryFaces(CGeoCoordinate<Real>& aCoordinate, const Real aDistance, std::vector<Integer>& sFaceIds);
         };
     }
 }

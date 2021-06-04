@@ -38,42 +38,34 @@ namespace ENigMA
         template <typename Real>
         void CFvmMeshSearch<Real>::set(CFvmMesh<Real>& aMesh)
         {
-
             m_mesh = &aMesh;
             m_boundaryFaceHashGrid.reset();
-
         }
 
         template <typename Real>
         void CFvmMeshSearch<Real>::build()
         {
-
             for (Integer i = 0; i < m_mesh->nbFaces(); ++i)
             {
-
                 m_mesh->face(m_mesh->faceId(i)).calculateCentroid();
 
                 if (!m_mesh->face(m_mesh->faceId(i)).hasPair())
                     m_boundaryFaceHashGrid.addGeometricObject(m_mesh->faceId(i), m_mesh->face(m_mesh->faceId(i)).centroid());
-
             }
 
             m_boundaryFaceHashGrid.build();
-
         }
 
         template <typename Real>
-        void CFvmMeshSearch<Real>::findClosestBoundaryFaces(CGeoCoordinate<Real>& aCoordinate, std::vector<Integer>& sFaceIds, const Real aRadius)
+        void CFvmMeshSearch<Real>::findClosestBoundaryFaces(CGeoCoordinate<Real>& aCoordinate, const Real aDistance, std::vector<Integer>& sFaceIds)
         {
-
             Integer wFaceId = 0;
 
             std::vector<Integer> sCoordinates;
-            m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aRadius * 2.0);
+            m_boundaryFaceHashGrid.find(sCoordinates, aCoordinate, aDistance * 2.0);
 
             if (sCoordinates.size() > 0)
             {
-
                 Real minDist = std::numeric_limits<Real>::max();
 
                 for (Integer i = 0; i < static_cast<Integer> (sCoordinates.size()); ++i)
@@ -87,18 +79,14 @@ namespace ENigMA
 
                     Real thisDist = d.norm();
 
-                    if (thisDist < aRadius)
+                    if (thisDist < aDistance)
                     {
                         sFaceIds.push_back(aFaceId);
                     }
                 }
-
             }
-
         }
-
     }
-
 }
 
 
