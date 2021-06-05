@@ -130,11 +130,18 @@ namespace ENigMA
         template <typename Real>
         void CFvmMesh<Real>::reset()
         {
-            m_faceIds.clear();
             m_faces.clear();
+            m_faceIds.clear();
+            m_faceIndices.clear();
 
-            m_controlVolumeIds.clear();
             m_controlVolumes.clear();
+            m_controlVolumeIds.clear();
+            m_controlVolumeIndices.clear();
+            
+            m_faceIndex = 0;
+            m_controlVolumeIndex = 0;
+
+            m_mesh.reset();
         }
 
         template <typename Real>
