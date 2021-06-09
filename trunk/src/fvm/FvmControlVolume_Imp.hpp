@@ -205,13 +205,13 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFvmControlVolume<Real>::clip(CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+        void CFvmControlVolume<Real>::clip(const CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations,  const Real aVolumeFractionTolerance, const Real aTolerance)
         {
 
             CGeoPolygon<Real> aPolygon;
             Real d;
 
-            m_clippedPolyhedron = m_polyhedron.clip(aPolygon, m_clippedFaceId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aTolerance);
+            m_clippedPolyhedron = m_polyhedron.clip(aPolygon, m_clippedFaceId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aVolumeFractionTolerance, aTolerance);
 
             m_clippedFace.set(aPolygon);
             m_clipped = true;

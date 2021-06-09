@@ -225,7 +225,7 @@ TEST_F(CTestFvmMesh, clip1) {
     Integer aNewFaceId = aFvmMesh.nextFaceId();
 
     aControlVolume.setClippedFaceId(aNewFaceId);
-    aControlVolume.clip(aNormal, 0.5, volumeFactionAct, nIterations, 50, 1E-3);
+    aControlVolume.clip(aNormal, 0.5, volumeFactionAct, nIterations, 50, 1E-3, 1E-3);
 
     // Add new face to mesh
     aNewFace.setControlVolumeId(aControlId);
@@ -323,7 +323,7 @@ TEST_F(CTestFvmMesh, clip2) {
     Integer aNewFaceId = aFvmMesh.nextFaceId();
 
     aControlVolume.setClippedFaceId(aNewFaceId);
-    aControlVolume.clip(aNormal, 1E-7, volumeFactionAct, nIterations, 50, 1E-12);
+    aControlVolume.clip(aNormal, 1E-7, volumeFactionAct, nIterations, 50, 1E-12, 1E-12);
 
     EXPECT_NEAR(1E-7, volumeFactionAct, 1E-5);
 

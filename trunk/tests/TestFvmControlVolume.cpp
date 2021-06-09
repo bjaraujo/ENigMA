@@ -197,14 +197,14 @@ TEST_F(CTestFvmControlVolume, clip1) {
     Integer nIterations;
 
     aControlVolume.setClippedFaceId(999);
-    aControlVolume.clip(aNormal, 0.4, volumeFractionAct, nIterations, 50, 1E-6);
+    aControlVolume.clip(aNormal, 0.4, volumeFractionAct, nIterations, 50, 1E-6, 1E-6);
 
     aControlVolume.calculateVolume(true);
 
     EXPECT_NEAR(0.4, aControlVolume.volume(), 1E-3);
 
     aControlVolume.setClippedFaceId(999);
-    aControlVolume.clip(aNormal, 0.8, volumeFractionAct, nIterations, 50, 1E-6);
+    aControlVolume.clip(aNormal, 0.8, volumeFractionAct, nIterations, 50, 1E-6, 1E-6);
 
     aControlVolume.calculateVolume(true);
 
@@ -327,7 +327,7 @@ TEST_F(CTestFvmControlVolume, clip2) {
     Integer nIterations;
 
     aControlVolume.setClippedFaceId(999);
-    aControlVolume.clip(aNormal, 0.5, volumeFractionAct, nIterations, 50, 1E-6);
+    aControlVolume.clip(aNormal, 0.5, volumeFractionAct, nIterations, 50, 1E-6, 1E-6);
 
     aControlVolume.calculateCentroid(true);
 
@@ -454,7 +454,7 @@ TEST_F(CTestFvmControlVolume, clip3) {
     Integer nIterations;
 
     aControlVolume.setClippedFaceId(999);
-    aControlVolume.clip(aNormal, 1E-9, volumeFractionAct, nIterations, 50, 1E-12);
+    aControlVolume.clip(aNormal, 1E-9, volumeFractionAct, nIterations, 50, 1E-12, 1E-12);
 
     EXPECT_NEAR(1E-9, volumeFractionAct, 1E-10);
 

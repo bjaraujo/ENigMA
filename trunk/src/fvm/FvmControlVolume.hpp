@@ -64,7 +64,7 @@ namespace ENigMA
             void setClippedFaceId(Integer aFaceId);
             Integer clippedFaceId();
             CFvmFace<Real>& clippedFace();
-            inline void clip(ENigMA::geometry::CGeoNormal<Real> aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance);
+            void clip(const ENigMA::geometry::CGeoNormal<Real>& aNormal, const Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aVolumeFractionTolerance, const Real aTolerance);
 
             void calculateOriginalVolume(bool bReCalculate = false);
             Real originalVolume();

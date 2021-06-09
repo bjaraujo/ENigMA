@@ -393,7 +393,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, const CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
         {
             CGeoPolyhedron<Real> aPolyhedron;
 
@@ -444,7 +444,7 @@ namespace ENigMA
                 }
             }
 
-            // Solve using brent's method
+            // Solve using Brent's method
 
             Real e = a;
             Real f = std::numeric_limits<Real>::max();
@@ -453,9 +453,13 @@ namespace ENigMA
             Real fb = 1.0 - volumeFractionReq;
 
             Real fc = fa;
+
             Real s = 0.0;
+            Real fs = 0.0;
 
             Real vs = 0.0;
+
+            Real tmp;
 
             bool mflag = true;
 
@@ -463,43 +467,41 @@ namespace ENigMA
 
             for (Integer i = 0; i < nMaxIterations; ++i)
             {
-                if ((fb == 0) || (fabs(fa - fb) <= aTolerance))
+                if ((fb == 0.0) || (fabs(fa - fb) <= aTolerance))
                 {
                     nIterations = i + 1;
                     break;
                 }
 
-                if (abs(fa - fc) > 1E-12 && abs(fb - fc) > 1E-12)
+                if ((fa != fc) && (fb != fc))
                     // Inverse quadratic interpolation
                     s = a * fb * fc / (fa - fb) / (fa - fc) + b * fa * fc / (fb - fa) / (fb - fc) + e * fa * fb / (fc - fa) / (fc - fb);
                 else
                     // Secant Rule
                     s = b - fb * (b - a) / (fb - fa);
 
-                Real tmp2 = (3 * a + b) / 4;
+                tmp = (3.0 * a + b) / 4.0;
 
-                if ((!(((s > tmp2) && (s < b)) || ((s < tmp2) && (s > b)))) || (mflag && (fabs(s - b) >= (fabs(b - e) / 2))) || (!mflag && (fabs(s - b) >= (fabs(e - f) / 2))))
+                if ((!(((s > tmp) && (s < b)) ||
+                       ((s < tmp) && (s > b)))) ||
+                        (mflag && (fabs(s - b) >= (fabs(b - e) * 0.5))) ||
+                        (!mflag && (fabs(s - b) >= (fabs(e - f) * 0.5))) ||
+                        (mflag && (fabs(b - e) < aTolerance)) ||
+                        (!mflag && (fabs(e - f) < aTolerance)))
                 {
                     s = (a + b) * 0.5;
                     mflag = true;
                 }
                 else
                 {
-                    if ((mflag && (fabs(b - e) < aTolerance)) || (!mflag && (fabs(e - f) < aTolerance)))
-                    {
-                        s = (a + b) * 0.5;
-                        mflag = true;
-                    }
-                    else
-                        mflag = false;
+                    mflag = false;
                 }
 
                 aPlane.setD(s);
                 aPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
-
                 aPolyhedron.calculateVolume(true);
-                vs = aPolyhedron.volume();
-                Real fs = vs / vt - volumeFractionReq;
+                vs = aPolyhedron.volume();                
+                fs = vs / vt - volumeFractionReq;
 
                 f = e;
                 e = b;
@@ -519,9 +521,10 @@ namespace ENigMA
                 // if |f(a)| < |f(b)| then swap (a,b) end if
                 if (fabs(fa) < fabs(fb))
                 {
-                    Real tmp = a;
+                    tmp = a;
                     a = b;
                     b = tmp;
+
                     tmp = fa;
                     fa = fb;
                     fb = tmp;
@@ -547,11 +550,11 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aTolerance)
+        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
         {
             CGeoNormal<Real> aNormalInv = -aNormal;
-            aNewPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aNormalInv, d, 1.0 - volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aTolerance);
-            return this->clip(aNewPolygon, aNewPolygonId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aTolerance);
+            aNewPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aNormalInv, d, 1.0 - volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aNormalizedTolerance, aTolerance);
+            return this->clip(aNewPolygon, aNewPolygonId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aNormalizedTolerance, aTolerance);
         }
 
         template <typename Real>
