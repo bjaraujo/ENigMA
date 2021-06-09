@@ -738,12 +738,13 @@ namespace ENigMA
         template <typename Real>
         bool CStlUtils<Real>::getFacetQuality(ENigMA::stl::CStlFacet<Real>& aFacet, Integer& smallEdge, Integer& bigEdge, Real& dmin, Real& dmax, Real& q)
         {
-            Real d0, d1, d2;
-            Real p, e;
+            CGeoVector<Real> v0 = aFacet.vertex(1) - aFacet.vertex(0);
+            CGeoVector<Real> v1 = aFacet.vertex(2) - aFacet.vertex(1);
+            CGeoVector<Real> v2 = aFacet.vertex(0) - aFacet.vertex(2);
 
-            d0 = (aFacet.vertex(0) - aFacet.vertex(1)).norm();
-            d1 = (aFacet.vertex(1) - aFacet.vertex(2)).norm();
-            d2 = (aFacet.vertex(2) - aFacet.vertex(0)).norm();
+            Real d0 = v0.norm();
+            Real d1 = v1.norm();
+            Real d2 = v2.norm();
 
             dmin = d0;
             dmax = d0;
@@ -776,19 +777,16 @@ namespace ENigMA
                 smallEdge = 2;
             }
 
-            p = (d0 + d1 + d2) * 0.5;
+            Real a = v0.angle(-v2);
+            Real b = v1.angle(-v0);
+            Real c = v2.angle(-v1);
 
-            if (p > std::numeric_limits<Real>::epsilon())
-            {
-                e = (p - d0) * (p - d1) * (p - d2) / p;
+            Real d = sin(a) + sin(b) + sin(c);
 
-                if (dmax > std::numeric_limits<Real>::epsilon() && e > 0)
-                    q = sqrt(12.0) * sqrt(e) / dmax;
-                else
-                    q = 0;
-            }
+            if (d > std::numeric_limits<Real>::epsilon())
+                q = 4.0 * sin(a) * sin(b) * sin(c) / d;
             else
-                q = 0;
+                q = 0.0;
 
             return true;
         }

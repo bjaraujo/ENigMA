@@ -423,14 +423,16 @@ namespace ENigMA
             this->calculateVolume();
             Real vt = CGeoVolume<Real>::volume();
 
-            Real a = +std::numeric_limits<Real>::max();
-            Real b = -std::numeric_limits<Real>::max();
+            Real a = std::numeric_limits<Real>::max();
+            Real b = std::numeric_limits<Real>::lowest();
 
+            CGeoPolyline<Real> aPolyline;
             for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
             {
-                for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j)
+                aPolyline = m_polygons[m_polygonIds[i]].polyline();
+                for (Integer j = 0; j < aPolyline.nbVertices(); ++j)
                 {
-                    d = m_polygons[m_polygonIds[i]].polyline().vertex(j).dot(aNormal);
+                    d = aPolyline.vertex(j).dot(aNormal);
 
                     a = std::min(a, d);
                     b = std::max(b, d);
@@ -462,7 +464,7 @@ namespace ENigMA
                     break;
                 }
 
-                if ((fa != fc) && (fb != fc))
+                if (abs(fa - fc) > 1E-12 && abs(fb - fc) > 1E-12)
                     // Inverse quadratic interpolation
                     s = a * fb * fc / (fa - fb) / (fa - fc) + b * fa * fc / (fb - fa) / (fb - fc) + e * fa * fb / (fc - fa) / (fc - fb);
                 else
@@ -480,7 +482,7 @@ namespace ENigMA
                 {
                     if ((mflag && (fabs(b - e) < aTolerance)) || (!mflag && (fabs(e - f) < aTolerance)))
                     {
-                        s = (a + b) / 2;
+                        s = (a + b) * 0.5;
                         mflag = true;
                     }
                     else
