@@ -331,16 +331,21 @@ namespace ENigMA
 
                 if (m_polygons.size() >= 4)
                 {
-                    if (m_polygons[m_polygonIds[0]].polyline().nbVertices() > 0)
+                    CGeoPolyline<Real> aPolyline0 = m_polygons[m_polygonIds[0]].polyline();
+
+                    if (aPolyline0.nbVertices() > 0)
                     {
-                        CGeoCoordinate<Real> v0 = m_polygons[m_polygonIds[0]].polyline().vertex(0);
+                        CGeoCoordinate<Real> v0 = aPolyline0.vertex(0);
+
+                        CGeoPolygon<Real> aPolygon;
 
                         for (Integer i = 1; i < static_cast<Integer>(m_polygonIds.size()); ++i)
                         {
-                            m_polygons[m_polygonIds[i]].calculateArea();
+                            aPolygon = m_polygons[m_polygonIds[i]];
+                            aPolygon.calculateArea();
 
-                            if (m_polygons[m_polygonIds[i]].polyline().nbVertices() > 0)
-                                this->m_volume += (m_polygons[m_polygonIds[i]].polyline().vertex(0) - v0).dot(m_polygons[m_polygonIds[i]].normal()) * m_polygons[m_polygonIds[i]].area();
+                            if (aPolygon.polyline().nbVertices() > 0)
+                                this->m_volume += (aPolygon.polyline().vertex(0) - v0).dot(aPolygon.normal()) * aPolygon.area();
                         }
                     }
                 }
