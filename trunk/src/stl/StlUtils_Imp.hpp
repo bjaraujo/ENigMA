@@ -1366,14 +1366,14 @@ namespace ENigMA
 
                 for (Integer k = 0; k < static_cast<Integer>(aFacet_f.size()); ++k)
                 {
-                    aFacet_f[k].vertex((whichVertex[k] + 1) % 3) = aNewVertex;
+                    aFacet_f[k].setVertex((whichVertex[k] + 1) % 3, aNewVertex);
 
-                    aFacet_f[k].calculateArea();
+                    aFacet_f[k].calculateArea(true);
 
                     if (aFacet_f[k].area() > 0.0)
                     {
-                        aFacet_f[k].calculateNormal();
-                        aFacet_i[k].calculateNormal();
+                        aFacet_f[k].calculateNormal(true);
+                        aFacet_i[k].calculateNormal(true);
 
                         Real cang = aFacet_f[k].normal().angle(aFacet_i[k].normal());
 
