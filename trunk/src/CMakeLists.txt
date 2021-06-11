@@ -214,8 +214,6 @@ sph/SphSpiky.hpp
 sph/SphSpiky_Imp.hpp
 sph/SphConvex.hpp
 sph/SphConvex_Imp.hpp
-sph/SphParticles.hpp
-sph/SphParticles_Imp.hpp
 )
 
 set(SLE_HEADERS
@@ -333,6 +331,8 @@ solvers/FvmTemperatureSolver.hpp
 solvers/FvmTemperatureSolver_Imp.hpp
 solvers/LbmLidDrivenSolver.hpp
 solvers/LbmLidDrivenSolver_Imp.hpp
+solvers/SphParticles.hpp
+solvers/SphParticles_Imp.hpp
 )
 
 source_group("Header Files\\geometry" FILES ${GEOMETRY_HEADERS})

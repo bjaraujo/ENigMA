@@ -886,16 +886,16 @@ namespace ENigMA
             for (Integer i = 0; i < nbElements(); ++i)
             {
                 Integer anElementId = elementId(i);
-                CMshElement<double>& anElement = element(anElementId);
+                CMshElement<Real>& anElement = m_elements.at(anElementId);
 
                 if (anElement.elementType() == ET_TRIANGLE)
                 {
-                    CMshTriangle<double> aTriangle;
+                    CMshTriangle<Real> aTriangle;
 
                     for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
                     {
                         Integer aNodeId = anElement.nodeId(j);
-                        CMshNode<double>& aNode = node(aNodeId);
+                        CMshNode<Real>& aNode = m_nodes.at(aNodeId);
 
                         aTriangle.addVertex(aNode);
                     }
@@ -913,12 +913,12 @@ namespace ENigMA
                 }
                 else if (anElement.elementType() == ET_TETRAHEDRON)
                 {
-                    CMshTetrahedron<double> aTetrahedron;
+                    CMshTetrahedron<Real> aTetrahedron;
 
                     for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
                     {
                         Integer aNodeId = anElement.nodeId(j);
-                        CMshNode<double>& aNode = node(aNodeId);
+                        CMshNode<Real>& aNode = m_nodes.at(aNodeId);
 
                         aTetrahedron.addVertex(aNode);
                     }
