@@ -516,7 +516,7 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface5.msh", "tris");
 
-    EXPECT_EQ(204, aSurfaceMesh.nbElements());
+    EXPECT_EQ(202, aSurfaceMesh.nbElements());
 
 }
 
@@ -655,7 +655,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface6.msh", "tris");
 
-    EXPECT_NEAR(209, aSurfaceMesh.nbElements(), 1);
+    EXPECT_NEAR(206, aSurfaceMesh.nbElements(), 1);
 
 }
 
