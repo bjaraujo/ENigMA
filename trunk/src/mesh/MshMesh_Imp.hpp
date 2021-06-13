@@ -11,8 +11,9 @@
 
 #include "GeoHashGrid.hpp"
 
-#include "MshTetrahedron.hpp"
 #include "MshTriangle.hpp"
+#include "MshQuadrilateral.hpp"
+#include "MshTetrahedron.hpp"
 
 namespace ENigMA
 {
@@ -873,6 +874,65 @@ namespace ENigMA
         }
 
         template <typename Real>
+        Real CMshMesh<Real>::quality(Integer anElementId)
+        {
+            Real q = 0.0;
+
+            CMshElement<Real>& anElement = m_elements.at(anElementId);
+
+            if (anElement.elementType() == ET_TRIANGLE)
+            {
+                CMshTriangle<Real> aTriangle;
+
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                {
+                    Integer aNodeId = anElement.nodeId(j);
+                    CMshNode<Real>& aNode = m_nodes.at(aNodeId);
+
+                    aTriangle.addVertex(aNode);
+                }
+
+                aTriangle.calculateQuality();
+
+                q = aTriangle.quality();
+            }
+            else if (anElement.elementType() == ET_QUADRILATERAL)
+            {
+                CMshQuadrilateral<Real> aQuadrilateral;
+
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                {
+                    Integer aNodeId = anElement.nodeId(j);
+                    CMshNode<Real>& aNode = m_nodes.at(aNodeId);
+
+                    aQuadrilateral.addVertex(aNode);
+                }
+
+                aQuadrilateral.calculateQuality();
+
+                q = aQuadrilateral.quality();
+            }
+            else if (anElement.elementType() == ET_TETRAHEDRON)
+            {
+                CMshTetrahedron<Real> aTetrahedron;
+
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                {
+                    Integer aNodeId = anElement.nodeId(j);
+                    CMshNode<Real>& aNode = m_nodes.at(aNodeId);
+
+                    aTetrahedron.addVertex(aNode);
+                }
+
+                aTetrahedron.calculateQuality();
+
+                q = aTetrahedron.quality();
+            }
+
+            return q;
+        }
+
+        template <typename Real>
         void CMshMesh<Real>::meshQuality(Real& aMinQ, Real& aMaxQ, Real& aAveQ)
         {
             aMinQ = 1.0;
@@ -886,54 +946,15 @@ namespace ENigMA
             for (Integer i = 0; i < nbElements(); ++i)
             {
                 Integer anElementId = elementId(i);
-                CMshElement<Real>& anElement = m_elements.at(anElementId);
 
-                if (anElement.elementType() == ET_TRIANGLE)
-                {
-                    CMshTriangle<Real> aTriangle;
+                q = this->quality(anElementId);
 
-                    for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                    {
-                        Integer aNodeId = anElement.nodeId(j);
-                        CMshNode<Real>& aNode = m_nodes.at(aNodeId);
+                aSumQ += q;
 
-                        aTriangle.addVertex(aNode);
-                    }
+                aMinQ = std::min(q, aMinQ);
+                aMaxQ = std::max(q, aMaxQ);
 
-                    aTriangle.calculateQuality();
-
-                    Real q = aTriangle.quality();
-
-                    aSumQ += q;
-
-                    aMinQ = std::min(q, aMinQ);
-                    aMaxQ = std::max(q, aMaxQ);
-
-                    n++;
-                }
-                else if (anElement.elementType() == ET_TETRAHEDRON)
-                {
-                    CMshTetrahedron<Real> aTetrahedron;
-
-                    for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                    {
-                        Integer aNodeId = anElement.nodeId(j);
-                        CMshNode<Real>& aNode = m_nodes.at(aNodeId);
-
-                        aTetrahedron.addVertex(aNode);
-                    }
-
-                    aTetrahedron.calculateQuality();
-
-                    Real q = aTetrahedron.quality();
-
-                    aSumQ += q;
-
-                    aMinQ = std::min(q, aMinQ);
-                    aMaxQ = std::max(q, aMaxQ);
-
-                    n++;
-                }
+                n++;
             }
 
             if (n > 0)

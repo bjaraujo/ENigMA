@@ -681,7 +681,7 @@ namespace ENigMA
             this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, true, false, aTolerance);
             this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.01, true, false, aTolerance);
 
-            for (Integer i = 0; i < 30; ++i)
+            for (Integer i = 0; i < 12; ++i)
             {
                 if (this->frontSize() == 0)
                     break;
