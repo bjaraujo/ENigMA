@@ -210,9 +210,9 @@ namespace ENigMA
             // Discover lines
             CGeoLineList<Real> aLineList;
 
-            for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+            for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
             {
-                CGeoPolyline<Real> aPolyline = m_polygons[m_polygonIds[i]].polyline();
+                CGeoPolyline<Real> aPolyline = it->second.polyline();
 
                 for (Integer j = 0; j < aPolyline.nbLines(); ++j)
                 {
@@ -289,10 +289,10 @@ namespace ENigMA
             {
                 this->m_centroid << 0.0, 0.0, 0.0;
 
-                for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+                for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
                 {
-                    m_polygons[m_polygonIds[i]].calculateCentroid();
-                    this->m_centroid += m_polygons[m_polygonIds[i]].centroid();
+                    it->second.calculateCentroid();
+                    this->m_centroid += it->second.centroid();
                 }
 
                 if (m_polygons.size() > 0)
@@ -309,10 +309,10 @@ namespace ENigMA
             {
                 this->m_surfaceArea = 0.0;
 
-                for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+                for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
                 {
-                    m_polygons[m_polygonIds[i]].calculateArea();
-                    this->m_surfaceArea += m_polygons[m_polygonIds[i]].area();
+                    it->second.calculateArea();
+                    this->m_surfaceArea += it->second.area();
                 }
 
                 this->m_bSurfaceArea = true;
@@ -362,11 +362,11 @@ namespace ENigMA
             {
                 CGeoVolume<Real>::boundingBox().reset();
 
-                for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+                for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
                 {
-                    for (Integer j = 0; j < m_polygons[m_polygonIds[i]].polyline().nbVertices(); ++j)
+                    for (Integer j = 0; j < it->second.polyline().nbVertices(); ++j)
                     {
-                        CGeoVolume<Real>::boundingBox().addCoordinate(m_polygons[m_polygonIds[i]].polyline().vertex(j));
+                        CGeoVolume<Real>::boundingBox().addCoordinate(it->second.polyline().vertex(j));
                     }
                 }
 
@@ -379,12 +379,12 @@ namespace ENigMA
         {
             CGeoPolyhedron<Real> aPolyhedron;
 
-            for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+            for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
             {
-                CGeoPolygon<Real> aPolygon = m_polygons[m_polygonIds[i]].clip(aPlane, aTolerance);
+                CGeoPolygon<Real> aPolygon = it->second.clip(aPlane, aTolerance);
 
                 if (aPolygon.polyline().nbVertices() > 3)
-                    aPolyhedron.addPolygon(m_polygonIds[i], aPolygon);
+                    aPolyhedron.addPolygon(it->first, aPolygon);
             }
 
             aPolyhedron.close(aNewPolygon, aNewPolygonId, aPlane.normal(), aTolerance);
@@ -411,9 +411,9 @@ namespace ENigMA
                 nIterations = 0;
 
                 // Copy this polyhedron
-                for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+                for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
                 {
-                    aPolyhedron.addPolygon(m_polygonIds[i], m_polygons[m_polygonIds[i]]);
+                    aPolyhedron.addPolygon(it->first, it->second);
                 }
 
                 volumeFractionAct = 1.0;
@@ -431,13 +431,11 @@ namespace ENigMA
             Real a = std::numeric_limits<Real>::max();
             Real b = std::numeric_limits<Real>::lowest();
 
-            CGeoPolyline<Real> aPolyline;
-            for (Integer i = 0; i < static_cast<Integer>(m_polygonIds.size()); ++i)
+            for (auto it = m_polygons.begin(); it != m_polygons.end(); it++)
             {
-                aPolyline = m_polygons[m_polygonIds[i]].polyline();
-                for (Integer j = 0; j < aPolyline.nbVertices(); ++j)
+                for (Integer j = 0; j < it->second.polyline().nbVertices(); ++j)
                 {
-                    d = aPolyline.vertex(j).dot(aNormal);
+                    d = it->second.polyline().vertex(j).dot(aNormal);
 
                     a = std::min(a, d);
                     b = std::max(b, d);

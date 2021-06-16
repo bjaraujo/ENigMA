@@ -151,11 +151,8 @@ namespace ENigMA
             {
                 CGeoLine<Real> aLine;
 
-                const CGeoCoordinate<Real> p1 = CGeoVertexList<Real>::vertex(i);
-                const CGeoCoordinate<Real> p2 = CGeoVertexList<Real>::vertex(i + 1);
-
-                aLine.setStartPoint(p1);
-                aLine.setEndPoint(p2);
+                aLine.setStartPoint(CGeoVertexList<Real>::vertex(i));
+                aLine.setEndPoint(CGeoVertexList<Real>::vertex(i + 1));
 
                 CGeoLine<Real> aClippedLine = aLine.clip(aPlane);
 
