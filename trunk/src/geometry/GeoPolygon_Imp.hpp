@@ -160,9 +160,7 @@ namespace ENigMA
         {
             CGeoPolygon<Real> aPolygon;
 
-            CGeoLineList<Real> aLineList = m_polyline.clip(aPlane);
-
-            CGeoPolyline<Real> aPolyline(aLineList, false, aTolerance);
+            CGeoPolyline<Real> aPolyline(m_polyline.clip(aPlane), false, aTolerance);
 
             aPolyline.close(aTolerance);
 
