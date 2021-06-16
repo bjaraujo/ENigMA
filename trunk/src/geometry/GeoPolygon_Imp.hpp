@@ -77,7 +77,7 @@ namespace ENigMA
 
                     aNormal = v0.cross(v1);
 
-                    if (aNormal.norm() > 0.0)
+                    if (aNormal.norm() > std::numeric_limits<Real>::epsilon())
                     {
                         aNormal.normalize();
                         break;
@@ -101,48 +101,51 @@ namespace ENigMA
                 {
                     this->calculateNormal(bReCalculate);
 
-                    Integer coord = 3;
-                    if (fabs(CGeoArea<Real>::normal().x()) > fabs(CGeoArea<Real>::normal().y()))
+                    if (this->m_normal.norm() > std::numeric_limits<Real>::epsilon())
                     {
-                        if (fabs(CGeoArea<Real>::normal().x()) > fabs(CGeoArea<Real>::normal().z()))
-                            coord = 1; // ignore x-coord
-                        else
-                            coord = 3; // ignore z-coord
-                    }
-                    else if (fabs(CGeoArea<Real>::normal().y()) > fabs(CGeoArea<Real>::normal().z()))
-                        coord = 2; // ignore y-coord
+                        Integer coord = 3;
+                        if (fabs(CGeoArea<Real>::normal().x()) > fabs(CGeoArea<Real>::normal().y()))
+                        {
+                            if (fabs(CGeoArea<Real>::normal().x()) > fabs(CGeoArea<Real>::normal().z()))
+                                coord = 1; // ignore x-coord
+                            else
+                                coord = 3; // ignore z-coord
+                        }
+                        else if (fabs(CGeoArea<Real>::normal().y()) > fabs(CGeoArea<Real>::normal().z()))
+                            coord = 2; // ignore y-coord
 
-                    Real _parea = 0.0;
+                        Real _parea = 0.0;
 
-                    for (Integer i = 1; i <= m_polyline.nbVertices(); ++i)
-                    {
+                        for (Integer i = 1; i <= m_polyline.nbVertices(); ++i)
+                        {
+                            switch (coord)
+                            {
+                            case 1:
+                                _parea += (m_polyline.vertex(i).y() * (m_polyline.vertex(i + 1).z() - m_polyline.vertex(i - 1).z()));
+                                break;
+                            case 2:
+                                _parea += (m_polyline.vertex(i).z() * (m_polyline.vertex(i + 1).x() - m_polyline.vertex(i - 1).x()));
+                                break;
+                            case 3:
+                                _parea += (m_polyline.vertex(i).x() * (m_polyline.vertex(i + 1).y() - m_polyline.vertex(i - 1).y()));
+                                break;
+                            }
+                        }
+
                         switch (coord)
                         {
                         case 1:
-                            _parea += (m_polyline.vertex(i).y() * (m_polyline.vertex(i + 1).z() - m_polyline.vertex(i - 1).z()));
+                            _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().x()));
                             break;
                         case 2:
-                            _parea += (m_polyline.vertex(i).z() * (m_polyline.vertex(i + 1).x() - m_polyline.vertex(i - 1).x()));
+                            _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().y()));
                             break;
                         case 3:
-                            _parea += (m_polyline.vertex(i).x() * (m_polyline.vertex(i + 1).y() - m_polyline.vertex(i - 1).y()));
-                            break;
+                            _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().z()));
                         }
-                    }
 
-                    switch (coord)
-                    {
-                    case 1:
-                        _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().x()));
-                        break;
-                    case 2:
-                        _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().y()));
-                        break;
-                    case 3:
-                        _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().z()));
+                        this->m_area += _parea;
                     }
-
-                    this->m_area += _parea;
                 }
 
                 this->m_bArea = true;

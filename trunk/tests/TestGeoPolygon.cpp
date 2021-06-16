@@ -139,7 +139,7 @@ TEST_F(CTestGeoPolygon, clip1) {
 
     CGeoPlane<decimal> aPlane(aNormal, 1.3);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-6);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -170,7 +170,7 @@ TEST_F(CTestGeoPolygon, clip2) {
 
     CGeoPlane<decimal> aPlane(aNormal, 1.0);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -201,7 +201,7 @@ TEST_F(CTestGeoPolygon, clip3) {
 
     CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -232,7 +232,7 @@ TEST_F(CTestGeoPolygon, clip4) {
 
     CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0));
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -267,7 +267,7 @@ TEST_F(CTestGeoPolygon, clip5) {
 
     CGeoPlane<decimal> aPlane(aNormal, 1.0);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -302,7 +302,7 @@ TEST_F(CTestGeoPolygon, clip6) {
 
     CGeoPlane<decimal> aPlane(aNormal, 3.0 * sqrt(2.0) / 2.0);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -339,7 +339,7 @@ TEST_F(CTestGeoPolygon, clip7) {
 
     CGeoPlane<decimal> aPlane(aNormal, 1.5);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -378,7 +378,7 @@ TEST_F(CTestGeoPolygon, clip8) {
 
     CGeoPlane<decimal> aPlane(aNormal, 5.0 * sqrt(2.0) / 4.0);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -417,7 +417,7 @@ TEST_F(CTestGeoPolygon, clip9) {
 
     CGeoPlane<decimal> aPlane(aNormal, 0.4);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 
@@ -452,7 +452,7 @@ TEST_F(CTestGeoPolygon, clip10) {
 
     CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane);
+    CGeoPolygon<decimal> aNewPolygon = aPolygon.clip(aPlane, 1E-9);
 
     aNewPolygon.calculateArea();
 

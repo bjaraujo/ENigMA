@@ -23,12 +23,12 @@ namespace ENigMA
         {
         public:
             CGeoPolyline();
-            explicit CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
+            explicit CGeoPolyline(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0.0);
             virtual ~CGeoPolyline();
 
             virtual void reset();
 
-            void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0);
+            void set(CGeoLineList<Real>& aLineList, bool sort = false, const Real aTolerance = 0.0);
 
             Integer nbLines() const;
             CGeoLine<Real> line(Integer aLineIndex);
@@ -39,7 +39,7 @@ namespace ENigMA
             inline void calculateLength(bool bReCalculate = false);
             inline void calculateBoundingBox(bool bReCalculate = false);
 
-            inline CGeoLineList<Real> clip(CGeoPlane<Real> aPlane);
+            inline CGeoLineList<Real> clip(CGeoPlane<Real> aPlane, const Real aTolerance = 0.0);
 
             inline bool intersects(CGeoPlane<Real> aPlane);
 

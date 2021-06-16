@@ -143,7 +143,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoLineList<Real> CGeoPolyline<Real>::clip(CGeoPlane<Real> aPlane)
+        CGeoLineList<Real> CGeoPolyline<Real>::clip(CGeoPlane<Real> aPlane, const Real aTolerance)
         {
             CGeoLineList<Real> aLineList;
 
@@ -154,7 +154,7 @@ namespace ENigMA
                 aLine.setStartPoint(CGeoVertexList<Real>::vertex(i));
                 aLine.setEndPoint(CGeoVertexList<Real>::vertex(i + 1));
 
-                CGeoLine<Real> aClippedLine = aLine.clip(aPlane);
+                CGeoLine<Real> aClippedLine = aLine.clip(aPlane, aTolerance);
 
                 aClippedLine.calculateLength();
 

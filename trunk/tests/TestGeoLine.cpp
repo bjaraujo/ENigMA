@@ -60,7 +60,7 @@ TEST_F(CTestGeoLine, clip1) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -84,7 +84,7 @@ TEST_F(CTestGeoLine, clip2) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -105,7 +105,7 @@ TEST_F(CTestGeoLine, clip3) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -129,7 +129,7 @@ TEST_F(CTestGeoLine, clip4) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -153,7 +153,7 @@ TEST_F(CTestGeoLine, clip5) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -174,7 +174,7 @@ TEST_F(CTestGeoLine, clip6) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -195,7 +195,7 @@ TEST_F(CTestGeoLine, clip7) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -219,7 +219,7 @@ TEST_F(CTestGeoLine, clip8) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -243,7 +243,7 @@ TEST_F(CTestGeoLine, clip9) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -267,7 +267,7 @@ TEST_F(CTestGeoLine, clip10) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -291,7 +291,7 @@ TEST_F(CTestGeoLine, clip11) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -315,7 +315,7 @@ TEST_F(CTestGeoLine, clip12) {
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane);
+    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 

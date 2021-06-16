@@ -102,7 +102,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoLine<Real> CGeoLine<Real>::clip(CGeoPlane<Real> aPlane)
+        CGeoLine<Real> CGeoLine<Real>::clip(CGeoPlane<Real> aPlane, const Real aTolerance)
         {
             CGeoLine<Real> aLine;
             CGeoCoordinate<Real> p1, p2;
@@ -114,7 +114,7 @@ namespace ENigMA
             Real den = aPlane.normal().dot(m_vector);
             Real num = aPlane.normal().dot(m_startPoint);
 
-            if (std::fabs(den) > std::numeric_limits<Real>::epsilon())
+            if (std::fabs(den) > aTolerance)
             {
                 Real alpha = (aPlane.d() - num) / den;
 

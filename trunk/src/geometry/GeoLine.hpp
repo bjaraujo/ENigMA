@@ -84,7 +84,7 @@ namespace ENigMA
             inline void calculateLength(bool bReCalculate = false);
             inline void calculateBoundingBox(bool bReCalculate = false);
 
-            inline CGeoLine<Real> clip(CGeoPlane<Real> aPlane);
+            inline CGeoLine<Real> clip(CGeoPlane<Real> aPlane, const Real aTolerance = 0.0);
 
             inline bool intersects(CGeoPlane<Real> aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance = 0.0);
 
