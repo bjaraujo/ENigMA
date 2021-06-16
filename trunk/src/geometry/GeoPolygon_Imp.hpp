@@ -84,7 +84,7 @@ namespace ENigMA
                     }
                 }
 
-                CGeoArea<Real>::normal() = aNormal;
+                this->m_normal = aNormal;
 
                 this->m_bNormal = true;
             }
@@ -104,14 +104,14 @@ namespace ENigMA
                     if (this->m_normal.norm() > std::numeric_limits<Real>::epsilon())
                     {
                         Integer coord = 3;
-                        if (fabs(CGeoArea<Real>::normal().x()) > fabs(CGeoArea<Real>::normal().y()))
+                        if (fabs(this->m_normal.x()) > fabs(this->m_normal.y()))
                         {
-                            if (fabs(CGeoArea<Real>::normal().x()) > fabs(CGeoArea<Real>::normal().z()))
+                            if (fabs(this->m_normal.x()) > fabs(this->m_normal.z()))
                                 coord = 1; // ignore x-coord
                             else
                                 coord = 3; // ignore z-coord
                         }
-                        else if (fabs(CGeoArea<Real>::normal().y()) > fabs(CGeoArea<Real>::normal().z()))
+                        else if (fabs(this->m_normal.y()) > fabs(this->m_normal.z()))
                             coord = 2; // ignore y-coord
 
                         Real _parea = 0.0;
@@ -135,13 +135,13 @@ namespace ENigMA
                         switch (coord)
                         {
                         case 1:
-                            _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().x()));
+                            _parea *= (this->m_normal.norm() / (2 * this->m_normal.x()));
                             break;
                         case 2:
-                            _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().y()));
+                            _parea *= (this->m_normal.norm() / (2 * this->m_normal.y()));
                             break;
                         case 3:
-                            _parea *= (CGeoArea<Real>::normal().norm() / (2 * CGeoArea<Real>::normal().z()));
+                            _parea *= (this->m_normal.norm() / (2 * this->m_normal.z()));
                         }
 
                         this->m_area += _parea;
@@ -177,7 +177,7 @@ namespace ENigMA
         {
             m_polyline.invert();
 
-            CGeoArea<Real>::normal() *= -1;
+            this->m_normal *= -1;
         }
 
         template <typename Real>
