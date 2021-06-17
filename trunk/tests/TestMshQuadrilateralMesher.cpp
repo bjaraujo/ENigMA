@@ -77,6 +77,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
     EXPECT_EQ(4, anEdgeMesh.nbElements());
 
     CMshQuadrilateralMesher<decimal> aQuadrilateralMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aQuadrilateralMesher.remesh(anEdgeMesh, 0.1);
@@ -87,7 +88,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "quad_edge1.msh", "beams");
 
-    aQuadrilateralMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 1.0, 1E-3);
+    aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 1.0, 1E-3);
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aQuadrilateralMesher.mesh();
@@ -178,6 +179,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh2) {
     EXPECT_EQ(8, anEdgeMesh.nbElements());
 
     CMshQuadrilateralMesher<decimal> aQuadrilateralMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aQuadrilateralMesher.remesh(anEdgeMesh, 0.1);
@@ -188,7 +190,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh2) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "quad_edge2.msh", "beams");
 
-    aQuadrilateralMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 1.0, 1E-3);
+    aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 1.0, 1E-3);
 
     EXPECT_EQ(52, anEdgeMesh.nbElements());
 
@@ -446,6 +448,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh3)
     EXPECT_EQ(26, anEdgeMesh.nbElements());
 
     CMshQuadrilateralMesher<decimal> aQuadrilateralMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
 
@@ -455,7 +458,7 @@ TEST_F(CTestMshQuadrilateralMesher, mesh3)
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "quad_edge3.msh", "beams");
 
-    aQuadrilateralMesher.generate(anEdgeMesh, 999, 0.5, 0.5, 0.5, 1E-3);
+    aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.5, 0.5, 0.5, 1E-3);
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aQuadrilateralMesher.mesh();

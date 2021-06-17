@@ -78,8 +78,9 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
     aPosGmsh.save(T, "tetra_surface1.msh", "tris");
 
     CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
-    aTetrahedronMesher.generate(aSurfaceMesh, 999, d * 1.5, d * 0.1, d * 10.0, 1E-3);
+    aTetrahedronMesher.generate(aSurfaceMesh, 999, sInteriorPoints, d * 1.5, d * 0.1, d * 10.0, 1E-3);
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = aTetrahedronMesher.mesh();
@@ -134,8 +135,9 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     aPosGmsh.save(T, "tetra_surface2.msh", "tris");
 
     CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
-    aTetrahedronMesher.generate(aSurfaceMesh, 999, d, d * 0.1, d * 10.0, 1E-3);
+    aTetrahedronMesher.generate(aSurfaceMesh, 999, sInteriorPoints, d, d * 0.1, d * 10.0, 1E-3);
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = aTetrahedronMesher.mesh();
@@ -190,8 +192,9 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     aPosGmsh.save(T, "tetra_surface3.msh", "tris");
 
     CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
-    aTetrahedronMesher.generate(aSurfaceMesh, 999, d * 1.1, d * 1.0, d * 1.2, 1E-3);
+    aTetrahedronMesher.generate(aSurfaceMesh, 999, sInteriorPoints, d * 1.1, d * 1.0, d * 1.2, 1E-3);
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = aTetrahedronMesher.mesh();
@@ -247,8 +250,9 @@ TEST_F(CTestMshTetrahedronMesher, mesh4)
     aPosGmsh.save(T, "tetra_surface4.msh", "tris");
 
     CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
-    aTetrahedronMesher.generate(aSurfaceMesh, 99999, d * 1.1, d * 1.0, d * 1.2, 1E-3);
+    aTetrahedronMesher.generate(aSurfaceMesh, 99999, sInteriorPoints, d * 1.1, d * 1.0, d * 1.2, 1E-3);
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = aTetrahedronMesher.mesh();

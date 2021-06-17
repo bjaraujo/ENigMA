@@ -119,11 +119,12 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
     EXPECT_EQ(8, anEdgeMesh.nbElements());
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 1.0);
     
-    aTriangleMesher.generate(anEdgeMesh, 99, 1.0, 0.1, 10.0, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 1.0, 0.1, 10.0, 1E-3);
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
@@ -185,6 +186,7 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     EXPECT_EQ(4, anEdgeMesh.nbElements());
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 0.1);
@@ -195,7 +197,7 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge2.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 1.0, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 1.0, 1E-3);
 
     EXPECT_EQ(40, anEdgeMesh.nbElements());
 
@@ -288,6 +290,7 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     EXPECT_EQ(8, anEdgeMesh.nbElements());
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 0.1);
@@ -298,7 +301,7 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge3.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, 0.1, 0.01, 10.0, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 10.0, 1E-3);
 
     EXPECT_EQ(52, anEdgeMesh.nbElements());
 
@@ -371,6 +374,7 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
     EXPECT_EQ(6, anEdgeMesh.nbElements());
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 2.0);
@@ -381,7 +385,7 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge4.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 99, 2.0, 0.1, 10.0, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 2.0, 0.1, 10.0, 1E-3);
 
     EXPECT_EQ(6, anEdgeMesh.nbElements());
 
@@ -492,6 +496,7 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     EXPECT_EQ(12, anEdgeMesh.nbElements());
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
 
@@ -506,7 +511,7 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge5.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, 10.0, 1.0, 100.0, 1E-3);
+    aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 10.0, 1.0, 100.0, 1E-3);
 
     EXPECT_EQ(64, anEdgeMesh.nbElements());
 
@@ -614,6 +619,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     EXPECT_EQ(12, anEdgeMesh.nbElements());
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     anEdgeMesh.node(6).z() = 10;
     anEdgeMesh.node(7).z() = 10;
@@ -645,7 +651,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge6.msh", "beams");
 
-    aTriangleMesher.generate(anEdgeMesh, 999, 10.0, 1.0, 50.0, 1E-3);   
+    aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 10.0, 1.0, 50.0, 1E-3);
 
     EXPECT_EQ(66, anEdgeMesh.nbElements());
 
@@ -724,9 +730,10 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
     anEdgeMesh.generateFaces(1E-2);
 
     CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
 
     aTriangleMesher.remesh(anEdgeMesh, 2.0);
-    aTriangleMesher.generate(anEdgeMesh, 9999, 2.0, 0.1, 10.0, 1E-4);
+    aTriangleMesher.generate(anEdgeMesh, 9999, sInteriorPoints, 2.0, 0.1, 10.0, 1E-4);
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;

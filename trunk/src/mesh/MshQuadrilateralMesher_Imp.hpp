@@ -304,27 +304,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
-        {
-            std::vector<CGeoCoordinate<Real>> sInteriorPoints;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
-        {
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+        bool CMshQuadrilateralMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, const Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
         {
             this->m_previousNbElements = 0;
 
@@ -448,12 +428,12 @@ namespace ENigMA
 
             bool res = true;
 
-            this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, false, aTolerance);
-            this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, true, false, aTolerance);
-            this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.02, true, false, aTolerance);
-            this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
-            this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 2.50, 0.00, true, false, aTolerance);
-            this->advancingFrontQuadMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 3.50, 0.00, true, false, aTolerance);
+            this->advancingFrontQuadMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, false, false, aTolerance);
+            this->advancingFrontQuadMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.05, true, false, aTolerance);
+            this->advancingFrontQuadMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.02, true, false, aTolerance);
+            this->advancingFrontQuadMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
+            this->advancingFrontQuadMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 2.50, 0.00, true, false, aTolerance);
+            this->advancingFrontQuadMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 3.50, 0.00, true, false, aTolerance);
 
             if (this->frontSize() > 0)
             {
@@ -469,16 +449,11 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshQuadrilateralMesher<Real>::advancingFrontQuadMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bAddNodes, const bool bCheckDelaunay, const Real aTolerance)
+        bool CMshQuadrilateralMesher<Real>::advancingFrontQuadMeshing(const Real meshSize, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bAddNodes, const bool bCheckDelaunay, const Real aTolerance)
         {
             bool res = false;
 
             Real x, y;
-
-            meshSizeFunc.removeAllVariables();
-
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
 
             static const Real pi = std::acos(-1.0);
 
@@ -560,7 +535,7 @@ namespace ENigMA
 
                 a = aNode2 - aNode1;
 
-                Real requiredMeshSize = meshSizeFunc.evaluate();
+                Real requiredMeshSize = meshSize;
                 Real localMeshSize = static_cast<Real>(a.norm());
 
                 Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);

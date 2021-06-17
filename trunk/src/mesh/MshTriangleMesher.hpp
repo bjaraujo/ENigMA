@@ -92,7 +92,7 @@ namespace ENigMA
 
             void removeEdge(SMshAdvancingFrontEdge<Real>& anAdvEdge, const Real aTolerance = 0.0);
 
-            bool advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bAddNodes = true, const bool bCheckDelaunay = false, const Real aTolerance = 0.0);
+            bool advancingFrontTriMeshing(const Real meshSize, Integer& maxNbElements, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), Real sizeFactor = 1.0, Real shrinkFactor = 1.0, Real expandFactor = 1.0, Real minQuality = 0.0, const bool bAddNodes = true, const bool bCheckDelaunay = false, const Real aTolerance = 0.0);
 
             Integer frontSize();
 
@@ -100,12 +100,9 @@ namespace ENigMA
             CMshTriangleMesher();
             virtual ~CMshTriangleMesher();
 
-            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, Real meshSize, const Real aTolerance = 0.0);
-            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real aTolerance = 0.0);
+            virtual bool remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real meshSize, const Real aTolerance = 0.0);
 
-            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
-            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
+            virtual bool generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<ENigMA::geometry::CGeoCoordinate<Real>>& sInteriorPoints, const Real meshSize, Real minMeshSize = 0.0, Real maxMeshSize = std::numeric_limits<Real>::max(), const Real aTolerance = 0.0);
 
             ENigMA::mesh::CMshMesh<Real>& mesh();
 

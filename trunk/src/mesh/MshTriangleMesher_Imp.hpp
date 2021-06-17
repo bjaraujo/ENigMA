@@ -468,28 +468,9 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, Real meshSize, const Real aTolerance)
-        {
-            std::stringstream ss(std::stringstream::in | std::stringstream::out);
-
-            ss << meshSize;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-
-            aAnaFunction.set(ss.str());
-
-            return this->remesh(aMesh, aAnaFunction, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::remesh(ENigMA::mesh::CMshMesh<Real>& aMesh, const Real meshSize, const Real aTolerance)
         {
             Real x, y;
-
-            meshSizeFunc.removeAllVariables();
-
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
 
             std::vector<bool> sRemeshed;
             for (Integer i = 0; i < aMesh.nbElements(); ++i)
@@ -531,7 +512,7 @@ namespace ENigMA
                     x = aMidNode.x();
                     y = aMidNode.y();
 
-                    Real localMeshSize = meshSizeFunc.evaluate();
+                    Real localMeshSize = meshSize;
 
                     Integer ne = static_cast<Integer>(floor(v.norm() / localMeshSize + 0.5));
 
@@ -626,7 +607,7 @@ namespace ENigMA
                             x = aMidNode.x();
                             y = aMidNode.y();
 
-                            Real localMeshSize = meshSizeFunc.evaluate();
+                            Real localMeshSize = meshSize;
 
                             if (v.norm() > localMeshSize * 1.5)
                             {
@@ -716,27 +697,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::generate(const ENigMA::mesh::CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
-        {
-            std::vector<CGeoCoordinate<Real>> sInteriorPoints;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshTriangleMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
-        {
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(anEdgeMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshTriangleMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::generate(const CMshMesh<Real>& anEdgeMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, const Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
         {
             m_previousNbElements = 0;
 
@@ -864,9 +825,9 @@ namespace ENigMA
             // Start meshing interior
             Integer maxElem = maxNbElements;
 
-            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.50, 0.02, false, false, aTolerance);
-            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.01, true, false, aTolerance);
-            this->advancingFrontTriMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.50, 0.02, false, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.01, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
 
             if (this->frontSize() > 0)
             {
@@ -896,16 +857,11 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTriangleMesher<Real>::advancingFrontTriMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bAddNodes, const bool bCheckDelaunay, const Real aTolerance)
+        bool CMshTriangleMesher<Real>::advancingFrontTriMeshing(const Real meshSize, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bAddNodes, const bool bCheckDelaunay, const Real aTolerance)
         {
             bool res = true;
 
             Real x, y;
-
-            meshSizeFunc.removeAllVariables();
-
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
 
             static const Real pi = std::acos(-1.0);
 
@@ -967,7 +923,7 @@ namespace ENigMA
 
                 a = aNode2 - aNode1;
 
-                Real requiredMeshSize = meshSizeFunc.evaluate();
+                Real requiredMeshSize = meshSize;
                 Real localMeshSize = static_cast<Real>(a.norm());
 
                 Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);

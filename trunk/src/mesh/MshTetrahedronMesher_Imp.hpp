@@ -523,27 +523,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
-        {
-            std::vector<CGeoCoordinate<Real>> sInteriorPoints;
-
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
-        {
-            ENigMA::analytical::CAnaFunction<Real> aAnaFunction;
-            aAnaFunction.set(meshSize);
-
-            return this->generate(aSurfaceMesh, maxNbElements, sInteriorPoints, aAnaFunction, minMeshSize, maxMeshSize, aTolerance);
-        }
-
-        template <typename Real>
-        bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
+        bool CMshTetrahedronMesher<Real>::generate(const CMshMesh<Real>& aSurfaceMesh, const Integer maxNbElements, std::vector<CGeoCoordinate<Real>>& sInteriorPoints, const Real meshSize, Real minMeshSize, Real maxMeshSize, const Real aTolerance)
         {
             m_bStop = false;
 
@@ -677,9 +657,9 @@ namespace ENigMA
 
             Integer maxElem = maxNbElements;
 
-            this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, false, false, aTolerance);
-            this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, true, false, aTolerance);
-            this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.01, true, false, aTolerance);
+            this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, false, false, aTolerance);
+            this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.10, true, false, aTolerance);
+            this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.01, true, false, aTolerance);
 
             for (Integer i = 0; i < 12; ++i)
             {
@@ -687,26 +667,26 @@ namespace ENigMA
                     break;
 
                 if (i < 10)
-                    this->repair(meshSizeFunc, 0.90 + i * 0.05, 0.0, aTolerance);
+                    this->repair(meshSize, 0.90 + i * 0.05, 0.0, aTolerance);
                 else
-                    this->repair(meshSizeFunc, 1.20 - i * 0.05, 0.0, aTolerance);
+                    this->repair(meshSize, 1.20 - i * 0.05, 0.0, aTolerance);
 
                 if (i < 4)
                 {
-                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, false, false, aTolerance);
-                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, true, false, aTolerance);
+                    this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, false, false, aTolerance);
+                    this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.15, true, false, aTolerance);
                 }
                 else if (i < 8)
                 {
-                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, false, aTolerance);
-                    this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, true, false, aTolerance);
+                    this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, false, false, aTolerance);
+                    this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00 - 0.05 * i, 1.00, 1.00, 0.15, true, false, aTolerance);
                 }
 
-                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, false, false, aTolerance);
-                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, true, false, aTolerance);
+                this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, false, false, aTolerance);
+                this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 0.50, 1.50, 0.00, true, false, aTolerance);
 
-                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, false, false, aTolerance);
-                this->advancingFrontTetraMeshing(meshSizeFunc, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, true, false, aTolerance);
+                this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, false, false, aTolerance);
+                this->advancingFrontTetraMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 0.25, 2.50, 0.00, true, false, aTolerance);
             }
 
             if (this->frontSize() > 0)
@@ -737,17 +717,11 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTetrahedronMesher<Real>::advancingFrontTetraMeshing(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bAddNodes, const bool bCheckDelaunay, const Real aTolerance)
+        bool CMshTetrahedronMesher<Real>::advancingFrontTetraMeshing(const Real meshSize, Integer& maxNbElements, Real minMeshSize, Real maxMeshSize, Real sizeFactor, Real shrinkFactor, Real expandFactor, Real minQuality, const bool bAddNodes, const bool bCheckDelaunay, const Real aTolerance)
         {
             bool res = true;
 
             Real x, y, z;
-
-            meshSizeFunc.removeAllVariables();
-
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
-            meshSizeFunc.defineVariable("z", z);
 
             Real sumMeshSize = 0;
             Integer nMeshSize = 0;
@@ -821,7 +795,7 @@ namespace ENigMA
                 a = aNode2 - aNode1;
                 b = aNode3 - aNode1;
 
-                Real requiredMeshSize = meshSizeFunc.evaluate();
+                Real requiredMeshSize = meshSize;
                 Real localMeshSize = static_cast<Real>(a.norm());
 
                 Real aFactor = std::max<Real>(std::min<Real>(requiredMeshSize / (localMeshSize + aTolerance * aTolerance), 2.0), 0.5);
@@ -1127,15 +1101,9 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshTetrahedronMesher<Real>::repair(ENigMA::analytical::CAnaFunction<Real>& meshSizeFunc, const Real sizeFactor, const Real minQuality, const Real aTolerance)
+        bool CMshTetrahedronMesher<Real>::repair(const Real meshSize, const Real sizeFactor, const Real minQuality, const Real aTolerance)
         {
             Real x, y, z;
-
-            meshSizeFunc.removeAllVariables();
-
-            meshSizeFunc.defineVariable("x", x);
-            meshSizeFunc.defineVariable("y", y);
-            meshSizeFunc.defineVariable("z", z);
 
             std::vector<CGeoCoordinate<Real>> sSteinerPoints;
 
@@ -1242,7 +1210,7 @@ namespace ENigMA
                 y = sSteinerPoints[i].y();
                 z = sSteinerPoints[i].z();
 
-                Real localMeshSize = meshSizeFunc.evaluate();
+                Real localMeshSize = meshSize;
 
                 CGeoSphere<Real> aSphere(sSteinerPoints[i], localMeshSize * sizeFactor);
 
