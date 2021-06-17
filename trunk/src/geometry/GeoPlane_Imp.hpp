@@ -64,15 +64,18 @@ namespace ENigMA
         };
 
         template <typename Real>
-        bool CGeoPlane<Real>::distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance)
+        Real CGeoPlane<Real>::distance(const CGeoCoordinate<Real>& aPoint)
         {
-            Real s = this->normal().dot(aPoint) + this->d();
+            Real s = this->normal().dot(aPoint) - this->d();
+            return fabs(s);
+        }
 
-            aNewPoint = aPoint + this->normal() * s;
-
-            aDistance = fabs(s);
-
-            return true;
+        template <typename Real>
+        Real CGeoPlane<Real>::distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint)
+        {
+            Real s = this->normal().dot(aPoint) - this->d();
+            aNewPoint = aPoint - this->normal() * s;
+            return fabs(s);
         }
     }
 }

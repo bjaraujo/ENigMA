@@ -457,7 +457,7 @@ TEST_F(CTestGeoTriangle, distance2) {
 
     aTriangle1.distance(aPoint, aNewPoint, dist, 1E-6);
 
-    EXPECT_GT(dist, 0.1);
+    EXPECT_NEAR(dist, 0.1, 1E-5);
 
 }
 

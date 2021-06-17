@@ -59,7 +59,7 @@ TEST_F(CTestGeoPlane, set) {
 
 TEST_F(CTestGeoPlane, distance) {
 
-    CGeoNormal<decimal> aNormal(0, 0, 1);
+    CGeoNormal<decimal> aNormal(0.0, 0.0, 1.0);
 
     CGeoPlane<decimal> aPlane(aNormal, 0.1);
 
@@ -67,9 +67,7 @@ TEST_F(CTestGeoPlane, distance) {
 
     CGeoCoordinate<decimal> aNewPoint;
 
-    decimal dist = 0.0;
-
-    aPlane.distance(aPoint, aNewPoint, dist, 1E-6);
+    decimal dist = aPlane.distance(aPoint, aNewPoint);
 
     EXPECT_NEAR(0.1, dist, 1E-6);
 

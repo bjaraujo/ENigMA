@@ -37,7 +37,8 @@ namespace ENigMA
 
             void invert();
 
-            inline bool distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint, Real& aDistance, const Real aTolerance = 0.0);
+            inline Real distance(const CGeoCoordinate<Real>& aPoint);
+            inline Real distance(const CGeoCoordinate<Real>& aPoint, CGeoCoordinate<Real>& aNewPoint);
         };
     }
 }

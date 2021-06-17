@@ -332,7 +332,7 @@ namespace ENigMA
 
             CGeoPlane<Real> aPlane(this->normal(), this->normal().dot(this->vertex(0)));
 
-            aPlane.distance(aPoint, aNewPoint, aDistance, aTolerance);
+            aDistance = aPlane.distance(aPoint, aNewPoint);
 
             CGeoIntersectionType anIntersectionType;
 
