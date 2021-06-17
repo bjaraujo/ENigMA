@@ -205,8 +205,8 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CGeoPolyhedron<Real>::close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, const Real aTolerance)
-        {
+        void CGeoPolyhedron<Real>::close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, const Real aTolerance)
+        {            
             // Discover lines
             CGeoLineList<Real> aLineList;
 
@@ -214,14 +214,11 @@ namespace ENigMA
             {
                 CGeoPolyline<Real> aPolyline = it->second.polyline();
 
+                CGeoLine<Real> aLine;
                 for (Integer j = 0; j < aPolyline.nbLines(); ++j)
                 {
-                    CGeoLine<Real> aLine = aPolyline.line(j);
-
-                    aLine.calculateLength();
-
-                    if (aLine.length() > aTolerance)
-                        aLineList.addLine(aLine);
+                    aLine = aPolyline.line(j);
+                    aLineList.addLine(aLine);
                 }
             }
 
@@ -275,7 +272,7 @@ namespace ENigMA
 
                 aNewPolygon.calculateNormal(true);
 
-                if (aNormal.dot(aNewPolygon.normal()) < 0)
+                if (aPlane.normal().dot(aNewPolygon.normal()) < 0)
                     aNewPolygon.invert();
 
                 this->addPolygon(aNewPolygonId, aNewPolygon);
@@ -387,7 +384,7 @@ namespace ENigMA
                     aPolyhedron.addPolygon(it->first, aPolygon);
             }
 
-            aPolyhedron.close(aNewPolygon, aNewPolygonId, aPlane.normal(), aTolerance);
+            aPolyhedron.close(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
 
             return aPolyhedron;
         }

@@ -52,7 +52,7 @@ namespace ENigMA
 
             void triangulate();
 
-            void close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real const aTolerance = 0);
+            void close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real const aTolerance = 0);
 
             inline void calculateCentroid(bool bReCalculate = false);
             inline void calculateSurfaceArea(bool bReCalculate = false);
