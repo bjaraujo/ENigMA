@@ -102,7 +102,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoLine<Real> CGeoLine<Real>::clip(CGeoPlane<Real> aPlane, const Real aTolerance)
+        CGeoLine<Real> CGeoLine<Real>::clip(const CGeoPlane<Real>& aPlane, const Real aTolerance)
         {
             CGeoLine<Real> aLine;
             CGeoCoordinate<Real> p1, p2;
@@ -111,12 +111,15 @@ namespace ENigMA
             p1 = m_startPoint;
             p2 = m_startPoint;
 
-            Real den = aPlane.normal().dot(m_vector);
-            Real num = aPlane.normal().dot(m_startPoint);
+            CGeoNormal<Real> aNormal = aPlane.normal();
+            Real d = aPlane.d();
+
+            Real den = aNormal.dot(m_vector);
+            Real num = aNormal.dot(m_startPoint);
 
             if (std::fabs(den) > aTolerance)
             {
-                Real alpha = (aPlane.d() - num) / den;
+                Real alpha = (d - num) / den;
 
                 if (alpha >= 0 && alpha <= 1)
                 {
@@ -135,7 +138,7 @@ namespace ENigMA
                 }
                 else
                 {
-                    if (num < aPlane.d())
+                    if (num < d)
                     {
                         // Original line
                         p1 = this->m_startPoint;
@@ -145,7 +148,7 @@ namespace ENigMA
             }
             else
             {
-                if (num < aPlane.d())
+                if (num < d)
                 {
                     // Original line
                     p1 = this->m_startPoint;
@@ -160,21 +163,23 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CGeoLine<Real>::intersects(CGeoPlane<Real> aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
+        bool CGeoLine<Real>::intersects(const CGeoPlane<Real>& aPlane, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
         {
             anIntersectionType = IT_NONE;
 
-            CGeoCoordinate<Real> p3 = aPlane.normal() * aPlane.d();
+            CGeoNormal<Real> aNormal = aPlane.normal();
+
+            CGeoCoordinate<Real> p3 = aNormal * aPlane.d();
 
             CGeoVector<Real> u = p3 - this->m_startPoint;
             CGeoVector<Real> v = this->m_vector;
 
-            Real d = aPlane.normal().dot(v);
+            Real d = aNormal.dot(v);
 
             if (fabs(d) <= aTolerance * aTolerance)
                 return false;
 
-            Real s = aPlane.normal().dot(u) / d;
+            Real s = aNormal.dot(u) / d;
 
             if (s >= -aTolerance && s <= 1.0 + aTolerance)
             {
@@ -192,7 +197,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CGeoLine<Real>::intersects(CGeoLine<Real> aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
+        bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
         {
             CGeoCoordinate<Real> aPoint;
 
@@ -200,7 +205,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CGeoLine<Real>::intersects(CGeoLine<Real> aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
+        bool CGeoLine<Real>::intersects(CGeoLine<Real>&, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
         {
             CGeoIntersectionType anIntersectionType;
 
@@ -208,7 +213,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CGeoLine<Real>::intersects(CGeoLine<Real> aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
+        bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, CGeoIntersectionType& anIntersectionType, const Real aTolerance)
         {
             // http://mathworld.wolfram.com/Line-LineIntersection.html
             // in 3d; will also work in 2d if z components are 0

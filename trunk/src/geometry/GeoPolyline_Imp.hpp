@@ -143,7 +143,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoLineList<Real> CGeoPolyline<Real>::clip(CGeoPlane<Real> aPlane, const Real aTolerance)
+        CGeoLineList<Real> CGeoPolyline<Real>::clip(const CGeoPlane<Real>& aPlane, const Real aTolerance)
         {
             CGeoLineList<Real> aLineList;
 
@@ -168,7 +168,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CGeoPolyline<Real>::intersects(CGeoPlane<Real> aPlane)
+        bool CGeoPolyline<Real>::intersects(const CGeoPlane<Real>& aPlane)
         {
             CGeoCoordinate<Real> aPoint;
             CGeoIntersectionType anIntersectionType;
@@ -177,13 +177,8 @@ namespace ENigMA
             {
                 CGeoLine<Real> aLine;
 
-                CGeoCoordinate<Real> p1, p2;
-
-                p1 = CGeoVertexList<Real>::vertex(i);
-                p2 = CGeoVertexList<Real>::vertex(i + 1);
-
-                aLine.setStartPoint(p1);
-                aLine.setEndPoint(p2);
+                aLine.setStartPoint(CGeoVertexList<Real>::vertex(i));
+                aLine.setEndPoint(CGeoVertexList<Real>::vertex(i + 1));
 
                 if (aLine.intersects(aPlane, aPoint, anIntersectionType))
                     return true;

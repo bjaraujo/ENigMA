@@ -28,7 +28,7 @@ namespace ENigMA
             CGeoPlane(const CGeoNormal<Real>& aNormal, const Real d);
             virtual ~CGeoPlane();
 
-            CGeoNormal<Real>& normal();
+            CGeoNormal<Real> normal() const;
 
             void setD(const Real aValue);
             Real d() const;

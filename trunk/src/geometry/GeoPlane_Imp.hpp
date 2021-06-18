@@ -39,7 +39,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoNormal<Real>& CGeoPlane<Real>::normal()
+        CGeoNormal<Real> CGeoPlane<Real>::normal() const
         {
             return m_normal;
         }

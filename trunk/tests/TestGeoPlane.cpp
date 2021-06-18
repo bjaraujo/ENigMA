@@ -37,8 +37,7 @@ TEST_F(CTestGeoPlane, construct) {
 
     CGeoPlane<decimal> aPlane;
 
-    aPlane.normal() = aNormal;
-    aPlane.setD(1.0);
+    aPlane.set(aNormal, 1.0);
 
     EXPECT_NEAR(1.0, aPlane.normal().norm(), 1E-6);
     EXPECT_NEAR(1.0, aPlane.d(), 1E-6);

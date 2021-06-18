@@ -39,9 +39,9 @@ namespace ENigMA
             inline void calculateLength(bool bReCalculate = false);
             inline void calculateBoundingBox(bool bReCalculate = false);
 
-            inline CGeoLineList<Real> clip(CGeoPlane<Real> aPlane, const Real aTolerance = 0.0);
+            inline CGeoLineList<Real> clip(const CGeoPlane<Real>& aPlane, const Real aTolerance = 0.0);
 
-            inline bool intersects(CGeoPlane<Real> aPlane);
+            inline bool intersects(const CGeoPlane<Real>& aPlane);
 
             void invert();
         };
