@@ -205,7 +205,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CGeoLine<Real>::intersects(CGeoLine<Real>&, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
+        bool CGeoLine<Real>::intersects(CGeoLine<Real>& aLine, CGeoCoordinate<Real>& aPoint, const Real aTolerance)
         {
             CGeoIntersectionType anIntersectionType;
 
