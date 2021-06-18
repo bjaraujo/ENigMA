@@ -947,7 +947,7 @@ namespace ENigMA
             {
                 Integer anElementId = elementId(i);
 
-                q = this->quality(anElementId);
+                Real q = this->quality(anElementId);
 
                 aSumQ += q;
 
