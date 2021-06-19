@@ -22,7 +22,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshExtrudedMesher<Real>::generate(CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance)
+        bool CMshExtrudedMesher<Real>::generate(const CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance)
         {
             for (Integer k = 0; k < nw; k++)
             {
@@ -30,7 +30,7 @@ namespace ENigMA
                 for (Integer i = 0; i < aPlanarMesh.nbElements(); i++)
                 {
                     Integer anElementId = aPlanarMesh.elementId(i);
-                    CMshElement<Real>& aPlanarElement = aPlanarMesh.element(anElementId);
+                    CMshElement<Real> aPlanarElement = aPlanarMesh.element(anElementId);
 
                     if (aPlanarElement.elementType() == ET_TRIANGLE)
                     {
