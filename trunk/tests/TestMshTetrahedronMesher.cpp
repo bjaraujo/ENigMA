@@ -49,10 +49,10 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
     CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, nw * d);
-    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, nw * d);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -121,10 +121,10 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, nw * d);
-    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, nw * d);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -178,10 +178,10 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, nw * d);
-    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, nw * d);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -236,10 +236,10 @@ TEST_F(CTestMshTetrahedronMesher, mesh4)
     CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, nw * d);
-    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, nw * d);
-    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, nw * d);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -277,5 +277,5 @@ TEST_F(CTestMshTetrahedronMesher, mesh4)
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "tetra_volume4.msh", "tetras");
 
-    EXPECT_EQ(2306, aVolumeMesh.nbElements());
+    EXPECT_EQ(2276, aVolumeMesh.nbElements());
 }

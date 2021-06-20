@@ -34,14 +34,14 @@ protected:
 
 TEST_F(CTestFvmPiso, hydroPressure) {
 
-    CGeoCoordinate<decimal> aVertex1(+0.00, +0.00, -1.0);
-    CGeoCoordinate<decimal> aVertex2(+1.00, +0.00, -1.0);
-    CGeoCoordinate<decimal> aVertex3(+1.00, +1.00, -1.0);
-    CGeoCoordinate<decimal> aVertex4(+0.00, +1.00, -1.0);
-    CGeoCoordinate<decimal> aVertex5(+0.00, +0.00, +1.0);
-    CGeoCoordinate<decimal> aVertex6(+1.00, +0.00, +1.0);
-    CGeoCoordinate<decimal> aVertex7(+1.00, +1.00, +1.0);
-    CGeoCoordinate<decimal> aVertex8(+0.00, +1.00, +1.0);
+    CGeoCoordinate<decimal> aVertex1(+0.00, +0.00, +1.0);
+    CGeoCoordinate<decimal> aVertex2(+1.00, +0.00, +1.0);
+    CGeoCoordinate<decimal> aVertex3(+1.00, +1.00, +1.0);
+    CGeoCoordinate<decimal> aVertex4(+0.00, +1.00, +1.0);
+    CGeoCoordinate<decimal> aVertex5(+0.00, +0.00, -1.0);
+    CGeoCoordinate<decimal> aVertex6(+1.00, +0.00, -1.0);
+    CGeoCoordinate<decimal> aVertex7(+1.00, +1.00, -1.0);
+    CGeoCoordinate<decimal> aVertex8(+0.00, +1.00, -1.0);
 
     CGeoHexahedron<decimal> aHexahedron;
 

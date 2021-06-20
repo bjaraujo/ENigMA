@@ -308,10 +308,10 @@ TEST_F(CTestFvmMesh, clip1) {
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -370,7 +370,7 @@ TEST_F(CTestFvmMesh, clip1) {
 
     aFvmMeshSearch.build();
 
-    CGeoCoordinate<decimal> aCoordinate(0.5, 0.75, 1.0);
+    CGeoCoordinate<decimal> aCoordinate(0.5, 0.75, -1.0);
 
     std::vector<Integer> sFaceIds;
 
@@ -481,10 +481,10 @@ TEST_F(CTestFvmMesh, clip2) {
     CGeoCoordinate<decimal> aVertex2(length, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(length, width, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, width, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, height);
-    CGeoCoordinate<decimal> aVertex6(length, 0.0, height);
-    CGeoCoordinate<decimal> aVertex7(length, width, height);
-    CGeoCoordinate<decimal> aVertex8(0.0, width, height);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -height);
+    CGeoCoordinate<decimal> aVertex6(length, 0.0, -height);
+    CGeoCoordinate<decimal> aVertex7(length, width, -height);
+    CGeoCoordinate<decimal> aVertex8(0.0, width, -height);
 
     CGeoHexahedron<decimal> aHexahedron;
 

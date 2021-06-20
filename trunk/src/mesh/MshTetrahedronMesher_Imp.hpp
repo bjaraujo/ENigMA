@@ -846,7 +846,7 @@ namespace ENigMA
                     aNewTetrahedron.addVertex(aNode3);
                     aNewTetrahedron.addVertex(aNode4);
 
-                    aNewTetrahedron.calculateVolume();
+                    aNewTetrahedron.calculateVolume();                  
 
                     if (aNewTetrahedron.volume() > aTolerance * aTolerance * aTolerance)
                     {
