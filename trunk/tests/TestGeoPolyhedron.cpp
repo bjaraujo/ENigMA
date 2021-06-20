@@ -136,16 +136,16 @@ TEST_F(CTestGeoPolyhedron, volume1) {
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
 
     // face 1
     aPolyline.addVertex(aVertex1);
-    aPolyline.addVertex(aVertex4);
-    aPolyline.addVertex(aVertex3);
     aPolyline.addVertex(aVertex2);
+    aPolyline.addVertex(aVertex3);
+    aPolyline.addVertex(aVertex4);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -154,10 +154,10 @@ TEST_F(CTestGeoPolyhedron, volume1) {
     aPolygon.reset();
 
     // face 2
-    aPolyline.addVertex(aVertex5);
-    aPolyline.addVertex(aVertex6);
-    aPolyline.addVertex(aVertex7);
     aPolyline.addVertex(aVertex8);
+    aPolyline.addVertex(aVertex7);
+    aPolyline.addVertex(aVertex6);
+    aPolyline.addVertex(aVertex5);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -166,10 +166,10 @@ TEST_F(CTestGeoPolyhedron, volume1) {
     aPolygon.reset();
 
     // face 3
-    aPolyline.addVertex(aVertex5);
-    aPolyline.addVertex(aVertex1);
-    aPolyline.addVertex(aVertex2);
     aPolyline.addVertex(aVertex6);
+    aPolyline.addVertex(aVertex2);
+    aPolyline.addVertex(aVertex1);
+    aPolyline.addVertex(aVertex5);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -178,10 +178,10 @@ TEST_F(CTestGeoPolyhedron, volume1) {
     aPolygon.reset();
 
     // face 4
-    aPolyline.addVertex(aVertex8);
-    aPolyline.addVertex(aVertex7);
-    aPolyline.addVertex(aVertex3);
     aPolyline.addVertex(aVertex4);
+    aPolyline.addVertex(aVertex3);
+    aPolyline.addVertex(aVertex7);
+    aPolyline.addVertex(aVertex8);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -190,10 +190,10 @@ TEST_F(CTestGeoPolyhedron, volume1) {
     aPolygon.reset();
 
     // face 5
-    aPolyline.addVertex(aVertex6);
-    aPolyline.addVertex(aVertex2);
-    aPolyline.addVertex(aVertex3);
     aPolyline.addVertex(aVertex7);
+    aPolyline.addVertex(aVertex3);
+    aPolyline.addVertex(aVertex2);
+    aPolyline.addVertex(aVertex6);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -202,10 +202,10 @@ TEST_F(CTestGeoPolyhedron, volume1) {
     aPolygon.reset();
 
     // face 6
-    aPolyline.addVertex(aVertex1);
-    aPolyline.addVertex(aVertex5);
-    aPolyline.addVertex(aVertex8);
     aPolyline.addVertex(aVertex4);
+    aPolyline.addVertex(aVertex8);
+    aPolyline.addVertex(aVertex5);
+    aPolyline.addVertex(aVertex1);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -242,8 +242,8 @@ TEST_F(CTestGeoPolyhedron, volume2) {
 
     // face 1
     aPolyline.addVertex(aVertex1);
-    aPolyline.addVertex(aVertex3);
     aPolyline.addVertex(aVertex2);
+    aPolyline.addVertex(aVertex3);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -260,8 +260,8 @@ TEST_F(CTestGeoPolyhedron, volume2) {
 
     // face 2
     aPolyline.addVertex(aVertex1);
-    aPolyline.addVertex(aVertex2);
     aPolyline.addVertex(aVertex4);
+    aPolyline.addVertex(aVertex2);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -278,8 +278,8 @@ TEST_F(CTestGeoPolyhedron, volume2) {
 
     // face 3
     aPolyline.addVertex(aVertex1);
-    aPolyline.addVertex(aVertex4);
     aPolyline.addVertex(aVertex3);
+    aPolyline.addVertex(aVertex4);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);
@@ -296,8 +296,8 @@ TEST_F(CTestGeoPolyhedron, volume2) {
 
     // face 4
     aPolyline.addVertex(aVertex2);
-    aPolyline.addVertex(aVertex3);
     aPolyline.addVertex(aVertex4);
+    aPolyline.addVertex(aVertex3);
     aPolyline.close();
 
     aPolygon.setPolyline(aPolyline);

@@ -17,8 +17,11 @@
 #include "FvmMesh.hpp"
 #include "FvmMeshSearch.hpp"
 #include "MshBasicMesher.hpp"
+#include "PosGmsh.hpp"
 
 using namespace ENigMA::fvm;
+using namespace ENigMA::pde;
+using namespace ENigMA::post;
 
 class CTestFvmMesh : public ::testing::Test {
 protected:
@@ -95,6 +98,207 @@ TEST_F(CTestFvmMesh, calcVolume1) {
     decimal volume2 = aFvmMesh.controlVolume(1).volume();
 
     EXPECT_GT(volume2, 0.0);
+
+}
+
+TEST_F(CTestFvmMesh, orient1) {
+
+    CMshMesh<decimal> aMesh;
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+
+    CGeoTetrahedron<decimal> aTetrahedron;
+
+    aTetrahedron.addVertex(aVertex1);
+    aTetrahedron.addVertex(aVertex2);
+    aTetrahedron.addVertex(aVertex3);
+    aTetrahedron.addVertex(aVertex4);
+
+    aTetrahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-6);
+
+    CMshNode<decimal> aNode1;
+    aNode1 << aVertex1;
+    aMesh.addNode(1, aNode1);
+
+    CMshNode<decimal> aNode2;
+    aNode2 << aVertex2;
+    aMesh.addNode(2, aNode2);
+
+    CMshNode<decimal> aNode3;
+    aNode3 << aVertex3;
+    aMesh.addNode(3, aNode3);
+
+    CMshNode<decimal> aNode4;
+    aNode4 << aVertex4;
+    aMesh.addNode(4, aNode4);
+
+    CMshElement<decimal> anElement1(ET_TETRAHEDRON);
+    anElement1.addNodeId(1);
+    anElement1.addNodeId(2);
+    anElement1.addNodeId(3);
+    anElement1.addNodeId(4);
+    aMesh.addElement(1, anElement1);
+
+    aMesh.generateFaces(1E-6);
+
+    CPdeField<decimal> T;
+    CPosGmsh<decimal> aPosGmsh;
+
+    T.setMesh(aMesh.extractBoundary(1E-6));
+    aPosGmsh.save(T, "tetra_orient1.msh", "tetra");
+
+}
+
+TEST_F(CTestFvmMesh, orient2) {
+
+    CMshMesh<decimal> aMesh;
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+
+    CGeoTriangularPrism<decimal> aTriangularPrism;
+
+    aTriangularPrism.addVertex(aVertex1);
+    aTriangularPrism.addVertex(aVertex2);
+    aTriangularPrism.addVertex(aVertex3);
+    aTriangularPrism.addVertex(aVertex4);
+    aTriangularPrism.addVertex(aVertex5);
+    aTriangularPrism.addVertex(aVertex6);
+
+    aTriangularPrism.calculateVolume();
+
+    EXPECT_EQ(0.5, aTriangularPrism.volume());
+
+    CMshNode<decimal> aNode1;
+    aNode1 << aVertex1;
+    aMesh.addNode(1, aNode1);
+
+    CMshNode<decimal> aNode2;
+    aNode2 << aVertex2;
+    aMesh.addNode(2, aNode2);
+
+    CMshNode<decimal> aNode3;
+    aNode3 << aVertex3;
+    aMesh.addNode(3, aNode3);
+
+    CMshNode<decimal> aNode4;
+    aNode4 << aVertex4;
+    aMesh.addNode(4, aNode4);
+
+    CMshNode<decimal> aNode5;
+    aNode5 << aVertex5;
+    aMesh.addNode(5, aNode5);
+
+    CMshNode<decimal> aNode6;
+    aNode6 << aVertex6;
+    aMesh.addNode(6, aNode6);
+
+    CMshElement<decimal> anElement1(ET_TRIANGULAR_PRISM);
+    anElement1.addNodeId(1);
+    anElement1.addNodeId(2);
+    anElement1.addNodeId(3);
+    anElement1.addNodeId(4);
+    anElement1.addNodeId(5);
+    anElement1.addNodeId(6);
+    aMesh.addElement(1, anElement1);
+
+    aMesh.generateFaces(1E-6);
+
+    CPdeField<decimal> T;
+    CPosGmsh<decimal> aPosGmsh;
+
+    T.setMesh(aMesh.extractBoundary(1E-6));
+    aPosGmsh.save(T, "prism_orient2.msh", "prism");
+
+}
+
+TEST_F(CTestFvmMesh, orient3) {
+
+    CMshMesh<decimal> aMesh;
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    CMshNode<decimal> aNode1;
+    aNode1 << aVertex1;
+    aMesh.addNode(1, aNode1);
+
+    CMshNode<decimal> aNode2;
+    aNode2 << aVertex2;
+    aMesh.addNode(2, aNode2);
+
+    CMshNode<decimal> aNode3;
+    aNode3 << aVertex3;
+    aMesh.addNode(3, aNode3);
+
+    CMshNode<decimal> aNode4;
+    aNode4 << aVertex4;
+    aMesh.addNode(4, aNode4);
+
+    CMshNode<decimal> aNode5;
+    aNode5 << aVertex5;
+    aMesh.addNode(5, aNode5);
+
+    CMshNode<decimal> aNode6;
+    aNode6 << aVertex6;
+    aMesh.addNode(6, aNode6);
+
+    CMshNode<decimal> aNode7;
+    aNode7 << aVertex7;
+    aMesh.addNode(7, aNode7);
+
+    CMshNode<decimal> aNode8;
+    aNode8 << aVertex8;
+    aMesh.addNode(8, aNode8);
+
+    CMshElement<decimal> anElement1(ET_HEXAHEDRON);
+    anElement1.addNodeId(1);
+    anElement1.addNodeId(2);
+    anElement1.addNodeId(3);
+    anElement1.addNodeId(4);
+    anElement1.addNodeId(5);
+    anElement1.addNodeId(6);
+    anElement1.addNodeId(7);
+    anElement1.addNodeId(8);
+    aMesh.addElement(1, anElement1);
+
+    aMesh.generateFaces(1E-6);
+
+    CPdeField<decimal> T;
+    CPosGmsh<decimal> aPosGmsh;
+
+    T.setMesh(aMesh.extractBoundary(1E-6));
+    aPosGmsh.save(T, "hexa_orient3.msh", "hexa");
 
 }
 

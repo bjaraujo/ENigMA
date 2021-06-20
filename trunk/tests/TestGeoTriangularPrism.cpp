@@ -36,10 +36,9 @@ TEST_F(CTestGeoTriangularPrism, volume) {
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
 
     CGeoTriangularPrism<decimal> aTriangularPrism;
 

@@ -95,12 +95,12 @@ namespace ENigMA
 
                     CMshElement<Real> aSolidElement(ET_TRIANGULAR_PRISM);
 
-                    aSolidElement.addNodeId(aNodeId1);
                     aSolidElement.addNodeId(aNodeId3);
                     aSolidElement.addNodeId(aNodeId2);
-                    aSolidElement.addNodeId(aNodeId4);
+                    aSolidElement.addNodeId(aNodeId1);
                     aSolidElement.addNodeId(aNodeId6);
                     aSolidElement.addNodeId(aNodeId5);
+                    aSolidElement.addNodeId(aNodeId4);
 
                     m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
                 }
@@ -144,14 +144,14 @@ namespace ENigMA
 
                     CMshElement<Real> aSolidElement(ET_HEXAHEDRON);
 
-                    aSolidElement.addNodeId(aNodeId1);
-                    aSolidElement.addNodeId(aNodeId2);
-                    aSolidElement.addNodeId(aNodeId3);
                     aSolidElement.addNodeId(aNodeId4);
-                    aSolidElement.addNodeId(aNodeId5);
-                    aSolidElement.addNodeId(aNodeId6);
-                    aSolidElement.addNodeId(aNodeId7);
+                    aSolidElement.addNodeId(aNodeId3);
+                    aSolidElement.addNodeId(aNodeId2);
+                    aSolidElement.addNodeId(aNodeId1);
                     aSolidElement.addNodeId(aNodeId8);
+                    aSolidElement.addNodeId(aNodeId7);
+                    aSolidElement.addNodeId(aNodeId6);
+                    aSolidElement.addNodeId(aNodeId5);
 
                     m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
                 }

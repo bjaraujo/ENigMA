@@ -239,27 +239,27 @@ namespace ENigMA
 
                 // face 1
                 aFace.addNodeId(m_nodeIds[0]);
-                aFace.addNodeId(m_nodeIds[2]);
                 aFace.addNodeId(m_nodeIds[1]);
+                aFace.addNodeId(m_nodeIds[2]);
                 aFace.setFaceType(FT_TRIANGLE);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 2
-                aFace.addNodeId(m_nodeIds[3]);
-                aFace.addNodeId(m_nodeIds[4]);
                 aFace.addNodeId(m_nodeIds[5]);
+                aFace.addNodeId(m_nodeIds[4]);
+                aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_TRIANGLE);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 3
+                aFace.addNodeId(m_nodeIds[1]);
                 aFace.addNodeId(m_nodeIds[0]);
                 aFace.addNodeId(m_nodeIds[3]);
                 aFace.addNodeId(m_nodeIds[4]);
-                aFace.addNodeId(m_nodeIds[1]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);
@@ -291,59 +291,59 @@ namespace ENigMA
 
                 // face 1
                 aFace.addNodeId(m_nodeIds[0]);
-                aFace.addNodeId(m_nodeIds[3]);
-                aFace.addNodeId(m_nodeIds[2]);
                 aFace.addNodeId(m_nodeIds[1]);
+                aFace.addNodeId(m_nodeIds[2]);
+                aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 2
-                aFace.addNodeId(m_nodeIds[4]);
-                aFace.addNodeId(m_nodeIds[5]);
-                aFace.addNodeId(m_nodeIds[6]);
                 aFace.addNodeId(m_nodeIds[7]);
+                aFace.addNodeId(m_nodeIds[6]);
+                aFace.addNodeId(m_nodeIds[5]);
+                aFace.addNodeId(m_nodeIds[4]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 3
-                aFace.addNodeId(m_nodeIds[4]);
-                aFace.addNodeId(m_nodeIds[0]);
-                aFace.addNodeId(m_nodeIds[1]);
                 aFace.addNodeId(m_nodeIds[5]);
+                aFace.addNodeId(m_nodeIds[1]);
+                aFace.addNodeId(m_nodeIds[0]);
+                aFace.addNodeId(m_nodeIds[4]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 4
-                aFace.addNodeId(m_nodeIds[7]);
-                aFace.addNodeId(m_nodeIds[6]);
-                aFace.addNodeId(m_nodeIds[2]);
                 aFace.addNodeId(m_nodeIds[3]);
+                aFace.addNodeId(m_nodeIds[2]);
+                aFace.addNodeId(m_nodeIds[6]);
+                aFace.addNodeId(m_nodeIds[7]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 5
-                aFace.addNodeId(m_nodeIds[5]);
-                aFace.addNodeId(m_nodeIds[1]);
-                aFace.addNodeId(m_nodeIds[2]);
                 aFace.addNodeId(m_nodeIds[6]);
+                aFace.addNodeId(m_nodeIds[2]);
+                aFace.addNodeId(m_nodeIds[1]);
+                aFace.addNodeId(m_nodeIds[5]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);
                 aFace.reset();
 
                 // face 6
-                aFace.addNodeId(m_nodeIds[0]);
-                aFace.addNodeId(m_nodeIds[4]);
-                aFace.addNodeId(m_nodeIds[7]);
                 aFace.addNodeId(m_nodeIds[3]);
+                aFace.addNodeId(m_nodeIds[7]);
+                aFace.addNodeId(m_nodeIds[4]);
+                aFace.addNodeId(m_nodeIds[0]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
                 sFaces.push_back(aFace);

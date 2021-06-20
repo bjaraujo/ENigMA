@@ -54,7 +54,7 @@ namespace ENigMA
                 v2 = this->m_vertices[2] - this->m_vertices[0];
                 v3 = this->m_vertices[3] - this->m_vertices[0];
 
-                this->m_volume = 0.5 * v1.dot(v2.cross(v3));
+                this->m_volume = 0.5 * v3.dot(v2.cross(v1));
                 this->m_bVolume = true;
             }
         }

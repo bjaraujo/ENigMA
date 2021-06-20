@@ -34,8 +34,8 @@ protected:
 TEST_F(CTestGeoTetrahedron, volume1) {
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
 
     CGeoTetrahedron<decimal> aTetrahedron;
@@ -53,8 +53,8 @@ TEST_F(CTestGeoTetrahedron, volume1) {
 TEST_F(CTestGeoTetrahedron, volume2) {
 
     CGeoCoordinate<decimal> aVertex1(0.0206083, -0.00442002, 0.0089);
-    CGeoCoordinate<decimal> aVertex2(0.02147799300482443, -0.00452017265334567, 0.008806528084091029);
-    CGeoCoordinate<decimal> aVertex3(0.0214445, -0.004, 0.0079416);
+    CGeoCoordinate<decimal> aVertex2(0.0214445, -0.004, 0.0079416);
+    CGeoCoordinate<decimal> aVertex3(0.02147799300482443, -0.00452017265334567, 0.008806528084091029);
     CGeoCoordinate<decimal> aVertex4(0.0214445, -0.004, 0.0089);
 
     CGeoTetrahedron<decimal> aTetrahedron;
