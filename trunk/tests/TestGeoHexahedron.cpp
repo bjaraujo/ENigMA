@@ -59,3 +59,41 @@ TEST_F(CTestGeoHexahedron, volume) {
 
 }
 
+TEST_F(CTestGeoHexahedron, decimate) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    std::vector<CGeoTetrahedron<decimal>> sTetrahedrals;
+    aHexahedron.decimate(sTetrahedrals);
+
+    decimal volume = 0.0;
+    for (CGeoTetrahedron<decimal> tetra : sTetrahedrals)
+    {
+        tetra.calculateVolume();
+        volume += tetra.volume();
+    }
+
+    EXPECT_NEAR(1.0, volume, 1E-12);
+}

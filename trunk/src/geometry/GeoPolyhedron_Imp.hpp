@@ -72,7 +72,66 @@ namespace ENigMA
         template <typename Real>
         CGeoPolyhedron<Real>::CGeoPolyhedron(CGeoTriangularPrism<Real>& aTriangularPrism)
         {
-            // TODO:
+            CGeoPolyline<Real> aPolyline;
+            CGeoPolygon<Real> aPolygon;
+
+            // face 1
+            aPolyline.addVertex(aTriangularPrism.vertex(0));
+            aPolyline.addVertex(aTriangularPrism.vertex(1));
+            aPolyline.addVertex(aTriangularPrism.vertex(2));
+            aPolyline.close();
+
+            aPolygon.setPolyline(aPolyline);
+            this->addPolygon(0, aPolygon);
+            aPolyline.reset();
+            aPolygon.reset();
+
+            // face 2
+            aPolyline.addVertex(aTriangularPrism.vertex(5));
+            aPolyline.addVertex(aTriangularPrism.vertex(4));
+            aPolyline.addVertex(aTriangularPrism.vertex(3));
+            aPolyline.close();
+
+            aPolygon.setPolyline(aPolyline);
+            this->addPolygon(1, aPolygon);
+            aPolyline.reset();
+            aPolygon.reset();
+
+            // face 3
+            aPolyline.addVertex(aTriangularPrism.vertex(1));
+            aPolyline.addVertex(aTriangularPrism.vertex(0));
+            aPolyline.addVertex(aTriangularPrism.vertex(3));
+            aPolyline.addVertex(aTriangularPrism.vertex(4));
+            aPolyline.close();
+
+            aPolygon.setPolyline(aPolyline);
+            this->addPolygon(2, aPolygon);
+            aPolyline.reset();
+            aPolygon.reset();
+
+            // face 4
+            aPolyline.addVertex(aTriangularPrism.vertex(2));
+            aPolyline.addVertex(aTriangularPrism.vertex(1));
+            aPolyline.addVertex(aTriangularPrism.vertex(4));
+            aPolyline.addVertex(aTriangularPrism.vertex(5));
+            aPolyline.close();
+
+            aPolygon.setPolyline(aPolyline);
+            this->addPolygon(3, aPolygon);
+            aPolyline.reset();
+            aPolygon.reset();
+
+            // face 5
+            aPolyline.addVertex(aTriangularPrism.vertex(0));
+            aPolyline.addVertex(aTriangularPrism.vertex(2));
+            aPolyline.addVertex(aTriangularPrism.vertex(5));
+            aPolyline.addVertex(aTriangularPrism.vertex(3));
+            aPolyline.close();
+
+            aPolygon.setPolyline(aPolyline);
+            this->addPolygon(4, aPolygon);
+            aPolyline.reset();
+            aPolygon.reset();
         }
 
         template <typename Real>

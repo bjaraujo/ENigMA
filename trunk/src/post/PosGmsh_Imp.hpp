@@ -158,9 +158,6 @@ namespace ENigMA
                             anElement.addNodeId(aNodeId - 1);
                         }
 
-                        if (anElement.elementType() == ENigMA::mesh::ET_TETRAHEDRON)
-                            anElement.invert();
-
                         aField.mesh().addElement(id - 1, anElement);
                     }
 
@@ -210,9 +207,6 @@ namespace ENigMA
                     Integer index = aField.mesh().elementIndex(id);
 
                     ENigMA::mesh::CMshElement<Real> anElement = aField.mesh().element(id);
-
-                    if (anElement.elementType() == ENigMA::mesh::ET_TETRAHEDRON)
-                        anElement.invert();
 
                     Integer nElemType;
 

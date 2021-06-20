@@ -347,6 +347,8 @@ TEST_F(CTestGeoPolyhedron, volume3) {
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
+    aHexahedron.calculateVolume();
+
     CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
 
     aPolyhedron.calculateSurfaceArea(true);
@@ -356,6 +358,99 @@ TEST_F(CTestGeoPolyhedron, volume3) {
     aPolyhedron.calculateVolume(true);
 
     EXPECT_EQ(1.0, aPolyhedron.volume());
+
+    EXPECT_NEAR(aPolyhedron.volume(), aHexahedron.volume(), 1E-6);
+
+}
+
+TEST_F(CTestGeoPolyhedron, volume4) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+
+    CGeoTetrahedron<decimal> aTetrahedron;
+
+    aTetrahedron.addVertex(aVertex1);
+    aTetrahedron.addVertex(aVertex2);
+    aTetrahedron.addVertex(aVertex3);
+    aTetrahedron.addVertex(aVertex4);
+
+    aTetrahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-12);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aTetrahedron);
+
+    aPolyhedron.calculateVolume();
+
+    EXPECT_NEAR(1.0/6.0, aPolyhedron.volume(), 1E-6);
+
+}
+
+TEST_F(CTestGeoPolyhedron, volume5) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, 1.0);
+
+    CGeoTriangularPrism<decimal> aTriangularPrism;
+
+    aTriangularPrism.addVertex(aVertex1);
+    aTriangularPrism.addVertex(aVertex2);
+    aTriangularPrism.addVertex(aVertex3);
+    aTriangularPrism.addVertex(aVertex4);
+    aTriangularPrism.addVertex(aVertex5);
+    aTriangularPrism.addVertex(aVertex6);
+
+    aTriangularPrism.calculateVolume();
+
+    EXPECT_EQ(0.5, aTriangularPrism.volume());
+
+    CGeoPolyhedron<decimal> aPolyhedron(aTriangularPrism);
+
+    aPolyhedron.calculateVolume();
+
+    EXPECT_NEAR(0.5, aPolyhedron.volume(), 1E-12);
+
+}
+
+TEST_F(CTestGeoPolyhedron, volume6) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+
+    aPolyhedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aPolyhedron.volume(), 1E-12);
 
 }
 
@@ -380,6 +475,8 @@ TEST_F(CTestGeoPolyhedron, clip1) {
     aHexahedron.addVertex(aVertex6);
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
 
     CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
 
@@ -409,6 +506,8 @@ TEST_F(CTestGeoPolyhedron, clip1) {
     aNewPolyhedron.calculateVolume(true);
 
     EXPECT_NEAR(0.5, aNewPolyhedron.volume(), 1E-6);
+
+    EXPECT_NEAR(aPolyhedron.volume(), aHexahedron.volume(), 1E-6);
 
 }
 

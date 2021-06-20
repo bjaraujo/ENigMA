@@ -14,6 +14,8 @@
 
 #include "TypeDef.hpp"
 
+#include "GeoTetrahedron.hpp"
+#include "GeoPolyhedron.hpp"
 #include "MshBasicMesher.hpp"
 #include "MshTetrahedronMesher.hpp"
 #include "PosGmsh.hpp"
@@ -90,6 +92,21 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
 
     EXPECT_EQ(52, aVolumeMesh.nbElements());
 
+    CMshElement<decimal> anElement = aVolumeMesh.element(0);
+
+    CGeoTetrahedron<decimal> aTetrahedron;
+    aTetrahedron.addVertex(aVolumeMesh.node(anElement.nodeId(0)));
+    aTetrahedron.addVertex(aVolumeMesh.node(anElement.nodeId(1)));
+    aTetrahedron.addVertex(aVolumeMesh.node(anElement.nodeId(2)));
+    aTetrahedron.addVertex(aVolumeMesh.node(anElement.nodeId(3)));
+    aTetrahedron.calculateVolume();
+
+    EXPECT_TRUE(aTetrahedron.volume() > 0.0);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aTetrahedron);
+    aPolyhedron.calculateVolume();
+
+    EXPECT_TRUE(aPolyhedron.volume() > 0.0);
 }
 
 TEST_F(CTestMshTetrahedronMesher, mesh2) {

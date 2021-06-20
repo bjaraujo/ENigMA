@@ -90,7 +90,7 @@ namespace ENigMA
                 matrix.col(2) << this->m_vertices[2].x(), this->m_vertices[2].y(), this->m_vertices[2].z(), 1.0;
                 matrix.col(3) << this->m_vertices[3].x(), this->m_vertices[3].y(), this->m_vertices[3].z(), 1.0;
 
-                this->m_volume = matrix.determinant() / 6.0;
+                this->m_volume = -matrix.determinant() / 6.0;
 
                 this->m_bVolume = true;
             }

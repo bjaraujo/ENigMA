@@ -14,6 +14,9 @@
 
 #include "TypeDef.hpp"
 
+#include "GeoTriangularPrism.hpp"
+#include "GeoHexahedron.hpp"
+#include "GeoPolyhedron.hpp"
 #include "MshBasicMesher.hpp"
 #include "MshExtrudedMesher.hpp"
 #include "PdeField.hpp"
@@ -64,16 +67,40 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
     const decimal dw = 0.25;
 
-    anExtrudedMesher.generate(aPlanarMesh, nw, dw, 1E-6);
+    for (Integer i = 0; i < nw; i++)
+    {
+        decimal aDelta = dw / nw;
+        anExtrudedMesher.generate(aPlanarMesh, aDelta, 1E-6);
+    }
+
+    CMshMesh<decimal> aVolumeMesh;
+    aVolumeMesh = anExtrudedMesher.mesh();
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
 
-    T.setMesh(anExtrudedMesher.mesh());
+    T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "extruded_tris.msh", "prisms");
 
-    EXPECT_EQ(nu * nv * nw * 2, anExtrudedMesher.mesh().nbElements());
+    EXPECT_EQ(nu * nv * nw * 2, aVolumeMesh.nbElements());
 
+    CMshElement<decimal> anElement = aVolumeMesh.element(0);
+
+    CGeoTriangularPrism<decimal> aPrism;
+    aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(0)));
+    aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(1)));
+    aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(2)));
+    aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(3)));
+    aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(4)));
+    aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(5)));
+    aPrism.calculateVolume();
+
+    EXPECT_GT(aPrism.volume(), 0.0);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aPrism);
+    aPolyhedron.calculateVolume();
+
+    EXPECT_GT(aPolyhedron.volume(), 0.0);
 }
 
 TEST_F(CTestMshExtrudedMesher, extrudeQuadrilaterals) {
@@ -104,14 +131,40 @@ TEST_F(CTestMshExtrudedMesher, extrudeQuadrilaterals) {
 
     const decimal dw = 0.25;
 
-    anExtrudedMesher.generate(aPlanarMesh, nw, dw, 1E-6);
+    for (Integer i = 0; i < nw; i++)
+    {
+        decimal aDelta = dw / nw;
+        anExtrudedMesher.generate(aPlanarMesh, aDelta, 1E-6);
+    }
+
+    CMshMesh<decimal> aVolumeMesh;
+    aVolumeMesh = anExtrudedMesher.mesh();
 
     CPdeField<decimal> T;
     CPosGmsh<decimal> aPosGmsh;
 
-    T.setMesh(anExtrudedMesher.mesh());
+    T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "extruded_quads.msh", "hex");
 
-    EXPECT_EQ(nu * nv * nw, anExtrudedMesher.mesh().nbElements());
+    EXPECT_EQ(nu * nv * nw, aVolumeMesh.nbElements());
 
+    CMshElement<decimal> anElement = aVolumeMesh.element(0);
+
+    CGeoHexahedron<decimal> aBrick;
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(0)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(1)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(2)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(3)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(4)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(5)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(6)));
+    aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(7)));
+    aBrick.calculateVolume();
+
+    EXPECT_GT(aBrick.volume(), 0.0);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aBrick);
+    aPolyhedron.calculateVolume();
+
+    EXPECT_GT(aPolyhedron.volume(), 0.0);
 }
