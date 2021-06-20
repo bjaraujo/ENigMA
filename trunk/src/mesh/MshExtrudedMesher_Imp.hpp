@@ -7,6 +7,8 @@
 // <Author> Billy Araujo </Author>
 // *****************************************************************************
 
+#include "MshMeshQuery.hpp"
+
 namespace ENigMA
 {
     namespace mesh
@@ -22,124 +24,146 @@ namespace ENigMA
         }
 
         template <typename Real>
-        bool CMshExtrudedMesher<Real>::generate(const CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance)
+        bool CMshExtrudedMesher<Real>::generate(CMshMesh<Real>& aSurfaceMesh, const Real aDelta, const Real aTolerance)
         {
-            for (Integer k = 0; k < nw; k++)
+            CMshMeshQuery<Real> aMeshQuery(aSurfaceMesh);
+            std::vector<Integer> sElementIds;
+
+            CGeoNormal<Real> aNormal;
+            std::map<Integer, CGeoNormal<Real>> sNormals;
+            CGeoTriangle<Real> aTriangle;
+
+            for (Integer i = 0; i < aSurfaceMesh.nbNodes(); i++)
             {
-                // Extrude elements
-                for (Integer i = 0; i < aPlanarMesh.nbElements(); i++)
+                Integer aNodeId = aSurfaceMesh.nodeId(i);
+                aMeshQuery.elementsSharingNode(aNodeId, sElementIds);
+
+                aNormal << 0, 0, 0;
+                for (Integer k = 0; k < sElementIds.size(); k++)
                 {
-                    Integer anElementId = aPlanarMesh.elementId(i);
-                    CMshElement<Real> aPlanarElement = aPlanarMesh.element(anElementId);
+                    CMshElement<Real> anElement = aSurfaceMesh.element(sElementIds[k]);
 
-                    if (aPlanarElement.elementType() == ET_TRIANGLE)
+                    aTriangle.reset();
+                    for (Integer j = 0; j < anElement.nbNodeIds(); j++)
                     {
-                        // Bottom
-                        CMshNode<Real> aNode1 = aPlanarMesh.node(aPlanarElement.nodeId(0));
-                        Integer aNodeId1 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId1, aNode1);
-                        m_mesh.node(aNodeId1).z() += (k + 0) * dw;
-
-                        CMshNode<Real> aNode2 = aPlanarMesh.node(aPlanarElement.nodeId(1));
-                        Integer aNodeId2 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId2, aNode2);
-                        m_mesh.node(aNodeId2).z() += (k + 0) * dw;
-
-                        CMshNode<Real> aNode3 = aPlanarMesh.node(aPlanarElement.nodeId(2));
-                        Integer aNodeId3 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId3, aNode3);
-                        m_mesh.node(aNodeId3).z() += (k + 0) * dw;
-
-                        // Top
-                        CMshNode<Real> aNode4 = aNode1;
-                        Integer aNodeId4 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId4, aNode4);
-                        m_mesh.node(aNodeId4).z() += (k + 1) * dw;
-
-                        CMshNode<Real> aNode5 = aNode2;
-                        Integer aNodeId5 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId5, aNode5);
-                        m_mesh.node(aNodeId5).z() += (k + 1) * dw;
-
-                        CMshNode<Real> aNode6 = aNode3;
-                        Integer aNodeId6 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId6, aNode6);
-                        m_mesh.node(aNodeId6).z() += (k + 1) * dw;
-
-                        CMshElement<Real> aSolidElement(ET_TRIANGULAR_PRISM);
-
-                        aSolidElement.addNodeId(aNodeId1);
-                        aSolidElement.addNodeId(aNodeId2);
-                        aSolidElement.addNodeId(aNodeId3);
-                        aSolidElement.addNodeId(aNodeId4);
-                        aSolidElement.addNodeId(aNodeId5);
-                        aSolidElement.addNodeId(aNodeId6);
-
-                        m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
+                        aTriangle.addVertex(aSurfaceMesh.node(anElement.nodeId(j)));
                     }
-                    else if (aPlanarElement.elementType() == ET_QUADRILATERAL)
-                    {
-                        // Bottom
-                        CMshNode<Real> aNode1 = aPlanarMesh.node(aPlanarElement.nodeId(0));
-                        Integer aNodeId1 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId1, aNode1);
-                        m_mesh.node(aNodeId1).z() += (k + 0) * dw;
+                    aTriangle.calculateNormal(true);
 
-                        CMshNode<Real> aNode2 = aPlanarMesh.node(aPlanarElement.nodeId(1));
-                        Integer aNodeId2 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId2, aNode2);
-                        m_mesh.node(aNodeId2).z() += (k + 0) * dw;
-
-                        CMshNode<Real> aNode3 = aPlanarMesh.node(aPlanarElement.nodeId(2));
-                        Integer aNodeId3 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId3, aNode3);
-                        m_mesh.node(aNodeId3).z() += (k + 0) * dw;
-
-                        CMshNode<Real> aNode4 = aPlanarMesh.node(aPlanarElement.nodeId(3));
-                        Integer aNodeId4 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId4, aNode4);
-                        m_mesh.node(aNodeId4).z() += (k + 0) * dw;
-
-                        // Top
-                        CMshNode<Real> aNode5 = aNode1;
-                        Integer aNodeId5 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId5, aNode5);
-                        m_mesh.node(aNodeId5).z() += (k + 1) * dw;
-
-                        CMshNode<Real> aNode6 = aNode2;
-                        Integer aNodeId6 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId6, aNode6);
-                        m_mesh.node(aNodeId6).z() += (k + 1) * dw;
-
-                        CMshNode<Real> aNode7 = aNode3;
-                        Integer aNodeId7 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId7, aNode7);
-                        m_mesh.node(aNodeId7).z() += (k + 1) * dw;
-
-                        CMshNode<Real> aNode8 = aNode4;
-                        Integer aNodeId8 = m_mesh.nextNodeId();
-                        m_mesh.addNode(aNodeId8, aNode8);
-                        m_mesh.node(aNodeId8).z() += (k + 1) * dw;
-
-                        CMshElement<Real> aSolidElement(ET_HEXAHEDRON);
-
-                        aSolidElement.addNodeId(aNodeId1);
-                        aSolidElement.addNodeId(aNodeId2);
-                        aSolidElement.addNodeId(aNodeId3);
-                        aSolidElement.addNodeId(aNodeId4);
-                        aSolidElement.addNodeId(aNodeId5);
-                        aSolidElement.addNodeId(aNodeId6);
-                        aSolidElement.addNodeId(aNodeId7);
-                        aSolidElement.addNodeId(aNodeId8);
-
-                        m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
-                    }
+                    aNormal += aTriangle.normal();
                 }
+                aNormal.normalize();
 
-                // Connect elements
-                m_mesh.mergeNodes(aTolerance);
-                m_mesh.renumber();
-                m_mesh.generateFaces(aTolerance);
+                sNormals[aNodeId] = -aNormal;
+            }
+
+            // Extrude elements
+            for (Integer i = 0; i < aSurfaceMesh.nbElements(); i++)
+            {
+                Integer anElementId = aSurfaceMesh.elementId(i);
+                CMshElement<Real> anElement = aSurfaceMesh.element(anElementId);
+
+                if (anElement.elementType() == ET_TRIANGLE)
+                {
+                    // Bottom
+                    CMshNode<Real> aNode1 = aSurfaceMesh.node(anElement.nodeId(0));
+                    Integer aNodeId1 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId1, aNode1);
+
+                    CMshNode<Real> aNode2 = aSurfaceMesh.node(anElement.nodeId(1));
+                    Integer aNodeId2 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId2, aNode2);
+
+                    CMshNode<Real> aNode3 = aSurfaceMesh.node(anElement.nodeId(2));
+                    Integer aNodeId3 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId3, aNode3);
+
+                    // Extrude
+                    aNode1 += sNormals.at(anElement.nodeId(0)) * aDelta;
+                    aNode2 += sNormals.at(anElement.nodeId(1)) * aDelta;
+                    aNode3 += sNormals.at(anElement.nodeId(2)) * aDelta;
+
+                    // Top
+                    Integer aNodeId4 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId4, aNode1);
+
+                    Integer aNodeId5 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId5, aNode2);
+
+                    Integer aNodeId6 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId6, aNode3);
+
+                    CMshElement<Real> aSolidElement(ET_TRIANGULAR_PRISM);
+
+                    aSolidElement.addNodeId(aNodeId1);
+                    aSolidElement.addNodeId(aNodeId3);
+                    aSolidElement.addNodeId(aNodeId2);
+                    aSolidElement.addNodeId(aNodeId4);
+                    aSolidElement.addNodeId(aNodeId6);
+                    aSolidElement.addNodeId(aNodeId5);
+
+                    m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
+                }
+                else if (anElement.elementType() == ET_QUADRILATERAL)
+                {
+                    // Bottom
+                    CMshNode<Real> aNode1 = aSurfaceMesh.node(anElement.nodeId(0));
+                    Integer aNodeId1 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId1, aNode1);
+
+                    CMshNode<Real> aNode2 = aSurfaceMesh.node(anElement.nodeId(1));
+                    Integer aNodeId2 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId2, aNode2);
+
+                    CMshNode<Real> aNode3 = aSurfaceMesh.node(anElement.nodeId(2));
+                    Integer aNodeId3 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId3, aNode3);
+
+                    CMshNode<Real> aNode4 = aSurfaceMesh.node(anElement.nodeId(3));
+                    Integer aNodeId4 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId4, aNode4);
+
+                    // Extrude
+                    aNode1 += sNormals.at(anElement.nodeId(0)) * aDelta;
+                    aNode2 += sNormals.at(anElement.nodeId(1)) * aDelta;
+                    aNode3 += sNormals.at(anElement.nodeId(2)) * aDelta;
+                    aNode4 += sNormals.at(anElement.nodeId(3)) * aDelta;
+
+                    // Top
+                    Integer aNodeId5 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId5, aNode1);
+
+                    Integer aNodeId6 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId6, aNode2);
+
+                    Integer aNodeId7 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId7, aNode3);
+
+                    Integer aNodeId8 = m_mesh.nextNodeId();
+                    m_mesh.addNode(aNodeId8, aNode4);
+
+                    CMshElement<Real> aSolidElement(ET_HEXAHEDRON);
+
+                    aSolidElement.addNodeId(aNodeId1);
+                    aSolidElement.addNodeId(aNodeId2);
+                    aSolidElement.addNodeId(aNodeId3);
+                    aSolidElement.addNodeId(aNodeId4);
+                    aSolidElement.addNodeId(aNodeId5);
+                    aSolidElement.addNodeId(aNodeId6);
+                    aSolidElement.addNodeId(aNodeId7);
+                    aSolidElement.addNodeId(aNodeId8);
+
+                    m_mesh.addElement(m_mesh.nextElementId(), aSolidElement);
+                }
+            }
+
+            // Update mesh
+            for (Integer i = 0; i < aSurfaceMesh.nbNodes(); i++)
+            {
+                Integer aNodeId = aSurfaceMesh.nodeId(i);
+                CMshNode<Real>& aNode = aSurfaceMesh.node(aNodeId);
+
+                aNode += sNormals.at(aNodeId) * aDelta;
             }
 
             return true;

@@ -25,7 +25,7 @@ namespace ENigMA
             CMshExtrudedMesher();
             virtual ~CMshExtrudedMesher();
 
-            bool generate(const CMshMesh<Real>& aPlanarMesh, const Integer nw, Real dw, const Real aTolerance = 0.0);
+            bool generate(CMshMesh<Real>& aSurfaceMesh, const Real aDelta, const Real aTolerance = 0.0);
 
             ENigMA::mesh::CMshMesh<Real>& mesh();
         };
