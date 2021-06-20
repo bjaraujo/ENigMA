@@ -238,7 +238,7 @@ TEST_F(CTestGeoPolyhedron, volume2) {
     CGeoCoordinate<decimal> aVertex1(px + 0.0, py + 0.0, pz + 0.0);
     CGeoCoordinate<decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
     CGeoCoordinate<decimal> aVertex3(px + 0.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex4(px + 0.0, py + 0.0, pz + 1.0);
+    CGeoCoordinate<decimal> aVertex4(px + 0.0, py + 0.0, pz - 1.0);
 
     // face 1
     aPolyline.addVertex(aVertex1);
@@ -249,7 +249,7 @@ TEST_F(CTestGeoPolyhedron, volume2) {
     aPolygon.setPolyline(aPolyline);
 
     aPolygon.calculateNormal(true);
-    EXPECT_NEAR(-1.0, aPolygon.normal().z(), 1E-6);
+    EXPECT_NEAR(1.0, aPolygon.normal().z(), 1E-6);
 
     aPolygon.calculateArea(true);
     EXPECT_NEAR(0.5, aPolygon.area(), 1E-6);
@@ -331,10 +331,10 @@ TEST_F(CTestGeoPolyhedron, volume3) {
     CGeoCoordinate<decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
     CGeoCoordinate<decimal> aVertex3(px + 1.0, py + 1.0, pz + 0.0);
     CGeoCoordinate<decimal> aVertex4(px + 0.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex5(px + 0.0, py + 0.0, pz + 1.0);
-    CGeoCoordinate<decimal> aVertex6(px + 1.0, py + 0.0, pz + 1.0);
-    CGeoCoordinate<decimal> aVertex7(px + 1.0, py + 1.0, pz + 1.0);
-    CGeoCoordinate<decimal> aVertex8(px + 0.0, py + 1.0, pz + 1.0);
+    CGeoCoordinate<decimal> aVertex5(px + 0.0, py + 0.0, pz - 1.0);
+    CGeoCoordinate<decimal> aVertex6(px + 1.0, py + 0.0, pz - 1.0);
+    CGeoCoordinate<decimal> aVertex7(px + 1.0, py + 1.0, pz - 1.0);
+    CGeoCoordinate<decimal> aVertex8(px + 0.0, py + 1.0, pz - 1.0);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -368,7 +368,7 @@ TEST_F(CTestGeoPolyhedron, volume4) {
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
 
     CGeoTetrahedron<decimal> aTetrahedron;
 
@@ -394,10 +394,9 @@ TEST_F(CTestGeoPolyhedron, volume5) {
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
 
     CGeoTriangularPrism<decimal> aTriangularPrism;
 
@@ -426,10 +425,10 @@ TEST_F(CTestGeoPolyhedron, volume6) {
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -460,10 +459,10 @@ TEST_F(CTestGeoPolyhedron, clip1) {
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
 
     CGeoHexahedron<decimal> aHexahedron;
 
@@ -517,10 +516,10 @@ TEST_F(CTestGeoPolyhedron, clip2) {
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
     CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
 
     CGeoHexahedron<decimal> aHexahedron;
 

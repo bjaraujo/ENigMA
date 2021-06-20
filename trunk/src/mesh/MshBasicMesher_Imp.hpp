@@ -248,9 +248,9 @@ namespace ENigMA
 
                             // Tetrahedron 1
                             anElement.reset();
-                            anElement.addNodeId(nodeId[1]);
-                            anElement.addNodeId(nodeId[0]);
                             anElement.addNodeId(nodeId[3]);
+                            anElement.addNodeId(nodeId[0]);
+                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[7]);
 
                             anElement.setElementType(ET_TETRAHEDRON);
@@ -260,9 +260,9 @@ namespace ENigMA
 
                             // Tetrahedron 2
                             anElement.reset();
-                            anElement.addNodeId(nodeId[4]);
-                            anElement.addNodeId(nodeId[0]);
                             anElement.addNodeId(nodeId[1]);
+                            anElement.addNodeId(nodeId[0]);
+                            anElement.addNodeId(nodeId[4]);
                             anElement.addNodeId(nodeId[7]);
 
                             anElement.setElementType(ET_TETRAHEDRON);
@@ -272,9 +272,9 @@ namespace ENigMA
 
                             // Tetrahedron 3
                             anElement.reset();
-                            anElement.addNodeId(nodeId[4]);
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[5]);
+                            anElement.addNodeId(nodeId[1]);
+                            anElement.addNodeId(nodeId[4]);
                             anElement.addNodeId(nodeId[7]);
 
                             anElement.setElementType(ET_TETRAHEDRON);
@@ -284,9 +284,9 @@ namespace ENigMA
 
                             // Tetrahedron 4
                             anElement.reset();
-                            anElement.addNodeId(nodeId[2]);
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[3]);
+                            anElement.addNodeId(nodeId[1]);
+                            anElement.addNodeId(nodeId[2]);
                             anElement.addNodeId(nodeId[7]);
 
                             anElement.setElementType(ET_TETRAHEDRON);
@@ -296,9 +296,9 @@ namespace ENigMA
 
                             // Tetrahedron 5
                             anElement.reset();
-                            anElement.addNodeId(nodeId[6]);
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[2]);
+                            anElement.addNodeId(nodeId[1]);
+                            anElement.addNodeId(nodeId[6]);
                             anElement.addNodeId(nodeId[7]);
 
                             anElement.setElementType(ET_TETRAHEDRON);
@@ -308,9 +308,9 @@ namespace ENigMA
 
                             // Tetrahedron 6
                             anElement.reset();
-                            anElement.addNodeId(nodeId[5]);
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[6]);
+                            anElement.addNodeId(nodeId[1]);
+                            anElement.addNodeId(nodeId[5]);
                             anElement.addNodeId(nodeId[7]);
 
                             anElement.setElementType(ET_TETRAHEDRON);
@@ -416,8 +416,8 @@ namespace ENigMA
 
                             // Tetrahedron 1
                             anElement.reset();
-                            anElement.addNodeId(nodeId[0]);
                             anElement.addNodeId(nodeId[3]);
+                            anElement.addNodeId(nodeId[0]);
                             anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[7]);
 
@@ -428,8 +428,8 @@ namespace ENigMA
 
                             // Tetrahedron 2
                             anElement.reset();
-                            anElement.addNodeId(nodeId[0]);
                             anElement.addNodeId(nodeId[1]);
+                            anElement.addNodeId(nodeId[0]);
                             anElement.addNodeId(nodeId[4]);
                             anElement.addNodeId(nodeId[7]);
 
@@ -440,8 +440,8 @@ namespace ENigMA
 
                             // Tetrahedron 3
                             anElement.reset();
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[5]);
+                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[4]);
                             anElement.addNodeId(nodeId[7]);
 
@@ -452,8 +452,8 @@ namespace ENigMA
 
                             // Tetrahedron 4
                             anElement.reset();
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[3]);
+                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[2]);
                             anElement.addNodeId(nodeId[7]);
 
@@ -464,8 +464,8 @@ namespace ENigMA
 
                             // Tetrahedron 5
                             anElement.reset();
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[2]);
+                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[6]);
                             anElement.addNodeId(nodeId[7]);
 
@@ -476,8 +476,8 @@ namespace ENigMA
 
                             // Tetrahedron 6
                             anElement.reset();
-                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[6]);
+                            anElement.addNodeId(nodeId[1]);
                             anElement.addNodeId(nodeId[5]);
                             anElement.addNodeId(nodeId[7]);
 

@@ -65,6 +65,12 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
     CMshMesh<decimal>& aPlanarMesh = aBasicMesher.mesh();
 
+    CPdeField<decimal> T;
+    CPosGmsh<decimal> aPosGmsh;
+
+    T.setMesh(aPlanarMesh);
+    aPosGmsh.save(T, "planar_tris.msh", "tris");
+
     const decimal dw = 0.25;
 
     for (Integer i = 0; i < nw; i++)
@@ -75,9 +81,6 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
     CMshMesh<decimal> aVolumeMesh;
     aVolumeMesh = anExtrudedMesher.mesh();
-
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
 
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "extruded_tris.msh", "prisms");
