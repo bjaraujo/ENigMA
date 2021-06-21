@@ -155,7 +155,7 @@ namespace ENigMA
 
             Real c = this->normal().cross(aTriangle.normal()).norm();
 
-            if (c <= aTolerance && fabs(d1 - d2) <= aTolerance)
+            if (c <= aTolerance && std::fabs(d1 - d2) <= aTolerance)
             {
                 // Triangles are co-planar
                 for (Integer k = 0; k < 3; ++k)
@@ -317,7 +317,7 @@ namespace ENigMA
                 }
             }
 
-            if (fabs(s[(w + 0) % 3] - (s[(w + 1) % 3] + s[(w + 2) % 3])) < aTolerance)
+            if (std::fabs(s[(w + 0) % 3] - (s[(w + 1) % 3] + s[(w + 2) % 3])) < aTolerance)
                 anIntersectionType = IT_EDGE;
             else
                 anIntersectionType = IT_INTERNAL;

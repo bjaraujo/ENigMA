@@ -486,7 +486,7 @@ namespace ENigMA
 
             for (Integer i = 0; i < nMaxIterations; ++i)
             {
-                if ((fb == 0.0) || (fabs(fa - fb) <= aTolerance))
+                if ((fb == 0.0) || (std::fabs(fa - fb) <= aTolerance))
                 {
                     nIterations = i + 1;
                     break;
@@ -503,10 +503,10 @@ namespace ENigMA
 
                 if ((!(((s > tmp) && (s < b)) ||
                        ((s < tmp) && (s > b)))) ||
-                        (mflag && (fabs(s - b) >= (fabs(b - e) * 0.5))) ||
-                        (!mflag && (fabs(s - b) >= (fabs(e - f) * 0.5))) ||
-                        (mflag && (fabs(b - e) < aTolerance)) ||
-                        (!mflag && (fabs(e - f) < aTolerance)))
+                        (mflag && (std::fabs(s - b) >= (std::fabs(b - e) * 0.5))) ||
+                        (!mflag && (std::fabs(s - b) >= (std::fabs(e - f) * 0.5))) ||
+                        (mflag && (std::fabs(b - e) < aTolerance)) ||
+                        (!mflag && (std::fabs(e - f) < aTolerance)))
                 {
                     s = (a + b) * 0.5;
                     mflag = true;
@@ -538,7 +538,7 @@ namespace ENigMA
                 }
 
                 // if |f(a)| < |f(b)| then swap (a,b) end if
-                if (fabs(fa) < fabs(fb))
+                if (std::fabs(fa) < std::fabs(fb))
                 {
                     tmp = a;
                     a = b;

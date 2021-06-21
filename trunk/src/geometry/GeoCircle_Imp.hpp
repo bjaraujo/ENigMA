@@ -20,7 +20,7 @@ namespace ENigMA
             Real xDelta_b = aPoint3.x() - aPoint2.x();
             Real yDelta_b = aPoint3.y() - aPoint2.y();
 
-            if (fabs(xDelta_a) <= aTolerance * aTolerance && fabs(yDelta_b) <= aTolerance * aTolerance)
+            if (std::fabs(xDelta_a) <= aTolerance * aTolerance && std::fabs(yDelta_b) <= aTolerance * aTolerance)
             {
                 this->m_center.x() = 0.5 * (aPoint2.x() + aPoint3.x());
                 this->m_center.y() = 0.5 * (aPoint1.y() + aPoint2.y());
@@ -32,7 +32,7 @@ namespace ENigMA
                 Real aSlope = yDelta_a / xDelta_a; //
                 Real bSlope = yDelta_b / xDelta_b;
 
-                if (fabs(aSlope - bSlope) <= aTolerance * aTolerance)
+                if (std::fabs(aSlope - bSlope) <= aTolerance * aTolerance)
                 {
                     this->m_center << 0.0, 0.0, 0.0;
                     this->m_radius = 0.0;

@@ -40,8 +40,8 @@ namespace ENigMA
 
             Real maxL = std::max(l1, std::max(l2, std::max(l3, std::max(l4, std::max(l5, l6)))));
 
-            if (fabs(S * maxL) > 0.0)
-                m_quality = 6.0 * sqrt(6.0) * fabs(V) / fabs(S * maxL);
+            if (std::fabs(S * maxL) > 0.0)
+                m_quality = 6.0 * sqrt(6.0) * std::fabs(V) / std::fabs(S * maxL);
             else
                 m_quality = 0.0;
         }

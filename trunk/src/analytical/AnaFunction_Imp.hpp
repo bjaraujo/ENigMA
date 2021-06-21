@@ -112,7 +112,7 @@ namespace ENigMA
             Integer i = 0;
 
             // Start loop
-            while (fabs(b - a) > aTolerance)
+            while (std::fabs(b - a) > aTolerance)
             {
                 // calculate midpoint
                 Real s = (a + b) * 0.5;
@@ -165,7 +165,7 @@ namespace ENigMA
             }
 
             // if |f(a)| < |f(b)| then swap (a,b) end if
-            if (fabs(fa) < fabs(fb))
+            if (std::fabs(fa) < std::fabs(fb))
             {
                 Real tmp = a;
                 a = b;
@@ -182,7 +182,7 @@ namespace ENigMA
 
             Integer i = 0;
 
-            while ((fb != 0) && (fabs(a - b) > aTolerance))
+            while ((fb != 0) && (std::fabs(a - b) > aTolerance))
             {
                 Real s;
 
@@ -195,14 +195,14 @@ namespace ENigMA
 
                 Real tmp2 = (3 * a + b) / 4;
 
-                if ((!(((s > tmp2) && (s < b)) || ((s < tmp2) && (s > b)))) || (mflag && (fabs(s - b) >= (fabs(b - c) / 2))) || (!mflag && (fabs(s - b) >= (fabs(c - d) / 2))))
+                if ((!(((s > tmp2) && (s < b)) || ((s < tmp2) && (s > b)))) || (mflag && (std::fabs(s - b) >= (std::fabs(b - c) / 2))) || (!mflag && (std::fabs(s - b) >= (std::fabs(c - d) / 2))))
                 {
                     s = (a + b) * 0.5;
                     mflag = true;
                 }
                 else
                 {
-                    if ((mflag && (fabs(b - c) < aTolerance)) || (!mflag && (fabs(c - d) < aTolerance)))
+                    if ((mflag && (std::fabs(b - c) < aTolerance)) || (!mflag && (std::fabs(c - d) < aTolerance)))
                     {
                         s = (a + b) / 2;
                         mflag = true;
@@ -228,7 +228,7 @@ namespace ENigMA
                 }
 
                 // if |f(a)| < |f(b)| then swap (a,b) end if
-                if (fabs(fa) < fabs(fb))
+                if (std::fabs(fa) < std::fabs(fb))
                 {
                     Real tmp = a;
                     a = b;

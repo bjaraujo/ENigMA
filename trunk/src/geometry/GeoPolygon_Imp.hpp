@@ -104,14 +104,14 @@ namespace ENigMA
                     if (this->m_normal.norm() > std::numeric_limits<Real>::epsilon())
                     {
                         Integer coord = 3;
-                        if (fabs(this->m_normal.x()) > fabs(this->m_normal.y()))
+                        if (std::fabs(this->m_normal.x()) > std::fabs(this->m_normal.y()))
                         {
-                            if (fabs(this->m_normal.x()) > fabs(this->m_normal.z()))
+                            if (std::fabs(this->m_normal.x()) > std::fabs(this->m_normal.z()))
                                 coord = 1; // ignore x-coord
                             else
                                 coord = 3; // ignore z-coord
                         }
-                        else if (fabs(this->m_normal.y()) > fabs(this->m_normal.z()))
+                        else if (std::fabs(this->m_normal.y()) > std::fabs(this->m_normal.z()))
                             coord = 2; // ignore y-coord
 
                         Real _parea = 0.0;
@@ -239,7 +239,7 @@ namespace ENigMA
                     CGeoVector<Real> v1 = m_polyline.vertex(im) - m_polyline.vertex(ii);
                     CGeoVector<Real> v2 = m_polyline.vertex(ip) - m_polyline.vertex(ii);
 
-                    Real angle = fabs(v1.angle(v2));
+                    Real angle = std::fabs(v1.angle(v2));
 
                     if (angle < minAngle)
                     {

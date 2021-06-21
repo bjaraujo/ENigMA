@@ -673,7 +673,7 @@ namespace ENigMA
 
                 m_massError[aControlVolumeId] = sumCellFlux;
 
-                sumFlux += fabs(sumCellFlux);
+                sumFlux += std::fabs(sumCellFlux);
             }
 
             if (m_fvmMesh.nbControlVolumes() > 0)

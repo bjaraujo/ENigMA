@@ -176,7 +176,7 @@ namespace ENigMA
 
             Real d = aNormal.dot(v);
 
-            if (fabs(d) <= aTolerance * aTolerance)
+            if (std::fabs(d) <= aTolerance * aTolerance)
                 return false;
 
             Real s = aNormal.dot(u) / d;
@@ -233,7 +233,7 @@ namespace ENigMA
             CGeoVector<Real> dc = aLine.startPoint() - this->m_startPoint;
             CGeoVector<Real> dd = da.cross(db);
 
-            Real a = fabs(dc.dot(dd));
+            Real a = std::fabs(dc.dot(dd));
 
             if (a > aTolerance) // lines are not coplanar
                 return false;
@@ -409,7 +409,7 @@ namespace ENigMA
 
             Real d = v.dot(v);
 
-            if (fabs(d) > aTolerance * aTolerance)
+            if (std::fabs(d) > aTolerance * aTolerance)
             {
                 Real n = w.dot(v);
                 Real s = n / d;
@@ -449,7 +449,7 @@ namespace ENigMA
             Real den = d2121 * d4343 - d4321 * d4321;
             Real num = d1343 * d4321 - d1321 * d4343;
 
-            if (fabs(den) <= aTolerance)
+            if (std::fabs(den) <= aTolerance)
                 return false;
 
             Real mua = num / den;

@@ -192,13 +192,13 @@ namespace ENigMA
 
                     Real Cod = std::min(m_Co[aDonor], 1.0);
 
-                    if (fabs(m_s[anAcceptor] - su) > aTolerance)
+                    if (std::fabs(m_s[anAcceptor] - su) > aTolerance)
                     {
                         Real sdn = (m_s[aDonor] - su) / (m_s[anAcceptor] - su);
 
                         Real sjnCBC = 0.0;
 
-                        if (sdn >= 0.0 && sdn <= 1.0 && fabs(Cod) > aTolerance)
+                        if (sdn >= 0.0 && sdn <= 1.0 && std::fabs(Cod) > aTolerance)
                             sjnCBC = std::min(1.0, sdn / Cod);
                         else
                             sjnCBC = sdn;
@@ -212,10 +212,10 @@ namespace ENigMA
 
                         Real ang = 0;
 
-                        if (fabs(l1 * l2) > aTolerance)
-                            ang = fabs(dot / (l1 * l2));
+                        if (std::fabs(l1 * l2) > aTolerance)
+                            ang = std::fabs(dot / (l1 * l2));
                         else
-                            ang = fabs(dot / aTolerance);
+                            ang = std::fabs(dot / aTolerance);
 
                         if (ang > 1.0)
                             ang = 1.0;
@@ -228,7 +228,7 @@ namespace ENigMA
 
                         Real sjn = qj * sjnCBC + (1 - qj) * sjnUQ;
 
-                        if (fabs(1.0 - sdn) > aTolerance)
+                        if (std::fabs(1.0 - sdn) > aTolerance)
                             betaj = std::min(std::max((sjn - sdn) / (1.0 - sdn), 0.0), 1.0);
                     }
                 }

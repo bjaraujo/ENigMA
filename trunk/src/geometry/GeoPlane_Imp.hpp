@@ -67,7 +67,7 @@ namespace ENigMA
         Real CGeoPlane<Real>::distance(const CGeoCoordinate<Real>& aPoint)
         {
             Real s = this->normal().dot(aPoint) - this->d();
-            return fabs(s);
+            return std::fabs(s);
         }
 
         template <typename Real>
@@ -75,7 +75,7 @@ namespace ENigMA
         {
             Real s = this->normal().dot(aPoint) - this->d();
             aNewPoint = aPoint - this->normal() * s;
-            return fabs(s);
+            return std::fabs(s);
         }
     }
 }

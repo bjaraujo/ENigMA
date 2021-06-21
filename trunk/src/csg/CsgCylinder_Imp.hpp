@@ -40,7 +40,7 @@ namespace ENigMA
 
             CGeoVector<Real> v;
 
-            if (fabs(axisZ.y()) > 0.5)
+            if (std::fabs(axisZ.y()) > 0.5)
                 v << 1, 0, 0;
             else
                 v << 0, 1, 0;

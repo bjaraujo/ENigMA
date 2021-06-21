@@ -64,10 +64,10 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
     }
@@ -121,10 +121,10 @@ TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
     }
@@ -205,14 +205,14 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
 
         Integer aFaceId = T.mesh().faceId(i);
 
-        if (fabs(T.mesh().faceCentroid(aFaceId).x() - 0.0) < 1E-6)
+        if (std::fabs(T.mesh().faceCentroid(aFaceId).x() - 0.0) < 1E-6)
         {
             CPdeBoundaryCondition<decimal> aFixedTemperature(BT_GENERIC_FIXED_VALUE);
             aFixedTemperature.addCondition(CT_GENERIC_FIXED_VALUE, 0.0);
             T.addBCFace(aFaceId, aFixedTemperature);
         }
 
-        if (fabs(T.mesh().faceCentroid(aFaceId).x() - 1.0) < 1E-6)
+        if (std::fabs(T.mesh().faceCentroid(aFaceId).x() - 1.0) < 1E-6)
         {
             CPdeBoundaryCondition<decimal> aFixedTemperature(BT_GENERIC_FIXED_VALUE);
             aFixedTemperature.addCondition(CT_GENERIC_FIXED_VALUE, 1.0);
@@ -291,10 +291,10 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
 
         CGeoCoordinate<decimal> aCentroid = T.mesh().elementCentroid(anElementId);
 
-        if (fabs(aCentroid.x() - 0.0) < 1E-6)
+        if (std::fabs(aCentroid.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aCentroid.x() - 1.0) < 1E-6)
+        if (std::fabs(aCentroid.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
     }
 
@@ -348,10 +348,10 @@ TEST_F(CTestPdeEquation, femTransientLaplaceLine)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
         T.u(i) = 0.0;
@@ -410,10 +410,10 @@ TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
         T.u(i) = 0.0;
@@ -477,10 +477,10 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle1)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
     }
@@ -540,10 +540,10 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle2)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
     }
@@ -612,10 +612,10 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
     }
@@ -684,10 +684,10 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
 
         CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
-        if (fabs(aNode.x() - 0.0) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
 
-        if (fabs(aNode.x() - 1.0) < 1E-6)
+        if (std::fabs(aNode.x() - 1.0) < 1E-6)
             T.setFixedValue(i, 1.0);
 
     }

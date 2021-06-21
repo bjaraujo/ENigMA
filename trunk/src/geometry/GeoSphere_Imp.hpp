@@ -48,7 +48,7 @@ namespace ENigMA
 
             Real m15 = a.determinant();
 
-            if (fabs(m11) <= aTolerance * aTolerance)
+            if (std::fabs(m11) <= aTolerance * aTolerance)
             {
                 this->m_center << 0.0, 0.0, 0.0;
                 m_radius = 0.0;

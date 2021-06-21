@@ -113,7 +113,7 @@ namespace ENigMA
                     }
                 }
 
-                Ji *= this->m_wxi[p] * this->m_weta[p] * this->m_wzeta[p] * fabs(detJ);
+                Ji *= this->m_wxi[p] * this->m_weta[p] * this->m_wzeta[p] * std::fabs(detJ);
 
                 this->ddt += Ji;
             }
@@ -171,7 +171,7 @@ namespace ENigMA
 
                 Ki = -B.transpose() * B;
 
-                Ki *= wxi * weta * wzeta * fabs(detJ);
+                Ki *= wxi * weta * wzeta * std::fabs(detJ);
 
                 this->laplacian += Ki;
             }

@@ -505,7 +505,7 @@ namespace ENigMA
 
                     m_stlFile.facet(wFacetId).calculateArea();
 
-                    Real area_diff = fabs(m_stlFile.facet(aFacetId).area() - m_stlFile.facet(wFacetId).area());
+                    Real area_diff = std::fabs(m_stlFile.facet(aFacetId).area() - m_stlFile.facet(wFacetId).area());
 
                     if (area_diff < aTolerance * aTolerance)
                     {
@@ -1046,7 +1046,7 @@ namespace ENigMA
                         aFacet_f[k].calculateNormal();
                         normal_f = aFacet_f[k].normal();
 
-                        if (fabs(normal_f.angle(normal_i)) > 0.5)
+                        if (std::fabs(normal_f.angle(normal_i)) > 0.5)
                             fixedNode = true;
                     }
 
@@ -1089,7 +1089,7 @@ namespace ENigMA
                     {
                         m_stlFile.facet(aFacetId).edge(j).setNaked(false);
 
-                        if (fabs(m_stlFile.facet(aFacetId).normal().angle(m_stlFile.facet(m_stlFile.facet(aFacetId).edge(j).neighbor()).normal())) > angle)
+                        if (std::fabs(m_stlFile.facet(aFacetId).normal().angle(m_stlFile.facet(m_stlFile.facet(aFacetId).edge(j).neighbor()).normal())) > angle)
                             m_stlFile.facet(aFacetId).edge(j).setOutline(true);
                     }
                     else
@@ -1148,7 +1148,7 @@ namespace ENigMA
                     m_stlFile.facet(aFacetId).calculateArea();
                     Real area = m_stlFile.facet(aFacetId).area();
 
-                    if (fabs(ang) < swapAngle || area < std::numeric_limits<Real>::min())
+                    if (std::fabs(ang) < swapAngle || area < std::numeric_limits<Real>::min())
                     {
                         Real dmin, dmax;
 
@@ -1246,7 +1246,7 @@ namespace ENigMA
 
                             Real cangj = iNormal_j.angle(fNormal_j);
 
-                            if (fabs(cangi) < 2.5 && fabs(cangj) < 2.5 && fabs(areai - areaf) < areai * 0.01)
+                            if (std::fabs(cangi) < 2.5 && std::fabs(cangj) < 2.5 && std::fabs(areai - areaf) < areai * 0.01)
                             {
                                 m_stlFile.facet(aFacetId) = newFacet_i;
                                 m_stlFile.facet(neighbor) = newFacet_j;
@@ -1377,7 +1377,7 @@ namespace ENigMA
 
                         Real cang = aFacet_f[k].normal().angle(aFacet_i[k].normal());
 
-                        if (fabs(cang) > maxAngle)
+                        if (std::fabs(cang) > maxAngle)
                             fixedNode = true;
                     }
                 }

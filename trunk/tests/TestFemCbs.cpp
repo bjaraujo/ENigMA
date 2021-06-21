@@ -71,19 +71,19 @@ TEST_F(CTestFemCbs, hydroPressure) {
         Integer aNodeId = aBasicMesher.mesh().nodeId(i);
         CMshNode<decimal> aNode = aBasicMesher.mesh().node(aNodeId);
 
-        if (fabs(aNode.x() - 0.0) < 1E-3 ||
-            fabs(aNode.x() - 1.0) < 1E-3)
+        if (std::fabs(aNode.x() - 0.0) < 1E-3 ||
+            std::fabs(aNode.x() - 1.0) < 1E-3)
         {
             aCbsSolver.u().setFixedValue(i, 0.0);
         }
 
-        if (fabs(aNode.y() - 0.0) < 1E-3)
+        if (std::fabs(aNode.y() - 0.0) < 1E-3)
         {
             aCbsSolver.u().setFixedValue(i, 0.0);
             aCbsSolver.v().setFixedValue(i, 0.0);
         }
 
-        if (fabs(aNode.y() - 1.0) < 1E-3)
+        if (std::fabs(aNode.y() - 1.0) < 1E-3)
         {
             aCbsSolver.u().setFixedValue(i, 0.0);
             aCbsSolver.v().setFixedValue(i, 0.0);
@@ -112,7 +112,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
         p = std::max(p, aCbsSolver.p().value(i));
     }
 
-    EXPECT_NEAR(rho*fabs(g), p, 1000);
+    EXPECT_NEAR(rho*std::fabs(g), p, 1000);
 
 }
 

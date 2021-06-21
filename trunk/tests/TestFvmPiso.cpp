@@ -119,7 +119,7 @@ TEST_F(CTestFvmPiso, hydroPressure) {
         p = std::max(p, aPisoSolver.p(aControlVolumeId));
     }
      
-    EXPECT_NEAR(rho*fabs(g), p, 200);
+    EXPECT_NEAR(rho*std::fabs(g), p, 200);
 
 }
 
