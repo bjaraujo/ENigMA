@@ -668,7 +668,7 @@ namespace ENigMA
 
                     Integer aPivotVertex, aNextEdge;
 
-                    for (;;)
+                    for (Integer k = 0; k < 100; k++)
                     {
                         if (aVertexNot > 2)
                         {
