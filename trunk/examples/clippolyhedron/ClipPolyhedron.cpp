@@ -232,8 +232,8 @@ void ClipPolyhedron::drawClippedCube()
     CGeoPolygon<double> aNewPolygon;
     Integer aNewPolygonId = 999;
 
-    aPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5);
-    //aPolyhedron = aPolyhedron.cut(aNewPolyhedron, aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5);
+    aPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5, 1E-5);
+    //aPolyhedron = aPolyhedron.cut(aNewPolyhedron, aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5, 1E-5);
 
     if (fabs(frac_req - frac_act) > 1E-6)
         m_errors++;
@@ -292,7 +292,7 @@ void ClipPolyhedron::drawClippedCube()
 
     }
 
-    std::cout << ">>>>>>>>>>>>>>>>> " << aNewPolygon.polyline().nbVertices() << std::endl;
+    std::cout << ">>>>>>>>>>>>>>>>> " << aNewPolygon.polyline().nbLines() << std::endl;
 
     {
         VTK_CREATE(vtkPolygon, polygon);

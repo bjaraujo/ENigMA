@@ -280,7 +280,7 @@ namespace ENigMA
                     Real d1 = aPlane.distance(aLine.startPoint());
                     Real d2 = aPlane.distance(aLine.endPoint());
 
-                    if (aPlane.distance(aLine.startPoint()) < aTolerance && aPlane.distance(aLine.endPoint()) < aTolerance)
+                    if (d1 <= aTolerance && d2 <= aTolerance)
                     {
                         aLineList.addLine(aLine);
                     }
