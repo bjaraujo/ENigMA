@@ -595,9 +595,9 @@ TEST_F(CTestGeoPolyhedron, clip3) {
 
     EXPECT_NEAR(0.5, aPolyhedron.volume(), 1E-12);
 
-    CGeoNormal<decimal> aNormal(-1.0, -1.0, 0.0);
+    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
 
-    CGeoPlane<decimal> aPlane(aNormal, 1.0);
+    CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
     CGeoPolygon<decimal> aNewPolygon;
     Integer aNewPolygonId = 999;

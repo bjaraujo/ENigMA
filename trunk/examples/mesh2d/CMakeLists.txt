@@ -5,7 +5,7 @@ if(NOT VTK_BINARY_DIR)
   if(NOT VTK_DIR)
     message(FATAL_ERROR "Please set VTK_DIR.")
   endif(NOT VTK_DIR)
-  include(${VTK_USE_FILE})
+  #include(${VTK_USE_FILE})
 endif(NOT VTK_BINARY_DIR)
 
 if(NOT Qt5_FOUND)

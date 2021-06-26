@@ -84,7 +84,8 @@ ClipPolyhedron::ClipPolyhedron()
         SLOT(slotKeyPressed(vtkObject*, unsigned long, void*, void*)), 0, 1.0);
 
     // Plane equation
-    m_plane.set(CGeoNormal<double>(1.0, 0.0, 0.0), 0.5);
+    CGeoNormal<double> aNormal(1.0, 1.0, 0.0);
+    m_plane.set(aNormal, 0.5);
 
     m_position << 0.0, 0.0, 0.0;
 
@@ -201,6 +202,7 @@ void ClipPolyhedron::drawClippedCube()
     // Build polyhedron
     std::vector<CGeoCoordinate<double> > sVertices;
 
+    /*
     sVertices.push_back(CGeoCoordinate<double>(0, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, m_size));
@@ -222,6 +224,27 @@ void ClipPolyhedron::drawClippedCube()
     }
 
     CGeoPolyhedron<double> aPolyhedron(aHexahedron);
+    */
+
+    sVertices.push_back(CGeoCoordinate<double>(0, 0, m_size));
+    sVertices.push_back(CGeoCoordinate<double>(m_size, 0, m_size));
+    sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, m_size));
+    sVertices.push_back(CGeoCoordinate<double>(0, 0, 0));
+    sVertices.push_back(CGeoCoordinate<double>(m_size, 0, 0));
+    sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, 0));
+
+    CGeoTriangularPrism<double> aPrism;
+
+    for (Integer i = 0; i < 6; ++i)
+    {
+        CGeoCoordinate<double> aVertex;
+
+        aVertex = m_position + sVertices[i];
+        aPrism.addVertex(aVertex);
+
+    }
+
+    CGeoPolyhedron<double> aPolyhedron(aPrism);
 
     Integer iter;
     double frac_req, frac_act;
@@ -239,6 +262,7 @@ void ClipPolyhedron::drawClippedCube()
         m_errors++;
 
     std::cout << "************* Volume fraction *************" << std::endl;
+    std::cout << "Plane d: " << m_plane.d() << std::endl;
     std::cout << "Required: " << frac_req << std::endl;
     std::cout << "Actual: " << frac_act << std::endl;
     std::cout << "Iterations: " << iter << std::endl;
@@ -274,7 +298,6 @@ void ClipPolyhedron::drawClippedCube()
 
         for (Integer j = 0; j < aPolyhedron.polygon(id).polyline().nbVertices() - 1; ++j)
         {
-
             CGeoCoordinate<double> vertex = aPolyhedron.polygon(id).polyline().vertex(j);
 
             polygon->GetPointIds()->SetId(j, np);
@@ -284,15 +307,11 @@ void ClipPolyhedron::drawClippedCube()
             colors->InsertNextTypedTuple(yellow);
 
             np++;
-
         }
 
         // Add the polygon to a list of polygons
         polygons->InsertNextCell(polygon);
-
     }
-
-    std::cout << ">>>>>>>>>>>>>>>>> " << aNewPolygon.polyline().nbLines() << std::endl;
 
     {
         VTK_CREATE(vtkPolygon, polygon);
@@ -310,50 +329,11 @@ void ClipPolyhedron::drawClippedCube()
             colors->InsertNextTypedTuple(cyan);
 
             np++;
-
         }
 
         // Add the polygon to a list of polygons
         polygons->InsertNextCell(polygon);
     }
-
-    // New polygon 
-    /*
-    bool bShowNewPolygon = true;
-    if (bShowNewPolygon)
-    {
-
-        for (Integer i = 0; i < aNewPolyhedron.nbPolygons(); ++i)
-        {
-
-            VTK_CREATE(vtkPolygon, polygon);
-
-            Integer id = aNewPolyhedron.polygonId(i);
-
-            polygon->GetPointIds()->SetNumberOfIds(aNewPolyhedron.polygon(id).polyline().nbVertices() - 1);
-
-            for (Integer j = 0; j < aNewPolyhedron.polygon(id).polyline().nbVertices() - 1; ++j)
-            {
-
-                CGeoCoordinate<double> vertex = aNewPolyhedron.polygon(id).polyline().vertex(j);
-
-                polygon->GetPointIds()->SetId(j, np);
-
-                points->InsertNextPoint(vertex.x(), vertex.y(), vertex.z());
-
-                colors->InsertNextTypedTuple(cyan);
-
-                np++;
-
-            }
-
-            // Add the polygon to a list of polygons
-            polygons->InsertNextCell(polygon);
-
-        }
-
-    }
-    */
 
     VTK_CREATE(vtkPolyData, polygonPolyData);
 
