@@ -766,9 +766,8 @@ void MainWindow::unsteadyHeatConvection1D()
 
         double h = 0.25;
         double mass = 1.0;
-        double rho = 1.0;
 
-        sParticles.init(T, mass, rho, 0.0, h, dt, true);
+        sParticles.init(T, mass, 0.0, h, dt, true);
 
         const CGeoBoundingBox<double> aBoundingBox(0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
         sParticles.setBoundary(aBoundingBox);

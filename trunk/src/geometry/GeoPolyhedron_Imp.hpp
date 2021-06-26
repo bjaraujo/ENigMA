@@ -414,7 +414,7 @@ namespace ENigMA
         }
 
         template <typename Real>
-        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, const CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
+        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
         {
             CGeoPolyhedron<Real> aPolyhedron;
 
@@ -442,8 +442,6 @@ namespace ENigMA
                 return aPolyhedron;
             }
 
-            CGeoPlane<Real> aPlane(aNormal, 0.0);
-
             // Find interval a, b
 
             this->calculateVolume();
@@ -456,7 +454,7 @@ namespace ENigMA
             {
                 for (Integer j = 0; j < it->second.polyline().nbVertices(); ++j)
                 {
-                    d = it->second.polyline().vertex(j).dot(aNormal);
+                    Real d = it->second.polyline().vertex(j).dot(aPlane.normal());
 
                     a = std::min(a, d);
                     b = std::max(b, d);
@@ -552,28 +550,25 @@ namespace ENigMA
 
             volumeFractionAct = vs / vt;
 
-            d = s;
-
             return aPolyhedron;
         }
 
         template <typename Real>
         CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, const Real aTolerance)
         {
-            CGeoPlane<Real> aPlaneInv = aPlane;
-            aPlaneInv.normal() = -aPlane.normal();
-            aPlaneInv.setD(aPlane.d());
-
             aNewPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
             return this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
         }
 
         template <typename Real>
-        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
+        CGeoPolyhedron<Real> CGeoPolyhedron<Real>::cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
         {
-            CGeoNormal<Real> aNormalInv = -aNormal;
-            aNewPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aNormalInv, d, 1.0 - volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aNormalizedTolerance, aTolerance);
-            return this->clip(aNewPolygon, aNewPolygonId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aNormalizedTolerance, aTolerance);
+            CGeoPlane<Real> aPlaneInv;
+            aPlaneInv.normal() = -aPlane.normal();
+            aPlaneInv.setD(aPlane.d());
+
+            aNewPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlaneInv, 1.0 - volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aNormalizedTolerance, aTolerance);
+            return this->clip(aNewPolygon, aNewPolygonId, aPlane, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aNormalizedTolerance, aTolerance);
         }
 
         template <typename Real>

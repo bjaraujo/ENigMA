@@ -25,6 +25,7 @@
 #include <vtkProperty.h>
 #include <vtkAxesActor.h>
 #include <vtkTransform.h>
+#include <vtkUnsignedCharArray.h>
 
 #include "vtkSmartPointer.h"
 #define VTK_CREATE(type, name) vtkSmartPointer<type> name = vtkSmartPointer<type>::New()
@@ -45,7 +46,7 @@ ClipPolyhedron::ClipPolyhedron()
 
     // Mapper
     VTK_CREATE(vtkPolyDataMapper, mapper);
-    mapper->ImmediateModeRenderingOn();
+    //mapper->ImmediateModeRenderingOn();
 
     // Actor in scene
     VTK_CREATE(vtkActor, actor);
@@ -241,7 +242,7 @@ void ClipPolyhedron::drawClippedCube()
     double d;
 
     //aPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, m_plane.normal(), d, frac_req, frac_act, iter, 100, 1E-5);
-    aPolyhedron = aPolyhedron.cut(aNewPolyhedron, aNewPolygon, aNewPolygonId, m_plane.normal(), d, frac_req, frac_act, iter, 100, 1E-5);
+    aPolyhedron = aPolyhedron.cut(aNewPolyhedron, aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5);
 
     if (fabs(frac_req - frac_act) > 1E-6)
         m_errors++;

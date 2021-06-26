@@ -209,9 +209,9 @@ namespace ENigMA
         {
 
             CGeoPolygon<Real> aPolygon;
-            Real d;
+            CGeoPlane<Real> aPlane(aNormal, 0.0);
 
-            m_clippedPolyhedron = m_polyhedron.clip(aPolygon, m_clippedFaceId, aNormal, d, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aVolumeFractionTolerance, aTolerance);
+            m_clippedPolyhedron = m_polyhedron.clip(aPolygon, m_clippedFaceId, aPlane, volumeFractionReq, volumeFractionAct, nIterations, nMaxIterations, aVolumeFractionTolerance, aTolerance);
 
             m_clippedFace.set(aPolygon);
             m_clipped = true;

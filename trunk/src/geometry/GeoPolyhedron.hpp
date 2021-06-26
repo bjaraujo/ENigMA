@@ -62,10 +62,10 @@ namespace ENigMA
             void set(CGeoPolyhedron<Real>& aPolyhedron);
 
             inline CGeoPolyhedron<Real> clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, const Real aTolerance = 0);
-            inline CGeoPolyhedron<Real> clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, const CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations = 50, const Real aNormalizedTolerance = 0, const Real aTolerance = 0);
+            inline CGeoPolyhedron<Real> clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations = 50, const Real aNormalizedTolerance = 0, const Real aTolerance = 0);
 
             inline CGeoPolyhedron<Real> cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, const Real aTolerance = 0);
-            inline CGeoPolyhedron<Real> cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoNormal<Real>& aNormal, Real& d, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations = 50, const Real aNormalizedTolerance = 0, const Real aTolerance = 0);
+            inline CGeoPolyhedron<Real> cut(CGeoPolyhedron<Real>& aNewPolyhedron, CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations = 50, const Real aNormalizedTolerance = 0, const Real aTolerance = 0);
         };
     }
 }

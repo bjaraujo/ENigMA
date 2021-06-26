@@ -25,6 +25,7 @@
 #include <vtkProperty.h>
 #include <vtkAxesActor.h>
 #include <vtkTransform.h>
+#include <vtkUnsignedCharArray.h>
 
 #include "vtkSmartPointer.h"
 #define VTK_CREATE(type, name) vtkSmartPointer<type> name = vtkSmartPointer<type>::New()
@@ -44,7 +45,7 @@ TriangleIntersection::TriangleIntersection()
 
     // Mapper
     VTK_CREATE(vtkPolyDataMapper, mapper);
-    mapper->ImmediateModeRenderingOn();
+    //mapper->ImmediateModeRenderingOn();
 
     // Actor in scene
     VTK_CREATE(vtkActor, actor);

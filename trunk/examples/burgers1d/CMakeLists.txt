@@ -38,6 +38,7 @@ include_directories(
   ../../src/pde
   ../../src/post
   ../../src/analytical
+  ../../src/solvers
 )
 
 set(BURGERS1D_HEADERS MainWindow.h QCustomPlot.h)

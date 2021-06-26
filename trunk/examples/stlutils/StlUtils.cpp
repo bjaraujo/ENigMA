@@ -46,7 +46,7 @@ StlUtils::StlUtils()
 
     // Mappers
     this->m_stlMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    this->m_stlMapper->ImmediateModeRenderingOn();
+    //this->m_stlMapper->ImmediateModeRenderingOn();
 
     // Actor in scene
     this->m_axesActor = vtkSmartPointer<vtkAxesActor>::New();
@@ -57,13 +57,13 @@ StlUtils::StlUtils()
     this->m_stlActor->GetProperty()->LightingOn();
 
     this->m_edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    this->m_edgeMapper->ImmediateModeRenderingOn();
+    //this->m_edgeMapper->ImmediateModeRenderingOn();
 
     this->m_edgeActor = vtkSmartPointer<vtkActor>::New();
     this->m_edgeActor->SetMapper(m_edgeMapper);
 
     this->m_pointMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    this->m_pointMapper->ImmediateModeRenderingOn();
+    //this->m_pointMapper->ImmediateModeRenderingOn();
 
     this->m_pointActor = vtkSmartPointer<vtkActor>::New();
     this->m_pointActor->SetMapper(m_pointMapper);

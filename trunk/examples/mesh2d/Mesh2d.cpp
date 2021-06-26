@@ -51,8 +51,7 @@ Mesh2D::Mesh2D()
 
     VTK_CREATE(vtkUnstructuredGrid, unstructuredGrid);
     mapper->SetInputData(unstructuredGrid);
-
-    mapper->ImmediateModeRenderingOn();
+    //mapper->ImmediateModeRenderingOn();
 
     // Actor in scene
     VTK_CREATE(vtkActor, actor);
