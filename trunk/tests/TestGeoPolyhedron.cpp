@@ -496,6 +496,8 @@ TEST_F(CTestGeoPolyhedron, clip1) {
 
     CGeoPolyhedron<decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
 
+    EXPECT_EQ(4, aNewPolygon.polyline().nbLines());
+
     EXPECT_EQ(6, aNewPolyhedron.nbPolygons());
 
     aNewPolyhedron.calculateSurfaceArea(true);

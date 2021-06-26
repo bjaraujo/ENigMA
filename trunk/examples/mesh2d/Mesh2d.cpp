@@ -69,7 +69,7 @@ Mesh2D::Mesh2D()
     ren->AddActor(actor);
 
     // VTK/Qt wedded
-    this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(ren);
+    this->ui->qvtkWidget->renderWindow()->AddRenderer(ren);
 
     // Just a bit of Qt interest: Culling off the
     // point data and handing it to a vtkQtTableView
@@ -85,7 +85,7 @@ Mesh2D::Mesh2D()
     connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 
     m_connections = vtkEventQtSlotConnect::New();
-    this->m_connections->Connect(this->ui->qvtkWidget->GetRenderWindow()->GetInteractor(),
+    this->m_connections->Connect(this->ui->qvtkWidget->renderWindow()->GetInteractor(),
         vtkCommand::KeyPressEvent, this,
         SLOT(slotKeyPressed(vtkObject*, unsigned long, void*, void*)), 0, 1.0);
 
@@ -105,7 +105,7 @@ Mesh2D::~Mesh2D()
 void Mesh2D::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 {
 
-    vtkRenderWindowInteractor *rwi = this->ui->qvtkWidget->GetRenderWindow()->GetInteractor();
+    vtkRenderWindowInteractor *rwi = this->ui->qvtkWidget->renderWindow()->GetInteractor();
 
     std::string key = rwi->GetKeySym();
 
@@ -118,7 +118,7 @@ void Mesh2D::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 
         drawMesh();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
     }
     else if (key == "Left")
@@ -126,7 +126,7 @@ void Mesh2D::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 
         drawMesh();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
     }
     else if (key == "m" || key == "M")
@@ -135,33 +135,33 @@ void Mesh2D::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
         generateMesh(60, 30);
         drawMesh();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
     }
     else if (key == "w" || key == "W")
     {
 
-        vtkRenderer* ren = this->ui->qvtkWidget->GetRenderWindow()->GetRenderers()->GetFirstRenderer();
+        vtkRenderer* ren = this->ui->qvtkWidget->renderWindow()->GetRenderers()->GetFirstRenderer();
 
         vtkActor* actor = ren->GetActors()->GetLastActor();
 
         actor->GetProperty()->SetRepresentationToWireframe();
         actor->GetProperty()->LightingOff();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
     }
     else if (key == "s" || key == "S")
     {
 
-        vtkRenderer* ren = this->ui->qvtkWidget->GetRenderWindow()->GetRenderers()->GetFirstRenderer();
+        vtkRenderer* ren = this->ui->qvtkWidget->renderWindow()->GetRenderers()->GetFirstRenderer();
 
         vtkActor* actor = ren->GetActors()->GetLastActor();
 
         actor->GetProperty()->SetRepresentationToSurface();
         actor->GetProperty()->LightingOn();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
     }
 
@@ -327,7 +327,7 @@ void Mesh2D::drawMesh()
 
     }
 
-    vtkRenderer* ren = this->ui->qvtkWidget->GetRenderWindow()->GetRenderers()->GetFirstRenderer();
+    vtkRenderer* ren = this->ui->qvtkWidget->renderWindow()->GetRenderers()->GetFirstRenderer();
 
     vtkMapper* mapper = ren->GetActors()->GetLastActor()->GetMapper();
 
@@ -342,7 +342,7 @@ int Mesh2D::updateData(int)
 
     drawMesh();
 
-    this->ui->qvtkWidget->GetRenderWindow()->Render();
+    this->ui->qvtkWidget->renderWindow()->Render();
 
     QCoreApplication::processEvents();
 

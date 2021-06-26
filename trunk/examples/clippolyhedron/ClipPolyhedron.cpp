@@ -64,7 +64,7 @@ ClipPolyhedron::ClipPolyhedron()
     ren->AddActor(actor);
 
     // VTK/Qt wedded
-    this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(ren);
+    this->ui->qvtkWidget->renderWindow()->AddRenderer(ren);
 
     // Just a bit of Qt interest: Culling off the
     // point data and handing it to a vtkQtTableView
@@ -76,17 +76,15 @@ ClipPolyhedron::ClipPolyhedron()
     //this->m_tableView->SetRepresentationFromInputConnection(toTable->GetOutputPort());
 
     // Set up action signals and slots
-    connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
     connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 
     m_connections = vtkEventQtSlotConnect::New();
-    this->m_connections->Connect(this->ui->qvtkWidget->GetRenderWindow()->GetInteractor(), 
+    this->m_connections->Connect(this->ui->qvtkWidget->renderWindow()->GetInteractor(),
         vtkCommand::KeyPressEvent, this, 
         SLOT(slotKeyPressed(vtkObject*, unsigned long, void*, void*)), 0, 1.0);
 
     // Plane equation
-    m_plane.normal() << -0.46, -0.03, -0.88;
-    m_plane.setD(-0.5);
+    m_plane.set(CGeoNormal<double>(1.0, 0.0, 0.0), 0.5);
 
     m_position << 0.0, 0.0, 0.0;
 
@@ -113,7 +111,7 @@ ClipPolyhedron::~ClipPolyhedron()
 void ClipPolyhedron::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 {
 
-    vtkRenderWindowInteractor *rwi = this->ui->qvtkWidget->GetRenderWindow()->GetInteractor();
+    vtkRenderWindowInteractor *rwi = this->ui->qvtkWidget->renderWindow()->GetInteractor();
 
     std::string key = rwi->GetKeySym();
 
@@ -133,7 +131,7 @@ void ClipPolyhedron::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 
         drawClippedCube();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->interactor()->Render();
 
     } else if (key == "Left")
     {
@@ -147,7 +145,7 @@ void ClipPolyhedron::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 
         drawClippedCube();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->interactor()->Render();
 
     } else if (key == "r" || key == "R")
     {
@@ -160,40 +158,34 @@ void ClipPolyhedron::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 
         drawClippedCube();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->interactor()->Render();
 
     } else if (key == "w" || key == "W")
     {
 
-        vtkRenderer* ren = this->ui->qvtkWidget->GetRenderWindow()->GetRenderers()->GetFirstRenderer();
+        vtkRenderer* ren = this->ui->qvtkWidget->renderWindow()->GetRenderers()->GetFirstRenderer();
 
         vtkActor* actor = ren->GetActors()->GetLastActor();
 
         actor->GetProperty()->SetRepresentationToWireframe();
         actor->GetProperty()->LightingOff();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->interactor()->Render();
 
     }
     else if (key == "s" || key == "S")
     {
 
-        vtkRenderer* ren = this->ui->qvtkWidget->GetRenderWindow()->GetRenderers()->GetFirstRenderer();
+        vtkRenderer* ren = this->ui->qvtkWidget->renderWindow()->GetRenderers()->GetFirstRenderer();
 
         vtkActor* actor = ren->GetActors()->GetLastActor();
 
         actor->GetProperty()->SetRepresentationToSurface();
         actor->GetProperty()->LightingOn();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->interactor()->Render();
 
     }
-}
-
-// Action to be taken upon file open 
-void ClipPolyhedron::slotOpenFile()
-{
-
 }
 
 void ClipPolyhedron::slotExit() 
@@ -209,14 +201,14 @@ void ClipPolyhedron::drawClippedCube()
     // Build polyhedron
     std::vector<CGeoCoordinate<double> > sVertices;
 
-    sVertices.push_back(CGeoCoordinate<double>(0, 0, 0));
-    sVertices.push_back(CGeoCoordinate<double>(m_size, 0, 0));
-    sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, 0));
-    sVertices.push_back(CGeoCoordinate<double>(0, m_size, 0));
     sVertices.push_back(CGeoCoordinate<double>(0, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, m_size));
     sVertices.push_back(CGeoCoordinate<double>(0, m_size, m_size));
+    sVertices.push_back(CGeoCoordinate<double>(0, 0, 0));
+    sVertices.push_back(CGeoCoordinate<double>(m_size, 0, 0));
+    sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, 0));
+    sVertices.push_back(CGeoCoordinate<double>(0, m_size, 0));
 
     CGeoHexahedron<double> aHexahedron;
 
@@ -239,10 +231,9 @@ void ClipPolyhedron::drawClippedCube()
     CGeoPolyhedron<double> aNewPolyhedron;
     CGeoPolygon<double> aNewPolygon;
     Integer aNewPolygonId = 999;
-    double d;
 
-    //aPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, m_plane.normal(), d, frac_req, frac_act, iter, 100, 1E-5);
-    aPolyhedron = aPolyhedron.cut(aNewPolyhedron, aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5);
+    aPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5);
+    //aPolyhedron = aPolyhedron.cut(aNewPolyhedron, aNewPolygon, aNewPolygonId, m_plane, frac_req, frac_act, iter, 100, 1E-5);
 
     if (fabs(frac_req - frac_act) > 1E-6)
         m_errors++;
@@ -252,8 +243,6 @@ void ClipPolyhedron::drawClippedCube()
     std::cout << "Actual: " << frac_act << std::endl;
     std::cout << "Iterations: " << iter << std::endl;
     std::cout << "Error count: " << m_errors << std::endl;
-
-    //std::cout << "Number of polygons: " << clipped.nbPolygons() << std::endl;
 
     aPolyhedron.calculateSurfaceArea();
     aPolyhedron.calculateVolume();
@@ -277,17 +266,9 @@ void ClipPolyhedron::drawClippedCube()
 
     for (Integer i = 0; i < aPolyhedron.nbPolygons(); ++i)
     {
-
         VTK_CREATE(vtkPolygon, polygon);
 
         Integer id = aPolyhedron.polygonId(i);
-
-        /*
-        std::cout << "Polygon: " << id << std::endl;
-        std::cout << "Number of vertices: " << clipped.polygon(id).polyline().nbVertices() << std::endl;
-        std::cout << "Normal: " << ": " << clipped.polygon(id).normal() << std::endl;
-        std::cout << "Area: " << " : " << clipped.polygon(id).area() << std::endl;
-        */
 
         polygon->GetPointIds()->SetNumberOfIds(aPolyhedron.polygon(id).polyline().nbVertices() - 1);
 
@@ -311,9 +292,34 @@ void ClipPolyhedron::drawClippedCube()
 
     }
 
-    bool bShowNewPolygon = true;
+    std::cout << ">>>>>>>>>>>>>>>>> " << aNewPolygon.polyline().nbVertices() << std::endl;
+
+    {
+        VTK_CREATE(vtkPolygon, polygon);
+
+        polygon->GetPointIds()->SetNumberOfIds(aNewPolygon.polyline().nbVertices() - 1);
+
+        for (Integer j = 0; j < aNewPolygon.polyline().nbVertices() - 1; ++j)
+        {
+            CGeoCoordinate<double> vertex = aNewPolygon.polyline().vertex(j);
+
+            polygon->GetPointIds()->SetId(j, np);
+
+            points->InsertNextPoint(vertex.x(), vertex.y(), vertex.z());
+
+            colors->InsertNextTypedTuple(cyan);
+
+            np++;
+
+        }
+
+        // Add the polygon to a list of polygons
+        polygons->InsertNextCell(polygon);
+    }
 
     // New polygon 
+    /*
+    bool bShowNewPolygon = true;
     if (bShowNewPolygon)
     {
 
@@ -323,13 +329,6 @@ void ClipPolyhedron::drawClippedCube()
             VTK_CREATE(vtkPolygon, polygon);
 
             Integer id = aNewPolyhedron.polygonId(i);
-
-            /*
-            std::cout << "Polygon: " << id << std::endl;
-            std::cout << "Number of vertices: " << clipped.polygon(id).polyline().nbVertices() << std::endl;
-            std::cout << "Normal: " << ": " << clipped.polygon(id).normal() << std::endl;
-            std::cout << "Area: " << " : " << clipped.polygon(id).area() << std::endl;
-            */
 
             polygon->GetPointIds()->SetNumberOfIds(aNewPolyhedron.polygon(id).polyline().nbVertices() - 1);
 
@@ -354,6 +353,7 @@ void ClipPolyhedron::drawClippedCube()
         }
 
     }
+    */
 
     VTK_CREATE(vtkPolyData, polygonPolyData);
 
@@ -362,10 +362,9 @@ void ClipPolyhedron::drawClippedCube()
 
     polygonPolyData->GetPointData()->SetScalars(colors);
 
-    vtkRenderer* ren = this->ui->qvtkWidget->GetRenderWindow()->GetRenderers()->GetFirstRenderer();
+    vtkRenderer* ren = this->ui->qvtkWidget->renderWindow()->GetRenderers()->GetFirstRenderer();
 
     vtkMapper* mapper = ren->GetActors()->GetLastActor()->GetMapper();
 
     (reinterpret_cast<vtkPolyDataMapper* >(mapper))->SetInputData(polygonPolyData);
-
 }

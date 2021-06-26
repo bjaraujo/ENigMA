@@ -79,14 +79,14 @@ StlUtils::StlUtils()
     this->m_renderer->AddActor(this->m_pointActor);
 
     // VTK/Qt wedded
-    this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(m_renderer);
+    this->ui->qvtkWidget->renderWindow()->AddRenderer(m_renderer);
 
     // Set up action signals and slots
     connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
     connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 
     this->m_connections = vtkEventQtSlotConnect::New();
-    this->m_connections->Connect(this->ui->qvtkWidget->GetRenderWindow()->GetInteractor(), 
+    this->m_connections->Connect(this->ui->qvtkWidget->renderWindow()->GetInteractor(),
         vtkCommand::KeyPressEvent, this, 
         SLOT(slotKeyPressed(vtkObject*, unsigned long, void*, void*)), 0, 1.0);
 
@@ -102,7 +102,7 @@ StlUtils::~StlUtils()
 void StlUtils::slotKeyPressed(vtkObject *, unsigned long, void *, void *)
 {
 
-    vtkRenderWindowInteractor *rwi = this->ui->qvtkWidget->GetRenderWindow()->GetInteractor();
+    vtkRenderWindowInteractor *rwi = this->ui->qvtkWidget->renderWindow()->GetInteractor();
 
     std::string key = rwi->GetKeySym();
 
@@ -137,7 +137,7 @@ void StlUtils::slotOpenFile()
 
         this->drawStlFile();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
     }
 

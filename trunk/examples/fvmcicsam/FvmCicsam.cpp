@@ -81,7 +81,7 @@ FvmCicsam::FvmCicsam()
     this->m_renderer->SetBackground(0, 0, 0);
 
     // VTK/Qt wedded
-    this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(m_renderer);
+    this->ui->qvtkWidget->renderWindow()->AddRenderer(m_renderer);
 
     // Set up action signals and slots
     connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
@@ -352,7 +352,7 @@ void FvmCicsam::solve()
         m_scalarBarActor->SetNumberOfLabels(4);
         m_scalarBarActor->Modified();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
         QCoreApplication::processEvents();
 

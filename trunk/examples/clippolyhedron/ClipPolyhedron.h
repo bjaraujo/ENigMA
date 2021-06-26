@@ -37,7 +37,6 @@ public:
 
     public slots:
 
-        virtual void slotOpenFile();
         virtual void slotExit();
 
         virtual void slotKeyPressed(vtkObject *, unsigned long, void *, void *);

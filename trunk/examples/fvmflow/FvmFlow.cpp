@@ -81,7 +81,7 @@ FvmFlow::FvmFlow()
     this->m_renderer->SetBackground(0, 0, 0);
 
     // VTK/Qt wedded
-    this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(m_renderer);
+    this->ui->qvtkWidget->renderWindow()->AddRenderer(m_renderer);
 
     // Set up action signals and slots
     connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
@@ -108,7 +108,7 @@ void FvmFlow::init()
     vtkSmartPointer<vtkOrientationMarkerWidget> aWidget = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
     aWidget->SetOutlineColor(0.9300, 0.5700, 0.1300);
     aWidget->SetOrientationMarker(anAxesActor);
-    aWidget->SetInteractor(this->ui->qvtkWidget->GetRenderWindow()->GetInteractor());
+    aWidget->SetInteractor(this->ui->qvtkWidget->renderWindow()->GetInteractor());
     aWidget->SetViewport(0.0, 0.0, 0.4, 0.4);
     aWidget->SetEnabled(1);
     aWidget->InteractiveOn();
@@ -355,7 +355,7 @@ void FvmFlow::solve()
         m_scalarBarActor->SetNumberOfLabels(4);
         m_scalarBarActor->Modified();
 
-        this->ui->qvtkWidget->GetRenderWindow()->Render();
+        this->ui->qvtkWidget->renderWindow()->Render();
 
         QCoreApplication::processEvents();
 
