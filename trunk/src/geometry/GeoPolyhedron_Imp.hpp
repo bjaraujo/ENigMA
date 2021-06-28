@@ -165,10 +165,10 @@ namespace ENigMA
             aPolygon.reset();
 
             // face 3
-            aPolyline.addVertex(aHexahedron.vertex(5));
-            aPolyline.addVertex(aHexahedron.vertex(1));
-            aPolyline.addVertex(aHexahedron.vertex(0));
-            aPolyline.addVertex(aHexahedron.vertex(4));
+            aPolyline.addVertex(aHexahedron.vertex(3));
+            aPolyline.addVertex(aHexahedron.vertex(2));
+            aPolyline.addVertex(aHexahedron.vertex(6));
+            aPolyline.addVertex(aHexahedron.vertex(7));
             aPolyline.close();
 
             aPolygon.setPolyline(aPolyline);
@@ -177,10 +177,10 @@ namespace ENigMA
             aPolygon.reset();
 
             // face 4
-            aPolyline.addVertex(aHexahedron.vertex(3));
-            aPolyline.addVertex(aHexahedron.vertex(2));
-            aPolyline.addVertex(aHexahedron.vertex(6));
-            aPolyline.addVertex(aHexahedron.vertex(7));
+            aPolyline.addVertex(aHexahedron.vertex(5));
+            aPolyline.addVertex(aHexahedron.vertex(1));
+            aPolyline.addVertex(aHexahedron.vertex(0));
+            aPolyline.addVertex(aHexahedron.vertex(4));
             aPolyline.close();
 
             aPolygon.setPolyline(aPolyline);
@@ -444,9 +444,6 @@ namespace ENigMA
 
             // Find interval a, b
 
-            this->calculateVolume();
-            Real vt = CGeoVolume<Real>::volume();
-
             Real a = std::numeric_limits<Real>::max();
             Real b = std::numeric_limits<Real>::lowest();
 
@@ -462,6 +459,9 @@ namespace ENigMA
             }
 
             // Solve using Brent's method
+
+            this->calculateVolume();
+            Real vt = CGeoVolume<Real>::volume();
 
             Real e = a;
             Real f = std::numeric_limits<Real>::max();

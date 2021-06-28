@@ -84,14 +84,14 @@ ClipPolyhedron::ClipPolyhedron()
         SLOT(slotKeyPressed(vtkObject*, unsigned long, void*, void*)), 0, 1.0);
 
     // Plane equation
-    CGeoNormal<double> aNormal(1.0, 1.0, 0.0);
+    CGeoNormal<double> aNormal(0.9407, 0.2822, 0.1881);
     m_plane.set(aNormal, 0.5);
 
     m_position << 0.0, 0.0, 0.0;
 
     std::cout << "Cutting plane normal: " << m_plane.normal() << std::endl;
 
-    m_fraction = 0.5;
+    m_fraction = 0.4;
 
     m_size = 1.0;
 
@@ -202,7 +202,6 @@ void ClipPolyhedron::drawClippedCube()
     // Build polyhedron
     std::vector<CGeoCoordinate<double> > sVertices;
 
-    /*
     sVertices.push_back(CGeoCoordinate<double>(0, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, m_size));
@@ -224,8 +223,8 @@ void ClipPolyhedron::drawClippedCube()
     }
 
     CGeoPolyhedron<double> aPolyhedron(aHexahedron);
-    */
 
+    /*
     sVertices.push_back(CGeoCoordinate<double>(0, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, 0, m_size));
     sVertices.push_back(CGeoCoordinate<double>(m_size, m_size, m_size));
@@ -245,6 +244,7 @@ void ClipPolyhedron::drawClippedCube()
     }
 
     CGeoPolyhedron<double> aPolyhedron(aPrism);
+    */
 
     Integer iter;
     double frac_req, frac_act;

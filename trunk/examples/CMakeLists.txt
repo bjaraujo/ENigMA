@@ -11,6 +11,7 @@ add_subdirectory(femintro)
 add_subdirectory(femheat)
 add_subdirectory(sphheat)
 add_subdirectory(boxvolumesearch)
+add_subdirectory(clipper)
 endif(ENIGMA_BUILD_CONSOLE_EXAMPLES)
 
 if(ENIGMA_BUILD_OPENGL_EXAMPLES)

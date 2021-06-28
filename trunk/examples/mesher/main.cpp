@@ -103,7 +103,8 @@ void GenerateMesh(CMshMesh<double> anEdgeMesh, const double meshSize, const int 
 
     try 
     {
-        aTriangularMesher.generate(anEdgeMesh, maxEle, meshSize, meshSize, meshSize, tol);
+        std::vector<CGeoCoordinate<double>> sInteriorPoints;
+        aTriangularMesher.generate(anEdgeMesh, maxEle, sInteriorPoints, meshSize, meshSize, tol);
     } 
     catch (std::vector<SMshAdvancingFrontEdge<double>>& advFront) 
     {

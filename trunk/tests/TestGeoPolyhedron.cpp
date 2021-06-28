@@ -609,3 +609,50 @@ TEST_F(CTestGeoPolyhedron, clip3) {
     EXPECT_NEAR(0.25, aNewPolyhedron.volume(), 1E-6);
 
 }
+
+TEST_F(CTestGeoPolyhedron, clip4) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+
+    EXPECT_EQ(6, aPolyhedron.nbPolygons());
+
+    CGeoNormal<decimal> aNormal(0.9407, 0.2822, 0.1881);
+    CGeoPlane<decimal> aPlane(aNormal, 0.0);
+
+    CGeoPolygon<decimal> aNewPolygon;
+    Integer aNewPolygonId = 999;
+
+    decimal volumeFractionAct;
+    Integer nIterations;
+
+    CGeoPolyhedron<decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 0.4, volumeFractionAct, nIterations, 50, 1E-9, 1E-6);
+
+    EXPECT_EQ(5, nIterations);
+
+    EXPECT_NEAR(0.4233437716, aPlane.d(), 1E-6);
+
+    aNewPolyhedron.calculateVolume(true);
+
+    EXPECT_NEAR(0.4, aNewPolyhedron.volume(), 1E-6);
+
+}

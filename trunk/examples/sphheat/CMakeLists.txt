@@ -26,6 +26,7 @@ ${EXPRTK_DIR}
   ../../src/pde
   ../../src/post
   ../../src/analytical
+  ../../src/solvers
 )
 
 add_executable(SphHeat ${SPHHEAT_SOURCES})
