@@ -17,6 +17,8 @@
 #include "FvmMesh.hpp"
 #include "FvmMeshSearch.hpp"
 #include "MshBasicMesher.hpp"
+#include "MshTetrahedronMesher.hpp"
+#include "MshExtrudedMesher.hpp"
 #include "PosGmsh.hpp"
 
 using namespace ENigMA::fvm;
@@ -36,7 +38,7 @@ protected:
 
 };
 
-TEST_F(CTestFvmMesh, calcVolume1) {
+TEST_F(CTestFvmMesh, volume1) {
 
     /*
     1 0.0206083 -0.00442002 0.0089
@@ -98,6 +100,162 @@ TEST_F(CTestFvmMesh, calcVolume1) {
     decimal volume2 = aFvmMesh.controlVolume(1).volume();
 
     EXPECT_GT(volume2, 0.0);
+
+}
+
+TEST_F(CTestFvmMesh, volume2) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    const Integer nu = 5;
+    const Integer nv = 5;
+    const Integer nw = 5;
+
+    CMshBasicMesher<decimal> aBasicMesher;
+
+    aBasicMesher.generate(aHexahedron, nu, nv, nw);
+
+    aBasicMesher.mesh().generateFaces(1E-12);
+
+    CFvmMesh<decimal> aFvmMesh(aBasicMesher.mesh());
+
+    EXPECT_GT(aFvmMesh.volume(), 0.0);
+
+}
+
+TEST_F(CTestFvmMesh, volume3) {
+
+    const decimal d = 0.2;
+
+    const Integer nu = 5;
+    const Integer nv = 5;
+    const Integer nw = 5;
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    CMshBasicMesher<decimal> aBasicMesher;
+
+    aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
+
+    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
+
+    aSurfaceMesh.generateFaces(1E-5);
+
+    CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+
+    aTetrahedronMesher.generate(aSurfaceMesh, 999, sInteriorPoints, d, d * 0.1, d * 10.0, 1E-3);
+
+    CFvmMesh<decimal> aFvmMesh(aTetrahedronMesher.mesh());
+
+    EXPECT_GT(aFvmMesh.volume(), 0.0);
+
+}
+
+TEST_F(CTestFvmMesh, volume4) {
+
+    const decimal d = 0.2;
+
+    const Integer nu = 5;
+    const Integer nv = 5;
+    const Integer nw = 5;
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    CMshBasicMesher<decimal> aBasicMesher;
+
+    aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
+
+    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
+
+    aSurfaceMesh.generateFaces(1E-5);
+
+    ENigMA::mesh::CMshMesh<decimal> aLayerMesh = aSurfaceMesh;
+
+    CMshMesh<decimal> aMesh;
+
+    CMshExtrudedMesher<decimal> anExtrudedMesher;
+    anExtrudedMesher.generate(aLayerMesh, 0.1, 1E-6);
+    anExtrudedMesher.mesh().generateFaces(1E-6);
+    aMesh.addMesh(anExtrudedMesher.mesh());
+
+    CFvmMesh<decimal> aFvmMesh1(aMesh);
+    EXPECT_GT(aFvmMesh1.volume(), 0.0);
+
+    CMshTetrahedronMesher<decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    aTetrahedronMesher.generate(aLayerMesh, 999, sInteriorPoints, d, d * 0.1, d * 10.0, 1E-6);
+    aTetrahedronMesher.mesh().generateFaces(1E-6);
+    aMesh.addMesh(aTetrahedronMesher.mesh());
+
+    CFvmMesh<decimal> aFvmMesh2(aMesh);
+    EXPECT_GT(aFvmMesh2.volume(), 0.0);
 
 }
 
@@ -542,3 +700,4 @@ TEST_F(CTestFvmMesh, clip2) {
     }
 
 }
+

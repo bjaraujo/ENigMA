@@ -31,7 +31,7 @@ protected:
 
 };
 
-TEST_F(CTestFvmControlVolume, calcVolume1) {
+TEST_F(CTestFvmControlVolume, volume1) {
 
     CFvmControlVolume<decimal> aControlVolume;
 
@@ -112,7 +112,7 @@ TEST_F(CTestFvmControlVolume, calcVolume1) {
 
 }
 
-TEST_F(CTestFvmControlVolume, calcVolume2) {
+TEST_F(CTestFvmControlVolume, volume2) {
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
@@ -144,7 +144,7 @@ TEST_F(CTestFvmControlVolume, calcVolume2) {
 
 }
 
-TEST_F(CTestFvmControlVolume, calcVolume3) {
+TEST_F(CTestFvmControlVolume, volume3) {
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
@@ -180,7 +180,7 @@ TEST_F(CTestFvmControlVolume, calcVolume3) {
 
 }
 
-TEST_F(CTestFvmControlVolume, calcVolume4) {
+TEST_F(CTestFvmControlVolume, volume4) {
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
@@ -217,6 +217,162 @@ TEST_F(CTestFvmControlVolume, calcVolume4) {
     aControlVolume.calculateVolume(true);
 
     EXPECT_NEAR(1.0, aControlVolume.volume(), 1E-6);
+
+}
+
+TEST_F(CTestFvmControlVolume, orientation1) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+
+    CGeoTetrahedron<decimal> aTetrahedron;
+
+    aTetrahedron.addVertex(aVertex1);
+    aTetrahedron.addVertex(aVertex2);
+    aTetrahedron.addVertex(aVertex3);
+    aTetrahedron.addVertex(aVertex4);
+
+    aTetrahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-6);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aTetrahedron);
+
+    EXPECT_EQ(4, aPolyhedron.nbPolygons());
+
+    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+
+    EXPECT_EQ(4, aControlVolume.nbFaces());
+
+    aControlVolume.calculateVolume(true);
+
+    EXPECT_NEAR(1.0/6.0, aControlVolume.volume(), 1E-6);
+
+    aControlVolume.calculateCentroid(true);
+
+    for (Integer i = 0; i < aControlVolume.nbFaces(); i++)
+    {
+        Integer aFaceId = aControlVolume.faceId(i);
+
+        aControlVolume.calculateFaceNormal(aFaceId, true);
+        aControlVolume.calculateFaceCentroid(aFaceId, true);
+
+        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        aVector.normalize();
+
+        EXPECT_GT(aNormal.dot(aVector), 0.0);
+    }
+
+}
+
+TEST_F(CTestFvmControlVolume, orientation2) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+
+    CGeoTriangularPrism<decimal> aTriangularPrism;
+
+    aTriangularPrism.addVertex(aVertex1);
+    aTriangularPrism.addVertex(aVertex2);
+    aTriangularPrism.addVertex(aVertex3);
+    aTriangularPrism.addVertex(aVertex4);
+    aTriangularPrism.addVertex(aVertex5);
+    aTriangularPrism.addVertex(aVertex6);
+
+    aTriangularPrism.calculateVolume();
+
+    EXPECT_EQ(0.5, aTriangularPrism.volume());
+
+    CGeoPolyhedron<decimal> aPolyhedron(aTriangularPrism);
+
+    EXPECT_EQ(5, aPolyhedron.nbPolygons());
+
+    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+
+    EXPECT_EQ(5, aControlVolume.nbFaces());
+
+    aControlVolume.calculateVolume(true);
+
+    EXPECT_NEAR(0.5, aControlVolume.volume(), 1E-6);
+
+    aControlVolume.calculateCentroid(true);
+
+    for (Integer i = 0; i < aControlVolume.nbFaces(); i++)
+    {
+        Integer aFaceId = aControlVolume.faceId(i);
+
+        aControlVolume.calculateFaceNormal(aFaceId, true);
+        aControlVolume.calculateFaceCentroid(aFaceId, true);
+
+        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        aVector.normalize();
+
+        EXPECT_GT(aNormal.dot(aVector), 0.0);
+    }
+
+}
+
+TEST_F(CTestFvmControlVolume, orientation3) {
+
+    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+
+    CGeoHexahedron<decimal> aHexahedron;
+
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    aHexahedron.calculateVolume();
+
+    EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
+
+    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+
+    EXPECT_EQ(6, aPolyhedron.nbPolygons());
+
+    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+
+    EXPECT_EQ(6, aControlVolume.nbFaces());
+
+    aControlVolume.calculateVolume(true);
+
+    EXPECT_NEAR(1.0, aControlVolume.volume(), 1E-6);
+
+    aControlVolume.calculateCentroid(true);
+
+    for (Integer i = 0; i < aControlVolume.nbFaces(); i++)
+    {
+        Integer aFaceId = aControlVolume.faceId(i);
+
+        aControlVolume.calculateFaceNormal(aFaceId, true);
+        aControlVolume.calculateFaceCentroid(aFaceId, true);
+
+        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        aVector.normalize();
+
+        EXPECT_GT(aNormal.dot(aVector), 0.0);
+    }
 
 }
 
@@ -317,6 +473,22 @@ TEST_F(CTestFvmControlVolume, clip1) {
     aControlVolume.calculateVolume(true);
 
     EXPECT_NEAR(0.8, aControlVolume.volume(), 1E-3);
+
+    aControlVolume.calculateCentroid(true);
+
+    for (Integer i = 0; i < aControlVolume.nbFaces(); i++)
+    {
+        Integer aFaceId = aControlVolume.faceId(i);
+
+        aControlVolume.calculateFaceNormal(aFaceId, true);
+        aControlVolume.calculateFaceCentroid(aFaceId, true);
+
+        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        aVector.normalize();
+
+        EXPECT_GT(aNormal.dot(aVector), 0.0);
+    }
 
 }
 
