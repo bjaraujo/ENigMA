@@ -64,7 +64,7 @@ namespace ENigMA
             {
                 this->m_normal = (this->m_vertices[1] - this->m_vertices[0]).cross(this->m_vertices[2] - this->m_vertices[0]);
 
-                this->m_area = this->m_normal.norm() * 0.5;
+                this->m_area = this->m_normal.norm() * static_cast<Real>(0.5);
 
                 if (this->m_area > 0.0)
                     this->m_normal.normalize();

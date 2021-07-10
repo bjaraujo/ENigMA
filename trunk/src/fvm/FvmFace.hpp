@@ -25,6 +25,7 @@ namespace ENigMA
             BT_INTERIOR_FACE,
             BT_INTERFACE,
             BT_WALL_NO_SLIP,
+            BT_WALL_SLIP,
             BT_INLET_FLOW,
             BT_INLET_PRESSURE,
             BT_OUTLET

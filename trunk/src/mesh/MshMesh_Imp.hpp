@@ -358,7 +358,6 @@ namespace ENigMA
             for (Integer i = 0; i < static_cast<Integer>(m_faceIds.size()); ++i)
             {
                 Integer aFaceId = m_faceIds.at(i);
-
                 CMshFace<Real> aFace = m_faces.at(aFaceId);
 
                 if (!aFace.hasPair())
@@ -385,9 +384,7 @@ namespace ENigMA
             for (Integer i = 0; i < static_cast<Integer>(m_nodeIds.size()); ++i)
             {
                 Integer aNodeId = m_nodeIds.at(i);
-
                 CMshNode<Real> aNode = m_nodes.at(aNodeId);
-
                 aBoundaryMesh.addNode(aNodeId, aNode);
             }
 
