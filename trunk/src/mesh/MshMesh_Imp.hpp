@@ -14,6 +14,7 @@
 #include "MshTriangle.hpp"
 #include "MshQuadrilateral.hpp"
 #include "MshTetrahedron.hpp"
+#include "MshTriangularPrism.hpp"
 
 namespace ENigMA
 {
@@ -873,7 +874,7 @@ namespace ENigMA
         template <typename Real>
         Real CMshMesh<Real>::quality(Integer anElementId)
         {
-            Real q = 0.0;
+            Real q = 1.0;
 
             CMshElement<Real>& anElement = m_elements.at(anElementId);
 
@@ -924,6 +925,22 @@ namespace ENigMA
                 aTetrahedron.calculateQuality();
 
                 q = aTetrahedron.quality();
+            }
+            else if (anElement.elementType() == ET_TRIANGULAR_PRISM)
+            {
+                CMshTriangularPrism<Real> aPrism;
+
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                {
+                    Integer aNodeId = anElement.nodeId(j);
+                    CMshNode<Real>& aNode = m_nodes.at(aNodeId);
+
+                    aPrism.addVertex(aNode);
+                }
+
+                aPrism.calculateQuality();
+
+                q = aPrism.quality();
             }
 
             return q;

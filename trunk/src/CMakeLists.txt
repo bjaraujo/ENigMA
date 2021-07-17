@@ -88,6 +88,8 @@ mesh/MshQuadrilateral.hpp
 mesh/MshQuadrilateral_Imp.hpp
 mesh/MshTetrahedron.hpp
 mesh/MshTetrahedron_Imp.hpp
+mesh/MshTriangularPrism.hpp
+mesh/MshTriangularPrism_Imp.hpp
 mesh/MshTriangleMesher.hpp
 mesh/MshTriangleMesher_Imp.hpp
 mesh/MshQuadrilateralMesher.hpp

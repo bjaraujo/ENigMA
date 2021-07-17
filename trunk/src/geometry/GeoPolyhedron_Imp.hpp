@@ -497,7 +497,7 @@ namespace ENigMA
                     // Secant Rule
                     s = b - fb * (b - a) / (fb - fa);
 
-                tmp = (3.0 * a + b) / 4.0;
+                tmp = (static_cast<Real>(3.0) * a + b) / static_cast<Real>(4.0);
 
                 if ((!(((s > tmp) && (s < b)) ||
                        ((s < tmp) && (s > b)))) ||
@@ -506,7 +506,7 @@ namespace ENigMA
                         (mflag && (std::fabs(b - e) < aTolerance)) ||
                         (!mflag && (std::fabs(e - f) < aTolerance)))
                 {
-                    s = (a + b) * 0.5;
+                    s = (a + b) * static_cast<Real>(0.5);
                     mflag = true;
                 }
                 else
