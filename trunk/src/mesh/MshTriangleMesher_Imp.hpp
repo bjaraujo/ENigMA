@@ -825,8 +825,8 @@ namespace ENigMA
             // Start meshing interior
             Integer maxElem = maxNbElements;
 
-            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.50, 0.02, false, false, aTolerance);
-            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.01, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, false, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.01, true, false, aTolerance);
             this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
 
             if (this->frontSize() > 0)
@@ -1009,7 +1009,7 @@ namespace ENigMA
                         Real angle = anAdvEdge.line.vector().angle(anAdvEdge1.line.vector());
 
                         if (angle > pi * 0.5)
-                            factor = 1.5;
+                            factor = 2.0;
                     }
 
                     if (aNodeId == aNodeId4)
@@ -1017,7 +1017,7 @@ namespace ENigMA
                         Real angle = anAdvEdge.line.vector().angle(anAdvEdge2.line.vector());
 
                         if (angle > pi * 0.5)
-                            factor = 1.5;
+                            factor = 2.0;
                     }
 
                     // Use closest node

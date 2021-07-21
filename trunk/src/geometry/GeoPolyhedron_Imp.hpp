@@ -466,8 +466,8 @@ namespace ENigMA
             Real e = a;
             Real f = std::numeric_limits<Real>::max();
 
-            Real fa = 0.0 - volumeFractionReq;
-            Real fb = 1.0 - volumeFractionReq;
+            Real fa = static_cast<Real>(0.0) - volumeFractionReq;
+            Real fb = static_cast<Real>(1.0) - volumeFractionReq;
 
             Real fc = fa;
 

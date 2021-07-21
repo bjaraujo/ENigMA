@@ -75,9 +75,7 @@ namespace ENigMA
 
                     m_mesh->face(aFaceId).calculateCentroid();
 
-                    CGeoVector<Real> d = m_mesh->face(aFaceId).centroid() - aCoordinate;
-
-                    Real thisDist = d.norm();
+                    Real thisDist = (m_mesh->face(aFaceId).centroid() - aCoordinate).norm();
 
                     if (thisDist < aDistance)
                     {
