@@ -767,7 +767,7 @@ namespace ENigMA
                     if (m_volumeMesh.nbElements() >= maxNbElements)
                     {
                         std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
-                        return false;
+                        throw(this->m_anAdvFront);
                     }
                 }
 

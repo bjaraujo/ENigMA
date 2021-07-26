@@ -31,6 +31,7 @@ endif(ENIGMA_BUILD_QT_EXAMPLES)
 
 if(ENIGMA_BUILD_VTK_EXAMPLES)
 add_subdirectory(mesh2d)
+add_subdirectory(mesh3d)
 add_subdirectory(femflow)
 add_subdirectory(fvmflow)
 add_subdirectory(fvmhydro)

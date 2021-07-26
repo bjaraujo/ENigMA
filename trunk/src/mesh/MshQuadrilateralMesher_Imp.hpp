@@ -503,7 +503,7 @@ namespace ENigMA
                     if (this->m_surfaceMesh.nbElements() >= maxNbElements)
                     {
                         std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
-                        return false;
+                        throw(this->m_anAdvFront);
                     }
                 }
 
