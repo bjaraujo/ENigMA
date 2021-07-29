@@ -1126,22 +1126,22 @@ namespace ENigMA
 
                 for (Integer j = 0; j < 3; ++j)
                 {
-                    Integer neighbor = m_stlFile.facet(aFacetId).edge(j).neighbor();
+                    Integer aNeighborId = m_stlFile.facet(aFacetId).edge(j).neighbor();
                     Integer vertexNot = m_stlFile.facet(aFacetId).edge(j).whichVertexNot();
 
-                    if (neighbor == -1)
+                    if (aNeighborId == -1)
                         continue;
 
-                    if (m_stlFile.facet(neighbor).extra[0] == 'c')
+                    if (m_stlFile.facet(aNeighborId).extra[0] == 'c')
                         continue;
 
                     if (vertexNot < 0 || vertexNot > 2)
                         continue;
 
-                    CGeoCoordinate<Real> p3 = m_stlFile.facet(neighbor).vertex(vertexNot);
+                    CGeoCoordinate<Real> p3 = m_stlFile.facet(aNeighborId).vertex(vertexNot);
 
-                    m_stlFile.facet(neighbor).calculateNormal();
-                    CGeoNormal<Real> normal_j = m_stlFile.facet(neighbor).normal();
+                    m_stlFile.facet(aNeighborId).calculateNormal();
+                    CGeoNormal<Real> normal_j = m_stlFile.facet(aNeighborId).normal();
 
                     Real ang = normal_i.angle(normal_j);
 
@@ -1157,59 +1157,60 @@ namespace ENigMA
 
                         this->getFacetQuality(m_stlFile.facet(aFacetId), sedg, bedg, dmin, dmax, qi);
 
-                        m_stlFile.facet(neighbor).calculateNormal();
+                        m_stlFile.facet(aNeighborId).calculateNormal();
                         CGeoNormal<Real> iNormal_i = m_stlFile.facet(aFacetId).normal();
 
-                        this->getFacetQuality(m_stlFile.facet(neighbor), sedg, bedg, dmin, dmax, qj);
+                        this->getFacetQuality(m_stlFile.facet(aNeighborId), sedg, bedg, dmin, dmax, qj);
 
-                        m_stlFile.facet(neighbor).calculateNormal();
-                        CGeoNormal<Real> iNormal_j = m_stlFile.facet(neighbor).normal();
+                        m_stlFile.facet(aNeighborId).calculateNormal();
+                        CGeoNormal<Real> iNormal_j = m_stlFile.facet(aNeighborId).normal();
 
                         Real qmini = std::min(qi, qj);
 
-                        CStlFacet<Real> newFacet_i, newFacet_j;
+                        CStlFacet<Real> newFacet_i;
+                        CStlFacet<Real> newFacet_j;
 
                         switch (j)
                         {
                         case 0:
 
                             newFacet_i = m_stlFile.facet(aFacetId);
-                            newFacet_i.addVertex(p0);
-                            newFacet_i.addVertex(p3);
-                            newFacet_i.addVertex(p2);
+                            newFacet_i.insertVertex(0, p0);
+                            newFacet_i.insertVertex(1, p3);
+                            newFacet_i.insertVertex(2, p2);
 
-                            newFacet_j = m_stlFile.facet(neighbor);
-                            newFacet_j.addVertex(p1);
-                            newFacet_j.addVertex(p2);
-                            newFacet_j.addVertex(p3);
+                            newFacet_j = m_stlFile.facet(aNeighborId);
+                            newFacet_j.insertVertex(0, p1);
+                            newFacet_j.insertVertex(1, p2);
+                            newFacet_j.insertVertex(2, p3);
 
                             break;
 
                         case 1:
 
                             newFacet_i = m_stlFile.facet(aFacetId);
-                            newFacet_i.addVertex(p0);
-                            newFacet_i.addVertex(p1);
-                            newFacet_i.addVertex(p3);
+                            newFacet_i.insertVertex(0, p0);
+                            newFacet_i.insertVertex(1, p1);
+                            newFacet_i.insertVertex(2, p3);
 
-                            newFacet_j = m_stlFile.facet(neighbor);
-                            newFacet_j.addVertex(p0);
-                            newFacet_j.addVertex(p3);
-                            newFacet_j.addVertex(p2);
+                            newFacet_j = m_stlFile.facet(aNeighborId);
+                            newFacet_j.insertVertex(0, p0);
+                            newFacet_j.insertVertex(1, p3);
+                            newFacet_j.insertVertex(2, p2);
 
                             break;
 
                         case 2:
 
                             newFacet_i = m_stlFile.facet(aFacetId);
-                            newFacet_i.addVertex(p0);
-                            newFacet_i.addVertex(p1);
-                            newFacet_i.addVertex(p3);
+                            newFacet_i.insertVertex(0, p0);
+                            newFacet_i.insertVertex(1, p1);
+                            newFacet_i.insertVertex(2, p3);
 
-                            newFacet_j = m_stlFile.facet(neighbor);
-                            newFacet_j.addVertex(p1);
-                            newFacet_j.addVertex(p2);
-                            newFacet_j.addVertex(p3);
+                            newFacet_j = m_stlFile.facet(aNeighborId);
+                            newFacet_j.insertVertex(0, p1);
+                            newFacet_j.insertVertex(1, p2);
+                            newFacet_j.insertVertex(2, p3);
 
                             break;
                         }
@@ -1227,12 +1228,12 @@ namespace ENigMA
                         Real qminf = std::min(qi, qj);
 
                         m_stlFile.facet(aFacetId).calculateArea();
-                        m_stlFile.facet(neighbor).calculateArea();
+                        m_stlFile.facet(aNeighborId).calculateArea();
 
                         newFacet_i.calculateArea();
                         newFacet_j.calculateArea();
 
-                        Real areai = m_stlFile.facet(aFacetId).area() + m_stlFile.facet(neighbor).area();
+                        Real areai = m_stlFile.facet(aFacetId).area() + m_stlFile.facet(aNeighborId).area();
                         Real areaf = newFacet_i.area() + newFacet_j.area();
 
                         if (qminf > qmini)
@@ -1249,10 +1250,10 @@ namespace ENigMA
                             if (std::fabs(cangi) < 2.5 && std::fabs(cangj) < 2.5 && std::fabs(areai - areaf) < areai * 0.01)
                             {
                                 m_stlFile.facet(aFacetId) = newFacet_i;
-                                m_stlFile.facet(neighbor) = newFacet_j;
+                                m_stlFile.facet(aNeighborId) = newFacet_j;
 
                                 m_stlFile.facet(aFacetId).extra[0] = 'c';
-                                m_stlFile.facet(neighbor).extra[0] = 'c';
+                                m_stlFile.facet(aNeighborId).extra[0] = 'c';
 
                                 break;
                             }
