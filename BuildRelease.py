@@ -3,7 +3,7 @@ import sys
 import shutil
 import argparse
 
-#python BuildRelease.py --configure --build --install --swig=D:\Libraries\Swig\swigwin-4.0.2\swig.exe -a 64
+#python BuildRelease.py --configure --build --install --package --swig=D:\Libraries\Swig\swigwin-4.0.2\swig.exe -a 64
 
 def getVersion(args):
 

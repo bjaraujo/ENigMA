@@ -40,8 +40,8 @@ int main(int argc, char* argv[])
 
     CGeoPolyhedron<float> aPolyhedron(aHexahedron);
 
-    CGeoNormal<float> aNormal(0.9407, 0.2822, 0.1881);
-    CGeoPlane<float> aPlane(aNormal, 0.0);
+    CGeoNormal<float> aNormal(0.9407f, 0.2822f, 0.1881f);
+    CGeoPlane<float> aPlane(aNormal, 0.0f);
 
     CGeoPolygon<float> aNewPolygon;
     Integer aNewPolygonId = 999;
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     float volumeFractionAct;
     Integer nIterations;
 
-    CGeoPolyhedron<float> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 0.4, volumeFractionAct, nIterations, 50, 1E-9, 1E-6);
+    CGeoPolyhedron<float> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 0.4f, volumeFractionAct, nIterations, 50, 1E-9f, 1E-6f);
 
     std::cout << "Solution: " << aPlane.d() << std::endl;
 
