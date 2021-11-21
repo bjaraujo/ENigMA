@@ -825,9 +825,9 @@ namespace ENigMA
             // Start meshing interior
             Integer maxElem = maxNbElements;
 
-            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 0.75, 0.02, false, false, aTolerance);
-            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.00, 0.01, true, false, aTolerance);
-            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 1.00, 1.50, 0.00, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 0.60, 1.00, 0.75, 0.02, false, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 0.80, 1.00, 0.75, 0.01, true, false, aTolerance);
+            this->advancingFrontTriMeshing(meshSize, maxElem, minMeshSize, maxMeshSize, 1.00, 0.75, 1.50, 0.00, true, false, aTolerance);
 
             if (this->frontSize() > 0)
             {

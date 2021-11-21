@@ -160,5 +160,12 @@ int main(int argc, char* argv[])
     //CMshMesh<float> anEdgeMesh = GenerateBoundary(1E-3);
     CMshMesh<float> anEdgeMesh = LoadBoundary("_edge.msh", 1E-3);
 
-    GenerateMesh(anEdgeMesh, 1.8, 999, 0.02);
+    float m = 1.0;
+    for (int i = 0; i < 200; i++)
+    {
+        std::cout << "i = " << i << std::endl;
+        std::cout << "Mesh size = " << std::setprecision(4) << m << std::endl;
+        GenerateMesh(anEdgeMesh, m, 999, 0.02);
+        m += 0.01;
+    }
 }
