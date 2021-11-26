@@ -80,10 +80,8 @@ namespace ENigMA
             CMshNode<Real>& aNode2 = m_surfaceMesh.node(aNodeId2);
 
             CGeoBoundingBox<Real> aBoundingBox;
-
             aBoundingBox.addCoordinate(aNode1);
             aBoundingBox.addCoordinate(aNode2);
-
             aBoundingBox.grow(aTolerance);
 
             m_tree.addGeometricObject(anAdvEdge.id, aBoundingBox);
@@ -96,10 +94,8 @@ namespace ENigMA
             Integer aNodeId2 = anAdvEdge.nodeId[1];
 
             CGeoBoundingBox<Real> aBoundingBox;
-
             aBoundingBox.addCoordinate(m_surfaceMesh.node(aNodeId1));
             aBoundingBox.addCoordinate(m_surfaceMesh.node(aNodeId2));
-
             aBoundingBox.grow(aTolerance);
 
             m_tree.removeGeometricObject(anAdvEdge.id, aBoundingBox);
@@ -948,7 +944,7 @@ namespace ENigMA
                 aBoundingBox.addCoordinate(aNode1);
                 aBoundingBox.addCoordinate(aNode2);
                 aBoundingBox.addCoordinate(aNewNode);
-                aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
+                aBoundingBox.grow(baseHeightSize);
 
                 sEdges.clear();
                 m_tree.find(sEdges, aBoundingBox);

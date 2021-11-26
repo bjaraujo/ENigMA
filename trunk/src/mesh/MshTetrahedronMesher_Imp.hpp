@@ -79,11 +79,9 @@ namespace ENigMA
             CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
 
             CGeoBoundingBox<Real> aBoundingBox;
-
             aBoundingBox.addCoordinate(aNode1);
             aBoundingBox.addCoordinate(aNode2);
             aBoundingBox.addCoordinate(aNode3);
-
             aBoundingBox.grow(aTolerance);
 
             m_tree.addGeometricObject(anAdvTriangle.id, aBoundingBox);
@@ -97,11 +95,9 @@ namespace ENigMA
             Integer aNodeId3 = anAdvTriangle.nodeId[2];
 
             CGeoBoundingBox<Real> aBoundingBox;
-
             aBoundingBox.addCoordinate(m_volumeMesh.node(aNodeId1));
             aBoundingBox.addCoordinate(m_volumeMesh.node(aNodeId2));
             aBoundingBox.addCoordinate(m_volumeMesh.node(aNodeId3));
-
             aBoundingBox.grow(aTolerance);
 
             m_tree.removeGeometricObject(anAdvTriangle.id, aBoundingBox);
@@ -822,7 +818,7 @@ namespace ENigMA
                 aBoundingBox.addCoordinate(aNode2);
                 aBoundingBox.addCoordinate(aNode3);
                 aBoundingBox.addCoordinate(anAuxNode);
-                aBoundingBox.grow(aTolerance);
+                aBoundingBox.grow(baseHeightSize);
 
                 sTriangles.clear();
                 m_tree.find(sTriangles, aBoundingBox);
@@ -1022,11 +1018,9 @@ namespace ENigMA
                 CMshNode<Real>& aNode3 = m_volumeMesh.node(aNodeId3);
 
                 aBoundingBox.reset();
-
                 aBoundingBox.addCoordinate(aNode1);
                 aBoundingBox.addCoordinate(aNode2);
                 aBoundingBox.addCoordinate(aNode3);
-
                 aBoundingBox.grow(aTolerance);
 
                 std::vector<Integer> sTriangles;

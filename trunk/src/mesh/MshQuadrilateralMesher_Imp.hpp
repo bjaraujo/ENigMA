@@ -568,7 +568,7 @@ namespace ENigMA
                 aBoundingBox.addCoordinate(aNode2);
                 aBoundingBox.addCoordinate(aNewNode1);
                 aBoundingBox.addCoordinate(aNewNode2);
-                aBoundingBox.grow(baseHeightSize * sizeFactor * 0.5);
+                aBoundingBox.grow(baseHeightSize);
 
                 sEdges.clear();
                 this->m_tree.find(sEdges, aBoundingBox);

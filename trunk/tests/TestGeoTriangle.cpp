@@ -49,7 +49,7 @@ TEST_F(CTestGeoTriangle, area) {
 
 }
 
-TEST_F(CTestGeoTriangle, contains) {
+TEST_F(CTestGeoTriangle, contains1) {
 
     CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
     CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
@@ -67,6 +67,25 @@ TEST_F(CTestGeoTriangle, contains) {
 
     EXPECT_TRUE(aTriangle.contains(aPoint, anIntersectionType));
 
+}
+
+TEST_F(CTestGeoTriangle, contains2) {
+
+    CGeoCoordinate<decimal> aVertex1(-22.51775741577148, -5.573679447174072, 0.0);
+    CGeoCoordinate<decimal> aVertex2(-25.64224624633789, -7.336995601654053, 0.0);
+    CGeoCoordinate<decimal> aVertex3(-22.6344165802002, -7.619722843170166, 0.0);
+
+    CGeoTriangle<decimal> aTriangle;
+
+    aTriangle.addVertex(aVertex1);
+    aTriangle.addVertex(aVertex2);
+    aTriangle.addVertex(aVertex3);
+
+    CGeoCoordinate<decimal> aPoint(-23.35100364685059, -6.231756210327148, 0.0);
+
+    CGeoIntersectionType anIntersectionType;
+
+    EXPECT_TRUE(aTriangle.contains(aPoint, anIntersectionType, 0.02));
 }
 
 TEST_F(CTestGeoTriangle, intersect1) {
