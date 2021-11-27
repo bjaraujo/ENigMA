@@ -121,6 +121,7 @@ namespace ENigMA
             Integer nextElementId() const;
 
             void mergeNodes(const Real aTolerance = 0.0);
+            void mergeElements(const Real aTolerance = 0.0);
             void removeInvalidElements();
             void rebuildIndices();
             void removeDanglingNodes();

@@ -31,7 +31,17 @@ protected:
 
 };
 
-TEST_F(CTestGeoCoordinate, set) {
+TEST_F(CTestGeoCoordinate, set1) {
+
+    CGeoCoordinate<decimal> aCoordinate;
+
+    EXPECT_NEAR(+0.0, aCoordinate.x(), 1E-20);
+    EXPECT_NEAR(+0.0, aCoordinate.y(), 1E-20);
+    EXPECT_NEAR(+0.0, aCoordinate.z(), 1E-20);
+
+}
+
+TEST_F(CTestGeoCoordinate, set2) {
 
     CGeoCoordinate<decimal> aCoordinate(-1.1, +2.2, -3.3);
 

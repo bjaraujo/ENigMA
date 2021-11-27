@@ -81,6 +81,8 @@ CMshMesh<float> LoadBoundary(std::string fileName, const float tol)
     anEdgeMesh = T.mesh();
 
     anEdgeMesh.mergeNodes(tol);
+    anEdgeMesh.mergeElements(tol);
+    anEdgeMesh.renumber();
     anEdgeMesh.generateFaces(tol);
 
     return anEdgeMesh;

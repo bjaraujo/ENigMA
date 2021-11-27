@@ -610,6 +610,88 @@ namespace ENigMA
         }
 
         template <typename Real>
+        void CMshMesh<Real>::mergeElements(const Real aTolerance)
+        {
+            CGeoHashGrid<Real> aHashGrid;
+
+            for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i)
+            {
+                Integer anElementId = m_elementIds.at(i);
+
+                CMshElement<Real>& anElement = m_elements.at(anElementId);
+
+                CGeoCoordinate<Real> aCentroid;
+
+                for (Integer j = 0; j < anElement.nbNodeIds(); j++)
+                {
+                    aCentroid += m_nodes.at(anElement.nodeId(j));
+                }
+
+                if (anElement.nbNodeIds() > 0)
+                {
+                    aCentroid /= anElement.nbNodeIds();
+                }
+
+                aHashGrid.addGeometricObject(anElementId, aCentroid);
+            }
+
+            aHashGrid.build();
+
+            std::map<Integer, bool> bDeleteElement;
+
+            for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i)
+            {
+                Integer anElementId = m_elementIds.at(i);
+
+                bDeleteElement[anElementId] = false;
+            }
+
+            for (Integer i = 0; i < static_cast<Integer>(m_elementIds.size()); ++i)
+            {
+                Integer anElementId = m_elementIds.at(i);
+
+                CMshElement<Real>& anElement = m_elements.at(anElementId);
+
+                if (bDeleteElement.at(anElementId))
+                    continue;
+
+                CGeoCoordinate<Real> aCentroid;
+
+                for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                {
+                    aCentroid += m_nodes.at(anElement.nodeId(j));
+                }
+
+                if (anElement.nbNodeIds() > 0)
+                {
+                    aCentroid /= anElement.nbNodeIds();
+                }
+
+                std::vector<Integer> sElements;
+
+                aHashGrid.find(sElements, aCentroid, aTolerance);
+
+                if (sElements.size() > 1)
+                {
+                    for (Integer k = 0; k < static_cast<Integer>(sElements.size()); ++k)
+                    {
+                        // Duplicate elements found
+                        bDeleteElement[sElements.at(k)] = true;
+                    }
+                }
+            }
+
+            // Delete elements
+            for (typename std::map<Integer, bool>::const_iterator itr = bDeleteElement.begin(); itr != bDeleteElement.end(); ++itr)
+            {
+                Integer anElementId = itr->first;
+
+                if (itr->second)
+                    removeElement(anElementId);
+            }
+        }
+
+        template <typename Real>
         void CMshMesh<Real>::removeInvalidElements()
         {
             std::map<Integer, bool> bDeleteElement;
