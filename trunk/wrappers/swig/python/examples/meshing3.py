@@ -39,9 +39,10 @@ surfaceMesh = basicMesher.mesh().extractBoundary(1E-3)
 surfaceMesh.generateFaces(1E-5)
 
 tetrahedronMesher = ENigMA.CMshTetrahedronMesherDouble()
+interiorPoints = ENigMA.StdVectorCGeoCoordinateDouble()
 
 start = timer()
-tetrahedronMesher.generate(surfaceMesh, 99999, d, d * 0.1, d * 10.0, 1E-6)
+tetrahedronMesher.generate(surfaceMesh, 99999, interiorPoints, d, d * 0.1, d * 10.0, 1E-6)
 end = timer()
 
 print("Elapsed time: " + str(end - start))

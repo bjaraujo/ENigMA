@@ -38,6 +38,7 @@ edgeMesh.addElement(3, element3)
 edgeMesh.addElement(4, element4)
 
 quadrilateralMesher = ENigMA.CMshQuadrilateralMesherDouble()
+interiorPoints = ENigMA.StdVectorCGeoCoordinateDouble()
 
 meshSize = 20
 
@@ -45,7 +46,7 @@ edgeMesh.generateFaces(1E-3)
 quadrilateralMesher.remesh(edgeMesh, meshSize)
 
 start = timer()
-quadrilateralMesher.generate(edgeMesh, 9999, meshSize, meshSize * 0.1, meshSize * 10.0, 1E-3)
+quadrilateralMesher.generate(edgeMesh, 9999, interiorPoints, meshSize, meshSize * 0.1, meshSize * 10.0, 1E-3)
 end = timer()
 
 print("Elapsed time: " + str(end - start))

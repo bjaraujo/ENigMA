@@ -38,6 +38,7 @@ edgeMesh.addElement(3, element3)
 edgeMesh.addElement(4, element4)
 
 triangleMesher = ENigMA.CMshTriangleMesherDouble()
+interiorPoints = ENigMA.StdVectorCGeoCoordinateDouble()
 
 meshSize = 20
 
@@ -45,16 +46,16 @@ edgeMesh.generateFaces(1E-3)
 triangleMesher.remesh(edgeMesh, meshSize)
 
 start = timer()
-triangleMesher.generate(edgeMesh, 9999, meshSize, meshSize * 0.1, meshSize * 10.0, 1E-3)
+triangleMesher.generate(edgeMesh, 9999, interiorPoints, meshSize, meshSize * 0.1, meshSize * 10.0, 1E-3)
 end = timer()
 
 print("Elapsed time: " + str(end - start))
 
-triangleMesher.flipEdges()
-triangleMesher.relaxNodes()
-triangleMesher.flipEdges()
-
 surfaceMesh = triangleMesher.mesh()
+
+triangleMesher.flipEdges(surfaceMesh)
+triangleMesher.relaxNodes(surfaceMesh)
+triangleMesher.flipEdges(surfaceMesh)
 
 print(surfaceMesh.nbNodes())
 print(surfaceMesh.nbElements())
