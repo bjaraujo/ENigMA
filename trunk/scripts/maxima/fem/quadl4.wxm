@@ -1,0 +1,99 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.04.0 ] */
+
+/* [wxMaxima: comment start ]
+Shape functions for linear quadrangular element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+
+f1:u1=alpha1+alpha2*x1+alpha3*y1+alpha4*x1*y1$
+f2:u2=alpha1+alpha2*x2+alpha3*y2+alpha4*x2*y2$
+f3:u3=alpha1+alpha2*x3+alpha3*y3+alpha4*x3*y3$
+f4:u4=alpha1+alpha2*x4+alpha3*y4+alpha4*x4*y4$
+
+f1:ev(f1,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+f2:ev(f2,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+f3:ev(f3,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+f4:ev(f4,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+
+S:solve([f1,f2,f3,f4],[alpha1,alpha2,alpha3,alpha4])$
+
+S:S[1]$
+alpha1:S[1]$
+alpha2:S[2]$
+alpha3:S[3]$
+alpha4:S[4]$
+
+u:rhs(alpha1+alpha2*x+alpha3*y+alpha4*x*y)$
+
+N1:ev(u,u1=1,u2=0,u3=0,u4=0)$
+N2:ev(u,u1=0,u2=1,u3=0,u4=0)$
+N3:ev(u,u1=0,u2=0,u3=1,u4=0)$
+N4:ev(u,u1=0,u2=0,u3=0,u4=1)$
+
+N1:ev(N1,x=xi,y=eta,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+N2:ev(N2,x=xi,y=eta,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+N3:ev(N3,x=xi,y=eta,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+N4:ev(N4,x=xi,y=eta,x1=-1,x2=1,x3=1,x4=-1,y1=-1,y2=-1,y3=1,y4=1)$
+
+N1:ratsimp(N1);
+N2:ratsimp(N2);
+N3:ratsimp(N3);
+N4:ratsimp(N4);
+
+wxplot3d (N1, [xi, -1, 1], [eta, -1, 1]);
+wxplot3d (N2, [xi, -1, 1], [eta, -1, 1]);
+wxplot3d (N3, [xi, -1, 1], [eta, -1, 1]);
+wxplot3d (N4, [xi, -1, 1], [eta, -1, 1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Jacobian matrix for linear quadrangular element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+
+N1:1/4*(1-xi)*(1-eta);
+N2:1/4*(1+xi)*(1-eta);
+N3:1/4*(1+xi)*(1+eta);
+N4:1/4*(1-xi)*(1+eta);
+
+x:N1*x1+N2*x2+N3*x3+N4*x4;
+y:N1*y1+N2*y2+N3*y3+N4*y4;
+z:N1*z1+N2*z2+N3*z3+N4*z4;
+
+J11:diff(x,xi);
+J12:diff(y,xi);
+
+J21:diff(x,eta);
+J22:diff(y,eta);
+
+J:matrix(
+ [J11,J12], 
+ [J21,J22]
+);
+
+G11:diff(J11,x1);
+G12:diff(J11,x2);
+G13:diff(J11,x3);
+G14:diff(J11,x4);
+ 
+G21:diff(J22,y1);
+G22:diff(J22,y2);
+G23:diff(J22,y3);
+G24:diff(J22,y4);
+
+G:matrix(
+ [G11,G12,G13,G14], 
+ [G21,G22,G23,G24]
+);
+
+/* B:invert(J).G; */
+
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

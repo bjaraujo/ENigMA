@@ -1,0 +1,67 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.04.0 ] */
+
+/* [wxMaxima: comment start ]
+Shape functions for quadratic triangular element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+
+f1:u1=alpha1+alpha2*x1+alpha3*y1+alpha4*x1*y1+alpha5*x1^2+alpha6*y1^2$
+f2:u2=alpha1+alpha2*x2+alpha3*y2+alpha4*x2*y2+alpha5*x2^2+alpha6*y2^2$
+f3:u3=alpha1+alpha2*x3+alpha3*y3+alpha4*x3*y3+alpha5*x3^2+alpha6*y3^2$
+f4:u4=alpha1+alpha2*x4+alpha3*y4+alpha4*x4*y4+alpha5*x4^2+alpha6*y4^2$
+f5:u5=alpha1+alpha2*x5+alpha3*y5+alpha4*x5*y5+alpha5*x5^2+alpha6*y5^2$
+f6:u6=alpha1+alpha2*x6+alpha3*y6+alpha4*x6*y6+alpha5*x6^2+alpha6*y6^2$
+
+f1:ev(f1,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+f2:ev(f2,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+f3:ev(f3,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+f4:ev(f4,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+f5:ev(f5,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+f6:ev(f6,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+
+S:solve([f1,f2,f3,f4,f5,f6],[alpha1,alpha2,alpha3,alpha4,alpha5,alpha6])$
+
+S:S[1]$
+alpha1:S[1]$
+alpha2:S[2]$
+alpha3:S[3]$
+alpha4:S[4]$
+alpha5:S[5]$
+alpha6:S[6]$
+
+u:rhs(alpha1+alpha2*x+alpha3*y+alpha4*x*y+alpha5*x^2+alpha6*y^2)$
+
+N1:ev(u,u1=1,u2=0,u3=0,u4=0,u5=0,u6=0)$
+N2:ev(u,u1=0,u2=1,u3=0,u4=0,u5=0,u6=0)$
+N3:ev(u,u1=0,u2=0,u3=1,u4=0,u5=0,u6=0)$
+N4:ev(u,u1=0,u2=0,u3=0,u4=1,u5=0,u6=0)$
+N5:ev(u,u1=0,u2=0,u3=0,u4=0,u5=1,u6=0)$
+N6:ev(u,u1=0,u2=0,u3=0,u4=0,u5=0,u6=1)$
+
+N1:ev(N1,x=xi,y=eta,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+N2:ev(N2,x=xi,y=eta,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+N3:ev(N3,x=xi,y=eta,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+N4:ev(N4,x=xi,y=eta,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+N5:ev(N5,x=xi,y=eta,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+N6:ev(N6,x=xi,y=eta,x1=0,x2=1,x3=0,x4=0.5,x5=0.5,x6=0,y1=0,y2=0,y3=1,y4=0,y5=0.5,y6=0.5)$
+
+N1:ratsimp(N1);
+N2:ratsimp(N2);
+N3:ratsimp(N3);
+N4:ratsimp(N4);
+N5:ratsimp(N5);
+N6:ratsimp(N6);
+
+wxplot3d (N1, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N2, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N3, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N4, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N5, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N6, [xi, 0, 1], [eta, 0, 1]);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

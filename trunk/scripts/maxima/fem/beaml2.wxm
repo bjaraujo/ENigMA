@@ -1,0 +1,60 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.04.0 ] */
+
+/* [wxMaxima: comment start ]
+Shape functions for linear beam element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+
+f1:u1=alpha1+alpha2*x1$
+f2:u2=alpha1+alpha2*x2$
+
+f1:ev(f1,x1=0,x2=1)$
+f2:ev(f2,x1=0,x2=1)$
+
+S:solve([f1,f2],[alpha1,alpha2])$
+
+S:S[1]$
+alpha1:S[1]$
+alpha2:S[2]$
+u:rhs(alpha1+alpha2*x)$
+
+N1:ev(u,u1=1,u2=0)$
+N2:ev(u,u1=0,u2=1)$
+
+N1:ev(N1,x=xi,x1=0,x2=1);
+N2:ev(N2,x=xi,x1=0,x2=1);
+
+wxplot2d ([N1,N2],[xi,0,1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Jacobian matrix for linear beam element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+
+N1:1-xi;
+N2:xi;
+
+x:N1*x1+N2*x2;
+
+J11:diff(x,xi);
+
+J:matrix([J11]);
+
+G[1,1]:diff(J[1,1],x1);
+G[1,2]:diff(J[1,1],x2);
+
+G:matrix([G[1,1],G[1,2]]);
+
+B:invert(J)*G;
+
+K:transpose(B).B;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

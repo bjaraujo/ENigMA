@@ -1,0 +1,88 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.01.0 ] */
+
+/* [wxMaxima: comment start ]
+Shape functions for linear triangular element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+
+f1:u1=alpha1+alpha2*x1+alpha3*y1$
+f2:u2=alpha1+alpha2*x2+alpha3*y2$
+f3:u3=alpha1+alpha2*x3+alpha3*y3$
+
+f1:ev(f1,x1=0,x2=1,x3=0,y1=0,y2=0,y3=1)$
+f2:ev(f2,x1=0,x2=1,x3=0,y1=0,y2=0,y3=1)$
+f3:ev(f3,x1=0,x2=1,x3=0,y1=0,y2=0,y3=1)$
+
+S:solve([f1,f2,f3],[alpha1,alpha2,alpha3])$
+S:S[1]$
+alpha1:S[1]$
+alpha2:S[2]$
+alpha3:S[3]$
+
+u:rhs(alpha1+alpha2*x+alpha3*y)$
+
+N1:ev(u,u1=1,u2=0,u3=0)$
+N2:ev(u,u1=0,u2=1,u3=0)$
+N3:ev(u,u1=0,u2=0,u3=1)$
+
+N1:ev(N1,x=xi,y=eta,x1=0,x2=1,x3=0,y1=0,y2=0,y3=1)$
+N2:ev(N2,x=xi,y=eta,x1=0,x2=1,x3=0,y1=0,y2=0,y3=1)$
+N3:ev(N3,x=xi,y=eta,x1=0,x2=1,x3=0,y1=0,y2=0,y3=1)$
+
+N1:ratsimp(N1);
+N2:ratsimp(N2);
+N3:ratsimp(N3);
+
+wxplot3d (N1, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N2, [xi, 0, 1], [eta, 0, 1]);
+wxplot3d (N3, [xi, 0, 1], [eta, 0, 1]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Jacobian matrix for linear triangle element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all);
+
+N1:-xi-eta+1;
+N2:xi;
+N3:eta;
+
+x:N1*x1+N2*x2+N3*x3;
+y:N1*y1+N2*y2+N3*y3;
+
+J11:diff(x,xi);
+J12:diff(y,xi);
+
+J21:diff(x,eta);
+J22:diff(y,eta);
+
+J:matrix(
+ [J11,J12], 
+ [J21,J22]
+);
+
+G11:diff(J11,x1);
+G12:diff(J11,x2);
+G13:diff(J11,x3);
+ 
+G21:diff(J22,y1);
+G22:diff(J22,y2);
+G23:diff(J22,y3);
+
+G:matrix(
+ [G11,G12,G13], 
+ [G21,G22,G23]
+);
+
+B:invert(J).G;
+
+K:transpose(B).B;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

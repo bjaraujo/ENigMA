@@ -1,0 +1,18 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+
+W:3/16*q^2-3/4*q+3/4;
+dW:diff(W, q);
+
+wxplot2d([W, dW],[q,0,2]);
+
+C:1/integrate(W,q,0,2);
+C:1/integrate(2*%pi*q*W,q,0,2);
+C:1/integrate(4*%pi*q*q*W,q,0,2);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

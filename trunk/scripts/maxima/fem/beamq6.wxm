@@ -1,0 +1,61 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 15.04.0 ] */
+
+/* [wxMaxima: comment start ]
+Shape functions for quintic beam element.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(all)$
+
+f1:u1=alpha1+alpha2*x1+alpha3*x1^2+alpha4*x1^3+alpha5*x1^4+alpha6*x1^5$
+f2:u2=alpha1+alpha2*x2+alpha3*x2^2+alpha4*x2^3+alpha5*x2^4+alpha6*x2^5$
+f3:u3=alpha1+alpha2*x3+alpha3*x3^2+alpha4*x3^3+alpha5*x3^4+alpha6*x3^5$
+f4:u4=alpha1+alpha2*x4+alpha3*x4^2+alpha4*x4^3+alpha5*x4^4+alpha6*x4^5$
+f5:u5=alpha1+alpha2*x5+alpha3*x5^2+alpha4*x5^3+alpha5*x5^4+alpha6*x5^5$
+f6:u6=alpha1+alpha2*x6+alpha3*x6^2+alpha4*x6^3+alpha5*x6^4+alpha6*x6^5$
+
+f1:ev(f1,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+f2:ev(f2,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+f3:ev(f3,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+f4:ev(f4,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+f5:ev(f5,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+f6:ev(f6,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+
+S:solve([f1,f2,f3,f4,f5,f6],[alpha1,alpha2,alpha3,alpha4,alpha5,alpha6])$
+
+S:S[1]$
+alpha1:S[1]$
+alpha2:S[2]$
+alpha3:S[3]$
+alpha4:S[4]$
+alpha5:S[5]$
+alpha6:S[6]$
+u:rhs(alpha1+alpha2*x+alpha3*x^2+alpha4*x^3+alpha5*x^4+alpha6*x^5)$
+
+N1:ev(u,u1=1,u2=0,u3=0,u4=0,u5=0,u6=0)$
+N2:ev(u,u1=0,u2=1,u3=0,u4=0,u5=0,u6=0)$
+N3:ev(u,u1=0,u2=0,u3=1,u4=0,u5=0,u6=0)$
+N4:ev(u,u1=0,u2=0,u3=0,u4=1,u5=0,u6=0)$
+N5:ev(u,u1=0,u2=0,u3=0,u4=0,u5=1,u6=0)$
+N6:ev(u,u1=0,u2=0,u3=0,u4=0,u5=0,u6=1)$
+
+N1:ev(N1,x=xi,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+N2:ev(N2,x=xi,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+N3:ev(N3,x=xi,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+N4:ev(N4,x=xi,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+N5:ev(N5,x=xi,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+N6:ev(N6,x=xi,x1=0,x2=0.2,x3=0.4,x4=0.6,x5=0.8,x6=1.0)$
+
+N1:ratsimp(N1);
+N2:ratsimp(N2);
+N3:ratsimp(N3);
+N4:ratsimp(N4);
+N5:ratsimp(N5);
+N6:ratsimp(N6);
+
+wxplot2d([N1,N2,N3,N4,N5,N6],[xi,0,1]);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
