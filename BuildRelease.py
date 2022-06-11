@@ -3,7 +3,7 @@ import sys
 import shutil
 import argparse
 
-#python BuildRelease.py --configure --build --install --package --swig=D:\Libraries\Swig\swigwin-4.0.2\swig.exe -a 64
+#python BuildRelease.py --configure --build --install --package --swig=D:\Libraries\SWIG\swigwin-4.0.2\swig.exe -a 64
 
 def getVersion(args):
 
@@ -69,9 +69,9 @@ def configureProject(args):
 
     if sys.platform == 'win32':
         if args.arch == 64:
-            os.system('cmake ../trunk -G "Visual Studio 16 2019" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecutable)
+            os.system('cmake ../trunk -G "Visual Studio 17 2022" -A x64 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecutable)
         else:
-            os.system('cmake ../trunk -G "Visual Studio 16 2019" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecutable)
+            os.system('cmake ../trunk -G "Visual Studio 17 2022" -A Win32 -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON -DWRAP_SWIG_CSHARP:BOOL=ON -DSWIG_EXECUTABLE=' + swigExecutable)
     else:
         os.system('cmake ../trunk -G "Ninja" -DENIGMA_BUILD_UNIT_TESTS:BOOL=' + unitTests + ' -DENIGMA_BUILD_WRAPPERS_SWIG:BOOL=ON -DWRAP_SWIG_PYTHON:BOOL=ON')
 

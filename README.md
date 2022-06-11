@@ -114,19 +114,19 @@ The [pythonocc](https://github.com/tpaviot/pythonocc) library is used to build t
 
 To reproduce these examples:
 
-1. Download miniconda (Python 3.8.5 64bit): https://conda.io/miniconda.html
+1. Download miniconda (Python 3.9.12 64bit): https://conda.io/miniconda.html
 
 2. Install pythonocc: 
 ```bash
-conda install -c conda-forge pythonocc-core=7.4.1
+conda install -c conda-forge pythonocc-core=7.5.1
 ```
 
-3. Install ENigMA 0.4.1: 
+3. Install ENigMA 0.4.5: 
 ```bash
-pip install ENigMApy_0.4.1.0-py3.8-none-win_amd64.whl
+pip install ENigMApy_0.4.5.0-py3.9-none-win_amd64.whl
 ```
 
-4. Download the examples: [ENigMApy_0.4.1.0-py3-occ-examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.4.1.0/ENigMApy_0.4.1.0-py3-occ-examples.zip)
+4. Download the examples: [ENigMApy_0.4.5.0-py3-occ-examples.zip](https://github.com/bjaraujo/ENigMA/releases/download/v0.4.5.0/ENigMApy_0.4.5.0-py3-occ-examples.zip)
 
 Note: If you are using Windows and you get the following error: "ImportError: DLL load failed: The specified module could not be found", you might need to download and install the Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019.
 
