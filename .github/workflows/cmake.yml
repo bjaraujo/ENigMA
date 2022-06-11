@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows-2016, ubuntu-20.04]
+        platform: [windows-2019, ubuntu-20.04]
         arch: [x86, x64]
         python-version: ['3.7.x', '3.8.x', '3.9.x']
         exclude:
