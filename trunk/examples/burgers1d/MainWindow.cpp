@@ -174,10 +174,11 @@ void MainWindow::solveViscousBurgersEquation1D()
     aVolumeMesh.calculateElementCentroid();
 
     // Cyclic
-    Integer aFaceId1, aFaceId2;
+    Integer aFaceId1 = 0;
+    Integer aFaceId2 = 0;
+
     for (Integer i = 0; i < aVolumeMesh.nbFaces(); ++i)
     {
-
         Integer aFaceId = aVolumeMesh.faceId(i);
 
         if (fabs(aVolumeMesh.faceCentroid(aFaceId).x() - 0.0) < 1E-6)
@@ -185,8 +186,8 @@ void MainWindow::solveViscousBurgersEquation1D()
 
         if (fabs(aVolumeMesh.faceCentroid(aFaceId).x() - L) < 1E-6)
             aFaceId2 = aFaceId;
-
     }
+
     aVolumeMesh.face(aFaceId1).setPairFaceId(aFaceId2);
     aVolumeMesh.face(aFaceId2).setPairFaceId(aFaceId1);
 
@@ -194,7 +195,6 @@ void MainWindow::solveViscousBurgersEquation1D()
     double dx = L / nu;
 
     Integer nIter = 5*400;
-    double time = dt * nIter;
 
     const double mu = 0.05;
 
@@ -379,8 +379,6 @@ void MainWindow::solveInviscidBurgersEquation1D()
     CGeoLine<double> aLine(aPoint1, aPoint2);
 
     const Integer nu = 500;
-    const Integer nv = 1;
-    const Integer nw = 1;
 
     CMshBasicMesher<double> aBasicMesher;
 
@@ -391,7 +389,6 @@ void MainWindow::solveInviscidBurgersEquation1D()
     double dx = L / nu;
 
     Integer nIter = 1000;
-    double time = dt * nIter;
 
     m_plotId++;
 
