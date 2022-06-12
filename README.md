@@ -767,14 +767,14 @@ Lid-driven cavity (Re = 1000).
 import math
 from ENigMA import ENigMA
 
-vertex1 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, -0.1)
-vertex2 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, -0.1)
-vertex3 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, -0.1)
-vertex4 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, -0.1)
-vertex5 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, +0.1)
-vertex6 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, +0.1)
-vertex7 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, +0.1)
-vertex8 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, +0.1)
+vertex1 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, +0.1)
+vertex2 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, +0.1)
+vertex3 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, +0.1)
+vertex4 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, +0.1)
+vertex5 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, -0.1)
+vertex6 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, -0.1)
+vertex7 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, -0.1)
+vertex8 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, -0.1)
 
 hexahedron = ENigMA.CGeoHexahedronDouble()
 
