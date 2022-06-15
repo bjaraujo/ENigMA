@@ -207,7 +207,7 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface2.msh", "tris");
 
-    EXPECT_EQ(278, aSurfaceMesh.nbElements());
+    EXPECT_EQ(262, aSurfaceMesh.nbElements());
 
 }
 
@@ -311,7 +311,7 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface3.msh", "tris");
 
-    EXPECT_EQ(268, aSurfaceMesh.nbElements());
+    EXPECT_EQ(238, aSurfaceMesh.nbElements());
 
 }
 
@@ -521,7 +521,7 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface5.msh", "tris");
 
-    EXPECT_EQ(282, aSurfaceMesh.nbElements());
+    EXPECT_EQ(246, aSurfaceMesh.nbElements());
 
 }
 
@@ -661,7 +661,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     T.setMesh(aSurfaceMesh);
     aPosGmsh.save(T, "tri_surface6.msh", "tris");
 
-    EXPECT_EQ(290, aSurfaceMesh.nbElements());
+    EXPECT_EQ(254, aSurfaceMesh.nbElements());
 
 }
 
@@ -751,6 +751,139 @@ TEST_F(CTestMshTriangleMesher, mesh8) {
 
     CMshMesh<decimal> anEdgeMesh;
 
+    CMshNode<decimal> aNode1;
+    CMshNode<decimal> aNode2;
+    CMshNode<decimal> aNode3;
+    CMshNode<decimal> aNode4;
+    CMshNode<decimal> aNode5;
+    CMshNode<decimal> aNode6;
+    CMshNode<decimal> aNode7;
+    CMshNode<decimal> aNode8;
+    CMshNode<decimal> aNode9;
+    CMshNode<decimal> aNode10;
+    CMshNode<decimal> aNode11;
+    CMshNode<decimal> aNode12;
+    CMshNode<decimal> aNode13;
+    CMshNode<decimal> aNode14;
+    CMshNode<decimal> aNode15;
+    CMshNode<decimal> aNode16;
+    CMshNode<decimal> aNode17;
+    CMshNode<decimal> aNode18;
+    CMshNode<decimal> aNode19;
+    CMshNode<decimal> aNode20;
+    CMshNode<decimal> aNode21;
+    CMshNode<decimal> aNode22;
+    CMshNode<decimal> aNode23;
+    CMshNode<decimal> aNode24;
+    CMshNode<decimal> aNode25;
+    CMshNode<decimal> aNode26;
+    CMshNode<decimal> aNode27;
+    CMshNode<decimal> aNode28;
+    CMshNode<decimal> aNode29;
+    CMshNode<decimal> aNode30;
+
+    aNode1 << 0,0,0;
+    aNode2 << 0,-0.777239978313446,0;
+    aNode3 << 3.993843078613281,-0.777239978313446,0;
+    aNode4 << 7.987682342529297,-0.777239978313446,0;
+    aNode5 << 11.98152160644531,-0.777239978313446,0;
+    aNode6 << 15.97536468505859,-0.777239978313446,0;
+    aNode7 << 19.96920776367188,-0.777239978313446,0;
+    aNode8 << 23.96305084228516,-0.777239978313446,0;
+    aNode9 << 27.95688629150391,-0.777239978313446,0;
+    aNode10 << 31.95072937011719,-0.777239978313446,0;
+    aNode11 << 35.94457244873047,-0.777239978313446,0;
+    aNode12 << 39.93840789794922,-0.777239978313446,0;
+    aNode13 << 43.9322509765625,-0.777239978313446,0;
+    aNode14 << 47.92609405517578,-0.777239978313446,0;
+    aNode15 << 51.91993713378906,-0.777239978313446,0;
+    aNode16 << 55.91377258300781,-0.777239978313446,0;
+    aNode17 << 55.91377258300781,0,0;
+    aNode18 << 51.91993713378906,0,0;
+    aNode19 << 47.92609405517578,0,0;
+    aNode20 << 43.9322509765625,0,0;
+    aNode21 << 39.93840789794922,0,0;
+    aNode22 << 35.94457244873047,0,0;
+    aNode23 << 31.95072937011719,0,0;
+    aNode24 << 27.95688629150391,0,0;
+    aNode25 << 23.96304321289062,0,0;
+    aNode26 << 19.96920013427734,0,0;
+    aNode27 << 15.97536468505859,0,0;
+    aNode28 << 11.98152160644531,0,0;
+    aNode29 << 7.987678527832031,0,0;
+    aNode30 << 3.993843078613281,0,0;
+
+    anEdgeMesh.addNode(1, aNode1);
+    anEdgeMesh.addNode(2, aNode2);
+    anEdgeMesh.addNode(3, aNode3);
+    anEdgeMesh.addNode(4, aNode4);
+    anEdgeMesh.addNode(5, aNode5);
+    anEdgeMesh.addNode(6, aNode6);
+    anEdgeMesh.addNode(7, aNode7);
+    anEdgeMesh.addNode(8, aNode8);
+    anEdgeMesh.addNode(9, aNode9);
+    anEdgeMesh.addNode(10, aNode10);
+    anEdgeMesh.addNode(11, aNode11);
+    anEdgeMesh.addNode(12, aNode12);
+    anEdgeMesh.addNode(13, aNode13);
+    anEdgeMesh.addNode(14, aNode14);
+    anEdgeMesh.addNode(15, aNode15);
+    anEdgeMesh.addNode(16, aNode16);
+    anEdgeMesh.addNode(17, aNode17);
+    anEdgeMesh.addNode(18, aNode18);
+    anEdgeMesh.addNode(19, aNode19);
+    anEdgeMesh.addNode(20, aNode20);
+    anEdgeMesh.addNode(21, aNode21);
+    anEdgeMesh.addNode(22, aNode22);
+    anEdgeMesh.addNode(23, aNode23);
+    anEdgeMesh.addNode(24, aNode24);
+    anEdgeMesh.addNode(25, aNode25);
+    anEdgeMesh.addNode(26, aNode26);
+    anEdgeMesh.addNode(27, aNode27);
+    anEdgeMesh.addNode(28, aNode28);
+    anEdgeMesh.addNode(29, aNode29);
+    anEdgeMesh.addNode(30, aNode30);
+
+    for (int i = 0; i < 30; i++)
+    {
+        CMshElement<decimal> anElement(ET_BEAM);
+        anElement.addNodeId(i + 1);
+        if (i != 29)
+            anElement.addNodeId(i + 2);
+        else
+            anElement.addNodeId(1);
+        anEdgeMesh.addElement(i + 1, anElement);
+    }
+
+    anEdgeMesh.mergeNodes(0.02);
+    anEdgeMesh.generateFaces(0.02);
+
+    CMshTriangleMesher<decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+
+    aTriangleMesher.remesh(anEdgeMesh, 4.0);
+    aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 4.0, 4.0, 4.0 * 2.0, 0.02);
+
+    CPdeField<decimal> T;
+    CPosGmsh<decimal> aPosGmsh;
+
+    T.setMesh(anEdgeMesh);
+    aPosGmsh.save(T, "tri_edge8.msh", "beams");
+
+    CMshMesh<decimal> aSurfaceMesh;
+    aSurfaceMesh = aTriangleMesher.mesh();
+
+    T.setMesh(aSurfaceMesh);
+    aPosGmsh.save(T, "tri_surface8.msh", "tris");
+
+    EXPECT_EQ(28, aSurfaceMesh.nbElements());
+
+}
+
+TEST_F(CTestMshTriangleMesher, mesh9) {
+
+    CMshMesh<decimal> anEdgeMesh;
+
     CMshNode<decimal> aNode1(0, 0, 0);
     CMshNode<decimal> aNode2(100, 0, 0);
     CMshNode<decimal> aNode3(100, 100, 0);
@@ -821,14 +954,14 @@ TEST_F(CTestMshTriangleMesher, mesh8) {
     CPosGmsh<decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge8.msh", "beams");
+    aPosGmsh.save(T, "tri_edge9.msh", "beams");
 
     CMshMesh<decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface8.msh", "tris");
+    aPosGmsh.save(T, "tri_surface9.msh", "tris");
 
-    EXPECT_EQ(7452, aSurfaceMesh.nbElements());
+    EXPECT_EQ(6940, aSurfaceMesh.nbElements());
 
 }
