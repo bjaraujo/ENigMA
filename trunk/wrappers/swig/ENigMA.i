@@ -635,6 +635,18 @@ namespace std
 
 %template(CPdeFieldDouble) ENigMA::pde::CPdeField<double>;
 
+%extend ENigMA::pde::CPdeField<double> {
+
+    ENigMA::sle::CSleSystem<double> operator*(const ENigMA::sle::CSleSystem<double>& c) const {
+        return (*$self).u * c;
+    }
+
+    double ud(const int index) const {
+        return (*$self).u(index);
+    }
+
+}
+
 // PDE Equation
 %include "PdeEquation.hpp"
 

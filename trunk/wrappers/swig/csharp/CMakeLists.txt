@@ -48,7 +48,7 @@ add_dependencies(ENigMAcs eigen)
 
 if(WIN32)
   add_definitions(/bigobj)
-endif(WIN32)
+endif()
 
 install(TARGETS ENigMAcs DESTINATION ENigMAcs)
 install(FILES "${CMAKE_SOURCE_DIR}/../LICENSE.txt" DESTINATION ENigMAcs)

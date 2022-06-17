@@ -55,7 +55,7 @@ add_dependencies(_ENigMA eigen)
 
 if(WIN32)
   add_definitions(/bigobj)
-endif(WIN32)
+endif()
 
 add_custom_command(TARGET _ENigMA POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ENigMA.py $<TARGET_FILE_DIR:_ENigMA>/ENigMA.py)
 
