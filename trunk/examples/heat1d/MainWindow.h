@@ -27,7 +27,7 @@ private:
     void unsteadyHeatConvection1D();
 
     void resetPlots();
-    void addPlot(CPdeField<double> T, QString plotName, const bool bLine = false);
+    void addPlot(CPdeField<double>& T, QString plotName, const bool bLine = false);
 
 public:
     MainWindow(QWidget *parent = 0);

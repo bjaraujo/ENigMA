@@ -57,7 +57,7 @@ void MainWindow::resetPlots()
 
 }
 
-void MainWindow::addPlot(CPdeField<double> T, QString plotName, const bool bLine)
+void MainWindow::addPlot(CPdeField<double>& T, QString plotName, const bool bLine)
 {
 
     QCPGraph* aGraph = customPlot->addGraph();

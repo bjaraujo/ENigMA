@@ -57,7 +57,7 @@ void MainWindow::resetPlots()
 
 }
 
-void MainWindow::addPlot(CPdeField<double> T, QString plotName, const bool bLine)
+void MainWindow::addPlot(CPdeField<double>& T, QString plotName, const bool bLine)
 {
 
     QCPGraph* aGraph = customPlot->addGraph();
@@ -740,7 +740,6 @@ void MainWindow::unsteadyHeatConvection1D()
 
     double dt = 0.005;
     Integer nIter = 400;
-    double time = dt * nIter;
 
     double u = 1.0;
 
@@ -928,7 +927,6 @@ void MainWindow::unsteadyHeatConvection1D()
 
         double h = 0.25;
         double mass = 1.0;
-        double rho = 1.0;
 
         sParticles.init(T, mass, 0.0, h, dt, true);
 
