@@ -602,8 +602,8 @@ namespace std
         return left * right;
     }
 
-    ENigMA::sle::CSleSystem<double>& setRhs(const double right) {
-        return (*$self) = right;
+    ENigMA::sle::CSleSystem<double>& setRhs(const double c) {
+        return (*$self) = c;
     }
     
     ENigMA::sle::CSleSystem<double>& setRhs(Eigen::Matrix<double, Eigen::Dynamic, 1> right) {
@@ -641,10 +641,6 @@ namespace std
         return (*$self).u * c;
     }
 
-    double ud(const int index) const {
-        return (*$self).u(index);
-    }
-
 }
 
 // PDE Equation
@@ -652,10 +648,10 @@ namespace std
 
 %template(CPdeEquationDouble) ENigMA::pde::CPdeEquation<double>;
 
-%template(ddt) ENigMA::pde::ddt<double>;
-%template(laplacian) ENigMA::pde::laplacian<double>;
-%template(divergence) ENigMA::pde::divergence<double>;
-%template(gradient) ENigMA::pde::gradient<double>;
+%template(DdtDouble) ENigMA::pde::ddt<double>;
+%template(LaplacianDouble) ENigMA::pde::laplacian<double>;
+%template(DivergenceDouble) ENigMA::pde::divergence<double>;
+%template(GradientDouble) ENigMA::pde::gradient<double>;
 
 // Boundary condition
 %include "PdeBoundaryCondition.hpp"
