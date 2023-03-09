@@ -27,7 +27,7 @@ namespace ENigMA
         template <typename Real>
         void CGeoOctreeNode<Real>::addCoordinate(Integer aCoordinateIndex)
         {
-            m_coordinateList.push_back(aCoordinateIndex);
+            m_coordinateList.emplace_back(aCoordinateIndex);
         }
 
         template <typename Real>

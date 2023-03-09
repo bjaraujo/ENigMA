@@ -79,7 +79,7 @@ namespace ENigMA
             aTetrahedron.addVertex(this->m_vertices[3]);
             aTetrahedron.addVertex(this->m_vertices[7]);
 
-            sTetrahedrons.push_back(aTetrahedron);
+            sTetrahedrons.emplace_back(aTetrahedron);
 
             // Tetra 2
             aTetrahedron.reset();
@@ -88,7 +88,7 @@ namespace ENigMA
             aTetrahedron.addVertex(this->m_vertices[1]);
             aTetrahedron.addVertex(this->m_vertices[7]);
 
-            sTetrahedrons.push_back(aTetrahedron);
+            sTetrahedrons.emplace_back(aTetrahedron);
 
             // Tetra 3
             aTetrahedron.reset();
@@ -97,7 +97,7 @@ namespace ENigMA
             aTetrahedron.addVertex(this->m_vertices[5]);
             aTetrahedron.addVertex(this->m_vertices[7]);
 
-            sTetrahedrons.push_back(aTetrahedron);
+            sTetrahedrons.emplace_back(aTetrahedron);
 
             // Tetra 4
             aTetrahedron.reset();
@@ -106,7 +106,7 @@ namespace ENigMA
             aTetrahedron.addVertex(this->m_vertices[3]);
             aTetrahedron.addVertex(this->m_vertices[7]);
 
-            sTetrahedrons.push_back(aTetrahedron);
+            sTetrahedrons.emplace_back(aTetrahedron);
 
             // Tetra 5
             aTetrahedron.reset();
@@ -115,7 +115,7 @@ namespace ENigMA
             aTetrahedron.addVertex(this->m_vertices[2]);
             aTetrahedron.addVertex(this->m_vertices[7]);
 
-            sTetrahedrons.push_back(aTetrahedron);
+            sTetrahedrons.emplace_back(aTetrahedron);
 
             // Tetra 6
             aTetrahedron.reset();
@@ -124,7 +124,7 @@ namespace ENigMA
             aTetrahedron.addVertex(this->m_vertices[6]);
             aTetrahedron.addVertex(this->m_vertices[7]);
 
-            sTetrahedrons.push_back(aTetrahedron);
+            sTetrahedrons.emplace_back(aTetrahedron);
         }
     }
 }

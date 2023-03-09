@@ -108,9 +108,9 @@ namespace ENigMA
         {
             std::vector<Integer> sNodeIds;
 
-            sNodeIds.push_back(anAdvTriangle.nodeId[0]);
-            sNodeIds.push_back(anAdvTriangle.nodeId[1]);
-            sNodeIds.push_back(anAdvTriangle.nodeId[2]);
+            sNodeIds.emplace_back(anAdvTriangle.nodeId[0]);
+            sNodeIds.emplace_back(anAdvTriangle.nodeId[1]);
+            sNodeIds.emplace_back(anAdvTriangle.nodeId[2]);
 
             std::sort(sNodeIds.begin(), sNodeIds.end());
 
@@ -124,9 +124,9 @@ namespace ENigMA
 
                 std::vector<Integer> sOtherNodeIds;
 
-                sOtherNodeIds.push_back(anotherTriangle.nodeId[0]);
-                sOtherNodeIds.push_back(anotherTriangle.nodeId[1]);
-                sOtherNodeIds.push_back(anotherTriangle.nodeId[2]);
+                sOtherNodeIds.emplace_back(anotherTriangle.nodeId[0]);
+                sOtherNodeIds.emplace_back(anotherTriangle.nodeId[1]);
+                sOtherNodeIds.emplace_back(anotherTriangle.nodeId[2]);
 
                 std::sort(sOtherNodeIds.begin(), sOtherNodeIds.end());
 
@@ -187,7 +187,7 @@ namespace ENigMA
                     Integer aNodeId = m_anAdvFront.at(sTriangles[j]).nodeId[k];
 
                     if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
-                        sNodes.push_back(aNodeId);
+                        sNodes.emplace_back(aNodeId);
                 }
             }
 
@@ -199,7 +199,7 @@ namespace ENigMA
                 Integer aNodeId = m_innerNodes[j].nodeId;
 
                 if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
-                    sNodes.push_back(aNodeId);
+                    sNodes.emplace_back(aNodeId);
             }
         }
 
@@ -511,9 +511,9 @@ namespace ENigMA
             // Remove this triangle
             this->removeTriangle(anAdvTriangle, aTolerance);
 
-            m_anAdvFront.push_back(aNewTriangle1);
-            m_anAdvFront.push_back(aNewTriangle2);
-            m_anAdvFront.push_back(aNewTriangle3);
+            m_anAdvFront.emplace_back(aNewTriangle1);
+            m_anAdvFront.emplace_back(aNewTriangle2);
+            m_anAdvFront.emplace_back(aNewTriangle3);
 
             this->cleanDuplicateTriangles(sTriangles, aTolerance);
         }
@@ -623,7 +623,7 @@ namespace ENigMA
                         }
                     }
 
-                    m_anAdvFront.push_back(anAdvTriangle);
+                    m_anAdvFront.emplace_back(anAdvTriangle);
 
                     this->addTriangleToRtree(anAdvTriangle, aTolerance);
                 }
@@ -646,7 +646,7 @@ namespace ENigMA
 
                 anInteriorNode.nodeId = aNewNodeId;
 
-                m_innerNodes.push_back(anInteriorNode);
+                m_innerNodes.emplace_back(anInteriorNode);
             }
 
             // Start meshing interior
@@ -1070,7 +1070,7 @@ namespace ENigMA
                 aAdvFrontMapId[i] = aNewAdvFrontId;
                 aNewAdvFrontId++;
 
-                aReducedAdvFront.push_back(m_anAdvFront.at(i));
+                aReducedAdvFront.emplace_back(m_anAdvFront.at(i));
             }
 
             m_tree.reset();
@@ -1088,7 +1088,7 @@ namespace ENigMA
                 anAdvTriangle.neighborId[1] = aAdvFrontMapId.at(anAdvTriangle.neighborId[1]);
                 anAdvTriangle.neighborId[2] = aAdvFrontMapId.at(anAdvTriangle.neighborId[2]);
 
-                m_anAdvFront.push_back(anAdvTriangle);
+                m_anAdvFront.emplace_back(anAdvTriangle);
 
                 this->addTriangleToRtree(anAdvTriangle, aTolerance);
             }
@@ -1129,10 +1129,10 @@ namespace ENigMA
                         continue;
 
                     if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anAdvTriangle.elementId) == sElementsToRemove.end())
-                        sElementsToRemove.push_back(anAdvTriangle.elementId);
+                        sElementsToRemove.emplace_back(anAdvTriangle.elementId);
 
                     if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anotherAdvTriangle.elementId) == sElementsToRemove.end())
-                        sElementsToRemove.push_back(anotherAdvTriangle.elementId);
+                        sElementsToRemove.emplace_back(anotherAdvTriangle.elementId);
 
                     for (Integer k = 0; k < 3; ++k)
                     {
@@ -1185,7 +1185,7 @@ namespace ENigMA
                                     }
 
                                     if (bAddNode)
-                                        sSteinerPoints.push_back(aNewPoint);
+                                        sSteinerPoints.emplace_back(aNewPoint);
                                 }
                             }
                         }
@@ -1223,7 +1223,7 @@ namespace ENigMA
                         if (aSphere.contains(aNode, aTolerance))
                         {
                             if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anElementId) == sElementsToRemove.end())
-                                sElementsToRemove.push_back(anElementId);
+                                sElementsToRemove.emplace_back(anElementId);
                         }
                     }
                 }
@@ -1265,7 +1265,7 @@ namespace ENigMA
 
                     anAdvTriangle.build(m_volumeMesh);
 
-                    m_anAdvFront.push_back(anAdvTriangle);
+                    m_anAdvFront.emplace_back(anAdvTriangle);
 
                     this->addTriangleToRtree(anAdvTriangle, aTolerance);
                 }
@@ -1285,9 +1285,9 @@ namespace ENigMA
 
                 std::vector<Integer> sNodeIds;
 
-                sNodeIds.push_back(anAdvTriangle.nodeId[0]);
-                sNodeIds.push_back(anAdvTriangle.nodeId[1]);
-                sNodeIds.push_back(anAdvTriangle.nodeId[2]);
+                sNodeIds.emplace_back(anAdvTriangle.nodeId[0]);
+                sNodeIds.emplace_back(anAdvTriangle.nodeId[1]);
+                sNodeIds.emplace_back(anAdvTriangle.nodeId[2]);
 
                 std::sort(sNodeIds.begin(), sNodeIds.end());
 
@@ -1300,9 +1300,9 @@ namespace ENigMA
 
                     std::vector<Integer> sOtherNodeIds;
 
-                    sOtherNodeIds.push_back(anotherAdvTriangle.nodeId[0]);
-                    sOtherNodeIds.push_back(anotherAdvTriangle.nodeId[1]);
-                    sOtherNodeIds.push_back(anotherAdvTriangle.nodeId[2]);
+                    sOtherNodeIds.emplace_back(anotherAdvTriangle.nodeId[0]);
+                    sOtherNodeIds.emplace_back(anotherAdvTriangle.nodeId[1]);
+                    sOtherNodeIds.emplace_back(anotherAdvTriangle.nodeId[2]);
 
                     std::sort(sOtherNodeIds.begin(), sOtherNodeIds.end());
 
@@ -1427,8 +1427,8 @@ namespace ENigMA
                 CGeoVector<Real> v = (aNewNode - aMovingNode);
 
                 std::vector<CMshNode<Real>> sNewNodes;
-                sNewNodes.push_back(aMovingNode + v * aFactor);
-                sNewNodes.push_back(aMovingNode - v * aFactor);
+                sNewNodes.emplace_back(aMovingNode + v * aFactor);
+                sNewNodes.emplace_back(aMovingNode - v * aFactor);
 
                 for (Integer n = 0; n < static_cast<Integer>(sNewNodes.size()); n++)
                 {

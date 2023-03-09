@@ -216,7 +216,7 @@ namespace ENigMA
                             Real dist = (CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjects[aCoordinateIndex] - aCoordinate).norm();
 
                             if (dist <= aTolerance)
-                                coordinateIds.push_back(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjectIds[aCoordinateIndex]);
+                                coordinateIds.emplace_back(CGeoContainer<CGeoCoordinate<Real>, Real>::m_geometricObjectIds[aCoordinateIndex]);
                         }
                     }
                 }

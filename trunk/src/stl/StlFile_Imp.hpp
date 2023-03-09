@@ -114,7 +114,7 @@ namespace ENigMA
         void CStlFile<Real>::addFacet(const Integer aFacetId, CStlFacet<Real>& aFacet)
         {
             m_facets[aFacetId] = aFacet;
-            m_facetIds.push_back(aFacetId);
+            m_facetIds.emplace_back(aFacetId);
         }
 
         template <typename Real>

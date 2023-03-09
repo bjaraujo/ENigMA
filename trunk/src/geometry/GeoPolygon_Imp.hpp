@@ -207,7 +207,7 @@ namespace ENigMA
             std::vector<Integer> chain;
 
             for (Integer i = 1; i < m_polyline.nbVertices(); ++i)
-                chain.push_back(i - 1);
+                chain.emplace_back(i - 1);
 
             Integer p1 = 0;
             Integer p2 = 1;
@@ -259,7 +259,7 @@ namespace ENigMA
                 aTriangle.addVertex(m_polyline.vertex(p2));
                 aTriangle.addVertex(m_polyline.vertex(p3));
 
-                sTriangles.push_back(aTriangle);
+                sTriangles.emplace_back(aTriangle);
 
                 chain.erase(chain.begin() + wi);
             }

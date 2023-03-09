@@ -34,7 +34,7 @@ namespace ENigMA
         void CGeoContainer<T, Real>::addGeometricObject(const Integer aGeomtericObjectId, const T& aGeometricObject)
         {
             m_geometricObjectIds[static_cast<Integer>(m_geometricObjects.size())] = aGeomtericObjectId;
-            m_geometricObjects.push_back(aGeometricObject);
+            m_geometricObjects.emplace_back(aGeometricObject);
         }
 
         template <class T, typename Real>

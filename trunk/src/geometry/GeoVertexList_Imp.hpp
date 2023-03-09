@@ -41,7 +41,7 @@ namespace ENigMA
         template <typename Real>
         void CGeoVertexList<Real>::addVertex(const CGeoCoordinate<Real>& aVertex)
         {
-            m_vertices.push_back(aVertex);
+            m_vertices.emplace_back(aVertex);
         }
 
         template <typename Real>

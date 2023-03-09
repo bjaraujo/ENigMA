@@ -242,7 +242,7 @@ namespace ENigMA
         void CGeoPolyhedron<Real>::addPolygon(const Integer aPolygonId, CGeoPolygon<Real>& aPolygon)
         {
             m_polygons[aPolygonId] = aPolygon;
-            m_polygonIds.push_back(aPolygonId);
+            m_polygonIds.emplace_back(aPolygonId);
         }
 
         template <typename Real>

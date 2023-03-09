@@ -55,7 +55,7 @@ namespace ENigMA
         template <typename Real>
         void CMshFace<Real>::addNodeId(const Integer aNodeId)
         {
-            m_nodeIds.push_back(aNodeId);
+            m_nodeIds.emplace_back(aNodeId);
         }
 
         template <typename Real>

@@ -167,8 +167,8 @@ namespace ENigMA
                 // Remove this edge
                 this->removeEdge(anAdvEdge, aTolerance);
 
-                this->m_anAdvFront.push_back(aNewEdge1);
-                this->m_anAdvFront.push_back(aNewEdge2);
+                this->m_anAdvFront.emplace_back(aNewEdge1);
+                this->m_anAdvFront.emplace_back(aNewEdge2);
 
                 this->cleanDuplicateEdges(sEdges, aTolerance);
             }
@@ -295,9 +295,9 @@ namespace ENigMA
                 // Remove this edge
                 this->removeEdge(anAdvEdge, aTolerance);
 
-                this->m_anAdvFront.push_back(aNewEdge1);
-                this->m_anAdvFront.push_back(aNewEdge2);
-                this->m_anAdvFront.push_back(aNewEdge3);
+                this->m_anAdvFront.emplace_back(aNewEdge1);
+                this->m_anAdvFront.emplace_back(aNewEdge2);
+                this->m_anAdvFront.emplace_back(aNewEdge3);
 
                 this->cleanDuplicateEdges(sEdges, aTolerance);
             }
@@ -398,7 +398,7 @@ namespace ENigMA
                         }
                     }
 
-                    this->m_anAdvFront.push_back(anAdvEdge);
+                    this->m_anAdvFront.emplace_back(anAdvEdge);
 
                     this->addEdgeToRtree(anAdvEdge, aTolerance);
                 }
@@ -419,7 +419,7 @@ namespace ENigMA
 
                 anInteriorNode.nodeId = aNewNodeId;
 
-                this->m_interiorNodes.push_back(anInteriorNode);
+                this->m_interiorNodes.emplace_back(anInteriorNode);
             }
 
             // Start meshing interior
@@ -1132,7 +1132,7 @@ namespace ENigMA
                     CMshNode<Real>& aPivotNode = aMesh.node(aPivotNodeId);
 
                     std::vector<Integer> sNodes;
-                    sNodes.push_back(aPivotNodeId);
+                    sNodes.emplace_back(aPivotNodeId);
 
                     sElements.clear();
 
@@ -1163,10 +1163,10 @@ namespace ENigMA
                             Integer aNodeId = aNextPairFace.nodeId(k);
 
                             if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
-                                sNodes.push_back(aNodeId);
+                                sNodes.emplace_back(aNodeId);
                         }
 
-                        sElements.push_back(aNextElementId);
+                        sElements.emplace_back(aNextElementId);
 
                         aNextFaceId = aFirstFaceId;
 

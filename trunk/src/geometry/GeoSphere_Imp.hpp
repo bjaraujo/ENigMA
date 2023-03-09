@@ -16,10 +16,10 @@ namespace ENigMA
         {
             std::vector<CGeoCoordinate<Real>> sPoints;
 
-            sPoints.push_back(aPoint1);
-            sPoints.push_back(aPoint2);
-            sPoints.push_back(aPoint3);
-            sPoints.push_back(aPoint4);
+            sPoints.emplace_back(aPoint1);
+            sPoints.emplace_back(aPoint2);
+            sPoints.emplace_back(aPoint3);
+            sPoints.emplace_back(aPoint4);
 
             Eigen::Matrix<Real, 4, 4> a;
 

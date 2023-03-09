@@ -95,7 +95,7 @@ TEST_F(CTestFvmPiso, hydroPressure) {
             (aFace.centroid().y() - 0.0) < 1E-3 ||
             (aFace.centroid().y() - 1.0) < 1E-3)
         {
-            sFaceIds.push_back(aFaceId);
+            sFaceIds.emplace_back(aFaceId);
         }
 
     }

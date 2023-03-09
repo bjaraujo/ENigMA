@@ -563,7 +563,7 @@ namespace ENigMA
                 {
                     CGeoCoordinate<Real> aCenterCoordinate = (m_stlFile.facet(aFacetId).vertex((j + 0) % 3) + m_stlFile.facet(aFacetId).vertex((j + 1) % 3)) * 0.5;
 
-                    sCenterCoordinates.push_back(aCenterCoordinate);
+                    sCenterCoordinates.emplace_back(aCenterCoordinate);
 
                     anEdgeId = aFacetId * 3 + j;
 
@@ -1001,11 +1001,11 @@ namespace ENigMA
                             break;
                         }
 
-                        sVertices.push_back(m_stlFile.facet(aNeighbor).vertex(aVertexNot));
-                        aFacet_i.push_back(m_stlFile.facet(aNeighbor));
-                        aFacet_f.push_back(m_stlFile.facet(aNeighbor));
-                        whichFacet.push_back(aNeighbor);
-                        whichVertex.push_back((aVertexNot + 1) % 3);
+                        sVertices.emplace_back(m_stlFile.facet(aNeighbor).vertex(aVertexNot));
+                        aFacet_i.emplace_back(m_stlFile.facet(aNeighbor));
+                        aFacet_f.emplace_back(m_stlFile.facet(aNeighbor));
+                        whichFacet.emplace_back(aNeighbor);
+                        whichVertex.emplace_back((aVertexNot + 1) % 3);
                         n++;
 
                         if (n >= nMaxSize)
@@ -1329,10 +1329,10 @@ namespace ENigMA
 
                     if (aNeighborId != -1)
                     {
-                        aFacet_i.push_back(m_stlFile.facet(aNeighborId));
-                        aFacet_f.push_back(m_stlFile.facet(aNeighborId));
-                        whichFacet.push_back(aNeighborId);
-                        whichVertex.push_back((aVertexNot + 1) % 3);
+                        aFacet_i.emplace_back(m_stlFile.facet(aNeighborId));
+                        aFacet_f.emplace_back(m_stlFile.facet(aNeighborId));
+                        whichFacet.emplace_back(aNeighborId);
+                        whichVertex.emplace_back((aVertexNot + 1) % 3);
                         n++;
 
                         if (n >= nMaxSize)
@@ -1441,7 +1441,7 @@ namespace ENigMA
         {
             std::vector<Integer> sFacetsToFix;
 
-            sFacetsToFix.push_back(aPivotFacetId);
+            sFacetsToFix.emplace_back(aPivotFacetId);
 
             for (Integer i = 0; i < static_cast<Integer>(sFacetsToFix.size()); ++i)
             {
@@ -1456,7 +1456,7 @@ namespace ENigMA
                     {
                         if (std::find(sFacetsToFix.begin(), sFacetsToFix.end(), aNeighborId) == sFacetsToFix.end())
                         {
-                            sFacetsToFix.push_back(aNeighborId);
+                            sFacetsToFix.emplace_back(aNeighborId);
 
                             Real d1 = (m_stlFile.facet(aNeighborId).vertex((aVertexNot + 1) % 3) - m_stlFile.facet(aFacetId).vertex((j + 0) % 3)).norm();
                             Real d2 = (m_stlFile.facet(aNeighborId).vertex((aVertexNot + 2) % 3) - m_stlFile.facet(aFacetId).vertex((j + 1) % 3)).norm();

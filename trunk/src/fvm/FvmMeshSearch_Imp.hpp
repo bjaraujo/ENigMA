@@ -79,7 +79,7 @@ namespace ENigMA
 
                     if (thisDist < aDistance)
                     {
-                        sFaceIds.push_back(aFaceId);
+                        sFaceIds.emplace_back(aFaceId);
                     }
                 }
             }

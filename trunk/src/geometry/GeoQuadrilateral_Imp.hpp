@@ -123,14 +123,14 @@ namespace ENigMA
             aTriangle.addVertex(this->m_vertices[1]);
             aTriangle.addVertex(this->m_vertices[2]);
 
-            sTriangles.push_back(aTriangle);
+            sTriangles.emplace_back(aTriangle);
 
             aTriangle.reset();
             aTriangle.addVertex(this->m_vertices[0]);
             aTriangle.addVertex(this->m_vertices[2]);
             aTriangle.addVertex(this->m_vertices[3]);
 
-            sTriangles.push_back(aTriangle);
+            sTriangles.emplace_back(aTriangle);
         }
     }
 }

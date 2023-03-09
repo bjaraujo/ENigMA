@@ -79,7 +79,7 @@ namespace ENigMA
 
                 for (int i = 0; i < m_system.vectorB.size(); ++i)
                 {
-                    oldToNewIndex.push_back(newIndex);
+                    oldToNewIndex.emplace_back(newIndex);
 
                     if (!m_bDeleteIndex[i])
                         newIndex++;

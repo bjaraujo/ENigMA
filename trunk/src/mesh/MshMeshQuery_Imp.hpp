@@ -31,10 +31,10 @@ namespace ENigMA
                     if (m_nodeToElement.find(aNodeId) != m_nodeToElement.end())
                     {
                         if (std::find(m_nodeToElement[aNodeId].begin(), m_nodeToElement[aNodeId].end(), anElementId) == m_nodeToElement[aNodeId].end())
-                            m_nodeToElement[aNodeId].push_back(anElementId);
+                            m_nodeToElement[aNodeId].emplace_back(anElementId);
                     }
                     else
-                        m_nodeToElement[aNodeId].push_back(anElementId);
+                        m_nodeToElement[aNodeId].emplace_back(anElementId);
                 }
             }
         }

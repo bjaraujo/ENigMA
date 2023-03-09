@@ -59,7 +59,7 @@ namespace ENigMA
 
                 aVertex.v2D.transform(aCoordinateSystem);
 
-                sExtVertices.push_back(aVertex);
+                sExtVertices.emplace_back(aVertex);
             }
 
             Integer n = static_cast<Integer>(sExtVertices.size());
@@ -105,7 +105,7 @@ namespace ENigMA
             sNewExtVertices.resize(k - 1);
 
             for (Integer i = 0; i < static_cast<Integer>(sNewExtVertices.size()); ++i)
-                m_vertices.push_back(sNewExtVertices[i].v3D);
+                m_vertices.emplace_back(sNewExtVertices[i].v3D);
         }
 
         template <typename Real>
@@ -129,7 +129,7 @@ namespace ENigMA
         template <typename Real>
         void CGeoConvexHull<Real>::addVertex(CGeoCoordinate<Real>& aVertex)
         {
-            m_vertices.push_back(aVertex);
+            m_vertices.emplace_back(aVertex);
         }
 
         template <typename Real>

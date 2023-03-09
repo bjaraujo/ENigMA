@@ -106,8 +106,8 @@ namespace ENigMA
         {
             std::vector<Integer> sNodeIds;
 
-            sNodeIds.push_back(anAdvEdge.nodeId[0]);
-            sNodeIds.push_back(anAdvEdge.nodeId[1]);
+            sNodeIds.emplace_back(anAdvEdge.nodeId[0]);
+            sNodeIds.emplace_back(anAdvEdge.nodeId[1]);
 
             std::sort(sNodeIds.begin(), sNodeIds.end());
 
@@ -121,8 +121,8 @@ namespace ENigMA
 
                 std::vector<Integer> sOtherNodeIds;
 
-                sOtherNodeIds.push_back(anotherEdge.nodeId[0]);
-                sOtherNodeIds.push_back(anotherEdge.nodeId[1]);
+                sOtherNodeIds.emplace_back(anotherEdge.nodeId[0]);
+                sOtherNodeIds.emplace_back(anotherEdge.nodeId[1]);
 
                 std::sort(sOtherNodeIds.begin(), sOtherNodeIds.end());
 
@@ -186,7 +186,7 @@ namespace ENigMA
                     Integer aNodeId = m_anAdvFront.at(sEdges[j]).nodeId[k];
 
                     if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
-                        sNodes.push_back(aNodeId);
+                        sNodes.emplace_back(aNodeId);
                 }
             }
 
@@ -198,7 +198,7 @@ namespace ENigMA
                 Integer aNodeId = m_interiorNodes[j].nodeId;
 
                 if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
-                    sNodes.push_back(aNodeId);
+                    sNodes.emplace_back(aNodeId);
             }
         }
 
@@ -457,8 +457,8 @@ namespace ENigMA
             // Remove this edge
             this->removeEdge(anAdvEdge, aTolerance);
 
-            m_anAdvFront.push_back(aNewEdge1);
-            m_anAdvFront.push_back(aNewEdge2);
+            m_anAdvFront.emplace_back(aNewEdge1);
+            m_anAdvFront.emplace_back(aNewEdge2);
 
             this->cleanDuplicateEdges(sEdges, aTolerance);
         }
@@ -471,7 +471,7 @@ namespace ENigMA
             std::vector<bool> sRemeshed;
             for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                sRemeshed.push_back(false);
+                sRemeshed.emplace_back(false);
             }
 
             // Split edge mesh according to local mesh size
@@ -794,7 +794,7 @@ namespace ENigMA
                         aFirstIndex = static_cast<Integer>(m_anAdvFront.size());
                     }
 
-                    m_anAdvFront.push_back(anAdvEdge);
+                    m_anAdvFront.emplace_back(anAdvEdge);
 
                     this->addEdgeToRtree(anAdvEdge, aTolerance);
                 }
@@ -815,7 +815,7 @@ namespace ENigMA
 
                 anInteriorNode.nodeId = aNewNodeId;
 
-                m_interiorNodes.push_back(anInteriorNode);
+                m_interiorNodes.emplace_back(anInteriorNode);
             }
 
             // Start meshing interior
@@ -1177,7 +1177,7 @@ namespace ENigMA
                 if (aFace.nbNodeIds() > 0)
                     aCenterCoordinate /= static_cast<Real>(aFace.nbNodeIds());
 
-                sCenterCoordinates.push_back(aCenterCoordinate);
+                sCenterCoordinates.emplace_back(aCenterCoordinate);
 
                 aHashGrid.addGeometricObject(aFaceId, aCenterCoordinate);
             }
@@ -1404,7 +1404,7 @@ namespace ENigMA
                 aMeshQuery.elementsSharingNode(aMovingNodeId, sElementIds);
 
                 std::vector<Integer> sNodeIds;
-                sNodeIds.push_back(aMovingNodeId);
+                sNodeIds.emplace_back(aMovingNodeId);
 
                 for (Integer j = 0; j < static_cast<Integer>(sElementIds.size()); ++j)
                 {
@@ -1419,7 +1419,7 @@ namespace ENigMA
                         Integer aNodeId = anElement.nodeId(k);
 
                         if (std::find(sNodeIds.begin(), sNodeIds.end(), aNodeId) == sNodeIds.end())
-                            sNodeIds.push_back(aNodeId);
+                            sNodeIds.emplace_back(aNodeId);
                     }
                 }
 

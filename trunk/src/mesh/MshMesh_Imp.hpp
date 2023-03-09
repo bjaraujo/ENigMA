@@ -105,7 +105,7 @@ namespace ENigMA
         void CMshMesh<Real>::addNode(const Integer aNodeId, const ENigMA::mesh::CMshNode<Real>& aNode)
         {
             m_nodes[aNodeId] = aNode;
-            m_nodeIds.push_back(aNodeId);
+            m_nodeIds.emplace_back(aNodeId);
 
             m_nodeIndices[aNodeId] = m_nodeIndex;
             m_nodeIndex++;
@@ -115,7 +115,7 @@ namespace ENigMA
         void CMshMesh<Real>::addFace(const Integer aFaceId, const ENigMA::mesh::CMshFace<Real>& aFace)
         {
             m_faces[aFaceId] = aFace;
-            m_faceIds.push_back(aFaceId);
+            m_faceIds.emplace_back(aFaceId);
 
             m_faceIndices[aFaceId] = m_faceIndex;
             m_faceIndex++;
@@ -125,7 +125,7 @@ namespace ENigMA
         void CMshMesh<Real>::addElement(const Integer anElementId, const ENigMA::mesh::CMshElement<Real>& anElement)
         {
             m_elements[anElementId] = anElement;
-            m_elementIds.push_back(anElementId);
+            m_elementIds.emplace_back(anElementId);
 
             m_elementIndices[anElementId] = m_elementIndex;
             m_elementIndex++;
@@ -288,7 +288,7 @@ namespace ENigMA
                 if (m_faces.at(m_faceIds.at(i)).nbNodeIds() > 0)
                     aCenterCoordinate /= static_cast<Real>(m_faces.at(aFaceId).nbNodeIds());
 
-                sCenterCoordinates.push_back(aCenterCoordinate);
+                sCenterCoordinates.emplace_back(aCenterCoordinate);
 
                 aHashGrid.addGeometricObject(aFaceId, aCenterCoordinate);
             }
@@ -313,7 +313,7 @@ namespace ENigMA
                         for (Integer k = 0; k < m_faces.at(aFaceId).nbNodeIds(); ++k)
                         {
                             Integer aNodeId = m_faces.at(aFaceId).nodeId(k);
-                            n1.push_back(aNodeId);
+                            n1.emplace_back(aNodeId);
                         }
                         std::sort(n1.begin(), n1.end());
 
@@ -321,7 +321,7 @@ namespace ENigMA
                         for (Integer k = 0; k < m_faces.at(aPairFaceId).nbNodeIds(); ++k)
                         {
                             Integer aNodeId = m_faces.at(aPairFaceId).nodeId(k);
-                            n2.push_back(aNodeId);
+                            n2.emplace_back(aNodeId);
                         }
                         std::sort(n2.begin(), n2.end());
 
@@ -433,7 +433,7 @@ namespace ENigMA
                 if (aFace.nbNodeIds() > 0)
                     aCentroid /= static_cast<Real>(aFace.nbNodeIds());
 
-                m_faceCentroid.push_back(aCentroid);
+                m_faceCentroid.emplace_back(aCentroid);
             }
         }
 
@@ -460,7 +460,7 @@ namespace ENigMA
                 if (anElement.nbNodeIds() > 0)
                     aCentroid /= static_cast<Real>(anElement.nbNodeIds());
 
-                m_elementCentroid.push_back(aCentroid);
+                m_elementCentroid.emplace_back(aCentroid);
             }
         }
 
@@ -707,7 +707,7 @@ namespace ENigMA
                 std::vector<Integer> sNodeIds;
 
                 for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
-                    sNodeIds.push_back(anElement.nodeId(j));
+                    sNodeIds.emplace_back(anElement.nodeId(j));
 
                 std::sort(sNodeIds.begin(), sNodeIds.end());
 
@@ -826,7 +826,7 @@ namespace ENigMA
 
                 if (!aFace.hasPair())
                 {
-                    sFaces.push_back(aFaceId);
+                    sFaces.emplace_back(aFaceId);
 
                     Integer aNodeId1 = aFace.nodeId(0);
                     Integer aNodeId2 = aFace.nodeId(1);
@@ -923,17 +923,17 @@ namespace ENigMA
             Integer n = static_cast<Integer>(m_nodeIds.size());
             m_nodeIds.clear();
             for (Integer i = 0; i < n; ++i)
-                m_nodeIds.push_back(i);
+                m_nodeIds.emplace_back(i);
 
             Integer f = static_cast<Integer>(m_faceIds.size());
             m_faceIds.clear();
             for (Integer i = 0; i < f; ++i)
-                m_faceIds.push_back(i);
+                m_faceIds.emplace_back(i);
 
             Integer e = static_cast<Integer>(m_elementIds.size());
             m_elementIds.clear();
             for (Integer i = 0; i < e; ++i)
-                m_elementIds.push_back(i);
+                m_elementIds.emplace_back(i);
 
             m_nodes = sNewNodes;
             m_faces = sNewFaces;

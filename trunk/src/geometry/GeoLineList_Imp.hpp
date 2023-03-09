@@ -39,7 +39,7 @@ namespace ENigMA
         template <typename Real>
         void CGeoLineList<Real>::addLine(const CGeoLine<Real>& aLine)
         {
-            m_lines.push_back(aLine);
+            m_lines.emplace_back(aLine);
         }
 
         template <typename Real>

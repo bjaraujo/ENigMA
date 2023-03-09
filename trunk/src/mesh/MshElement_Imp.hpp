@@ -49,7 +49,7 @@ namespace ENigMA
         template <typename Real>
         void CMshElement<Real>::addNodeId(const Integer aNodeId)
         {
-            m_nodeIds.push_back(aNodeId);
+            m_nodeIds.emplace_back(aNodeId);
         }
 
         template <typename Real>
@@ -73,7 +73,7 @@ namespace ENigMA
         template <typename Real>
         void CMshElement<Real>::addFaceId(const Integer aFaceId)
         {
-            m_faceIds.push_back(aFaceId);
+            m_faceIds.emplace_back(aFaceId);
         }
 
         template <typename Real>
@@ -122,14 +122,14 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[0]);
                 aFace.setFaceType(FT_POINT);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 2 (node)
                 aFace.addNodeId(m_nodeIds[1]);
                 aFace.setFaceType(FT_POINT);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 break;
@@ -140,7 +140,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[1]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 2 (edge)
@@ -148,7 +148,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[2]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 3 (edge)
@@ -156,7 +156,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[0]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 break;
@@ -167,7 +167,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[1]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 2 (edge)
@@ -175,7 +175,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[2]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 3 (edge)
@@ -183,7 +183,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 4 (edge)
@@ -191,7 +191,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[0]);
                 aFace.setFaceType(FT_LINE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 break;
@@ -203,7 +203,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[2]);
                 aFace.setFaceType(FT_TRIANGLE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 2
@@ -212,7 +212,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[2]);
                 aFace.setFaceType(FT_TRIANGLE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 3
@@ -221,7 +221,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[1]);
                 aFace.setFaceType(FT_TRIANGLE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 4
@@ -230,7 +230,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_TRIANGLE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 break;
@@ -243,7 +243,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[2]);
                 aFace.setFaceType(FT_TRIANGLE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 2
@@ -252,7 +252,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_TRIANGLE);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 3
@@ -262,7 +262,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[4]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 4
@@ -272,7 +272,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[5]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 5
@@ -282,7 +282,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 break;
@@ -296,7 +296,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[3]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 2
@@ -306,7 +306,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[4]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 3
@@ -316,7 +316,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[4]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 4
@@ -326,7 +326,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[7]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 5
@@ -336,7 +336,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[5]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 // face 6
@@ -346,7 +346,7 @@ namespace ENigMA
                 aFace.addNodeId(m_nodeIds[0]);
                 aFace.setFaceType(FT_QUADRILATERAL);
 
-                sFaces.push_back(aFace);
+                sFaces.emplace_back(aFace);
                 aFace.reset();
 
                 break;

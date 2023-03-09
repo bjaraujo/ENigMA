@@ -184,7 +184,7 @@ namespace ENigMA
         void CFvmMesh<Real>::addFace(const Integer aFaceId, const CFvmFace<Real>& aFace)
         {
             m_faces[aFaceId] = aFace;
-            m_faceIds.push_back(aFaceId);
+            m_faceIds.emplace_back(aFaceId);
 
             m_faceIndices[aFaceId] = m_faceIndex;
             m_faceIndex++;
@@ -211,7 +211,7 @@ namespace ENigMA
         void CFvmMesh<Real>::addControlVolume(const Integer aControlVolumeId, const CFvmControlVolume<Real>& aControlVolume)
         {
             m_controlVolumes[aControlVolumeId] = aControlVolume;
-            m_controlVolumeIds.push_back(aControlVolumeId);
+            m_controlVolumeIds.emplace_back(aControlVolumeId);
 
             m_controlVolumeIndices[aControlVolumeId] = m_controlVolumeIndex;
             m_controlVolumeIndex++;

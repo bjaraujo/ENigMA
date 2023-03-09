@@ -49,9 +49,9 @@ TEST_F(CTestSphGaussian, gradient1)
 
     std::vector<decimal> sValues;
 
-    sValues.push_back(0);
-    sValues.push_back(1);
-    sValues.push_back(1);
+    sValues.emplace_back(0);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
 
     CSphGaussian<decimal> aKernel(1);
 
@@ -129,15 +129,15 @@ TEST_F(CTestSphGaussian, gradient2)
 
     std::vector<decimal> sValues;
 
-    sValues.push_back(0);
-    sValues.push_back(1);
-    sValues.push_back(1);
-    sValues.push_back(1);
-    sValues.push_back(1);
-    sValues.push_back(1);
-    sValues.push_back(1);
-    sValues.push_back(1);
-    sValues.push_back(1);
+    sValues.emplace_back(0);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
+    sValues.emplace_back(1);
 
     CSphGaussian<decimal> aKernel(2);
 
@@ -236,15 +236,15 @@ TEST_F(CTestSphGaussian, laplacian)
 
     std::vector<decimal> sValues;
 
-    sValues.push_back(0);
-    sValues.push_back(+1);
-    sValues.push_back(-1);
-    sValues.push_back(+1);
-    sValues.push_back(-1);
-    sValues.push_back(+0.5);
-    sValues.push_back(-0.5);
-    sValues.push_back(+0.5);
-    sValues.push_back(-0.5);
+    sValues.emplace_back(0);
+    sValues.emplace_back(+1);
+    sValues.emplace_back(-1);
+    sValues.emplace_back(+1);
+    sValues.emplace_back(-1);
+    sValues.emplace_back(+0.5);
+    sValues.emplace_back(-0.5);
+    sValues.emplace_back(+0.5);
+    sValues.emplace_back(-0.5);
 
     CSphGaussian<decimal> aKernel(2);
 

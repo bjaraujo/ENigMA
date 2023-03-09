@@ -44,8 +44,8 @@ namespace ENigMA
                 aPoint.y() = CIntTriangle<Real>::m_beta1[k] * n1.y() + CIntTriangle<Real>::m_beta2[k] * n2.y() + CIntTriangle<Real>::m_beta3[k] * n3.y();
                 aPoint.z() = CIntTriangle<Real>::m_beta1[k] * n1.z() + CIntTriangle<Real>::m_beta2[k] * n2.z() + CIntTriangle<Real>::m_beta3[k] * n3.z();
 
-                sPoints.push_back(aPoint);
-                sWeights.push_back(CIntTriangle<Real>::m_wbeta[k]);
+                sPoints.emplace_back(aPoint);
+                sWeights.emplace_back(CIntTriangle<Real>::m_wbeta[k]);
             }
             return true;
         }

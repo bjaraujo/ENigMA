@@ -52,10 +52,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o1beta1[k]);
-                    m_beta2.push_back(o1beta2[k]);
-                    m_beta3.push_back(o1beta3[k]);
-                    m_wbeta.push_back(o1wbeta[k]);
+                    m_beta1.emplace_back(o1beta1[k]);
+                    m_beta2.emplace_back(o1beta2[k]);
+                    m_beta3.emplace_back(o1beta3[k]);
+                    m_wbeta.emplace_back(o1wbeta[k]);
                 }
             }
             break;
@@ -70,10 +70,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o3beta1[k]);
-                    m_beta2.push_back(o3beta2[k]);
-                    m_beta3.push_back(o3beta3[k]);
-                    m_wbeta.push_back(o3wbeta[k]);
+                    m_beta1.emplace_back(o3beta1[k]);
+                    m_beta2.emplace_back(o3beta2[k]);
+                    m_beta3.emplace_back(o3beta3[k]);
+                    m_wbeta.emplace_back(o3wbeta[k]);
                 }
             }
 
@@ -89,10 +89,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o6beta1[k]);
-                    m_beta2.push_back(o6beta2[k]);
-                    m_beta3.push_back(o6beta3[k]);
-                    m_wbeta.push_back(o6wbeta[k]);
+                    m_beta1.emplace_back(o6beta1[k]);
+                    m_beta2.emplace_back(o6beta2[k]);
+                    m_beta3.emplace_back(o6beta3[k]);
+                    m_wbeta.emplace_back(o6wbeta[k]);
                 }
             }
 
@@ -107,10 +107,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o7beta1[k]);
-                    m_beta2.push_back(o7beta2[k]);
-                    m_beta3.push_back(o7beta3[k]);
-                    m_wbeta.push_back(o7wbeta[k]);
+                    m_beta1.emplace_back(o7beta1[k]);
+                    m_beta2.emplace_back(o7beta2[k]);
+                    m_beta3.emplace_back(o7beta3[k]);
+                    m_wbeta.emplace_back(o7wbeta[k]);
                 }
             }
 
@@ -126,10 +126,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o12beta1[k]);
-                    m_beta2.push_back(o12beta2[k]);
-                    m_beta3.push_back(o12beta3[k]);
-                    m_wbeta.push_back(o12wbeta[k]);
+                    m_beta1.emplace_back(o12beta1[k]);
+                    m_beta2.emplace_back(o12beta2[k]);
+                    m_beta3.emplace_back(o12beta3[k]);
+                    m_wbeta.emplace_back(o12wbeta[k]);
                 }
             }
 
@@ -145,10 +145,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o16beta1[k]);
-                    m_beta2.push_back(o16beta2[k]);
-                    m_beta3.push_back(o16beta3[k]);
-                    m_wbeta.push_back(o16wbeta[k]);
+                    m_beta1.emplace_back(o16beta1[k]);
+                    m_beta2.emplace_back(o16beta2[k]);
+                    m_beta3.emplace_back(o16beta3[k]);
+                    m_wbeta.emplace_back(o16wbeta[k]);
                 }
             }
 
@@ -164,10 +164,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o17beta1[k]);
-                    m_beta2.push_back(o17beta2[k]);
-                    m_beta3.push_back(o17beta3[k]);
-                    m_wbeta.push_back(o17wbeta[k]);
+                    m_beta1.emplace_back(o17beta1[k]);
+                    m_beta2.emplace_back(o17beta2[k]);
+                    m_beta3.emplace_back(o17beta3[k]);
+                    m_wbeta.emplace_back(o17wbeta[k]);
                 }
             }
 
@@ -183,10 +183,10 @@ namespace ENigMA
 
                 for (Integer k = 0; k < CIntGaussIntegration<Real>::m_integPoints; ++k)
                 {
-                    m_beta1.push_back(o20beta1[k]);
-                    m_beta2.push_back(o20beta2[k]);
-                    m_beta3.push_back(o20beta3[k]);
-                    m_wbeta.push_back(o20wbeta[k]);
+                    m_beta1.emplace_back(o20beta1[k]);
+                    m_beta2.emplace_back(o20beta2[k]);
+                    m_beta3.emplace_back(o20beta3[k]);
+                    m_wbeta.emplace_back(o20wbeta[k]);
                 }
             }
 

@@ -44,13 +44,13 @@ TEST_F(CTestGeoConvexHull, convexHull) {
     CGeoCoordinate<decimal> aVertex6(0.5, 0.5, 0.0);
     CGeoCoordinate<decimal> aVertex7(0.1, 0.1, 0.0);
     
-    sVertices.push_back(aVertex1);
-    sVertices.push_back(aVertex2);
-    sVertices.push_back(aVertex3);
-    sVertices.push_back(aVertex4);
-    sVertices.push_back(aVertex5);
-    sVertices.push_back(aVertex6);
-    sVertices.push_back(aVertex7);
+    sVertices.emplace_back(aVertex1);
+    sVertices.emplace_back(aVertex2);
+    sVertices.emplace_back(aVertex3);
+    sVertices.emplace_back(aVertex4);
+    sVertices.emplace_back(aVertex5);
+    sVertices.emplace_back(aVertex6);
+    sVertices.emplace_back(aVertex7);
 
     CGeoConvexHull<decimal> aConvexHull(sVertices);
     

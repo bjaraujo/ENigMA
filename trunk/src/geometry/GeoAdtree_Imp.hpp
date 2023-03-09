@@ -104,7 +104,7 @@ namespace ENigMA
                     memcpy(node->data, p, 6 * sizeof(Real));
                     node->id = static_cast<Integer>(anId);
 
-                    m_nodes.push_back(node);
+                    m_nodes.emplace_back(node);
 
                     return;
                 }
@@ -134,7 +134,7 @@ namespace ENigMA
             next->id = static_cast<Integer>(anId);
             next->sep = static_cast<Real>((bmin[dir] + bmax[dir]) / 2.0);
 
-            m_nodes.push_back(next);
+            m_nodes.emplace_back(next);
 
             if (lr)
                 node->rightNode = next;
@@ -195,7 +195,7 @@ namespace ENigMA
                 {
                     if (node->data[0] <= bmax[0] && node->data[1] <= bmax[1] && node->data[2] <= bmax[2] && node->data[3] >= bmin[3] && node->data[4] >= bmin[4] && node->data[5] >= bmin[5])
                     {
-                        sIds.push_back(node->id);
+                        sIds.emplace_back(node->id);
                     }
                 }
 
