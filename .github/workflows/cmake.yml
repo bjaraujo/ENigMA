@@ -10,11 +10,11 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows-2019, ubuntu-20.04]
+        platform: [windows-2022, ubuntu-22.04]
         arch: [x86, x64]
         python-version: ['3.7.x', '3.8.x', '3.9.x']
         exclude:
-          - platform: ubuntu-20.04
+          - platform: ubuntu-22.04
             arch: x86
             
     # The CMake configure and build commands are platform agnostic and should work equally
@@ -118,7 +118,7 @@ jobs:
         fi
         
     - name: Build CSharp Package
-      if: matrix.platform == 'windows-2016'
+      if: matrix.platform == 'windows-2022'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMAcs
       shell: bash
       run: | 
