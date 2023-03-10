@@ -33,16 +33,16 @@ protected:
 
 TEST_F(CTestMshBasicMesher, meshLine) {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
     aLine.calculateLength();
 
     EXPECT_NEAR(1.0, aLine.length(), 1E-12);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer ne = 20;
 
@@ -50,22 +50,22 @@ TEST_F(CTestMshBasicMesher, meshLine) {
 
     EXPECT_EQ(ne, aBasicMesher.mesh().nbElements());
 
-    decimal sum_length = 0.0;
+    Decimal sum_length = 0.0;
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbElements(); ++i)
     {
 
         Integer elementId = aBasicMesher.mesh().elementId(i);
 
-        CMshElement<decimal> aElement = aBasicMesher.mesh().element(elementId);
+        CMshElement<Decimal> aElement = aBasicMesher.mesh().element(elementId);
 
-        CGeoLine<decimal> aLine;
+        CGeoLine<Decimal> aLine;
 
         for (Integer j = 0; j < aElement.nbNodeIds(); ++j)
         {
 
-            CMshNode<decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
-            CGeoCoordinate<decimal> aPoint = aNode;
+            CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
+            CGeoCoordinate<Decimal> aPoint = aNode;
             if (j == 0)
                 aLine.setStartPoint(aPoint);
             else
@@ -84,12 +84,12 @@ TEST_F(CTestMshBasicMesher, meshLine) {
 
 TEST_F(CTestMshBasicMesher, meshQuadrilateral1) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
@@ -100,7 +100,7 @@ TEST_F(CTestMshBasicMesher, meshQuadrilateral1) {
 
     EXPECT_NEAR(1.0, aQuadrilateral.area(), 1E-12);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -109,22 +109,22 @@ TEST_F(CTestMshBasicMesher, meshQuadrilateral1) {
 
     EXPECT_EQ(nu * nv, aBasicMesher.mesh().nbElements());
 
-    decimal sum_area = 0.0;
+    Decimal sum_area = 0.0;
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbElements(); ++i)
     {
 
         Integer elementId = aBasicMesher.mesh().elementId(i);
 
-        CMshElement<decimal> aElement = aBasicMesher.mesh().element(elementId);
+        CMshElement<Decimal> aElement = aBasicMesher.mesh().element(elementId);
 
-        CGeoQuadrilateral<decimal> aQuadrilateral;
+        CGeoQuadrilateral<Decimal> aQuadrilateral;
 
         for (Integer j = 0; j < aElement.nbNodeIds(); ++j)
         {
 
-            CMshNode<decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
-            CGeoCoordinate<decimal> aVertex = aNode;
+            CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
+            CGeoCoordinate<Decimal> aVertex = aNode;
             aQuadrilateral.addVertex(aVertex);
 
         }
@@ -141,12 +141,12 @@ TEST_F(CTestMshBasicMesher, meshQuadrilateral1) {
 
 TEST_F(CTestMshBasicMesher, meshQuadrilateral2) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
@@ -157,7 +157,7 @@ TEST_F(CTestMshBasicMesher, meshQuadrilateral2) {
 
     EXPECT_NEAR(1.0, aQuadrilateral.area(), 1E-6);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -166,22 +166,22 @@ TEST_F(CTestMshBasicMesher, meshQuadrilateral2) {
 
     EXPECT_EQ(nu * nv * 2, aBasicMesher.mesh().nbElements());
 
-    decimal sum_area = 0.0;
+    Decimal sum_area = 0.0;
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbElements(); ++i)
     {
 
         Integer elementId = aBasicMesher.mesh().elementId(i);
 
-        CMshElement<decimal> aElement = aBasicMesher.mesh().element(elementId);
+        CMshElement<Decimal> aElement = aBasicMesher.mesh().element(elementId);
 
-        CGeoTriangle<decimal> aTriangle;
+        CGeoTriangle<Decimal> aTriangle;
 
         for (Integer j = 0; j < aElement.nbNodeIds(); ++j)
         {
 
-            CMshNode<decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
-            CGeoCoordinate<decimal> aVertex = aNode;
+            CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
+            CGeoCoordinate<Decimal> aVertex = aNode;
             aTriangle.addVertex(aVertex);
 
         }
@@ -198,16 +198,16 @@ TEST_F(CTestMshBasicMesher, meshQuadrilateral2) {
 
 TEST_F(CTestMshBasicMesher, meshHexahedron1) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -222,7 +222,7 @@ TEST_F(CTestMshBasicMesher, meshHexahedron1) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-6);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -236,22 +236,22 @@ TEST_F(CTestMshBasicMesher, meshHexahedron1) {
 
     EXPECT_EQ(2 * (nu * nv + nv * nw + nw * nu), aBasicMesher.mesh().nbBoundaryFaces());
 
-    decimal sum_volume = 0.0;
+    Decimal sum_volume = 0.0;
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbElements(); ++i)
     {
 
         Integer elementId = aBasicMesher.mesh().elementId(i);
 
-        CMshElement<decimal> aElement = aBasicMesher.mesh().element(elementId);
+        CMshElement<Decimal> aElement = aBasicMesher.mesh().element(elementId);
 
-        CGeoHexahedron<decimal> aHexahedron;
+        CGeoHexahedron<Decimal> aHexahedron;
 
         for (Integer j = 0; j < aElement.nbNodeIds(); ++j)
         {
 
-            CMshNode<decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
-            CGeoCoordinate<decimal> aVertex = aNode;
+            CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
+            CGeoCoordinate<Decimal> aVertex = aNode;
             aHexahedron.addVertex(aVertex);
 
         }
@@ -268,16 +268,16 @@ TEST_F(CTestMshBasicMesher, meshHexahedron1) {
 
 TEST_F(CTestMshBasicMesher, meshHexahedron2) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -292,7 +292,7 @@ TEST_F(CTestMshBasicMesher, meshHexahedron2) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-6);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -302,22 +302,22 @@ TEST_F(CTestMshBasicMesher, meshHexahedron2) {
 
     EXPECT_EQ(nu * nv * nw * 6, aBasicMesher.mesh().nbElements());
 
-    decimal sum_volume = 0.0;
+    Decimal sum_volume = 0.0;
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbElements(); ++i)
     {
 
         Integer elementId = aBasicMesher.mesh().elementId(i);
 
-        CMshElement<decimal> aElement = aBasicMesher.mesh().element(elementId);
+        CMshElement<Decimal> aElement = aBasicMesher.mesh().element(elementId);
 
-        CGeoTetrahedron<decimal> aTetrahedron;
+        CGeoTetrahedron<Decimal> aTetrahedron;
 
         for (Integer j = 0; j < aElement.nbNodeIds(); ++j)
         {
 
-            CMshNode<decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
-            CGeoCoordinate<decimal> aVertex = aNode;
+            CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aElement.nodeId(j));
+            CGeoCoordinate<Decimal> aVertex = aNode;
             aTetrahedron.addVertex(aVertex);
 
         }

@@ -33,16 +33,16 @@ protected:
 
 TEST_F(CTestFemHexahedron, update) {
 
-    CFemHexahedron<decimal, 8, 1, 1> aHexahedron;
+    CFemHexahedron<Decimal, 8, 1, 1> aHexahedron;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, 1.0);
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);

@@ -34,16 +34,16 @@ protected:
 
 TEST_F(CTestFvmPiso, hydroPressure) {
 
-    CGeoCoordinate<decimal> aVertex1(+0.00, +0.00, +1.0);
-    CGeoCoordinate<decimal> aVertex2(+1.00, +0.00, +1.0);
-    CGeoCoordinate<decimal> aVertex3(+1.00, +1.00, +1.0);
-    CGeoCoordinate<decimal> aVertex4(+0.00, +1.00, +1.0);
-    CGeoCoordinate<decimal> aVertex5(+0.00, +0.00, -1.0);
-    CGeoCoordinate<decimal> aVertex6(+1.00, +0.00, -1.0);
-    CGeoCoordinate<decimal> aVertex7(+1.00, +1.00, -1.0);
-    CGeoCoordinate<decimal> aVertex8(+0.00, +1.00, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(+0.00, +0.00, +1.0);
+    CGeoCoordinate<Decimal> aVertex2(+1.00, +0.00, +1.0);
+    CGeoCoordinate<Decimal> aVertex3(+1.00, +1.00, +1.0);
+    CGeoCoordinate<Decimal> aVertex4(+0.00, +1.00, +1.0);
+    CGeoCoordinate<Decimal> aVertex5(+0.00, +0.00, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(+1.00, +0.00, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(+1.00, +1.00, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(+0.00, +1.00, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -57,7 +57,7 @@ TEST_F(CTestFvmPiso, hydroPressure) {
     Integer nx = 10;
     Integer ny = 80;
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     aBasicMesher.generate(aHexahedron, nx, ny, 1);
     
@@ -66,15 +66,15 @@ TEST_F(CTestFvmPiso, hydroPressure) {
     aBasicMesher.mesh().calculateFaceCentroid();
     aBasicMesher.mesh().calculateElementCentroid();
 
-    CFvmMesh<decimal> aFvmMesh(aBasicMesher.mesh());
+    CFvmMesh<Decimal> aFvmMesh(aBasicMesher.mesh());
 
-    CFvmPisoSolver<decimal> aPisoSolver(aFvmMesh);
+    CFvmPisoSolver<Decimal> aPisoSolver(aFvmMesh);
 
-    decimal g = -9.8;
+    Decimal g = -9.8;
     aPisoSolver.setGravity(0.0, g, 0.0);
 
-    decimal mu = 0.1; // dynamic viscosity
-    decimal rho = 1000.0; // density
+    Decimal mu = 0.1; // dynamic viscosity
+    Decimal rho = 1000.0; // density
  
     aPisoSolver.setMaterialProperties(rho, mu);
 
@@ -86,7 +86,7 @@ TEST_F(CTestFvmPiso, hydroPressure) {
 
         Integer aFaceId = aFvmMesh.faceId(i);
 
-        CFvmFace<decimal> aFace = aFvmMesh.face(aFaceId);
+        CFvmFace<Decimal> aFace = aFvmMesh.face(aFaceId);
 
         aFace.calculateCentroid();
 
@@ -103,7 +103,7 @@ TEST_F(CTestFvmPiso, hydroPressure) {
     aPisoSolver.setBoundaryVelocity(sFaceIds, BT_WALL_NO_SLIP, 0.0, 0.0, 0.0);
     aPisoSolver.setBoundaryPressure(sFaceIds, BT_WALL_NO_SLIP, 0.0);
 
-    decimal dt = 1E-3;
+    Decimal dt = 1E-3;
     Integer nIter = 10;
     
     for (Integer i = 0; i < nIter; ++i)
@@ -111,7 +111,7 @@ TEST_F(CTestFvmPiso, hydroPressure) {
         aPisoSolver.iterate(dt);
     }
 
-    decimal p = 0.0;
+    Decimal p = 0.0;
     
     for (Integer i = 0; i < aFvmMesh.nbControlVolumes(); ++i)
     {

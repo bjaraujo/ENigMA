@@ -36,12 +36,12 @@ protected:
 TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
 {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 10;
 
@@ -49,7 +49,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
 
     EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);
@@ -62,7 +62,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -73,7 +73,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
     }
 
     // Steady-state conduction in a line
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -83,7 +83,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
 
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i) {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         EXPECT_NEAR(aNode.x(), T.u(i), 1E-2);
     }
@@ -93,12 +93,12 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
 TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
 {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 10;
 
@@ -106,7 +106,7 @@ TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
 
     EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FDM);
@@ -119,7 +119,7 @@ TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -130,7 +130,7 @@ TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
     }
 
     // Steady-state conduction in a line
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -140,7 +140,7 @@ TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
 
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i) {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         EXPECT_NEAR(aNode.x(), T.u(i), 1E-1);
     }
@@ -150,16 +150,16 @@ TEST_F(CTestPdeEquation, fdmSteadyLaplaceLine)
 TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.1, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.1, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.1);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.1);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.1, 0.1);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.1, 0.1);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.1, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.1, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.1);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.1);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.1, 0.1);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.1, 0.1);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -170,7 +170,7 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 10;
     const Integer nv = 1;
@@ -183,7 +183,7 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
     aBasicMesher.mesh().calculateFaceCentroid();
     aBasicMesher.mesh().calculateElementCentroid();
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FVM);
@@ -207,14 +207,14 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
 
         if (std::fabs(T.mesh().faceCentroid(aFaceId).x() - 0.0) < 1E-6)
         {
-            CPdeBoundaryCondition<decimal> aFixedTemperature(BT_GENERIC_FIXED_VALUE);
+            CPdeBoundaryCondition<Decimal> aFixedTemperature(BT_GENERIC_FIXED_VALUE);
             aFixedTemperature.addCondition(CT_GENERIC_FIXED_VALUE, 0.0);
             T.addBCFace(aFaceId, aFixedTemperature);
         }
 
         if (std::fabs(T.mesh().faceCentroid(aFaceId).x() - 1.0) < 1E-6)
         {
-            CPdeBoundaryCondition<decimal> aFixedTemperature(BT_GENERIC_FIXED_VALUE);
+            CPdeBoundaryCondition<Decimal> aFixedTemperature(BT_GENERIC_FIXED_VALUE);
             aFixedTemperature.addCondition(CT_GENERIC_FIXED_VALUE, 1.0);
             T.addBCFace(aFaceId, aFixedTemperature);
         }
@@ -222,7 +222,7 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
     }
 
     // Steady-state conduction in a line
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.solve(T);
 
@@ -232,7 +232,7 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
 
         Integer anElementId = T.mesh().elementId(i);
 
-        CGeoCoordinate<decimal> aCentroid = T.mesh().elementCentroid(anElementId);
+        CGeoCoordinate<Decimal> aCentroid = T.mesh().elementCentroid(anElementId);
 
         EXPECT_NEAR(aCentroid.x(), T.u(i), 1E-2);
     }
@@ -242,16 +242,16 @@ TEST_F(CTestPdeEquation, fvmSteadyLaplaceLine)
 TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.1);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.1);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.1, 0.1);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.1, 0.1);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.1, 0.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.1, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.1);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.1);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.1, 0.1);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.1, 0.1);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.1, 0.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.1, 0.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -262,7 +262,7 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 10;
     const Integer nv = 1;
@@ -270,10 +270,10 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
 
-    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-12);
+    CMshMesh<Decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-12);
     aSurfaceMesh.invert();
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aSurfaceMesh);
     T.setDiscretMethod(DM_BEM);
@@ -289,7 +289,7 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
 
         Integer anElementId = T.mesh().elementId(i);
 
-        CGeoCoordinate<decimal> aCentroid = T.mesh().elementCentroid(anElementId);
+        CGeoCoordinate<Decimal> aCentroid = T.mesh().elementCentroid(anElementId);
 
         if (std::fabs(aCentroid.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -299,7 +299,7 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
     }
 
     // Steady-state conduction in a box
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.solve(T);
 
@@ -307,7 +307,7 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
 
         Integer anElementId = T.mesh().elementId(i);
 
-        CGeoCoordinate<decimal> aCentroid = T.mesh().elementCentroid(anElementId);
+        CGeoCoordinate<Decimal> aCentroid = T.mesh().elementCentroid(anElementId);
 
         EXPECT_NEAR(aCentroid.x(), T.u(i), 1E-2);
     }
@@ -317,12 +317,12 @@ TEST_F(CTestPdeEquation, bemSteadyLaplaceLine)
 TEST_F(CTestPdeEquation, femTransientLaplaceLine)
 {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 10;
 
@@ -330,7 +330,7 @@ TEST_F(CTestPdeEquation, femTransientLaplaceLine)
 
     EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);
@@ -346,7 +346,7 @@ TEST_F(CTestPdeEquation, femTransientLaplaceLine)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -359,7 +359,7 @@ TEST_F(CTestPdeEquation, femTransientLaplaceLine)
     }
 
     // Transient conduction in steady state
-    CPdeEquation<decimal> aPdeEquation(static_cast<decimal>(1 / 10.0) * ddt<decimal>(T) - laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(static_cast<Decimal>(1 / 10.0) * ddt<Decimal>(T) - laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -369,7 +369,7 @@ TEST_F(CTestPdeEquation, femTransientLaplaceLine)
 
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i) {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         EXPECT_NEAR(aNode.x(), T.u(i), 1E-2);
     }
@@ -379,12 +379,12 @@ TEST_F(CTestPdeEquation, femTransientLaplaceLine)
 TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
 {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 10;
 
@@ -392,7 +392,7 @@ TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
 
     EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FDM);
@@ -408,7 +408,7 @@ TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -421,7 +421,7 @@ TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
     }
 
     // Transient conduction in steady state
-    CPdeEquation<decimal> aPdeEquation(static_cast<decimal>(1 / 10.0) * ddt<decimal>(T) - laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(static_cast<Decimal>(1 / 10.0) * ddt<Decimal>(T) - laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -431,7 +431,7 @@ TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
 
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i) {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         EXPECT_NEAR(aNode.x(), T.u(i), 1E-1);
     }
@@ -441,19 +441,19 @@ TEST_F(CTestPdeEquation, fdmTransientLaplaceLine)
 TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle1)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -462,7 +462,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle1)
 
     EXPECT_EQ(nu * nv, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);
@@ -475,7 +475,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle1)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -486,7 +486,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle1)
     }
 
     // Steady-state conduction in a rectangular plate
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -504,19 +504,19 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle1)
 TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle2)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -525,7 +525,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle2)
 
     EXPECT_EQ(nu * nv * 2, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);
@@ -538,7 +538,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle2)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -549,7 +549,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle2)
     }
 
     // Steady-state conduction in a rectangular plate
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -567,16 +567,16 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceRectangle2)
 TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.5, 0.5);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.5, 0.5);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -587,7 +587,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -597,7 +597,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
 
     EXPECT_EQ(nu * nv * nw, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);
@@ -610,7 +610,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -621,7 +621,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
     }
 
     // Steady-state conduction in a box
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 
@@ -639,16 +639,16 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox1)
 TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.5, 0.5);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.5, 0.5);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -659,7 +659,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -669,7 +669,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
 
     EXPECT_EQ(nu * nv * nw * 6, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);
@@ -682,7 +682,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
-        CMshNode<decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
 
         if (std::fabs(aNode.x() - 0.0) < 1E-6)
             T.setFixedValue(i, 0.0);
@@ -693,7 +693,7 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
     }
 
     // Steady-state conduction in a box
-    CPdeEquation<decimal> aPdeEquation(laplacian<decimal>(T) = 0);
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
 
     aPdeEquation.setPenaltyFactor(T, 1000.0);
 

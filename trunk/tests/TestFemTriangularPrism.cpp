@@ -33,14 +33,14 @@ protected:
 
 TEST_F(CTestFemTriangularPrism, update) {
 
-    CFemTriangularPrism<decimal, 6, 1, 1> aTriangularPrism;
+    CFemTriangularPrism<Decimal, 6, 1, 1> aTriangularPrism;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, -0.5);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, -0.5);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, -0.5);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, +0.5);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, +0.5);
-    CGeoCoordinate<decimal> aVertex6(0.0, 1.0, +0.5);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, -0.5);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, -0.5);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, -0.5);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, +0.5);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, +0.5);
+    CGeoCoordinate<Decimal> aVertex6(0.0, 1.0, +0.5);
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);

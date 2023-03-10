@@ -39,29 +39,29 @@ protected:
 
 TEST_F(CTestFemCbs, hydroPressure) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     aBasicMesher.generate(aQuadrilateral, 10, 40, true);
     
-    CFemCbsSolver<decimal, 2> aCbsSolver(aBasicMesher.mesh());
+    CFemCbsSolver<Decimal, 2> aCbsSolver(aBasicMesher.mesh());
 
-    decimal g = -9.8;
+    Decimal g = -9.8;
     aCbsSolver.setGravity(0.0, -9.8);
 
-    decimal mu = 0.1; // dynamic viscosity
-    decimal rho = 1000.0; // density
+    Decimal mu = 0.1; // dynamic viscosity
+    Decimal rho = 1000.0; // density
  
     aCbsSolver.setMaterialProperties(rho, mu);
 
@@ -69,7 +69,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
     {
 
         Integer aNodeId = aBasicMesher.mesh().nodeId(i);
-        CMshNode<decimal> aNode = aBasicMesher.mesh().node(aNodeId);
+        CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aNodeId);
 
         if (std::fabs(aNode.x() - 0.0) < 1E-3 ||
             std::fabs(aNode.x() - 1.0) < 1E-3)
@@ -97,7 +97,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     }
 
-    decimal dt = 1E-3;
+    Decimal dt = 1E-3;
     Integer nIter = 2;
 
     for (Integer i = 0; i < nIter; ++i)
@@ -105,7 +105,7 @@ TEST_F(CTestFemCbs, hydroPressure) {
         aCbsSolver.iterate(dt);
     }
 
-    decimal p = 0.0;
+    Decimal p = 0.0;
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbNodes(); ++i)
     {

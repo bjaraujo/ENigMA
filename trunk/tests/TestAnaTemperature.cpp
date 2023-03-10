@@ -34,9 +34,9 @@ protected:
 TEST_F(CTestAnaTemperature, steadyStateHeatConduction1D)
 {
 
-    CAnaTemperature<decimal> aAnaTemperature;
+    CAnaTemperature<Decimal> aAnaTemperature;
 
-    decimal x, T;
+    Decimal x, T;
 
     x = 0.5;
     aAnaTemperature.steadyStateHeatConduction1D(x, T);
@@ -47,9 +47,9 @@ TEST_F(CTestAnaTemperature, steadyStateHeatConduction1D)
 TEST_F(CTestAnaTemperature, steadyStateHeatConduction2D)
 {
 
-    CAnaTemperature<decimal> aAnaTemperature;
+    CAnaTemperature<Decimal> aAnaTemperature;
 
-    decimal x, y, T;
+    Decimal x, y, T;
 
     x = 0.5;
     y = 0.5;
@@ -61,9 +61,9 @@ TEST_F(CTestAnaTemperature, steadyStateHeatConduction2D)
 TEST_F(CTestAnaTemperature, steadyStateHeatConduction3D)
 {
 
-    CAnaTemperature<decimal> aAnaTemperature;
+    CAnaTemperature<Decimal> aAnaTemperature;
 
-    decimal x, y, z, T;
+    Decimal x, y, z, T;
 
     x = 0.5;
     y = 0.5;
@@ -91,9 +91,9 @@ TODO:
 TEST_F(CTestAnaTemperature, steadyStateHeatConvectionRadiation1D)
 {
 
-    CAnaTemperature<decimal> aAnaTemperature;
+    CAnaTemperature<Decimal> aAnaTemperature;
 
-    decimal x, Tb, h, e, k, perimeter, sectionArea, T;
+    Decimal x, Tb, h, e, k, perimeter, sectionArea, T;
     
     x = 0.0;
     Tb = 1.0;

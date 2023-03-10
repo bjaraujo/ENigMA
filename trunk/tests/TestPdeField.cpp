@@ -35,12 +35,12 @@ protected:
 
 TEST_F(CTestPdeGeometricField, set) {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer ne = 3;
 
@@ -48,7 +48,7 @@ TEST_F(CTestPdeGeometricField, set) {
 
     EXPECT_EQ(ne, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
+    CPdeField<Decimal> T;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretMethod(DM_FEM);

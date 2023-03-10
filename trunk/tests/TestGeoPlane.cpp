@@ -33,9 +33,9 @@ protected:
 
 TEST_F(CTestGeoPlane, construct) {
 
-    CGeoNormal<decimal> aNormal(2, 2, 2);
+    CGeoNormal<Decimal> aNormal(2, 2, 2);
 
-    CGeoPlane<decimal> aPlane;
+    CGeoPlane<Decimal> aPlane;
 
     aPlane.set(aNormal, 1.0);
 
@@ -47,9 +47,9 @@ TEST_F(CTestGeoPlane, construct) {
 TEST_F(CTestGeoPlane, set) {
 
 
-    CGeoNormal<decimal> aNormal(2, 2, 2);
+    CGeoNormal<Decimal> aNormal(2, 2, 2);
 
-    CGeoPlane<decimal> aPlane(aNormal, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.0);
 
     EXPECT_NEAR(1.0, aPlane.normal().norm(), 1E-6);
     EXPECT_NEAR(0.0, aPlane.d(), 1E-6);
@@ -58,15 +58,15 @@ TEST_F(CTestGeoPlane, set) {
 
 TEST_F(CTestGeoPlane, distance) {
 
-    CGeoNormal<decimal> aNormal(0.0, 0.0, 1.0);
+    CGeoNormal<Decimal> aNormal(0.0, 0.0, 1.0);
 
-    CGeoPlane<decimal> aPlane(aNormal, 0.1);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.1);
 
-    CGeoCoordinate<decimal> aPoint(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint(0.0, 0.0, 0.0);
 
-    CGeoCoordinate<decimal> aNewPoint;
+    CGeoCoordinate<Decimal> aNewPoint;
 
-    decimal dist = aPlane.distance(aPoint, aNewPoint);
+    Decimal dist = aPlane.distance(aPoint, aNewPoint);
 
     EXPECT_NEAR(0.1, dist, 1E-6);
 

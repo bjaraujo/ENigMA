@@ -34,7 +34,7 @@ protected:
 
 TEST_F(CTestMshElement, set) {
 
-    CMshElement<decimal> anElement;
+    CMshElement<Decimal> anElement;
 
     anElement.addNodeId(2);
     anElement.addNodeId(4);

@@ -37,16 +37,16 @@ protected:
 
 TEST_F(CTestMshTriangleMesher, mesh1) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1;
-    CMshNode<decimal> aNode2;
-    CMshNode<decimal> aNode3;
-    CMshNode<decimal> aNode4;
-    CMshNode<decimal> aNode5;
-    CMshNode<decimal> aNode6;
-    CMshNode<decimal> aNode7;
-    CMshNode<decimal> aNode8;
+    CMshNode<Decimal> aNode1;
+    CMshNode<Decimal> aNode2;
+    CMshNode<Decimal> aNode3;
+    CMshNode<Decimal> aNode4;
+    CMshNode<Decimal> aNode5;
+    CMshNode<Decimal> aNode6;
+    CMshNode<Decimal> aNode7;
+    CMshNode<Decimal> aNode8;
 
     aNode1 << 2.0270543283699989, 1.3490401401130008, 0;
     aNode2 << 2.0270543283699989, 2.6634868158110017, 0;
@@ -66,14 +66,14 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
     anEdgeMesh.addNode(7, aNode7);
     anEdgeMesh.addNode(8, aNode8);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
-    CMshElement<decimal> anElement2(ET_BEAM);
-    CMshElement<decimal> anElement3(ET_BEAM);
-    CMshElement<decimal> anElement4(ET_BEAM);
-    CMshElement<decimal> anElement5(ET_BEAM);
-    CMshElement<decimal> anElement6(ET_BEAM);
-    CMshElement<decimal> anElement7(ET_BEAM);
-    CMshElement<decimal> anElement8(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement5(ET_BEAM);
+    CMshElement<Decimal> anElement6(ET_BEAM);
+    CMshElement<Decimal> anElement7(ET_BEAM);
+    CMshElement<Decimal> anElement8(ET_BEAM);
 
     // 1 1 0 1 3
     anElement1.addNodeId(1);
@@ -118,19 +118,19 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
 
     EXPECT_EQ(8, anEdgeMesh.nbElements());
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 1.0);
     
     aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 1.0, 0.1, 10.0, 1E-3);
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge1.msh", "beams");
@@ -145,54 +145,54 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
 
 TEST_F(CTestMshTriangleMesher, mesh2) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
     anEdgeMesh.addNode(0, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << 1.0, 0.0, 0.0;
     anEdgeMesh.addNode(1, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << 1.0, 1.0, 0.0;
     anEdgeMesh.addNode(2, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << 0.0, 1.0, 0.0;
     anEdgeMesh.addNode(3, aNode4);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
     anElement1.addNodeId(0);
     anElement1.addNodeId(1);
     anEdgeMesh.addElement(0, anElement1);
 
-    CMshElement<decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
     anElement2.addNodeId(1);
     anElement2.addNodeId(2);
     anEdgeMesh.addElement(1, anElement2);
 
-    CMshElement<decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
     anElement3.addNodeId(2);
     anElement3.addNodeId(3);
     anEdgeMesh.addElement(2, anElement3);
 
-    CMshElement<decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
     anElement4.addNodeId(3);
     anElement4.addNodeId(0);
     anEdgeMesh.addElement(3, anElement4);
 
     EXPECT_EQ(4, anEdgeMesh.nbElements());
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 0.1);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge2.msh", "beams");
@@ -201,7 +201,7 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
 
     EXPECT_EQ(40, anEdgeMesh.nbElements());
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
@@ -213,90 +213,90 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
 
 TEST_F(CTestMshTriangleMesher, mesh3) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
     anEdgeMesh.addNode(0, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << 1.0, 0.0, 0.0;
     anEdgeMesh.addNode(1, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << 1.0, 1.0, 0.0;
     anEdgeMesh.addNode(2, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << 0.0, 1.0, 0.0;
     anEdgeMesh.addNode(3, aNode4);
 
-    CMshNode<decimal> aNode5;
+    CMshNode<Decimal> aNode5;
     aNode5 << 0.3, 0.3, 0.0;
     anEdgeMesh.addNode(4, aNode5);
 
-    CMshNode<decimal> aNode6;
+    CMshNode<Decimal> aNode6;
     aNode6 << 0.3, 0.6, 0.0;
     anEdgeMesh.addNode(5, aNode6);
 
-    CMshNode<decimal> aNode7;
+    CMshNode<Decimal> aNode7;
     aNode7 << 0.6, 0.6, 0.0;
     anEdgeMesh.addNode(6, aNode7);
 
-    CMshNode<decimal> aNode8;
+    CMshNode<Decimal> aNode8;
     aNode8 << 0.6, 0.3, 0.0;
     anEdgeMesh.addNode(7, aNode8);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
     anElement1.addNodeId(0);
     anElement1.addNodeId(1);
     anEdgeMesh.addElement(0, anElement1);
 
-    CMshElement<decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
     anElement2.addNodeId(1);
     anElement2.addNodeId(2);
     anEdgeMesh.addElement(1, anElement2);
 
-    CMshElement<decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
     anElement3.addNodeId(2);
     anElement3.addNodeId(3);
     anEdgeMesh.addElement(2, anElement3);
 
-    CMshElement<decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
     anElement4.addNodeId(3);
     anElement4.addNodeId(0);
     anEdgeMesh.addElement(3, anElement4);
 
-    CMshElement<decimal> anElement5(ET_BEAM);
+    CMshElement<Decimal> anElement5(ET_BEAM);
     anElement5.addNodeId(4);
     anElement5.addNodeId(5);
     anEdgeMesh.addElement(4, anElement5);
 
-    CMshElement<decimal> anElement6(ET_BEAM);
+    CMshElement<Decimal> anElement6(ET_BEAM);
     anElement6.addNodeId(5);
     anElement6.addNodeId(6);
     anEdgeMesh.addElement(5, anElement6);
 
-    CMshElement<decimal> anElement7(ET_BEAM);
+    CMshElement<Decimal> anElement7(ET_BEAM);
     anElement7.addNodeId(6);
     anElement7.addNodeId(7);
     anEdgeMesh.addElement(6, anElement7);
 
-    CMshElement<decimal> anElement8(ET_BEAM);
+    CMshElement<Decimal> anElement8(ET_BEAM);
     anElement8.addNodeId(7);
     anElement8.addNodeId(4);
     anEdgeMesh.addElement(7, anElement8);
 
     EXPECT_EQ(8, anEdgeMesh.nbElements());
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 0.1);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge3.msh", "beams");
@@ -305,7 +305,7 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
 
     EXPECT_EQ(52, anEdgeMesh.nbElements());
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
@@ -317,14 +317,14 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
 
 TEST_F(CTestMshTriangleMesher, mesh4) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1;
-    CMshNode<decimal> aNode2;
-    CMshNode<decimal> aNode3;
-    CMshNode<decimal> aNode4;
-    CMshNode<decimal> aNode5;
-    CMshNode<decimal> aNode6;
+    CMshNode<Decimal> aNode1;
+    CMshNode<Decimal> aNode2;
+    CMshNode<Decimal> aNode3;
+    CMshNode<Decimal> aNode4;
+    CMshNode<Decimal> aNode5;
+    CMshNode<Decimal> aNode6;
 
     aNode1 << 0.0387116, 0, 0;
     aNode2 << 0.0387116, 0.203556, 0;
@@ -340,12 +340,12 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
     anEdgeMesh.addNode(5, aNode5);
     anEdgeMesh.addNode(6, aNode6);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
-    CMshElement<decimal> anElement2(ET_BEAM);
-    CMshElement<decimal> anElement3(ET_BEAM);
-    CMshElement<decimal> anElement4(ET_BEAM);
-    CMshElement<decimal> anElement5(ET_BEAM);
-    CMshElement<decimal> anElement6(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement5(ET_BEAM);
+    CMshElement<Decimal> anElement6(ET_BEAM);
 
     anElement1.addNodeId(1);
     anElement1.addNodeId(3);
@@ -373,14 +373,14 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
 
     EXPECT_EQ(6, anEdgeMesh.nbElements());
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
     aTriangleMesher.remesh(anEdgeMesh, 2.0);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge4.msh", "beams");
@@ -389,7 +389,7 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
 
     EXPECT_EQ(6, anEdgeMesh.nbElements());
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     aTriangleMesher.flipEdges(aSurfaceMesh);
@@ -404,20 +404,20 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
 
 TEST_F(CTestMshTriangleMesher, mesh5) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1(0, 0, 0);
-    CMshNode<decimal> aNode2(100, 0, 0);
-    CMshNode<decimal> aNode3(100, 100, 0);
-    CMshNode<decimal> aNode4(0, 100, 0);
-    CMshNode<decimal> aNode5(10, 0, 0);
-    CMshNode<decimal> aNode6(28, 40, 0);
-    CMshNode<decimal> aNode7(28, 0, 0);
-    CMshNode<decimal> aNode8(40, 0, 0);
-    CMshNode<decimal> aNode9(58, 52, 0);
-    CMshNode<decimal> aNode10(58, 0, 0);
-    CMshNode<decimal> aNode11(50, 88, 0);
-    CMshNode<decimal> aNode12(79, 65, 0);
+    CMshNode<Decimal> aNode1(0, 0, 0);
+    CMshNode<Decimal> aNode2(100, 0, 0);
+    CMshNode<Decimal> aNode3(100, 100, 0);
+    CMshNode<Decimal> aNode4(0, 100, 0);
+    CMshNode<Decimal> aNode5(10, 0, 0);
+    CMshNode<Decimal> aNode6(28, 40, 0);
+    CMshNode<Decimal> aNode7(28, 0, 0);
+    CMshNode<Decimal> aNode8(40, 0, 0);
+    CMshNode<Decimal> aNode9(58, 52, 0);
+    CMshNode<Decimal> aNode10(58, 0, 0);
+    CMshNode<Decimal> aNode11(50, 88, 0);
+    CMshNode<Decimal> aNode12(79, 65, 0);
 
     anEdgeMesh.addNode(1, aNode1);
     anEdgeMesh.addNode(2, aNode2);
@@ -432,18 +432,18 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     anEdgeMesh.addNode(11, aNode11);
     anEdgeMesh.addNode(12, aNode12);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
-    CMshElement<decimal> anElement2(ET_BEAM);
-    CMshElement<decimal> anElement3(ET_BEAM);
-    CMshElement<decimal> anElement4(ET_BEAM);
-    CMshElement<decimal> anElement5(ET_BEAM);
-    CMshElement<decimal> anElement6(ET_BEAM);
-    CMshElement<decimal> anElement7(ET_BEAM);
-    CMshElement<decimal> anElement8(ET_BEAM);
-    CMshElement<decimal> anElement9(ET_BEAM);
-    CMshElement<decimal> anElement10(ET_BEAM);
-    CMshElement<decimal> anElement11(ET_BEAM);
-    CMshElement<decimal> anElement12(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement5(ET_BEAM);
+    CMshElement<Decimal> anElement6(ET_BEAM);
+    CMshElement<Decimal> anElement7(ET_BEAM);
+    CMshElement<Decimal> anElement8(ET_BEAM);
+    CMshElement<Decimal> anElement9(ET_BEAM);
+    CMshElement<Decimal> anElement10(ET_BEAM);
+    CMshElement<Decimal> anElement11(ET_BEAM);
+    CMshElement<Decimal> anElement12(ET_BEAM);
 
     anElement1.addNodeId(4);
     anElement1.addNodeId(1);
@@ -495,8 +495,8 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
 
     EXPECT_EQ(12, anEdgeMesh.nbElements());
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     anEdgeMesh.generateFaces(1E-3);
 
@@ -505,8 +505,8 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
 
     aTriangleMesher.remesh(anEdgeMesh, 10);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge5.msh", "beams");
@@ -515,7 +515,7 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
 
     EXPECT_EQ(64, anEdgeMesh.nbElements());
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
@@ -527,20 +527,20 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
 
 TEST_F(CTestMshTriangleMesher, mesh6) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1(0, 0, 0);
-    CMshNode<decimal> aNode2(100, 0, 0);
-    CMshNode<decimal> aNode3(100, 100, 0);
-    CMshNode<decimal> aNode4(0, 100, 0);
-    CMshNode<decimal> aNode5(28, 0, 0);
-    CMshNode<decimal> aNode6(28, 40, 0);
-    CMshNode<decimal> aNode7(28, 0, 0);
-    CMshNode<decimal> aNode8(58, 0, 0);
-    CMshNode<decimal> aNode9(58, 52, 0);
-    CMshNode<decimal> aNode10(58, 0, 0);
-    CMshNode<decimal> aNode11(50, 88, 0);
-    CMshNode<decimal> aNode12(79, 65, 0);
+    CMshNode<Decimal> aNode1(0, 0, 0);
+    CMshNode<Decimal> aNode2(100, 0, 0);
+    CMshNode<Decimal> aNode3(100, 100, 0);
+    CMshNode<Decimal> aNode4(0, 100, 0);
+    CMshNode<Decimal> aNode5(28, 0, 0);
+    CMshNode<Decimal> aNode6(28, 40, 0);
+    CMshNode<Decimal> aNode7(28, 0, 0);
+    CMshNode<Decimal> aNode8(58, 0, 0);
+    CMshNode<Decimal> aNode9(58, 52, 0);
+    CMshNode<Decimal> aNode10(58, 0, 0);
+    CMshNode<Decimal> aNode11(50, 88, 0);
+    CMshNode<Decimal> aNode12(79, 65, 0);
 
     anEdgeMesh.addNode(1, aNode1);
     anEdgeMesh.addNode(2, aNode2);
@@ -555,18 +555,18 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     anEdgeMesh.addNode(11, aNode11);
     anEdgeMesh.addNode(12, aNode12);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
-    CMshElement<decimal> anElement2(ET_BEAM);
-    CMshElement<decimal> anElement3(ET_BEAM);
-    CMshElement<decimal> anElement4(ET_BEAM);
-    CMshElement<decimal> anElement5(ET_BEAM);
-    CMshElement<decimal> anElement6(ET_BEAM);
-    CMshElement<decimal> anElement7(ET_BEAM);
-    CMshElement<decimal> anElement8(ET_BEAM);
-    CMshElement<decimal> anElement9(ET_BEAM);
-    CMshElement<decimal> anElement10(ET_BEAM);
-    CMshElement<decimal> anElement11(ET_BEAM);
-    CMshElement<decimal> anElement12(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement5(ET_BEAM);
+    CMshElement<Decimal> anElement6(ET_BEAM);
+    CMshElement<Decimal> anElement7(ET_BEAM);
+    CMshElement<Decimal> anElement8(ET_BEAM);
+    CMshElement<Decimal> anElement9(ET_BEAM);
+    CMshElement<Decimal> anElement10(ET_BEAM);
+    CMshElement<Decimal> anElement11(ET_BEAM);
+    CMshElement<Decimal> anElement12(ET_BEAM);
 
     anElement1.addNodeId(4);
     anElement1.addNodeId(1);
@@ -618,8 +618,8 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
 
     EXPECT_EQ(12, anEdgeMesh.nbElements());
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     anEdgeMesh.node(6).z() = 10;
     anEdgeMesh.node(7).z() = 10;
@@ -645,8 +645,8 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
 
     anEdgeMesh.mergeNodes(1E-3);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge6.msh", "beams");
@@ -655,7 +655,7 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
 
     EXPECT_EQ(66, anEdgeMesh.nbElements());
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
@@ -667,21 +667,21 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
 
 TEST_F(CTestMshTriangleMesher, mesh7) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1;
-    CMshNode<decimal> aNode2;
-    CMshNode<decimal> aNode3;
-    CMshNode<decimal> aNode4;
-    CMshNode<decimal> aNode5;
-    CMshNode<decimal> aNode6;
-    CMshNode<decimal> aNode7;
-    CMshNode<decimal> aNode8;
-    CMshNode<decimal> aNode9;
-    CMshNode<decimal> aNode10;
-    CMshNode<decimal> aNode11;
-    CMshNode<decimal> aNode12;
-    CMshNode<decimal> aNode13;
+    CMshNode<Decimal> aNode1;
+    CMshNode<Decimal> aNode2;
+    CMshNode<Decimal> aNode3;
+    CMshNode<Decimal> aNode4;
+    CMshNode<Decimal> aNode5;
+    CMshNode<Decimal> aNode6;
+    CMshNode<Decimal> aNode7;
+    CMshNode<Decimal> aNode8;
+    CMshNode<Decimal> aNode9;
+    CMshNode<Decimal> aNode10;
+    CMshNode<Decimal> aNode11;
+    CMshNode<Decimal> aNode12;
+    CMshNode<Decimal> aNode13;
 
     aNode1 << -1.5, 0.1124999970197678, 0;
     aNode2 << -1.5, -0.1124999970197678, 0;
@@ -713,7 +713,7 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
 
     for (int i = 0; i < 13; i++)
     {
-        CMshElement<decimal> anElement(ET_BEAM);
+        CMshElement<Decimal> anElement(ET_BEAM);
         anElement.addNodeId(i + 1);
         if (i != 12)
             anElement.addNodeId(i + 2);
@@ -725,19 +725,19 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
     anEdgeMesh.mergeNodes(0.02);
     anEdgeMesh.generateFaces(0.02);
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     aTriangleMesher.remesh(anEdgeMesh, 0.8);
     aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 0.8, 0.8, 0.8 * 2.0, 0.02);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge7.msh", "beams");
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
@@ -749,38 +749,38 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
 
 TEST_F(CTestMshTriangleMesher, mesh8) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1;
-    CMshNode<decimal> aNode2;
-    CMshNode<decimal> aNode3;
-    CMshNode<decimal> aNode4;
-    CMshNode<decimal> aNode5;
-    CMshNode<decimal> aNode6;
-    CMshNode<decimal> aNode7;
-    CMshNode<decimal> aNode8;
-    CMshNode<decimal> aNode9;
-    CMshNode<decimal> aNode10;
-    CMshNode<decimal> aNode11;
-    CMshNode<decimal> aNode12;
-    CMshNode<decimal> aNode13;
-    CMshNode<decimal> aNode14;
-    CMshNode<decimal> aNode15;
-    CMshNode<decimal> aNode16;
-    CMshNode<decimal> aNode17;
-    CMshNode<decimal> aNode18;
-    CMshNode<decimal> aNode19;
-    CMshNode<decimal> aNode20;
-    CMshNode<decimal> aNode21;
-    CMshNode<decimal> aNode22;
-    CMshNode<decimal> aNode23;
-    CMshNode<decimal> aNode24;
-    CMshNode<decimal> aNode25;
-    CMshNode<decimal> aNode26;
-    CMshNode<decimal> aNode27;
-    CMshNode<decimal> aNode28;
-    CMshNode<decimal> aNode29;
-    CMshNode<decimal> aNode30;
+    CMshNode<Decimal> aNode1;
+    CMshNode<Decimal> aNode2;
+    CMshNode<Decimal> aNode3;
+    CMshNode<Decimal> aNode4;
+    CMshNode<Decimal> aNode5;
+    CMshNode<Decimal> aNode6;
+    CMshNode<Decimal> aNode7;
+    CMshNode<Decimal> aNode8;
+    CMshNode<Decimal> aNode9;
+    CMshNode<Decimal> aNode10;
+    CMshNode<Decimal> aNode11;
+    CMshNode<Decimal> aNode12;
+    CMshNode<Decimal> aNode13;
+    CMshNode<Decimal> aNode14;
+    CMshNode<Decimal> aNode15;
+    CMshNode<Decimal> aNode16;
+    CMshNode<Decimal> aNode17;
+    CMshNode<Decimal> aNode18;
+    CMshNode<Decimal> aNode19;
+    CMshNode<Decimal> aNode20;
+    CMshNode<Decimal> aNode21;
+    CMshNode<Decimal> aNode22;
+    CMshNode<Decimal> aNode23;
+    CMshNode<Decimal> aNode24;
+    CMshNode<Decimal> aNode25;
+    CMshNode<Decimal> aNode26;
+    CMshNode<Decimal> aNode27;
+    CMshNode<Decimal> aNode28;
+    CMshNode<Decimal> aNode29;
+    CMshNode<Decimal> aNode30;
 
     aNode1 << 0,0,0;
     aNode2 << 0,-0.777239978313446,0;
@@ -846,7 +846,7 @@ TEST_F(CTestMshTriangleMesher, mesh8) {
 
     for (int i = 0; i < 30; i++)
     {
-        CMshElement<decimal> anElement(ET_BEAM);
+        CMshElement<Decimal> anElement(ET_BEAM);
         anElement.addNodeId(i + 1);
         if (i != 29)
             anElement.addNodeId(i + 2);
@@ -858,19 +858,19 @@ TEST_F(CTestMshTriangleMesher, mesh8) {
     anEdgeMesh.mergeNodes(0.02);
     anEdgeMesh.generateFaces(0.02);
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     aTriangleMesher.remesh(anEdgeMesh, 4.0);
     aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 4.0, 4.0, 4.0 * 2.0, 0.02);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge8.msh", "beams");
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
@@ -882,22 +882,22 @@ TEST_F(CTestMshTriangleMesher, mesh8) {
 
 TEST_F(CTestMshTriangleMesher, mesh9) {
 
-    CMshMesh<decimal> anEdgeMesh;
+    CMshMesh<Decimal> anEdgeMesh;
 
-    CMshNode<decimal> aNode1(0, 0, 0);
-    CMshNode<decimal> aNode2(100, 0, 0);
-    CMshNode<decimal> aNode3(100, 100, 0);
-    CMshNode<decimal> aNode4(0, 100, 0);
+    CMshNode<Decimal> aNode1(0, 0, 0);
+    CMshNode<Decimal> aNode2(100, 0, 0);
+    CMshNode<Decimal> aNode3(100, 100, 0);
+    CMshNode<Decimal> aNode4(0, 100, 0);
 
     anEdgeMesh.addNode(1, aNode1);
     anEdgeMesh.addNode(2, aNode2);
     anEdgeMesh.addNode(3, aNode3);
     anEdgeMesh.addNode(4, aNode4);
 
-    CMshElement<decimal> anElement1(ET_BEAM);
-    CMshElement<decimal> anElement2(ET_BEAM);
-    CMshElement<decimal> anElement3(ET_BEAM);
-    CMshElement<decimal> anElement4(ET_BEAM);
+    CMshElement<Decimal> anElement1(ET_BEAM);
+    CMshElement<Decimal> anElement2(ET_BEAM);
+    CMshElement<Decimal> anElement3(ET_BEAM);
+    CMshElement<Decimal> anElement4(ET_BEAM);
 
     anElement1.addNodeId(1);
     anElement1.addNodeId(2);
@@ -916,15 +916,15 @@ TEST_F(CTestMshTriangleMesher, mesh9) {
     anEdgeMesh.addElement(4, anElement4);
 
     // Inner circle
-    decimal r = 5;
-    const decimal pi = std::acos(-1.0);
+    Decimal r = 5;
+    const Decimal pi = std::acos(-1.0);
 
     for (Integer i = 0; i < 16; i++)
     {
-        CMshNode<decimal> aNode(60 + r * cos(2 * pi - i * 2 * pi / 16), 60 + r * sin(2 * pi - i * 2 * pi / 16), 0);
+        CMshNode<Decimal> aNode(60 + r * cos(2 * pi - i * 2 * pi / 16), 60 + r * sin(2 * pi - i * 2 * pi / 16), 0);
         anEdgeMesh.addNode(5 + i, aNode);
 
-        CMshElement<decimal> anElement(ET_BEAM);
+        CMshElement<Decimal> anElement(ET_BEAM);
 
         if (i < 15)
         {
@@ -944,19 +944,19 @@ TEST_F(CTestMshTriangleMesher, mesh9) {
     anEdgeMesh.mergeNodes(1E-2);
     anEdgeMesh.generateFaces(1E-2);
 
-    CMshTriangleMesher<decimal> aTriangleMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTriangleMesher<Decimal> aTriangleMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     aTriangleMesher.remesh(anEdgeMesh, 2.0);
     aTriangleMesher.generate(anEdgeMesh, 9999, sInteriorPoints, 2.0, 0.1, 10.0, 1E-4);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
     aPosGmsh.save(T, "tri_edge9.msh", "beams");
 
-    CMshMesh<decimal> aSurfaceMesh;
+    CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);

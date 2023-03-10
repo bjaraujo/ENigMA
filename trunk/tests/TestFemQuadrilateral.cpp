@@ -33,12 +33,12 @@ protected:
 
 TEST_F(CTestFemQuadrilateral, update) {
 
-    CFemQuadrilateral<decimal, 4, 1, 1> aQuadrilateral;
+    CFemQuadrilateral<Decimal, 4, 1, 1> aQuadrilateral;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, 1.0);
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);

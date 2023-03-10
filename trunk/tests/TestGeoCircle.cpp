@@ -33,9 +33,9 @@ protected:
 
 TEST_F(CTestGeoCircle, area1) {
 
-    CGeoCoordinate<decimal> aCenter(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCenter(0.0, 0.0, 0.0);
 
-    CGeoCircle<decimal> aCircle(aCenter, 1.0);
+    CGeoCircle<Decimal> aCircle(aCenter, 1.0);
 
     aCircle.calculateArea();
 
@@ -45,11 +45,11 @@ TEST_F(CTestGeoCircle, area1) {
 
 TEST_F(CTestGeoCircle, area2) {
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aPoint2(+0.0, +1.0, +0.0);
-    CGeoCoordinate<decimal> aPoint3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint2(+0.0, +1.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint3(-1.0, +0.0, +0.0);
 
-    CGeoCircle<decimal> aCircle(aPoint1, aPoint2, aPoint3);
+    CGeoCircle<Decimal> aCircle(aPoint1, aPoint2, aPoint3);
 
     aCircle.calculateArea();
 
@@ -59,15 +59,15 @@ TEST_F(CTestGeoCircle, area2) {
 
 TEST_F(CTestGeoCircle, contains1) {
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aPoint2(+0.0, +1.0, +0.0);
-    CGeoCoordinate<decimal> aPoint3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint2(+0.0, +1.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint3(-1.0, +0.0, +0.0);
 
-    CGeoCircle<decimal> aCircle(aPoint1, aPoint2, aPoint3);
+    CGeoCircle<Decimal> aCircle(aPoint1, aPoint2, aPoint3);
 
-    CGeoCoordinate<decimal> aPoint5(0.25, 0.25, 0.0);
-    CGeoCoordinate<decimal> aPoint6(1.5, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint7(1.5, 1.5, 1.5);
+    CGeoCoordinate<Decimal> aPoint5(0.25, 0.25, 0.0);
+    CGeoCoordinate<Decimal> aPoint6(1.5, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint7(1.5, 1.5, 1.5);
 
     EXPECT_TRUE(aCircle.contains(aPoint5));
     EXPECT_FALSE(aCircle.contains(aPoint6));

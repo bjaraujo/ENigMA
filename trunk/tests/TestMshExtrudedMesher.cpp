@@ -41,19 +41,19 @@ protected:
 
 TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -61,25 +61,25 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
     aBasicMesher.generate(aQuadrilateral, nu, nv, true);
 
-    CMshExtrudedMesher<decimal> anExtrudedMesher;
+    CMshExtrudedMesher<Decimal> anExtrudedMesher;
 
-    CMshMesh<decimal>& aPlanarMesh = aBasicMesher.mesh();
+    CMshMesh<Decimal>& aPlanarMesh = aBasicMesher.mesh();
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aPlanarMesh);
     aPosGmsh.save(T, "planar_tris.msh", "tris");
 
-    const decimal dw = 0.25;
+    const Decimal dw = 0.25;
 
     for (Integer i = 0; i < nw; i++)
     {
-        decimal aDelta = dw / nw;
+        Decimal aDelta = dw / nw;
         anExtrudedMesher.generate(aPlanarMesh, aDelta, 1E-6);
     }
 
-    CMshMesh<decimal> aVolumeMesh;
+    CMshMesh<Decimal> aVolumeMesh;
     aVolumeMesh = anExtrudedMesher.mesh();
 
     T.setMesh(aVolumeMesh);
@@ -87,9 +87,9 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
     EXPECT_EQ(nu * nv * nw * 2, aVolumeMesh.nbElements());
 
-    CMshElement<decimal> anElement = aVolumeMesh.element(0);
+    CMshElement<Decimal> anElement = aVolumeMesh.element(0);
 
-    CGeoTriangularPrism<decimal> aPrism;
+    CGeoTriangularPrism<Decimal> aPrism;
     aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(0)));
     aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(1)));
     aPrism.addVertex(aVolumeMesh.node(anElement.nodeId(2)));
@@ -100,7 +100,7 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
     EXPECT_GT(aPrism.volume(), 0.0);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aPrism);
+    CGeoPolyhedron<Decimal> aPolyhedron(aPrism);
     aPolyhedron.calculateVolume();
 
     EXPECT_GT(aPolyhedron.volume(), 0.0);
@@ -108,19 +108,19 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
 
 TEST_F(CTestMshExtrudedMesher, extrudeQuadrilaterals) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -128,32 +128,32 @@ TEST_F(CTestMshExtrudedMesher, extrudeQuadrilaterals) {
 
     aBasicMesher.generate(aQuadrilateral, nu, nv, false);
 
-    CMshExtrudedMesher<decimal> anExtrudedMesher;
+    CMshExtrudedMesher<Decimal> anExtrudedMesher;
 
-    CMshMesh<decimal>& aPlanarMesh = aBasicMesher.mesh();
+    CMshMesh<Decimal>& aPlanarMesh = aBasicMesher.mesh();
 
-    const decimal dw = 0.25;
+    const Decimal dw = 0.25;
 
     for (Integer i = 0; i < nw; i++)
     {
-        decimal aDelta = dw / nw;
+        Decimal aDelta = dw / nw;
         anExtrudedMesher.generate(aPlanarMesh, aDelta, 1E-6);
     }
 
-    CMshMesh<decimal> aVolumeMesh;
+    CMshMesh<Decimal> aVolumeMesh;
     aVolumeMesh = anExtrudedMesher.mesh();
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aVolumeMesh);
     aPosGmsh.save(T, "extruded_quads.msh", "hex");
 
     EXPECT_EQ(nu * nv * nw, aVolumeMesh.nbElements());
 
-    CMshElement<decimal> anElement = aVolumeMesh.element(0);
+    CMshElement<Decimal> anElement = aVolumeMesh.element(0);
 
-    CGeoHexahedron<decimal> aBrick;
+    CGeoHexahedron<Decimal> aBrick;
     aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(0)));
     aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(1)));
     aBrick.addVertex(aVolumeMesh.node(anElement.nodeId(2)));
@@ -166,7 +166,7 @@ TEST_F(CTestMshExtrudedMesher, extrudeQuadrilaterals) {
 
     EXPECT_GT(aBrick.volume(), 0.0);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aBrick);
+    CGeoPolyhedron<Decimal> aPolyhedron(aBrick);
     aPolyhedron.calculateVolume();
 
     EXPECT_GT(aPolyhedron.volume(), 0.0);

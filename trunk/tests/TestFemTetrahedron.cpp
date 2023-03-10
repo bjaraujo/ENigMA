@@ -33,12 +33,12 @@ protected:
 
 TEST_F(CTestFemTetrahedron, update) {
 
-    CFemTetrahedron<decimal, 4, 1, 1> aTetrahedron;
+    CFemTetrahedron<Decimal, 4, 1, 1> aTetrahedron;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, 1.0);
 
     aTetrahedron.addVertex(aVertex1);
     aTetrahedron.addVertex(aVertex2);

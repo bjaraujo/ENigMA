@@ -37,30 +37,30 @@ protected:
 TEST_F(CTestSphCubicSpline, gradient1)
 {
 
-    CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex2(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex1(+0.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex2(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex3(-1.0, +0.0, +0.0);
 
-    CGeoVertexList<decimal> aVertexList;
+    CGeoVertexList<Decimal> aVertexList;
 
     aVertexList.addVertex(aVertex1);
     aVertexList.addVertex(aVertex2);
     aVertexList.addVertex(aVertex3);
 
-    std::vector<decimal> sValues;
+    std::vector<Decimal> sValues;
 
     sValues.emplace_back(0);
     sValues.emplace_back(1);
     sValues.emplace_back(1);
 
-    CSphCubicSpline<decimal> aKernel(1);
+    CSphCubicSpline<Decimal> aKernel(1);
 
-    decimal gradx = 0.0;
+    Decimal gradx = 0.0;
 
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         gradx += sValues[i] * aKernel.gradientW(r, 1.0).x();
 
@@ -76,7 +76,7 @@ TEST_F(CTestSphCubicSpline, gradient1)
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         gradx += sValues[i] * aKernel.gradientW(r, 1.0).x();
 
@@ -92,7 +92,7 @@ TEST_F(CTestSphCubicSpline, gradient1)
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         gradx += sValues[i] * aKernel.gradientW(r, 1.0).x();
 
@@ -105,17 +105,17 @@ TEST_F(CTestSphCubicSpline, gradient1)
 TEST_F(CTestSphCubicSpline, gradient2)
 {
 
-    CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex2(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex3(-1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex4(+0.0, +1.0, +0.0);
-    CGeoCoordinate<decimal> aVertex5(+0.0, -1.0, +0.0);
-    CGeoCoordinate<decimal> aVertex6(+0.5, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex7(-0.5, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex8(+0.0, +0.5, +0.0);
-    CGeoCoordinate<decimal> aVertex9(+0.0, -0.5, +0.0);
+    CGeoCoordinate<Decimal> aVertex1(+0.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex2(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex4(+0.0, +1.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex5(+0.0, -1.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex6(+0.5, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex7(-0.5, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex8(+0.0, +0.5, +0.0);
+    CGeoCoordinate<Decimal> aVertex9(+0.0, -0.5, +0.0);
 
-    CGeoVertexList<decimal> aVertexList;
+    CGeoVertexList<Decimal> aVertexList;
 
     aVertexList.addVertex(aVertex1);
     aVertexList.addVertex(aVertex2);
@@ -127,7 +127,7 @@ TEST_F(CTestSphCubicSpline, gradient2)
     aVertexList.addVertex(aVertex8);
     aVertexList.addVertex(aVertex9);
 
-    std::vector<decimal> sValues;
+    std::vector<Decimal> sValues;
 
     sValues.emplace_back(0);
     sValues.emplace_back(1);
@@ -139,15 +139,15 @@ TEST_F(CTestSphCubicSpline, gradient2)
     sValues.emplace_back(1);
     sValues.emplace_back(1);
 
-    CSphCubicSpline<decimal> aKernel(2);
+    CSphCubicSpline<Decimal> aKernel(2);
 
-    decimal gradx = 0.0;
-    decimal grady = 0.0;
+    Decimal gradx = 0.0;
+    Decimal grady = 0.0;
 
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         gradx += sValues[i] * aKernel.gradientW(r, 1.0).x();
         grady += sValues[i] * aKernel.gradientW(r, 1.0).y();
@@ -172,7 +172,7 @@ TEST_F(CTestSphCubicSpline, gradient2)
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         gradx += sValues[i] * aKernel.gradientW(r, 1.0).x();
         grady += sValues[i] * aKernel.gradientW(r, 1.0).y();
@@ -197,7 +197,7 @@ TEST_F(CTestSphCubicSpline, gradient2)
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         gradx += sValues[i] * aKernel.gradientW(r, 1.0).x();
         grady += sValues[i] * aKernel.gradientW(r, 1.0).y();
@@ -212,17 +212,17 @@ TEST_F(CTestSphCubicSpline, gradient2)
 TEST_F(CTestSphCubicSpline, laplacian)
 {
 
-    CGeoCoordinate<decimal> aVertex1(+0.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex2(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex3(-1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex4(+0.0, +1.0, +0.0);
-    CGeoCoordinate<decimal> aVertex5(+0.0, -1.0, +0.0);
-    CGeoCoordinate<decimal> aVertex6(+0.5, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex7(-0.5, +0.0, +0.0);
-    CGeoCoordinate<decimal> aVertex8(+0.0, +0.5, +0.0);
-    CGeoCoordinate<decimal> aVertex9(+0.0, -0.5, +0.0);
+    CGeoCoordinate<Decimal> aVertex1(+0.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex2(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex4(+0.0, +1.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex5(+0.0, -1.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex6(+0.5, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex7(-0.5, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aVertex8(+0.0, +0.5, +0.0);
+    CGeoCoordinate<Decimal> aVertex9(+0.0, -0.5, +0.0);
 
-    CGeoVertexList<decimal> aVertexList;
+    CGeoVertexList<Decimal> aVertexList;
 
     aVertexList.addVertex(aVertex1);
     aVertexList.addVertex(aVertex2);
@@ -234,7 +234,7 @@ TEST_F(CTestSphCubicSpline, laplacian)
     aVertexList.addVertex(aVertex8);
     aVertexList.addVertex(aVertex9);
 
-    std::vector<decimal> sValues;
+    std::vector<Decimal> sValues;
 
     sValues.emplace_back(0);
     sValues.emplace_back(+1);
@@ -246,14 +246,14 @@ TEST_F(CTestSphCubicSpline, laplacian)
     sValues.emplace_back(+0.5);
     sValues.emplace_back(-0.5);
 
-    CSphCubicSpline<decimal> aKernel(2);
+    CSphCubicSpline<Decimal> aKernel(2);
 
-    decimal lap = 0.0;
+    Decimal lap = 0.0;
 
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         lap += (sValues[i] - sValues[0]) * aKernel.laplacianW(r, 2.0);
 
@@ -276,7 +276,7 @@ TEST_F(CTestSphCubicSpline, laplacian)
     for (Integer i = 1; i < aVertexList.nbVertices(); i++)
     {
 
-        CGeoVector<decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
+        CGeoVector<Decimal> r = aVertexList.vertex(i) - aVertexList.vertex(0);
 
         lap += (sValues[i] - sValues[0]) * aKernel.laplacianW(r, 2.0);
 

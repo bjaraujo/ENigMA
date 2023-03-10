@@ -33,18 +33,18 @@ protected:
 
 TEST_F(CTestFvmControlVolume, volume1) {
 
-    CFvmControlVolume<decimal> aControlVolume;
+    CFvmControlVolume<Decimal> aControlVolume;
 
-    CFvmNode<decimal> aNode1(0.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode2(1.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode3(1.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode4(0.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode5(0.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode6(1.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode7(1.0, 1.0, 1.0);
-    CFvmNode<decimal> aNode8(0.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode1(0.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode2(1.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode3(1.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode4(0.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode5(0.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode6(1.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode7(1.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode8(0.0, 1.0, 1.0);
 
-    CFvmFace<decimal> aFace;
+    CFvmFace<Decimal> aFace;
 
     // Face 1
     aFace.addNode(aNode1);
@@ -114,12 +114,12 @@ TEST_F(CTestFvmControlVolume, volume1) {
 
 TEST_F(CTestFvmControlVolume, volume2) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, 1.0);
 
-    CGeoTetrahedron<decimal> aTetrahedron;
+    CGeoTetrahedron<Decimal> aTetrahedron;
 
     aTetrahedron.addVertex(aVertex1);
     aTetrahedron.addVertex(aVertex2);
@@ -130,11 +130,11 @@ TEST_F(CTestFvmControlVolume, volume2) {
 
     EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-6);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTetrahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTetrahedron);
 
     EXPECT_EQ(4, aPolyhedron.nbPolygons());
 
-    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+    CFvmControlVolume<Decimal> aControlVolume(aPolyhedron);
 
     EXPECT_EQ(4, aControlVolume.nbFaces());
 
@@ -146,14 +146,14 @@ TEST_F(CTestFvmControlVolume, volume2) {
 
 TEST_F(CTestFvmControlVolume, volume3) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 1.0, -1.0);
 
-    CGeoTriangularPrism<decimal> aTriangularPrism;
+    CGeoTriangularPrism<Decimal> aTriangularPrism;
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);
@@ -166,11 +166,11 @@ TEST_F(CTestFvmControlVolume, volume3) {
 
     EXPECT_EQ(0.5, aTriangularPrism.volume());
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTriangularPrism);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTriangularPrism);
 
     EXPECT_EQ(5, aPolyhedron.nbPolygons());
 
-    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+    CFvmControlVolume<Decimal> aControlVolume(aPolyhedron);
 
     EXPECT_EQ(5, aControlVolume.nbFaces());
 
@@ -182,16 +182,16 @@ TEST_F(CTestFvmControlVolume, volume3) {
 
 TEST_F(CTestFvmControlVolume, volume4) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -206,11 +206,11 @@ TEST_F(CTestFvmControlVolume, volume4) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     EXPECT_EQ(6, aPolyhedron.nbPolygons());
 
-    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+    CFvmControlVolume<Decimal> aControlVolume(aPolyhedron);
 
     EXPECT_EQ(6, aControlVolume.nbFaces());
 
@@ -222,12 +222,12 @@ TEST_F(CTestFvmControlVolume, volume4) {
 
 TEST_F(CTestFvmControlVolume, orientation1) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, 1.0);
 
-    CGeoTetrahedron<decimal> aTetrahedron;
+    CGeoTetrahedron<Decimal> aTetrahedron;
 
     aTetrahedron.addVertex(aVertex1);
     aTetrahedron.addVertex(aVertex2);
@@ -238,11 +238,11 @@ TEST_F(CTestFvmControlVolume, orientation1) {
 
     EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-6);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTetrahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTetrahedron);
 
     EXPECT_EQ(4, aPolyhedron.nbPolygons());
 
-    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+    CFvmControlVolume<Decimal> aControlVolume(aPolyhedron);
 
     EXPECT_EQ(4, aControlVolume.nbFaces());
 
@@ -259,8 +259,8 @@ TEST_F(CTestFvmControlVolume, orientation1) {
         aControlVolume.calculateFaceNormal(aFaceId, true);
         aControlVolume.calculateFaceCentroid(aFaceId, true);
 
-        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
-        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        CGeoNormal<Decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<Decimal> aVector = aControlVolume.faceDist(aFaceId);
         aVector.normalize();
 
         EXPECT_GT(aNormal.dot(aVector), 0.0);
@@ -270,14 +270,14 @@ TEST_F(CTestFvmControlVolume, orientation1) {
 
 TEST_F(CTestFvmControlVolume, orientation2) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 1.0, -1.0);
 
-    CGeoTriangularPrism<decimal> aTriangularPrism;
+    CGeoTriangularPrism<Decimal> aTriangularPrism;
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);
@@ -290,11 +290,11 @@ TEST_F(CTestFvmControlVolume, orientation2) {
 
     EXPECT_EQ(0.5, aTriangularPrism.volume());
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTriangularPrism);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTriangularPrism);
 
     EXPECT_EQ(5, aPolyhedron.nbPolygons());
 
-    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+    CFvmControlVolume<Decimal> aControlVolume(aPolyhedron);
 
     EXPECT_EQ(5, aControlVolume.nbFaces());
 
@@ -311,8 +311,8 @@ TEST_F(CTestFvmControlVolume, orientation2) {
         aControlVolume.calculateFaceNormal(aFaceId, true);
         aControlVolume.calculateFaceCentroid(aFaceId, true);
 
-        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
-        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        CGeoNormal<Decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<Decimal> aVector = aControlVolume.faceDist(aFaceId);
         aVector.normalize();
 
         EXPECT_GT(aNormal.dot(aVector), 0.0);
@@ -322,16 +322,16 @@ TEST_F(CTestFvmControlVolume, orientation2) {
 
 TEST_F(CTestFvmControlVolume, orientation3) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -346,11 +346,11 @@ TEST_F(CTestFvmControlVolume, orientation3) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     EXPECT_EQ(6, aPolyhedron.nbPolygons());
 
-    CFvmControlVolume<decimal> aControlVolume(aPolyhedron);
+    CFvmControlVolume<Decimal> aControlVolume(aPolyhedron);
 
     EXPECT_EQ(6, aControlVolume.nbFaces());
 
@@ -367,8 +367,8 @@ TEST_F(CTestFvmControlVolume, orientation3) {
         aControlVolume.calculateFaceNormal(aFaceId, true);
         aControlVolume.calculateFaceCentroid(aFaceId, true);
 
-        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
-        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        CGeoNormal<Decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<Decimal> aVector = aControlVolume.faceDist(aFaceId);
         aVector.normalize();
 
         EXPECT_GT(aNormal.dot(aVector), 0.0);
@@ -378,18 +378,18 @@ TEST_F(CTestFvmControlVolume, orientation3) {
 
 TEST_F(CTestFvmControlVolume, clip1) {
 
-    CFvmControlVolume<decimal> aControlVolume;
+    CFvmControlVolume<Decimal> aControlVolume;
 
-    CFvmNode<decimal> aNode1(0.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode2(1.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode3(1.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode4(0.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode5(0.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode6(1.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode7(1.0, 1.0, 1.0);
-    CFvmNode<decimal> aNode8(0.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode1(0.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode2(1.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode3(1.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode4(0.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode5(0.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode6(1.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode7(1.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode8(0.0, 1.0, 1.0);
 
-    CFvmFace<decimal> aFace;
+    CFvmFace<Decimal> aFace;
 
     // Face 1
     aFace.addNode(aNode1);
@@ -455,9 +455,9 @@ TEST_F(CTestFvmControlVolume, clip1) {
 
     EXPECT_NEAR(1.0, aControlVolume.volume(), 1E-12);
 
-    CGeoNormal<decimal> aNormal(1.0, 0.3, 0.2);
+    CGeoNormal<Decimal> aNormal(1.0, 0.3, 0.2);
 
-    decimal volumeFractionAct;
+    Decimal volumeFractionAct;
     Integer nIterations;
 
     aControlVolume.setClippedFaceId(999);
@@ -483,8 +483,8 @@ TEST_F(CTestFvmControlVolume, clip1) {
         aControlVolume.calculateFaceNormal(aFaceId, true);
         aControlVolume.calculateFaceCentroid(aFaceId, true);
 
-        CGeoNormal<decimal> aNormal = aControlVolume.faceNormal(aFaceId);
-        CGeoVector<decimal> aVector = aControlVolume.faceDist(aFaceId);
+        CGeoNormal<Decimal> aNormal = aControlVolume.faceNormal(aFaceId);
+        CGeoVector<Decimal> aVector = aControlVolume.faceDist(aFaceId);
         aVector.normalize();
 
         EXPECT_GT(aNormal.dot(aVector), 0.0);
@@ -494,18 +494,18 @@ TEST_F(CTestFvmControlVolume, clip1) {
 
 TEST_F(CTestFvmControlVolume, clip2) {
 
-    CFvmControlVolume<decimal> aControlVolume;
+    CFvmControlVolume<Decimal> aControlVolume;
 
-    CFvmNode<decimal> aNode1(0.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode2(1.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode3(1.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode4(0.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode5(0.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode6(1.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode7(1.0, 1.0, 1.0);
-    CFvmNode<decimal> aNode8(0.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode1(0.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode2(1.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode3(1.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode4(0.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode5(0.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode6(1.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode7(1.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode8(0.0, 1.0, 1.0);
 
-    CFvmFace<decimal> aFace;
+    CFvmFace<Decimal> aFace;
 
     // Face 1
     aFace.addNode(aNode1);
@@ -576,8 +576,8 @@ TEST_F(CTestFvmControlVolume, clip2) {
 
     EXPECT_NEAR(1.0, aControlVolume.volume(), 1E-12);
 
-    decimal sumArea1 = 0.0;
-    decimal sumDistance1 = 0.0;
+    Decimal sumArea1 = 0.0;
+    Decimal sumDistance1 = 0.0;
 
     for (Integer i = 0; i < aControlVolume.nbFaces(); ++i)
     {
@@ -601,9 +601,9 @@ TEST_F(CTestFvmControlVolume, clip2) {
     EXPECT_NEAR(6.0, sumArea1, 1E-3);
     EXPECT_NEAR(3.0, sumDistance1, 1E-3);
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
 
-    decimal volumeFractionAct;
+    Decimal volumeFractionAct;
     Integer nIterations;
 
     aControlVolume.setClippedFaceId(999);
@@ -619,9 +619,9 @@ TEST_F(CTestFvmControlVolume, clip2) {
 
     EXPECT_NEAR(0.5, aControlVolume.volume(), 1E-3);
 
-    decimal sumArea2 = 0.0;
-    decimal sumNormal2 = 0.0;
-    decimal sumDistance2 = 0.0;
+    Decimal sumArea2 = 0.0;
+    Decimal sumNormal2 = 0.0;
+    Decimal sumDistance2 = 0.0;
 
     for (Integer i = 0; i < aControlVolume.nbFaces(); ++i)
     {
@@ -652,18 +652,18 @@ TEST_F(CTestFvmControlVolume, clip2) {
 
 TEST_F(CTestFvmControlVolume, clip3) {
 
-    CFvmControlVolume<decimal> aControlVolume;
+    CFvmControlVolume<Decimal> aControlVolume;
 
-    CFvmNode<decimal> aNode1(0.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode2(1.0, 0.0, 0.0);
-    CFvmNode<decimal> aNode3(1.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode4(0.0, 1.0, 0.0);
-    CFvmNode<decimal> aNode5(0.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode6(1.0, 0.0, 1.0);
-    CFvmNode<decimal> aNode7(1.0, 1.0, 1.0);
-    CFvmNode<decimal> aNode8(0.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode1(0.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode2(1.0, 0.0, 0.0);
+    CFvmNode<Decimal> aNode3(1.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode4(0.0, 1.0, 0.0);
+    CFvmNode<Decimal> aNode5(0.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode6(1.0, 0.0, 1.0);
+    CFvmNode<Decimal> aNode7(1.0, 1.0, 1.0);
+    CFvmNode<Decimal> aNode8(0.0, 1.0, 1.0);
 
-    CFvmFace<decimal> aFace;
+    CFvmFace<Decimal> aFace;
 
     // Face 1
     aFace.addNode(aNode1);
@@ -728,9 +728,9 @@ TEST_F(CTestFvmControlVolume, clip3) {
 
     EXPECT_NEAR(1.0, aControlVolume.volume(), 1E-12);
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
 
-    decimal volumeFractionAct;
+    Decimal volumeFractionAct;
     Integer nIterations;
 
     aControlVolume.setClippedFaceId(999);

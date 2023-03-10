@@ -33,18 +33,18 @@ protected:
 
 TEST_F(CTestGeoLineList, sort) {
 
-    CGeoCoordinate<decimal> aPoint1( 0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2( 1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint3( 3.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4( 7.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint5(15.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1( 0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2( 1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3( 3.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4( 7.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint5(15.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine1(aPoint1, aPoint2);
-    CGeoLine<decimal> aLine2(aPoint4, aPoint5);
-    CGeoLine<decimal> aLine3(aPoint3, aPoint4);
-    CGeoLine<decimal> aLine4(aPoint2, aPoint3);
+    CGeoLine<Decimal> aLine1(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine2(aPoint4, aPoint5);
+    CGeoLine<Decimal> aLine3(aPoint3, aPoint4);
+    CGeoLine<Decimal> aLine4(aPoint2, aPoint3);
 
-    CGeoLineList<decimal> aLineList;
+    CGeoLineList<Decimal> aLineList;
 
     aLineList.addLine(aLine1);
     aLineList.addLine(aLine2);

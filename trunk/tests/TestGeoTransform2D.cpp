@@ -35,11 +35,11 @@ protected:
 
 TEST_F(CTestGeoTransform2D, project2D) {
 
-    CGeoCoordinate<decimal> aVertex1(+2.0, -3.0, +4.0);
-    CGeoCoordinate<decimal> aVertex2(+1.0, +0.2, -3.0);
-    CGeoCoordinate<decimal> aVertex3(-1.1, -1.0, -1.2);
+    CGeoCoordinate<Decimal> aVertex1(+2.0, -3.0, +4.0);
+    CGeoCoordinate<Decimal> aVertex2(+1.0, +0.2, -3.0);
+    CGeoCoordinate<Decimal> aVertex3(-1.1, -1.0, -1.2);
 
-    CGeoTriangle<decimal> aTriangle;
+    CGeoTriangle<Decimal> aTriangle;
 
     aTriangle.addVertex(aVertex1);
     aTriangle.addVertex(aVertex2);
@@ -47,21 +47,21 @@ TEST_F(CTestGeoTransform2D, project2D) {
 
     aTriangle.calculateArea();
 
-    decimal a1 = aTriangle.area();
+    Decimal a1 = aTriangle.area();
 
-    CGeoVector<decimal> aVector1 = aVertex2 - aVertex1;
-    CGeoVector<decimal> aVector2 = aVertex3 - aVertex1;
+    CGeoVector<Decimal> aVector1 = aVertex2 - aVertex1;
+    CGeoVector<Decimal> aVector2 = aVertex3 - aVertex1;
 
-    CGeoVector<decimal> vx = aVector1;
+    CGeoVector<Decimal> vx = aVector1;
     vx.normalize();
 
-    CGeoVector<decimal> vz = vx.cross(aVector2);
+    CGeoVector<Decimal> vz = vx.cross(aVector2);
     vz.normalize();
 
-    CGeoVector<decimal> vy = vz.cross(vx);
+    CGeoVector<Decimal> vy = vz.cross(vx);
     vy.normalize();
 
-    CGeoCoordinateSystem<decimal> aCoordinateSystem;
+    CGeoCoordinateSystem<Decimal> aCoordinateSystem;
     aCoordinateSystem.col(0) << vx;
     aCoordinateSystem.col(1) << vy;
     aCoordinateSystem.col(2) << vz;
@@ -84,7 +84,7 @@ TEST_F(CTestGeoTransform2D, project2D) {
 
     aTriangle.calculateArea();
 
-    decimal a2 = aTriangle.area();
+    Decimal a2 = aTriangle.area();
 
     EXPECT_NEAR(0.0, aVertex1.z(), 1E-6);
     EXPECT_NEAR(0.0, aVertex2.z(), 1E-6);

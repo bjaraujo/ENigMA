@@ -9,4 +9,4 @@
 
 #pragma once
 
-#define decimal double
+typedef double Decimal;

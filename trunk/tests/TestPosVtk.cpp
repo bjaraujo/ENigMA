@@ -38,16 +38,16 @@ protected:
 TEST_F(CTestPosVtk, box)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.5, 0.5);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.5, 0.5);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -58,7 +58,7 @@ TEST_F(CTestPosVtk, box)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -68,8 +68,8 @@ TEST_F(CTestPosVtk, box)
 
     EXPECT_EQ(nu * nv * nw * 6, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
-    CPosVtk<decimal> aPosVtk;
+    CPdeField<Decimal> T;
+    CPosVtk<Decimal> aPosVtk;
 
     T.setMesh(aBasicMesher.mesh());
     aPosVtk.save(T, "box.vtk");

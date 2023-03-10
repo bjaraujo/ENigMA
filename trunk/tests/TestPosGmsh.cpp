@@ -38,12 +38,12 @@ protected:
 TEST_F(CTestPosGmsh, line)
 {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
 
@@ -51,8 +51,8 @@ TEST_F(CTestPosGmsh, line)
 
     EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T1, T2;
-    CPosGmsh<decimal> aPosGmsh1, aPosGmsh2;
+    CPdeField<Decimal> T1, T2;
+    CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
     aPosGmsh1.save(T1, "line.msh", "line");
@@ -66,19 +66,19 @@ TEST_F(CTestPosGmsh, line)
 TEST_F(CTestPosGmsh, rectangle1)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -87,8 +87,8 @@ TEST_F(CTestPosGmsh, rectangle1)
 
     EXPECT_EQ(nu * nv, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T1, T2;
-    CPosGmsh<decimal> aPosGmsh1, aPosGmsh2;
+    CPdeField<Decimal> T1, T2;
+    CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
     aPosGmsh1.save(T1, "rectangle1.msh", "rectangle1");
@@ -102,19 +102,19 @@ TEST_F(CTestPosGmsh, rectangle1)
 TEST_F(CTestPosGmsh, rectangle2)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -123,8 +123,8 @@ TEST_F(CTestPosGmsh, rectangle2)
 
     EXPECT_EQ(nu * nv * 2, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T1, T2;
-    CPosGmsh<decimal> aPosGmsh1, aPosGmsh2;
+    CPdeField<Decimal> T1, T2;
+    CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
     aPosGmsh1.save(T1, "rectangle2.msh", "rectangle2");
@@ -138,16 +138,16 @@ TEST_F(CTestPosGmsh, rectangle2)
 TEST_F(CTestPosGmsh, box1)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.5, 0.5);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.5, 0.5);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -158,7 +158,7 @@ TEST_F(CTestPosGmsh, box1)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -168,8 +168,8 @@ TEST_F(CTestPosGmsh, box1)
 
     EXPECT_EQ(nu * nv * nw, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T1, T2;
-    CPosGmsh<decimal> aPosGmsh1, aPosGmsh2;
+    CPdeField<Decimal> T1, T2;
+    CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
     aPosGmsh1.save(T1, "box1.msh", "box1");
@@ -183,16 +183,16 @@ TEST_F(CTestPosGmsh, box1)
 TEST_F(CTestPosGmsh, box2)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 0.5);
-    CGeoCoordinate<decimal> aVertex7(1.0, 0.5, 0.5);
-    CGeoCoordinate<decimal> aVertex8(0.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 0.5);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 0.5, 0.5);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 0.5, 0.5);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -203,7 +203,7 @@ TEST_F(CTestPosGmsh, box2)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -213,8 +213,8 @@ TEST_F(CTestPosGmsh, box2)
 
     EXPECT_EQ(nu * nv * nw * 6, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T1, T2;
-    CPosGmsh<decimal> aPosGmsh1, aPosGmsh2;
+    CPdeField<Decimal> T1, T2;
+    CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
     aPosGmsh1.save(T1, "box2.msh", "box2");

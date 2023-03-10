@@ -33,18 +33,18 @@ protected:
 
 TEST_F(CTestGeoPolyhedron, centroid) {
 
-    CGeoPolyline<decimal> aPolyline;
-    CGeoPolygon<decimal> aPolygon;
-    CGeoPolyhedron<decimal> aPolyhedron;
+    CGeoPolyline<Decimal> aPolyline;
+    CGeoPolygon<Decimal> aPolygon;
+    CGeoPolyhedron<Decimal> aPolyhedron;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, 1.0);
 
     // face 1
     aPolyline.addVertex(aVertex1);
@@ -128,18 +128,18 @@ TEST_F(CTestGeoPolyhedron, centroid) {
 
 TEST_F(CTestGeoPolyhedron, volume1) {
 
-    CGeoPolyline<decimal> aPolyline;
-    CGeoPolygon<decimal> aPolygon;
-    CGeoPolyhedron<decimal> aPolyhedron;
+    CGeoPolyline<Decimal> aPolyline;
+    CGeoPolygon<Decimal> aPolygon;
+    CGeoPolyhedron<Decimal> aPolyhedron;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
     // face 1
     aPolyline.addVertex(aVertex1);
@@ -225,20 +225,20 @@ TEST_F(CTestGeoPolyhedron, volume1) {
 
 TEST_F(CTestGeoPolyhedron, volume2) {
 
-    decimal px, py, pz;
+    Decimal px, py, pz;
 
     px = +2.0;
     py = +5.0;
     pz = -20.0;
 
-    CGeoPolyline<decimal> aPolyline;
-    CGeoPolygon<decimal> aPolygon;
-    CGeoPolyhedron<decimal> aPolyhedron;
+    CGeoPolyline<Decimal> aPolyline;
+    CGeoPolygon<Decimal> aPolygon;
+    CGeoPolyhedron<Decimal> aPolyhedron;
 
-    CGeoCoordinate<decimal> aVertex1(px + 0.0, py + 0.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex3(px + 0.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex4(px + 0.0, py + 0.0, pz - 1.0);
+    CGeoCoordinate<Decimal> aVertex1(px + 0.0, py + 0.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex3(px + 0.0, py + 1.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex4(px + 0.0, py + 0.0, pz - 1.0);
 
     // face 1
     aPolyline.addVertex(aVertex1);
@@ -321,22 +321,22 @@ TEST_F(CTestGeoPolyhedron, volume2) {
 
 TEST_F(CTestGeoPolyhedron, volume3) {
 
-    decimal px, py, pz;
+    Decimal px, py, pz;
 
     px = 2.0;
     py = 5.0;
     pz = 20.0;
 
-    CGeoCoordinate<decimal> aVertex1(px + 0.0, py + 0.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex3(px + 1.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex4(px + 0.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<decimal> aVertex5(px + 0.0, py + 0.0, pz - 1.0);
-    CGeoCoordinate<decimal> aVertex6(px + 1.0, py + 0.0, pz - 1.0);
-    CGeoCoordinate<decimal> aVertex7(px + 1.0, py + 1.0, pz - 1.0);
-    CGeoCoordinate<decimal> aVertex8(px + 0.0, py + 1.0, pz - 1.0);
+    CGeoCoordinate<Decimal> aVertex1(px + 0.0, py + 0.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex3(px + 1.0, py + 1.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex4(px + 0.0, py + 1.0, pz + 0.0);
+    CGeoCoordinate<Decimal> aVertex5(px + 0.0, py + 0.0, pz - 1.0);
+    CGeoCoordinate<Decimal> aVertex6(px + 1.0, py + 0.0, pz - 1.0);
+    CGeoCoordinate<Decimal> aVertex7(px + 1.0, py + 1.0, pz - 1.0);
+    CGeoCoordinate<Decimal> aVertex8(px + 0.0, py + 1.0, pz - 1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -349,7 +349,7 @@ TEST_F(CTestGeoPolyhedron, volume3) {
 
     aHexahedron.calculateVolume();
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     aPolyhedron.calculateSurfaceArea(true);
 
@@ -365,12 +365,12 @@ TEST_F(CTestGeoPolyhedron, volume3) {
 
 TEST_F(CTestGeoPolyhedron, volume4) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
 
-    CGeoTetrahedron<decimal> aTetrahedron;
+    CGeoTetrahedron<Decimal> aTetrahedron;
 
     aTetrahedron.addVertex(aVertex1);
     aTetrahedron.addVertex(aVertex2);
@@ -381,7 +381,7 @@ TEST_F(CTestGeoPolyhedron, volume4) {
 
     EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-12);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTetrahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTetrahedron);
 
     aPolyhedron.calculateVolume();
 
@@ -391,14 +391,14 @@ TEST_F(CTestGeoPolyhedron, volume4) {
 
 TEST_F(CTestGeoPolyhedron, volume5) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 1.0, -1.0);
 
-    CGeoTriangularPrism<decimal> aTriangularPrism;
+    CGeoTriangularPrism<Decimal> aTriangularPrism;
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);
@@ -411,7 +411,7 @@ TEST_F(CTestGeoPolyhedron, volume5) {
 
     EXPECT_EQ(0.5, aTriangularPrism.volume());
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTriangularPrism);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTriangularPrism);
 
     aPolyhedron.calculateVolume();
 
@@ -421,16 +421,16 @@ TEST_F(CTestGeoPolyhedron, volume5) {
 
 TEST_F(CTestGeoPolyhedron, volume6) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -445,7 +445,7 @@ TEST_F(CTestGeoPolyhedron, volume6) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     aPolyhedron.calculateVolume();
 
@@ -455,16 +455,16 @@ TEST_F(CTestGeoPolyhedron, volume6) {
 
 TEST_F(CTestGeoPolyhedron, clip1) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -477,7 +477,7 @@ TEST_F(CTestGeoPolyhedron, clip1) {
 
     aHexahedron.calculateVolume();
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     aPolyhedron.calculateSurfaceArea(true);
 
@@ -487,14 +487,14 @@ TEST_F(CTestGeoPolyhedron, clip1) {
 
     EXPECT_EQ(1.0, aPolyhedron.volume());
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
 
-    CGeoPlane<decimal> aPlane(aNormal, 0.5);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.5);
 
-    CGeoPolygon<decimal> aNewPolygon;
+    CGeoPolygon<Decimal> aNewPolygon;
     Integer aNewPolygonId = 999;
 
-    CGeoPolyhedron<decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
+    CGeoPolyhedron<Decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
 
     EXPECT_EQ(4, aNewPolygon.polyline().nbLines());
 
@@ -514,16 +514,16 @@ TEST_F(CTestGeoPolyhedron, clip1) {
 
 TEST_F(CTestGeoPolyhedron, clip2) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -534,7 +534,7 @@ TEST_F(CTestGeoPolyhedron, clip2) {
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     EXPECT_EQ(6, aPolyhedron.nbPolygons());
 
@@ -546,14 +546,14 @@ TEST_F(CTestGeoPolyhedron, clip2) {
 
     EXPECT_EQ(1.0, aPolyhedron.volume());
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
 
-    CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
+    CGeoPlane<Decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoPolygon<decimal> aNewPolygon;
+    CGeoPolygon<Decimal> aNewPolygon;
     Integer aNewPolygonId = 999;
 
-    CGeoPolyhedron<decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
+    CGeoPolyhedron<Decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
 
     EXPECT_EQ(5, aNewPolyhedron.nbPolygons());
 
@@ -569,14 +569,14 @@ TEST_F(CTestGeoPolyhedron, clip2) {
 
 TEST_F(CTestGeoPolyhedron, clip3) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 1.0, -1.0);
 
-    CGeoTriangularPrism<decimal> aTriangularPrism;
+    CGeoTriangularPrism<Decimal> aTriangularPrism;
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);
@@ -589,20 +589,20 @@ TEST_F(CTestGeoPolyhedron, clip3) {
 
     EXPECT_EQ(0.5, aTriangularPrism.volume());
 
-    CGeoPolyhedron<decimal> aPolyhedron(aTriangularPrism);
+    CGeoPolyhedron<Decimal> aPolyhedron(aTriangularPrism);
 
     aPolyhedron.calculateVolume();
 
     EXPECT_NEAR(0.5, aPolyhedron.volume(), 1E-12);
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
 
-    CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
+    CGeoPlane<Decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoPolygon<decimal> aNewPolygon;
+    CGeoPolygon<Decimal> aNewPolygon;
     Integer aNewPolygonId = 999;
 
-    CGeoPolyhedron<decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
+    CGeoPolyhedron<Decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 1E-6);
 
     aNewPolyhedron.calculateVolume(true);
 
@@ -612,16 +612,16 @@ TEST_F(CTestGeoPolyhedron, clip3) {
 
 TEST_F(CTestGeoPolyhedron, clip4) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -632,20 +632,20 @@ TEST_F(CTestGeoPolyhedron, clip4) {
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CGeoPolyhedron<decimal> aPolyhedron(aHexahedron);
+    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
 
     EXPECT_EQ(6, aPolyhedron.nbPolygons());
 
-    CGeoNormal<decimal> aNormal(0.9407, 0.2822, 0.1881);
-    CGeoPlane<decimal> aPlane(aNormal, 0.0);
+    CGeoNormal<Decimal> aNormal(0.9407, 0.2822, 0.1881);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.0);
 
-    CGeoPolygon<decimal> aNewPolygon;
+    CGeoPolygon<Decimal> aNewPolygon;
     Integer aNewPolygonId = 999;
 
-    decimal volumeFractionAct;
+    Decimal volumeFractionAct;
     Integer nIterations;
 
-    CGeoPolyhedron<decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 0.4, volumeFractionAct, nIterations, 50, 1E-9, 1E-6);
+    CGeoPolyhedron<Decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 0.4, volumeFractionAct, nIterations, 50, 1E-9, 1E-6);
 
     EXPECT_EQ(5, nIterations);
 

@@ -33,9 +33,9 @@ protected:
 
 TEST_F(CTestGeoSphere, volume1) {
 
-    CGeoCoordinate<decimal> aCenter(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCenter(0.0, 0.0, 0.0);
 
-    CGeoSphere<decimal> aSphere(aCenter, 1.0);
+    CGeoSphere<Decimal> aSphere(aCenter, 1.0);
 
     aSphere.calculateVolume();
 
@@ -45,12 +45,12 @@ TEST_F(CTestGeoSphere, volume1) {
 
 TEST_F(CTestGeoSphere, volume2) {
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aPoint2(+0.0, +1.0, +0.0);
-    CGeoCoordinate<decimal> aPoint3(-1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aPoint4(+0.0, +0.0, +1.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint2(+0.0, +1.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint4(+0.0, +0.0, +1.0);
 
-    CGeoSphere<decimal> aSphere(aPoint1, aPoint2, aPoint3, aPoint4);
+    CGeoSphere<Decimal> aSphere(aPoint1, aPoint2, aPoint3, aPoint4);
 
     aSphere.calculateVolume();
 
@@ -60,16 +60,16 @@ TEST_F(CTestGeoSphere, volume2) {
 
 TEST_F(CTestGeoSphere, contains1) {
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aPoint2(+0.0, +1.0, +0.0);
-    CGeoCoordinate<decimal> aPoint3(-1.0, +0.0, +0.0);
-    CGeoCoordinate<decimal> aPoint4(+0.0, +0.0, +1.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint2(+0.0, +1.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint3(-1.0, +0.0, +0.0);
+    CGeoCoordinate<Decimal> aPoint4(+0.0, +0.0, +1.0);
 
-    CGeoSphere<decimal> aSphere(aPoint1, aPoint2, aPoint3, aPoint4);
+    CGeoSphere<Decimal> aSphere(aPoint1, aPoint2, aPoint3, aPoint4);
 
-    CGeoCoordinate<decimal> aPoint5(0, 0, 0);
-    CGeoCoordinate<decimal> aPoint6(0, 0, 1.5);
-    CGeoCoordinate<decimal> aPoint7(1.5, 1.5, 1.5);
+    CGeoCoordinate<Decimal> aPoint5(0, 0, 0);
+    CGeoCoordinate<Decimal> aPoint6(0, 0, 1.5);
+    CGeoCoordinate<Decimal> aPoint7(1.5, 1.5, 1.5);
 
     EXPECT_TRUE(aSphere.contains(aPoint5));
     EXPECT_FALSE(aSphere.contains(aPoint6));

@@ -39,16 +39,16 @@ protected:
 TEST_F(CTestStlUtils, io)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, 1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -59,7 +59,7 @@ TEST_F(CTestStlUtils, io)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 2;
     const Integer nv = 2;
@@ -67,9 +67,9 @@ TEST_F(CTestStlUtils, io)
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
 
-	CMshMesh<decimal> aMesh = aBasicMesher.mesh().extractBoundary(1E-12);
+	CMshMesh<Decimal> aMesh = aBasicMesher.mesh().extractBoundary(1E-12);
 
-    CStlUtils<decimal> aStl(aMesh);
+    CStlUtils<Decimal> aStl(aMesh);
 
 	EXPECT_EQ(48, aStl.stlFile().nbFacets());
 
@@ -83,16 +83,16 @@ TEST_F(CTestStlUtils, io)
 TEST_F(CTestStlUtils, connectivity)
 {
 
-    CStlUtils<decimal> aStl;
+    CStlUtils<Decimal> aStl;
 
-    CGeoCoordinate<decimal> aVertex0(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(2.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex0(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(2.0, 1.0, 0.0);
 
-    CStlFacet<decimal> aFacet0;
+    CStlFacet<Decimal> aFacet0;
 
     aFacet0.addVertex(aVertex0);
     aFacet0.addVertex(aVertex1);
@@ -100,7 +100,7 @@ TEST_F(CTestStlUtils, connectivity)
 
     aStl.addFacet(0, aFacet0);
 
-    CStlFacet<decimal> aFacet1;
+    CStlFacet<Decimal> aFacet1;
 
     aFacet1.addVertex(aVertex0);
     aFacet1.addVertex(aVertex2);
@@ -108,7 +108,7 @@ TEST_F(CTestStlUtils, connectivity)
 
     aStl.addFacet(1, aFacet1);
 
-    CStlFacet<decimal> aFacet2;
+    CStlFacet<Decimal> aFacet2;
 
     aFacet2.addVertex(aVertex1);
     aFacet2.addVertex(aVertex2);
@@ -116,7 +116,7 @@ TEST_F(CTestStlUtils, connectivity)
 
     aStl.addFacet(2, aFacet2);
 
-    CStlFacet<decimal> aFacet3;
+    CStlFacet<Decimal> aFacet3;
 
     aFacet3.addVertex(aVertex1);
     aFacet3.addVertex(aVertex4);
@@ -165,16 +165,16 @@ TEST_F(CTestStlUtils, connectivity)
 TEST_F(CTestStlUtils, mesh)
 {
 
-    CStlUtils<decimal> aStl;
+    CStlUtils<Decimal> aStl;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex6(2.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex6(2.0, 1.0, 0.0);
 
-    CStlFacet<decimal> aFacet1;
+    CStlFacet<Decimal> aFacet1;
 
     aFacet1.addVertex(aVertex1);
     aFacet1.addVertex(aVertex2);
@@ -182,7 +182,7 @@ TEST_F(CTestStlUtils, mesh)
 
     aStl.addFacet(0, aFacet1);
 
-    CStlFacet<decimal> aFacet2;
+    CStlFacet<Decimal> aFacet2;
 
     aFacet2.addVertex(aVertex1);
     aFacet2.addVertex(aVertex3);
@@ -190,7 +190,7 @@ TEST_F(CTestStlUtils, mesh)
 
     aStl.addFacet(1, aFacet2);
 
-    CStlFacet<decimal> aFacet3;
+    CStlFacet<Decimal> aFacet3;
 
     aFacet3.addVertex(aVertex2);
     aFacet3.addVertex(aVertex6);
@@ -198,7 +198,7 @@ TEST_F(CTestStlUtils, mesh)
 
     aStl.addFacet(2, aFacet3);
 
-    CStlFacet<decimal> aFacet4;
+    CStlFacet<Decimal> aFacet4;
 
     aFacet4.addVertex(aVertex2);
     aFacet4.addVertex(aVertex5);
@@ -208,9 +208,9 @@ TEST_F(CTestStlUtils, mesh)
 
     aStl.generateConnectivity(1E-12);
 
-    CMshMesh<decimal> aSurfaceMesh = aStl.mesh();
+    CMshMesh<Decimal> aSurfaceMesh = aStl.mesh();
 
-    CStlUtils<decimal> aNewStlFile(aSurfaceMesh);
+    CStlUtils<Decimal> aNewStlFile(aSurfaceMesh);
 
     EXPECT_TRUE(aNewStlFile.save("plane.stl"));
 
@@ -222,16 +222,16 @@ TEST_F(CTestStlUtils, mesh)
 TEST_F(CTestStlUtils, split)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, 1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -242,7 +242,7 @@ TEST_F(CTestStlUtils, split)
     aHexahedron.addVertex(aVertex7);
     aHexahedron.addVertex(aVertex8);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 2;
     const Integer nv = 2;
@@ -250,9 +250,9 @@ TEST_F(CTestStlUtils, split)
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
 
-    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-12);
+    CMshMesh<Decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-12);
 
-    CStlUtils<decimal> aStl(aSurfaceMesh);
+    CStlUtils<Decimal> aStl(aSurfaceMesh);
 
     EXPECT_EQ(48, aStl.stlFile().nbFacets());
 
@@ -275,45 +275,45 @@ TEST_F(CTestStlUtils, split)
 TEST_F(CTestStlUtils, collapseEdges)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.5, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 2.0, 0.0);
-    CGeoCoordinate<decimal> aVertex7(0.0, 2.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.5, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 2.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex7(0.0, 2.0, 0.0);
 
-    CStlFacet<decimal> aFacet1;
+    CStlFacet<Decimal> aFacet1;
     aFacet1.addVertex(aVertex1);
     aFacet1.addVertex(aVertex2);
     aFacet1.addVertex(aVertex4);
 
-    CStlFacet<decimal> aFacet2;
+    CStlFacet<Decimal> aFacet2;
     aFacet2.addVertex(aVertex2);
     aFacet2.addVertex(aVertex3);
     aFacet2.addVertex(aVertex4);
 
-    CStlFacet<decimal> aFacet3;
+    CStlFacet<Decimal> aFacet3;
     aFacet3.addVertex(aVertex1);
     aFacet3.addVertex(aVertex4);
     aFacet3.addVertex(aVertex5);
 
-    CStlFacet<decimal> aFacet4;
+    CStlFacet<Decimal> aFacet4;
     aFacet4.addVertex(aVertex4);
     aFacet4.addVertex(aVertex3);
     aFacet4.addVertex(aVertex6);
 
-    CStlFacet<decimal> aFacet5;
+    CStlFacet<Decimal> aFacet5;
     aFacet5.addVertex(aVertex4);
     aFacet5.addVertex(aVertex6);
     aFacet5.addVertex(aVertex7);
 
-    CStlFacet<decimal> aFacet6;
+    CStlFacet<Decimal> aFacet6;
     aFacet6.addVertex(aVertex5);
     aFacet6.addVertex(aVertex4);
     aFacet6.addVertex(aVertex7);
 
-    CStlUtils<decimal> aStl;
+    CStlUtils<Decimal> aStl;
 
     aStl.addFacet(0, aFacet1);
     aStl.addFacet(1, aFacet2);
@@ -337,16 +337,16 @@ TEST_F(CTestStlUtils, collapseEdges)
 TEST_F(CTestStlUtils, setOrientation1)
 {
 
-    CStlUtils<decimal> aStl;
+    CStlUtils<Decimal> aStl;
 
-    CGeoCoordinate<decimal> aVertex0(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(2.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex0(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(2.0, 1.0, 0.0);
 
-    CStlFacet<decimal> aFacet0;
+    CStlFacet<Decimal> aFacet0;
 
     aFacet0.addVertex(aVertex0);
     aFacet0.addVertex(aVertex1);
@@ -354,7 +354,7 @@ TEST_F(CTestStlUtils, setOrientation1)
 
     aStl.addFacet(0, aFacet0);
 
-    CStlFacet<decimal> aFacet1;
+    CStlFacet<Decimal> aFacet1;
 
     aFacet1.addVertex(aVertex0);
     aFacet1.addVertex(aVertex2);
@@ -362,7 +362,7 @@ TEST_F(CTestStlUtils, setOrientation1)
 
     aStl.addFacet(1, aFacet1);
 
-    CStlFacet<decimal> aFacet2;
+    CStlFacet<Decimal> aFacet2;
 
     aFacet2.addVertex(aVertex1);
     aFacet2.addVertex(aVertex2);
@@ -370,7 +370,7 @@ TEST_F(CTestStlUtils, setOrientation1)
 
     aStl.addFacet(2, aFacet2);
 
-    CStlFacet<decimal> aFacet3;
+    CStlFacet<Decimal> aFacet3;
 
     aFacet3.addVertex(aVertex1);
     aFacet3.addVertex(aVertex4);
@@ -413,19 +413,19 @@ TEST_F(CTestStlUtils, setOrientation1)
 TEST_F(CTestStlUtils, setOrientation2)
 {
 
-    CStlUtils<decimal> aStl;
+    CStlUtils<Decimal> aStl;
 
-    CGeoCoordinate<decimal> aVertex0(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(2.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex6(0.0, 2.0, 0.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 2.0, 0.0);
-    CGeoCoordinate<decimal> aVertex8(2.0, 2.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex0(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(2.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex6(0.0, 2.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 2.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex8(2.0, 2.0, 0.0);
 
-    CStlFacet<decimal> aFacet0;
+    CStlFacet<Decimal> aFacet0;
 
     aFacet0.addVertex(aVertex0);
     aFacet0.addVertex(aVertex1);
@@ -433,7 +433,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(0, aFacet0);
 
-    CStlFacet<decimal> aFacet1;
+    CStlFacet<Decimal> aFacet1;
 
     aFacet1.addVertex(aVertex2);
     aFacet1.addVertex(aVertex0);
@@ -441,7 +441,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(1, aFacet1);
 
-    CStlFacet<decimal> aFacet2;
+    CStlFacet<Decimal> aFacet2;
 
     aFacet2.addVertex(aVertex1);
     aFacet2.addVertex(aVertex2);
@@ -449,7 +449,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(2, aFacet2);
 
-    CStlFacet<decimal> aFacet3;
+    CStlFacet<Decimal> aFacet3;
 
     aFacet3.addVertex(aVertex1);
     aFacet3.addVertex(aVertex4);
@@ -457,7 +457,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(3, aFacet3);
 
-    CStlFacet<decimal> aFacet4;
+    CStlFacet<Decimal> aFacet4;
 
     aFacet4.addVertex(aVertex3);
     aFacet4.addVertex(aVertex7);
@@ -465,7 +465,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(4, aFacet4);
 
-    CStlFacet<decimal> aFacet5;
+    CStlFacet<Decimal> aFacet5;
 
     aFacet5.addVertex(aVertex2);
     aFacet5.addVertex(aVertex3);
@@ -473,7 +473,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(5, aFacet5);
 
-    CStlFacet<decimal> aFacet6;
+    CStlFacet<Decimal> aFacet6;
 
     aFacet6.addVertex(aVertex2);
     aFacet6.addVertex(aVertex7);
@@ -481,7 +481,7 @@ TEST_F(CTestStlUtils, setOrientation2)
 
     aStl.addFacet(6, aFacet6);
 
-    CStlFacet<decimal> aFacet7;
+    CStlFacet<Decimal> aFacet7;
 
     aFacet7.addVertex(aVertex2);
     aFacet7.addVertex(aVertex5);
@@ -516,19 +516,19 @@ TEST_F(CTestStlUtils, setOrientation2)
 TEST_F(CTestStlUtils, setOrientation3)
 {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoQuadrilateral<decimal> aQuadrilateral;
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
 
     aQuadrilateral.addVertex(aVertex1);
     aQuadrilateral.addVertex(aVertex2);
     aQuadrilateral.addVertex(aVertex3);
     aQuadrilateral.addVertex(aVertex4);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 3;
@@ -538,13 +538,13 @@ TEST_F(CTestStlUtils, setOrientation3)
     aBasicMesher.mesh().element(12).invert();
     aBasicMesher.mesh().element(13).invert();
 
-    CPosGmsh<decimal> aPosGmsh;
-    CPdeField<decimal> aField;
+    CPosGmsh<Decimal> aPosGmsh;
+    CPdeField<Decimal> aField;
 
     aField.setMesh(aBasicMesher.mesh());
     aPosGmsh.save(aField, "plane3_fixnorm.msh", "");
 
-    CStlUtils<decimal> aStl(aBasicMesher.mesh());
+    CStlUtils<Decimal> aStl(aBasicMesher.mesh());
 
     aStl.generateConnectivity(1E-12);
 

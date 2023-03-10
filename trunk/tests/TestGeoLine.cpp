@@ -33,10 +33,10 @@ protected:
 
 TEST_F(CTestGeoLine, getLength) {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(2.5, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(2.5, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
@@ -49,18 +49,18 @@ TEST_F(CTestGeoLine, getLength) {
 
 TEST_F(CTestGeoLine, clip1) {
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 0.2);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.2);
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -73,18 +73,18 @@ TEST_F(CTestGeoLine, clip1) {
 
 TEST_F(CTestGeoLine, clip2) {
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 0.2);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.2);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -94,18 +94,18 @@ TEST_F(CTestGeoLine, clip2) {
 
 TEST_F(CTestGeoLine, clip3) {
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 0.2);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.2);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(0.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -118,18 +118,18 @@ TEST_F(CTestGeoLine, clip3) {
 
 TEST_F(CTestGeoLine, clip4) {
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 0.2);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.2);
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(0.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -142,18 +142,18 @@ TEST_F(CTestGeoLine, clip4) {
 
 TEST_F(CTestGeoLine, clip5) {
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -163,18 +163,18 @@ TEST_F(CTestGeoLine, clip5) {
 
 TEST_F(CTestGeoLine, clip6) {
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(0.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -184,18 +184,18 @@ TEST_F(CTestGeoLine, clip6) {
 
 TEST_F(CTestGeoLine, clip7) {
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, sqrt(2.0) / 2.0);
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -208,18 +208,18 @@ TEST_F(CTestGeoLine, clip7) {
 
 TEST_F(CTestGeoLine, clip8) {
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 1.5);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 1.5);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(2.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -232,18 +232,18 @@ TEST_F(CTestGeoLine, clip8) {
 
 TEST_F(CTestGeoLine, clip9) {
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 3.0 * sqrt(2.0) / 4.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 3.0 * sqrt(2.0) / 4.0);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -256,18 +256,18 @@ TEST_F(CTestGeoLine, clip9) {
 
 TEST_F(CTestGeoLine, clip10) {
 
-    CGeoNormal<decimal> aNormal(1.0, 1.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 2.0);
+    CGeoNormal<Decimal> aNormal(1.0, 1.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 2.0);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(0.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -280,18 +280,18 @@ TEST_F(CTestGeoLine, clip10) {
 
 TEST_F(CTestGeoLine, clip11) {
 
-    CGeoNormal<decimal> aNormal(0.0, 0.0, 1.0);
-    CGeoPlane<decimal> aPlane(aNormal, 0.5);
+    CGeoNormal<Decimal> aNormal(0.0, 0.0, 1.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 0.5);
 
-    CGeoCoordinate<decimal> aPoint1(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aPoint1(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 1.0, 1.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -304,18 +304,18 @@ TEST_F(CTestGeoLine, clip11) {
 
 TEST_F(CTestGeoLine, clip12) {
 
-    CGeoNormal<decimal> aNormal(1.0, 0.0, 0.0);
-    CGeoPlane<decimal> aPlane(aNormal, 1.3);
+    CGeoNormal<Decimal> aNormal(1.0, 0.0, 0.0);
+    CGeoPlane<Decimal> aPlane(aNormal, 1.3);
 
-    CGeoCoordinate<decimal> aPoint1(2.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(2.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(0.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine;
+    CGeoLine<Decimal> aLine;
 
     aLine.setStartPoint(aPoint1);
     aLine.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aNewLine = aLine.clip(aPlane, 1E-9);
+    CGeoLine<Decimal> aNewLine = aLine.clip(aPlane, 1E-9);
 
     aNewLine.calculateLength();
 
@@ -328,23 +328,23 @@ TEST_F(CTestGeoLine, clip12) {
 
 TEST_F(CTestGeoLine, intersection1) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +6.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(-1.0, +2.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +6.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(-1.0, +2.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(+1.0, +0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(-1.0, +4.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(+1.0, +0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(-1.0, +4.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -359,23 +359,23 @@ TEST_F(CTestGeoLine, intersection1) {
 
 TEST_F(CTestGeoLine, intersection2) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +6.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(-1.0, +2.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +6.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(-1.0, +2.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(+1.0, +6.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(-1.0, +2.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(+1.0, +6.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(-1.0, +2.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -387,23 +387,23 @@ TEST_F(CTestGeoLine, intersection2) {
 
 TEST_F(CTestGeoLine, intersection3) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+1.0, +6.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(-1.0, +2.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+1.0, +6.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(-1.0, +2.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(+1.0, +6.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(-2.0, +2.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(+1.0, +6.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(-2.0, +2.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -415,23 +415,23 @@ TEST_F(CTestGeoLine, intersection3) {
 
 TEST_F(CTestGeoLine, intersection4) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(0.5, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(0.5, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(0.5, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(0.5, 1.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -443,23 +443,23 @@ TEST_F(CTestGeoLine, intersection4) {
 
 TEST_F(CTestGeoLine, intersection5) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(0.5, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(0.5, 0.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -471,23 +471,23 @@ TEST_F(CTestGeoLine, intersection5) {
 
 TEST_F(CTestGeoLine, intersection6) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(0.1, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(0.5, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(0.1, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(0.5, 0.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -499,23 +499,23 @@ TEST_F(CTestGeoLine, intersection6) {
 
 TEST_F(CTestGeoLine, intersection7) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(+1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(+1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(+0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(-1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(+0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(-1.0, 0.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -527,23 +527,23 @@ TEST_F(CTestGeoLine, intersection7) {
 
 TEST_F(CTestGeoLine, intersection8) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(+1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(+1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(+1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(+2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(+1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(+2.0, 0.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -555,23 +555,23 @@ TEST_F(CTestGeoLine, intersection8) {
 
 TEST_F(CTestGeoLine, intersection9) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(+1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(+1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(+0.5, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(+2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(+0.5, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(+2.0, 0.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -583,23 +583,23 @@ TEST_F(CTestGeoLine, intersection9) {
 
 TEST_F(CTestGeoLine, intersection10) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(+0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(+1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(+0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(+1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(-1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(+2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(-1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(+2.0, 0.0, 0.0);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -611,23 +611,23 @@ TEST_F(CTestGeoLine, intersection10) {
 
 TEST_F(CTestGeoLine, intersection11) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(0, 0.125, 0);
-    CGeoCoordinate<decimal> aPoint2(0, 0, 0.125);
+    CGeoCoordinate<Decimal> aPoint1(0, 0.125, 0);
+    CGeoCoordinate<Decimal> aPoint2(0, 0, 0.125);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(0, 0, 0);
-    CGeoCoordinate<decimal> aPoint4(0, 0.125, -0.125);
+    CGeoCoordinate<Decimal> aPoint3(0, 0, 0);
+    CGeoCoordinate<Decimal> aPoint4(0, 0.125, -0.125);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint;
+    CGeoCoordinate<Decimal> aPoint;
 
     CGeoIntersectionType anIntersectionType;
 
@@ -639,26 +639,26 @@ TEST_F(CTestGeoLine, intersection11) {
 
 TEST_F(CTestGeoLine, distance1) {
 
-    CGeoLine<decimal> aLine1;
+    CGeoLine<Decimal> aLine1;
 
-    CGeoCoordinate<decimal> aPoint1(-1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(+1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(-1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(+1.0, 0.0, 0.0);
 
     aLine1.setStartPoint(aPoint1);
     aLine1.setEndPoint(aPoint2);
 
-    CGeoLine<decimal> aLine2;
+    CGeoLine<Decimal> aLine2;
 
-    CGeoCoordinate<decimal> aPoint3(0.0, -1.0, 0.1);
-    CGeoCoordinate<decimal> aPoint4(0.0, +1.0, 0.1);
+    CGeoCoordinate<Decimal> aPoint3(0.0, -1.0, 0.1);
+    CGeoCoordinate<Decimal> aPoint4(0.0, +1.0, 0.1);
 
     aLine2.setStartPoint(aPoint3);
     aLine2.setEndPoint(aPoint4);
 
-    CGeoCoordinate<decimal> aPoint5;
-    CGeoCoordinate<decimal> aPoint6;
+    CGeoCoordinate<Decimal> aPoint5;
+    CGeoCoordinate<Decimal> aPoint6;
 
-    decimal dist = 0.0;
+    Decimal dist = 0.0;
 
     EXPECT_TRUE(aLine1.distance(aLine2, aPoint5, aPoint6, dist, 1E-5));
 
@@ -668,20 +668,20 @@ TEST_F(CTestGeoLine, distance1) {
 
 TEST_F(CTestGeoLine, distance2) {
 
-    CGeoCoordinate<decimal> aPoint1(10.0, 150.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(400.0, 400.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(10.0, 150.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(400.0, 400.0, 0.0);
 
-    CGeoLine<decimal> aLine1(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine1(aPoint1, aPoint2);
 
-    CGeoCoordinate<decimal> aPoint3(10.0, 10.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(400.0, 255.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(10.0, 10.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(400.0, 255.0, 0.0);
 
-    CGeoLine<decimal> aLine2(aPoint3, aPoint4);
+    CGeoLine<Decimal> aLine2(aPoint3, aPoint4);
 
-    CGeoCoordinate<decimal> aPoint5;
-    CGeoCoordinate<decimal> aPoint6;
+    CGeoCoordinate<Decimal> aPoint5;
+    CGeoCoordinate<Decimal> aPoint6;
 
-    decimal dist = 0.0;
+    Decimal dist = 0.0;
 
     EXPECT_TRUE(aLine1.distance(aLine2, aPoint5, aPoint6, dist, 1E-6));
 
@@ -691,20 +691,20 @@ TEST_F(CTestGeoLine, distance2) {
 
 TEST_F(CTestGeoLine, distance3) {
 
-    CGeoCoordinate<decimal> aPoint1(10.0, 160.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(400.0, 400.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(10.0, 160.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(400.0, 400.0, 0.0);
 
-    CGeoLine<decimal> aLine1(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine1(aPoint1, aPoint2);
 
-    CGeoCoordinate<decimal> aPoint3(10.0, 10.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(400.0, 272.5, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(10.0, 10.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(400.0, 272.5, 0.0);
 
-    CGeoLine<decimal> aLine2(aPoint3, aPoint4);
+    CGeoLine<Decimal> aLine2(aPoint3, aPoint4);
 
-    CGeoCoordinate<decimal> aPoint5;
-    CGeoCoordinate<decimal> aPoint6;
+    CGeoCoordinate<Decimal> aPoint5;
+    CGeoCoordinate<Decimal> aPoint6;
 
-    decimal dist = 0.0;
+    Decimal dist = 0.0;
 
     EXPECT_TRUE(aLine1.distance(aLine2, aPoint5, aPoint6, dist, 1E-6));
 

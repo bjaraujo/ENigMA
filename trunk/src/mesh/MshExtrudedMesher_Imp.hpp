@@ -39,7 +39,7 @@ namespace ENigMA
                 aMeshQuery.elementsSharingNode(aNodeId, sElementIds);
 
                 aNormal << 0, 0, 0;
-                for (Integer k = 0; k < sElementIds.size(); k++)
+                for (Integer k = 0; k < static_cast<Integer>(sElementIds.size()); k++)
                 {
                     CMshElement<Real> anElement = aSurfaceMesh.element(sElementIds[k]);
 

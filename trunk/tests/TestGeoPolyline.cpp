@@ -33,24 +33,24 @@ protected:
 
 TEST_F(CTestGeoPolyline, create) {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aPoint4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint4(0.0, 1.0, 0.0);
 
-    CGeoLine<decimal> aLine1(aPoint1, aPoint2);
-    CGeoLine<decimal> aLine2(aPoint2, aPoint3);
-    CGeoLine<decimal> aLine3(aPoint3, aPoint4);
-    CGeoLine<decimal> aLine4(aPoint4, aPoint1);
+    CGeoLine<Decimal> aLine1(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine2(aPoint2, aPoint3);
+    CGeoLine<Decimal> aLine3(aPoint3, aPoint4);
+    CGeoLine<Decimal> aLine4(aPoint4, aPoint1);
 
-    CGeoLineList<decimal> aLineList;
+    CGeoLineList<Decimal> aLineList;
 
     aLineList.addLine(aLine1);
     aLineList.addLine(aLine2);
     aLineList.addLine(aLine3);
     aLineList.addLine(aLine4);
 
-    CGeoPolyline<decimal> aPolyline(aLineList);
+    CGeoPolyline<Decimal> aPolyline(aLineList);
 
     EXPECT_EQ(4, aPolyline.nbLines());
     EXPECT_EQ(5, aPolyline.nbVertices());
@@ -59,11 +59,11 @@ TEST_F(CTestGeoPolyline, create) {
 
 TEST_F(CTestGeoPolyline, length) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
 
-    CGeoPolyline<decimal> aPolyline;
+    CGeoPolyline<Decimal> aPolyline;
 
     aPolyline.addVertex(aVertex1);
     aPolyline.addVertex(aVertex2);
@@ -77,12 +77,12 @@ TEST_F(CTestGeoPolyline, length) {
 
 TEST_F(CTestGeoPolyline, isClosed) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoPolyline<decimal> aPolyline;
+    CGeoPolyline<Decimal> aPolyline;
 
     aPolyline.addVertex(aVertex1);
     aPolyline.addVertex(aVertex2);
@@ -97,12 +97,12 @@ TEST_F(CTestGeoPolyline, isClosed) {
 
 TEST_F(CTestGeoPolyline, nbLines) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
 
-    CGeoPolyline<decimal> aPolyline;
+    CGeoPolyline<Decimal> aPolyline;
 
     aPolyline.addVertex(aVertex1);
     aPolyline.addVertex(aVertex2);

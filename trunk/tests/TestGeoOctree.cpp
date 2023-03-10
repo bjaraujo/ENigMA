@@ -33,18 +33,18 @@ protected:
 
 TEST_F(TestGeoOctree, find) {
 
-    CGeoOctree<decimal> anOctree;
+    CGeoOctree<Decimal> anOctree;
     
     Integer anIdToFind = 33;
-    decimal x = 0.5;
-    decimal y = 0.5;
-    decimal z = 0.5;
+    Decimal x = 0.5;
+    Decimal y = 0.5;
+    Decimal z = 0.5;
 
-    CGeoCoordinate<decimal> aCoord1(0.4, 0.5, 0.4);  // 0
-    CGeoCoordinate<decimal> aCoord2(0.5, 0.6, 0.5);  // 1
-    CGeoCoordinate<decimal> aCoord3(0.8, 0.1, 0.5);  // 3
-    CGeoCoordinate<decimal> aCoord4(0.8, 0.1, 0.5);  // 4
-    CGeoCoordinate<decimal> aCoord5(0.8, 0.1, 0.5);  // 5
+    CGeoCoordinate<Decimal> aCoord1(0.4, 0.5, 0.4);  // 0
+    CGeoCoordinate<Decimal> aCoord2(0.5, 0.6, 0.5);  // 1
+    CGeoCoordinate<Decimal> aCoord3(0.8, 0.1, 0.5);  // 3
+    CGeoCoordinate<Decimal> aCoord4(0.8, 0.1, 0.5);  // 4
+    CGeoCoordinate<Decimal> aCoord5(0.8, 0.1, 0.5);  // 5
 
     anOctree.addGeometricObject(12, aCoord1);
     anOctree.addGeometricObject(14, aCoord2);
@@ -54,16 +54,16 @@ TEST_F(TestGeoOctree, find) {
 
     for (int i = 0; i < 20; ++i)
     {
-        CGeoCoordinate<decimal> aCoord(x + i * 0.1, y - i * 0.1, z + i * 0.1);
+        CGeoCoordinate<Decimal> aCoord(x + i * 0.1, y - i * 0.1, z + i * 0.1);
         anOctree.addGeometricObject(100 + i, aCoord);
     }
 
-    CGeoCoordinate<decimal> aCoordToFind(x, y, z);
+    CGeoCoordinate<Decimal> aCoordToFind(x, y, z);
     anOctree.addGeometricObject(anIdToFind, aCoordToFind);
 
     for (int i = 20; i < 1000; ++i)
     {
-        CGeoCoordinate<decimal> aCoord(x + (i - 20) * 0.1, y - (i - 20) * 0.1, z + (i - 20) * 0.1);
+        CGeoCoordinate<Decimal> aCoord(x + (i - 20) * 0.1, y - (i - 20) * 0.1, z + (i - 20) * 0.1);
         anOctree.addGeometricObject(100 + i, aCoord);
     }
 
@@ -71,7 +71,7 @@ TEST_F(TestGeoOctree, find) {
 
     std::vector<Integer> sCoords;
 
-    CGeoCoordinate<decimal> aCoord(x, y, z);
+    CGeoCoordinate<Decimal> aCoord(x, y, z);
     anOctree.find(sCoords, aCoord, 1E-6);
 
     EXPECT_NE(sCoords.end(), std::find(sCoords.begin(), sCoords.end(), anIdToFind));

@@ -33,7 +33,7 @@ protected:
 
 TEST_F(CTestGeoVector, set) {
 
-    CGeoVector<decimal> aVector(-1.1, +2.2, -3.3);
+    CGeoVector<Decimal> aVector(-1.1, +2.2, -3.3);
 
     EXPECT_NEAR(-1.1, aVector.x(), 1E-6);
     EXPECT_NEAR(+2.2, aVector.y(), 1E-6);
@@ -43,8 +43,8 @@ TEST_F(CTestGeoVector, set) {
 
 TEST_F(CTestGeoVector, operators) {
 
-    CGeoVector<decimal> aVector1(-1.1, +2.2, -3.3);
-    CGeoVector<decimal> aVector2(-1.1, +2.2, -3.3);
+    CGeoVector<Decimal> aVector1(-1.1, +2.2, -3.3);
+    CGeoVector<Decimal> aVector2(-1.1, +2.2, -3.3);
 
     EXPECT_TRUE(aVector1 == aVector2);
 
@@ -52,10 +52,10 @@ TEST_F(CTestGeoVector, operators) {
 
 TEST_F(CTestGeoVector, angle) {
 
-    CGeoVector<decimal> aVector1(+1.0, +0.0, +0.0);
-    CGeoVector<decimal> aVector2(+0.0, +1.0, +0.0);
+    CGeoVector<Decimal> aVector1(+1.0, +0.0, +0.0);
+    CGeoVector<Decimal> aVector2(+0.0, +1.0, +0.0);
 
-    const decimal pi = std::acos(-1.0);
+    const Decimal pi = std::acos(-1.0);
 
     EXPECT_EQ(90, floor(aVector1.angle(aVector2) * 180.0 / pi + 0.5));
 
@@ -63,9 +63,9 @@ TEST_F(CTestGeoVector, angle) {
 
 TEST_F(CTestGeoVector, cross) {
 
-    CGeoVector<decimal> aVector1(+1.0, +0.0, +0.0);
-    CGeoVector<decimal> aVector2(+0.0, +1.0, +0.0);
-    CGeoVector<decimal> aVector3;
+    CGeoVector<Decimal> aVector1(+1.0, +0.0, +0.0);
+    CGeoVector<Decimal> aVector2(+0.0, +1.0, +0.0);
+    CGeoVector<Decimal> aVector3;
 
     aVector3 = aVector1.cross(aVector2);
 
@@ -77,9 +77,9 @@ TEST_F(CTestGeoVector, cross) {
 
 TEST_F(CTestGeoVector, dot) {
 
-    CGeoVector<decimal> aVector1(+1.0, +0.0, +0.0);
-    CGeoVector<decimal> aVector2(-1.0, +0.0, +0.0);
-    CGeoVector<decimal> aVector3;
+    CGeoVector<Decimal> aVector1(+1.0, +0.0, +0.0);
+    CGeoVector<Decimal> aVector2(-1.0, +0.0, +0.0);
+    CGeoVector<Decimal> aVector3;
 
     EXPECT_EQ(-1.0,  aVector1.dot(aVector2));
 
@@ -87,9 +87,9 @@ TEST_F(CTestGeoVector, dot) {
 
 TEST_F(CTestGeoVector, rotate) {
 
-    CGeoVector<decimal> aVector1(+1.0, +0.0, +0.0);
+    CGeoVector<Decimal> aVector1(+1.0, +0.0, +0.0);
 
-    const decimal pi = std::acos(-1.0);
+    const Decimal pi = std::acos(-1.0);
 
     aVector1.rotate(pi/2.0);
 

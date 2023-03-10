@@ -33,11 +33,11 @@ protected:
 
 TEST_F(CTestFemTriangle, update) {
 
-    CFemTriangle<decimal, 3, 1, 1> aTriangle;
+    CFemTriangle<Decimal, 3, 1, 1> aTriangle;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 1.0);
 
     aTriangle.addVertex(aVertex1);
     aTriangle.addVertex(aVertex2);

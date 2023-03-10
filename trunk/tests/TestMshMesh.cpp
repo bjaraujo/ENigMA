@@ -33,7 +33,7 @@ protected:
 
 TEST_F(CTestMshMesh, set) {
 
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
     // Data:
     // Start Nodes
@@ -43,19 +43,19 @@ TEST_F(CTestMshMesh, set) {
     // 2      6  0.75  0.0   0.0
     // 3      7  1.0   0.0   0.0
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
     aMesh.addNode(3, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << 0.25, 0.0, 0.0;
     aMesh.addNode(5, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << 0.75, 0.0, 0.0;
     aMesh.addNode(6, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << 1.0, 0.0, 0.0;
     aMesh.addNode(7, aNode4);
 
@@ -66,17 +66,17 @@ TEST_F(CTestMshMesh, set) {
     // 1      2  5     6
     // 2      3  6     7
 
-    CMshElement<decimal> anElement1;
+    CMshElement<Decimal> anElement1;
     anElement1.addNodeId(3);
     anElement1.addNodeId(5);
     aMesh.addElement(1, anElement1);
 
-    CMshElement<decimal> anElement2;
+    CMshElement<Decimal> anElement2;
     anElement2.addNodeId(5);
     anElement2.addNodeId(6);
     aMesh.addElement(2, anElement2);
 
-    CMshElement<decimal> anElement3;
+    CMshElement<Decimal> anElement3;
     anElement3.addNodeId(6);
     anElement3.addNodeId(7);
     aMesh.addElement(3, anElement3);
@@ -97,69 +97,69 @@ TEST_F(CTestMshMesh, addMesh01)
 {
 
     // Mesh 1
-    CMshMesh<decimal> aMesh1;
+    CMshMesh<Decimal> aMesh1;
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
     aMesh1.addNode(1, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << 1.0, 0.0, 0.0;
     aMesh1.addNode(2, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << 1.0, 1.0, 0.0;
     aMesh1.addNode(3, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << 0.0, 1.0, 0.0;
     aMesh1.addNode(4, aNode4);
 
-    CMshElement<decimal> anElement1;
+    CMshElement<Decimal> anElement1;
     anElement1.addNodeId(1);
     anElement1.addNodeId(2);
     anElement1.addNodeId(4);
     aMesh1.addElement(1, anElement1);
 
-    CMshElement<decimal> anElement2;
+    CMshElement<Decimal> anElement2;
     anElement2.addNodeId(2);
     anElement2.addNodeId(3);
     anElement2.addNodeId(4);
     aMesh1.addElement(2, anElement2);
 
     // Mesh 2
-    CMshMesh<decimal> aMesh2;
+    CMshMesh<Decimal> aMesh2;
 
-    CMshNode<decimal> aNode5;
+    CMshNode<Decimal> aNode5;
     aNode5 << 1.0, 0.0, 0.0;
     aMesh2.addNode(1, aNode5);
 
-    CMshNode<decimal> aNode6;
+    CMshNode<Decimal> aNode6;
     aNode6 << 2.0, 0.0, 0.0;
     aMesh2.addNode(2, aNode6);
 
-    CMshNode<decimal> aNode7;
+    CMshNode<Decimal> aNode7;
     aNode7 << 2.0, 1.0, 0.0;
     aMesh2.addNode(3, aNode7);
 
-    CMshNode<decimal> aNode8;
+    CMshNode<Decimal> aNode8;
     aNode8 << 1.0, 1.0, 0.0;
     aMesh2.addNode(4, aNode8);
 
-    CMshElement<decimal> anElement3;
+    CMshElement<Decimal> anElement3;
     anElement3.addNodeId(1);
     anElement3.addNodeId(2);
     anElement3.addNodeId(4);
     aMesh2.addElement(1, anElement3);
 
-    CMshElement<decimal> anElement4;
+    CMshElement<Decimal> anElement4;
     anElement4.addNodeId(2);
     anElement4.addNodeId(3);
     anElement4.addNodeId(4);
     aMesh2.addElement(2, anElement4);
 
     // Mesh
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
     aMesh.addMesh(aMesh1);
     aMesh.addMesh(aMesh2);
@@ -181,69 +181,69 @@ TEST_F(CTestMshMesh, addMesh01)
 TEST_F(CTestMshMesh, addMesh02) {
 
     // Mesh 1
-    CMshMesh<decimal> aMesh1;
+    CMshMesh<Decimal> aMesh1;
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << 0.0, 0.0, 0.0;
     aMesh1.addNode(1, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << 1.0, 0.0, 0.0;
     aMesh1.addNode(2, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << 1.0, 1.0, 0.0;
     aMesh1.addNode(3, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << 0.0, 1.0, 0.0;
     aMesh1.addNode(4, aNode4);
 
-    CMshElement<decimal> anElement1;
+    CMshElement<Decimal> anElement1;
     anElement1.addNodeId(1);
     anElement1.addNodeId(2);
     anElement1.addNodeId(4);
     aMesh1.addElement(1, anElement1);
 
-    CMshElement<decimal> anElement2;
+    CMshElement<Decimal> anElement2;
     anElement2.addNodeId(2);
     anElement2.addNodeId(3);
     anElement2.addNodeId(4);
     aMesh1.addElement(2, anElement2);
 
     // Mesh 2
-    CMshMesh<decimal> aMesh2;
+    CMshMesh<Decimal> aMesh2;
 
-    CMshNode<decimal> aNode5;
+    CMshNode<Decimal> aNode5;
     aNode5 << 1.0, 0.0, 0.0;
     aMesh2.addNode(1, aNode5);
 
-    CMshNode<decimal> aNode6;
+    CMshNode<Decimal> aNode6;
     aNode6 << 2.0, 0.0, 0.0;
     aMesh2.addNode(2, aNode6);
 
-    CMshNode<decimal> aNode7;
+    CMshNode<Decimal> aNode7;
     aNode7 << 2.0, 1.0, 0.0;
     aMesh2.addNode(3, aNode7);
 
-    CMshNode<decimal> aNode8;
+    CMshNode<Decimal> aNode8;
     aNode8 << 1.0, 1.0, 0.0;
     aMesh2.addNode(4, aNode8);
 
-    CMshElement<decimal> anElement3;
+    CMshElement<Decimal> anElement3;
     anElement3.addNodeId(1);
     anElement3.addNodeId(2);
     anElement3.addNodeId(4);
     aMesh2.addElement(1, anElement3);
 
-    CMshElement<decimal> anElement4;
+    CMshElement<Decimal> anElement4;
     anElement4.addNodeId(2);
     anElement4.addNodeId(3);
     anElement4.addNodeId(4);
     aMesh2.addElement(2, anElement4);
 
     // Mesh
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
     aMesh.addMesh(aMesh1);
     aMesh.addMesh(aMesh2);

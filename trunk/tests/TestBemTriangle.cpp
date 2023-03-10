@@ -33,18 +33,18 @@ protected:
 
 TEST_F(CTestBemTriangle, integPoints) {
 
-    CBemTriangle<decimal> aTriangle;
+    CBemTriangle<Decimal> aTriangle;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 1.0);
 
     aTriangle.addVertex(aVertex1);
     aTriangle.addVertex(aVertex2);
     aTriangle.addVertex(aVertex3);
 
-    std::vector<CGeoCoordinate<decimal> > sPoints;
-    std::vector<decimal> sWeights;
+    std::vector<CGeoCoordinate<Decimal> > sPoints;
+    std::vector<Decimal> sWeights;
 
     sPoints.clear();
     sWeights.clear();
@@ -59,27 +59,27 @@ TEST_F(CTestBemTriangle, integPoints) {
 TEST_F(CTestBemTriangle, laplacianCoeff) {
 
 
-    CBemTriangle<decimal> aTriangle1;
+    CBemTriangle<Decimal> aTriangle1;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(0.0, 1.0, 0.0);
 
     aTriangle1.addVertex(aVertex1);
     aTriangle1.addVertex(aVertex2);
     aTriangle1.addVertex(aVertex3);
 
-    CBemTriangle<decimal> aTriangle2;
+    CBemTriangle<Decimal> aTriangle2;
 
-    CGeoCoordinate<decimal> aVertex4(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(3.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex6(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(3.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex6(0.0, 1.0, 0.0);
 
     aTriangle2.addVertex(aVertex4);
     aTriangle2.addVertex(aVertex5);
     aTriangle2.addVertex(aVertex6);
 
-    decimal h, g;
+    Decimal h, g;
 
     aTriangle1.laplacianCoeff(1, 2, aTriangle2, h, g);
 

@@ -33,7 +33,7 @@ protected:
 
 TEST_F(CTestGeoNormal, normalize) {
 
-    CGeoNormal<decimal> aNormal(2.0,0.0,0.0);
+    CGeoNormal<Decimal> aNormal(2.0,0.0,0.0);
 
     EXPECT_EQ(1.0, aNormal.x());
     EXPECT_EQ(0.0, aNormal.y());

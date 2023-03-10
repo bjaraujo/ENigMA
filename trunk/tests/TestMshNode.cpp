@@ -33,7 +33,7 @@ protected:
 
 TEST_F(CTestMshNode, set) {
 
-    CMshNode<decimal> aNode(-1.1,+2.2,+3.3);
+    CMshNode<Decimal> aNode(-1.1,+2.2,+3.3);
 
     //std::cout << aNode << std::endl;
 

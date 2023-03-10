@@ -38,12 +38,12 @@ protected:
 TEST_F(CTestPosGnuplot, plot)
 {
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
 
-    CGeoLine<decimal> aLine(aPoint1, aPoint2);
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
 
@@ -51,8 +51,8 @@ TEST_F(CTestPosGnuplot, plot)
 
     EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
 
-    CPdeField<decimal> T;
-    CPosGnuplot<decimal> aPosGnuplot;
+    CPdeField<Decimal> T;
+    CPosGnuplot<Decimal> aPosGnuplot;
 
     T.setMesh(aBasicMesher.mesh());
     T.setDiscretLocation(DL_NODE);

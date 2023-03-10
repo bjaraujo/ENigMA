@@ -33,16 +33,16 @@ protected:
 
 TEST_F(TestGeoAdtree, find1) {
 
-    CGeoBoundingBox<decimal> aBoundingBox1;
-    CGeoBoundingBox<decimal> aBoundingBox2;
-    CGeoBoundingBox<decimal> aBoundingBox3;
+    CGeoBoundingBox<Decimal> aBoundingBox1;
+    CGeoBoundingBox<Decimal> aBoundingBox2;
+    CGeoBoundingBox<Decimal> aBoundingBox3;
 
-    CGeoCoordinate<decimal> aCoordinate1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate2(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate3(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate4(3.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate5(4.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate6(5.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate2(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate3(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate4(3.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate5(4.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate6(5.0, 1.0, 0.0);
 
     aBoundingBox1.addCoordinate(aCoordinate1);
     aBoundingBox1.addCoordinate(aCoordinate2);
@@ -53,7 +53,7 @@ TEST_F(TestGeoAdtree, find1) {
     aBoundingBox3.addCoordinate(aCoordinate5);
     aBoundingBox3.addCoordinate(aCoordinate6);
 
-    CGeoBoundingBox<decimal> aBoundingBox;
+    CGeoBoundingBox<Decimal> aBoundingBox;
 
     aBoundingBox.reset();
     aBoundingBox.addCoordinate(aCoordinate1);
@@ -63,7 +63,7 @@ TEST_F(TestGeoAdtree, find1) {
     aBoundingBox.addCoordinate(aCoordinate5);
     aBoundingBox.addCoordinate(aCoordinate6);
 
-    CGeoAdtree<decimal> anAdtree;
+    CGeoAdtree<Decimal> anAdtree;
 
     anAdtree.set(aBoundingBox);
     anAdtree.addGeometricObject(12, aBoundingBox1);
@@ -72,8 +72,8 @@ TEST_F(TestGeoAdtree, find1) {
 
     anAdtree.build(); // Optional
 
-    CGeoCoordinate<decimal> aCoordinate7(2.5, -0.5, 0.0);
-    CGeoCoordinate<decimal> aCoordinate8(4.5, +0.5, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate7(2.5, -0.5, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate8(4.5, +0.5, 0.0);
 
     aBoundingBox.reset();
     aBoundingBox.addCoordinate(aCoordinate7);
@@ -91,25 +91,25 @@ TEST_F(TestGeoAdtree, find1) {
 
 TEST_F(TestGeoAdtree, find2) {
 
-    CGeoBoundingBox<decimal> aBoundingBox1;
-    CGeoBoundingBox<decimal> aBoundingBox2;
-    CGeoBoundingBox<decimal> aBoundingBox3;
-    CGeoBoundingBox<decimal> aBoundingBox4;
-    CGeoBoundingBox<decimal> aBoundingBox5;
-    CGeoBoundingBox<decimal> aBoundingBox6;
+    CGeoBoundingBox<Decimal> aBoundingBox1;
+    CGeoBoundingBox<Decimal> aBoundingBox2;
+    CGeoBoundingBox<Decimal> aBoundingBox3;
+    CGeoBoundingBox<Decimal> aBoundingBox4;
+    CGeoBoundingBox<Decimal> aBoundingBox5;
+    CGeoBoundingBox<Decimal> aBoundingBox6;
 
-    CGeoCoordinate<decimal> aCoordinate01(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate02(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate03(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate04(3.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate05(4.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate06(5.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate07(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate08(4.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate09(5.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate10(6.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate11(7.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate12(8.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate01(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate02(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate03(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate04(3.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate05(4.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate06(5.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate07(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate08(4.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate09(5.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate10(6.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate11(7.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate12(8.0, 1.0, 1.0);
 
     aBoundingBox1.addCoordinate(aCoordinate01);
     aBoundingBox1.addCoordinate(aCoordinate02);
@@ -129,7 +129,7 @@ TEST_F(TestGeoAdtree, find2) {
     aBoundingBox6.addCoordinate(aCoordinate11);
     aBoundingBox6.addCoordinate(aCoordinate12);
 
-    CGeoBoundingBox<decimal> aBoundingBox;
+    CGeoBoundingBox<Decimal> aBoundingBox;
 
     aBoundingBox.reset();
     aBoundingBox.addCoordinate(aCoordinate01);
@@ -145,7 +145,7 @@ TEST_F(TestGeoAdtree, find2) {
     aBoundingBox.addCoordinate(aCoordinate11);
     aBoundingBox.addCoordinate(aCoordinate12);
 
-    CGeoAdtree<decimal> anAdtree;
+    CGeoAdtree<Decimal> anAdtree;
 
     anAdtree.set(aBoundingBox);
     anAdtree.addGeometricObject(12, aBoundingBox1);
@@ -157,8 +157,8 @@ TEST_F(TestGeoAdtree, find2) {
 
     anAdtree.build(); // Optional
 
-    CGeoCoordinate<decimal> aCoordinate13(2.5, +0.5, +0.5);
-    CGeoCoordinate<decimal> aCoordinate14(4.5, -0.5, -0.5);
+    CGeoCoordinate<Decimal> aCoordinate13(2.5, +0.5, +0.5);
+    CGeoCoordinate<Decimal> aCoordinate14(4.5, -0.5, -0.5);
 
     aBoundingBox.reset();
     aBoundingBox.addCoordinate(aCoordinate13);
@@ -176,25 +176,25 @@ TEST_F(TestGeoAdtree, find2) {
 
 TEST_F(TestGeoAdtree, find3) {
 
-    CGeoBoundingBox<decimal> aBoundingBox1;
-    CGeoBoundingBox<decimal> aBoundingBox2;
-    CGeoBoundingBox<decimal> aBoundingBox3;
-    CGeoBoundingBox<decimal> aBoundingBox4;
-    CGeoBoundingBox<decimal> aBoundingBox5;
-    CGeoBoundingBox<decimal> aBoundingBox6;
+    CGeoBoundingBox<Decimal> aBoundingBox1;
+    CGeoBoundingBox<Decimal> aBoundingBox2;
+    CGeoBoundingBox<Decimal> aBoundingBox3;
+    CGeoBoundingBox<Decimal> aBoundingBox4;
+    CGeoBoundingBox<Decimal> aBoundingBox5;
+    CGeoBoundingBox<Decimal> aBoundingBox6;
 
-    CGeoCoordinate<decimal> aCoordinate01(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate02(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate03(2.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate04(3.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate05(4.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate06(5.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aCoordinate07(0.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate08(4.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate09(5.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate10(6.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate11(7.0, 0.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate12(8.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate01(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate02(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate03(2.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate04(3.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate05(4.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate06(5.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aCoordinate07(0.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate08(4.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate09(5.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate10(6.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate11(7.0, 0.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate12(8.0, 1.0, 1.0);
 
     aBoundingBox1.addCoordinate(aCoordinate01);
     aBoundingBox1.addCoordinate(aCoordinate02);
@@ -214,7 +214,7 @@ TEST_F(TestGeoAdtree, find3) {
     aBoundingBox6.addCoordinate(aCoordinate11);
     aBoundingBox6.addCoordinate(aCoordinate12);
 
-    CGeoBoundingBox<decimal> aBoundingBox;
+    CGeoBoundingBox<Decimal> aBoundingBox;
 
     aBoundingBox.reset();
     aBoundingBox.addCoordinate(aCoordinate01);
@@ -230,7 +230,7 @@ TEST_F(TestGeoAdtree, find3) {
     aBoundingBox.addCoordinate(aCoordinate11);
     aBoundingBox.addCoordinate(aCoordinate12);
 
-    CGeoAdtree<decimal> anAdtree;
+    CGeoAdtree<Decimal> anAdtree;
 
     anAdtree.set(aBoundingBox);
     anAdtree.addGeometricObject(12, aBoundingBox1);
@@ -242,8 +242,8 @@ TEST_F(TestGeoAdtree, find3) {
 
     anAdtree.build(); // Optional
 
-    CGeoCoordinate<decimal> aCoordinate13(0.0, 1.0, 1.0);
-    CGeoCoordinate<decimal> aCoordinate14(0.0, 1.0, 2.0);
+    CGeoCoordinate<Decimal> aCoordinate13(0.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aCoordinate14(0.0, 1.0, 2.0);
 
     aBoundingBox.reset();
     aBoundingBox.addCoordinate(aCoordinate13);

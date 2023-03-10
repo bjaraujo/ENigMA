@@ -34,10 +34,10 @@ protected:
 TEST_F(CTestAnaFunction, evaluate)
 {
 
-    decimal x;
-    decimal f;
+    Decimal x;
+    Decimal f;
 
-    CAnaFunction<decimal> aAnaFunction;
+    CAnaFunction<Decimal> aAnaFunction;
 
     x = 1.0;
     f = 1.0;

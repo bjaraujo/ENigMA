@@ -33,10 +33,10 @@ protected:
 
 TEST_F(CTestFemBeam, update) {
 
-    CFemBeam<decimal, 2, 1, 1> aBeam;
+    CFemBeam<Decimal, 2, 1, 1> aBeam;
 
-    CGeoCoordinate<decimal> aPoint1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aPoint2(1.0, 1.0, 1.0);
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 1.0, 1.0);
 
     aBeam.setStartPoint(aPoint1);
     aBeam.setEndPoint(aPoint2);
@@ -56,7 +56,7 @@ TEST_F(CTestFemBeam, update) {
         for (int j = 0; j < 2; ++j)
         {
 
-            decimal s;
+            Decimal s;
 
             if (i == j) s = -1; else s = +1;
 
@@ -72,7 +72,7 @@ TEST_F(CTestFemBeam, update) {
         for (int j = 0; j < 2; ++j)
         {
 
-            decimal p;
+            Decimal p;
 
             if (i == j) p = 1.0/3.0; else p = 1.0/6.0;
 

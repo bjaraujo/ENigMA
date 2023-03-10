@@ -33,12 +33,12 @@ protected:
 
 TEST_F(CTestFvmFace, calcArea) {
 
-    CFvmFace<decimal> aFace;
+    CFvmFace<Decimal> aFace;
 
-    CFvmNode<decimal> aNode1(0, 0, 0);
-    CFvmNode<decimal> aNode2(1, 0, 0);
-    CFvmNode<decimal> aNode3(1, 1, 0);
-    CFvmNode<decimal> aNode4(0, 1, 0);
+    CFvmNode<Decimal> aNode1(0, 0, 0);
+    CFvmNode<Decimal> aNode2(1, 0, 0);
+    CFvmNode<Decimal> aNode3(1, 1, 0);
+    CFvmNode<Decimal> aNode4(0, 1, 0);
 
     aFace.addNode(aNode1);
     aFace.addNode(aNode2);

@@ -33,16 +33,16 @@ protected:
 
 TEST_F(CTestGeoHexahedron, volume) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -61,16 +61,16 @@ TEST_F(CTestGeoHexahedron, volume) {
 
 TEST_F(CTestGeoHexahedron, decimate) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -85,11 +85,11 @@ TEST_F(CTestGeoHexahedron, decimate) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    std::vector<CGeoTetrahedron<decimal>> sTetrahedrals;
+    std::vector<CGeoTetrahedron<Decimal>> sTetrahedrals;
     aHexahedron.decimate(sTetrahedrals);
 
-    decimal volume = 0.0;
-    for (CGeoTetrahedron<decimal> tetra : sTetrahedrals)
+    Decimal volume = 0.0;
+    for (CGeoTetrahedron<Decimal> tetra : sTetrahedrals)
     {
         tetra.calculateVolume();
         volume += tetra.volume();

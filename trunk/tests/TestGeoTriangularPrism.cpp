@@ -33,14 +33,14 @@ protected:
 
 TEST_F(CTestGeoTriangularPrism, volume) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 1.0, -1.0);
 
-    CGeoTriangularPrism<decimal> aTriangularPrism;
+    CGeoTriangularPrism<Decimal> aTriangularPrism;
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);

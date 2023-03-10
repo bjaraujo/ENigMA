@@ -34,15 +34,15 @@ protected:
 TEST_F(CTestGeoConvexHull, convexHull) {
 
 
-    std::vector<CGeoCoordinate<decimal> > sVertices;
+    std::vector<CGeoCoordinate<Decimal> > sVertices;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(0.25, 0.2, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex6(0.5, 0.5, 0.0);
-    CGeoCoordinate<decimal> aVertex7(0.1, 0.1, 0.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(0.25, 0.2, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex6(0.5, 0.5, 0.0);
+    CGeoCoordinate<Decimal> aVertex7(0.1, 0.1, 0.0);
     
     sVertices.emplace_back(aVertex1);
     sVertices.emplace_back(aVertex2);
@@ -52,7 +52,7 @@ TEST_F(CTestGeoConvexHull, convexHull) {
     sVertices.emplace_back(aVertex6);
     sVertices.emplace_back(aVertex7);
 
-    CGeoConvexHull<decimal> aConvexHull(sVertices);
+    CGeoConvexHull<Decimal> aConvexHull(sVertices);
     
     EXPECT_EQ(4, aConvexHull.nbVertices());
 

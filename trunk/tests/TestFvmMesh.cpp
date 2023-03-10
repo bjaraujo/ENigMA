@@ -47,12 +47,12 @@ TEST_F(CTestFvmMesh, volume1) {
     4 0.0214445 -0.004 0.0089
     */
 
-    CGeoCoordinate<decimal> aVertex1(0.0206083, -0.00442002, 0.0089);
-    CGeoCoordinate<decimal> aVertex2(0.02147799300482443, -0.00452017265334567, 0.008806528084091029);
-    CGeoCoordinate<decimal> aVertex3(0.0214445, -0.004, 0.0079416);
-    CGeoCoordinate<decimal> aVertex4(0.0214445, -0.004, 0.0089);
+    CGeoCoordinate<Decimal> aVertex1(0.0206083, -0.00442002, 0.0089);
+    CGeoCoordinate<Decimal> aVertex2(0.02147799300482443, -0.00452017265334567, 0.008806528084091029);
+    CGeoCoordinate<Decimal> aVertex3(0.0214445, -0.004, 0.0079416);
+    CGeoCoordinate<Decimal> aVertex4(0.0214445, -0.004, 0.0089);
 
-    CGeoTetrahedron<decimal> aTetrahedron;
+    CGeoTetrahedron<Decimal> aTetrahedron;
 
     // Inverted 1 and 2
     aTetrahedron.addVertex(aVertex2);
@@ -62,29 +62,29 @@ TEST_F(CTestFvmMesh, volume1) {
 
     aTetrahedron.calculateVolume(true);
 
-    decimal volume1 = aTetrahedron.volume();
+    Decimal volume1 = aTetrahedron.volume();
 
     EXPECT_GT(volume1, 0.0);
 
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << aVertex1;
     aMesh.addNode(1, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << aVertex2;
     aMesh.addNode(2, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << aVertex3;
     aMesh.addNode(3, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << aVertex4;
     aMesh.addNode(4, aNode4);
 
-    CMshElement<decimal> anElement1(ET_TETRAHEDRON);
+    CMshElement<Decimal> anElement1(ET_TETRAHEDRON);
     anElement1.addNodeId(2);
     anElement1.addNodeId(1);
     anElement1.addNodeId(3);
@@ -93,11 +93,11 @@ TEST_F(CTestFvmMesh, volume1) {
 
     aMesh.generateFaces(1E-6);
 
-    CFvmMesh<decimal> aFvmMesh(aMesh);
+    CFvmMesh<Decimal> aFvmMesh(aMesh);
 
     aFvmMesh.controlVolume(1).calculateVolume(true);
 
-    decimal volume2 = aFvmMesh.controlVolume(1).volume();
+    Decimal volume2 = aFvmMesh.controlVolume(1).volume();
 
     EXPECT_GT(volume2, 0.0);
 
@@ -105,16 +105,16 @@ TEST_F(CTestFvmMesh, volume1) {
 
 TEST_F(CTestFvmMesh, volume2) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -133,13 +133,13 @@ TEST_F(CTestFvmMesh, volume2) {
     const Integer nv = 5;
     const Integer nw = 5;
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw);
 
     aBasicMesher.mesh().generateFaces(1E-12);
 
-    CFvmMesh<decimal> aFvmMesh(aBasicMesher.mesh());
+    CFvmMesh<Decimal> aFvmMesh(aBasicMesher.mesh());
 
     EXPECT_GT(aFvmMesh.volume(), 0.0);
 
@@ -147,22 +147,22 @@ TEST_F(CTestFvmMesh, volume2) {
 
 TEST_F(CTestFvmMesh, volume3) {
 
-    const decimal d = 0.2;
+    const Decimal d = 0.2;
 
     const Integer nu = 5;
     const Integer nv = 5;
     const Integer nw = 5;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
-    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
-    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
-    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(nu * d, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(nu * d, nv * d, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, nv * d, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<Decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<Decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<Decimal> aVertex8(0.0, nv * d, -nw * d);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -177,20 +177,20 @@ TEST_F(CTestFvmMesh, volume3) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
 
-    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
+    CMshMesh<Decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
 
     aSurfaceMesh.generateFaces(1E-5);
 
-    CMshTetrahedronMesher<decimal> aTetrahedronMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTetrahedronMesher<Decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
 
     aTetrahedronMesher.generate(aSurfaceMesh, 999, sInteriorPoints, d, d * 0.1, d * 10.0, 1E-3);
 
-    CFvmMesh<decimal> aFvmMesh(aTetrahedronMesher.mesh());
+    CFvmMesh<Decimal> aFvmMesh(aTetrahedronMesher.mesh());
 
     EXPECT_GT(aFvmMesh.volume(), 0.0);
 
@@ -198,22 +198,22 @@ TEST_F(CTestFvmMesh, volume3) {
 
 TEST_F(CTestFvmMesh, volume4) {
 
-    const decimal d = 0.2;
+    const Decimal d = 0.2;
 
     const Integer nu = 5;
     const Integer nv = 5;
     const Integer nw = 5;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(nu * d, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(nu * d, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, nv * d, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -nw * d);
-    CGeoCoordinate<decimal> aVertex6(nu * d, 0.0, -nw * d);
-    CGeoCoordinate<decimal> aVertex7(nu * d, nv * d, -nw * d);
-    CGeoCoordinate<decimal> aVertex8(0.0, nv * d, -nw * d);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(nu * d, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(nu * d, nv * d, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, nv * d, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -nw * d);
+    CGeoCoordinate<Decimal> aVertex6(nu * d, 0.0, -nw * d);
+    CGeoCoordinate<Decimal> aVertex7(nu * d, nv * d, -nw * d);
+    CGeoCoordinate<Decimal> aVertex8(0.0, nv * d, -nw * d);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -228,47 +228,47 @@ TEST_F(CTestFvmMesh, volume4) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw, true);
 
-    CMshMesh<decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
+    CMshMesh<Decimal> aSurfaceMesh = aBasicMesher.mesh().extractBoundary(1E-6);
 
     aSurfaceMesh.generateFaces(1E-5);
 
-    ENigMA::mesh::CMshMesh<decimal> aLayerMesh = aSurfaceMesh;
+    ENigMA::mesh::CMshMesh<Decimal> aLayerMesh = aSurfaceMesh;
 
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
-    CMshExtrudedMesher<decimal> anExtrudedMesher;
+    CMshExtrudedMesher<Decimal> anExtrudedMesher;
     anExtrudedMesher.generate(aLayerMesh, 0.1, 1E-6);
     anExtrudedMesher.mesh().generateFaces(1E-6);
     aMesh.addMesh(anExtrudedMesher.mesh());
 
-    CFvmMesh<decimal> aFvmMesh1(aMesh);
+    CFvmMesh<Decimal> aFvmMesh1(aMesh);
     EXPECT_GT(aFvmMesh1.volume(), 0.0);
 
-    CMshTetrahedronMesher<decimal> aTetrahedronMesher;
-    std::vector<CGeoCoordinate<decimal>> sInteriorPoints;
+    CMshTetrahedronMesher<Decimal> aTetrahedronMesher;
+    std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
     aTetrahedronMesher.generate(aLayerMesh, 999, sInteriorPoints, d, d * 0.1, d * 10.0, 1E-6);
     aTetrahedronMesher.mesh().generateFaces(1E-6);
     aMesh.addMesh(aTetrahedronMesher.mesh());
 
-    CFvmMesh<decimal> aFvmMesh2(aMesh);
+    CFvmMesh<Decimal> aFvmMesh2(aMesh);
     EXPECT_GT(aFvmMesh2.volume(), 0.0);
 
 }
 
 TEST_F(CTestFvmMesh, orient1) {
 
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
 
-    CGeoTetrahedron<decimal> aTetrahedron;
+    CGeoTetrahedron<Decimal> aTetrahedron;
 
     aTetrahedron.addVertex(aVertex1);
     aTetrahedron.addVertex(aVertex2);
@@ -279,23 +279,23 @@ TEST_F(CTestFvmMesh, orient1) {
 
     EXPECT_NEAR(1.0/6.0, aTetrahedron.volume(), 1E-6);
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << aVertex1;
     aMesh.addNode(1, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << aVertex2;
     aMesh.addNode(2, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << aVertex3;
     aMesh.addNode(3, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << aVertex4;
     aMesh.addNode(4, aNode4);
 
-    CMshElement<decimal> anElement1(ET_TETRAHEDRON);
+    CMshElement<Decimal> anElement1(ET_TETRAHEDRON);
     anElement1.addNodeId(1);
     anElement1.addNodeId(2);
     anElement1.addNodeId(3);
@@ -304,8 +304,8 @@ TEST_F(CTestFvmMesh, orient1) {
 
     aMesh.generateFaces(1E-6);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aMesh.extractBoundary(1E-6));
     aPosGmsh.save(T, "tetra_orient1.msh", "tetra");
@@ -314,16 +314,16 @@ TEST_F(CTestFvmMesh, orient1) {
 
 TEST_F(CTestFvmMesh, orient2) {
 
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex5(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex5(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 1.0, -1.0);
 
-    CGeoTriangularPrism<decimal> aTriangularPrism;
+    CGeoTriangularPrism<Decimal> aTriangularPrism;
 
     aTriangularPrism.addVertex(aVertex1);
     aTriangularPrism.addVertex(aVertex2);
@@ -336,31 +336,31 @@ TEST_F(CTestFvmMesh, orient2) {
 
     EXPECT_EQ(0.5, aTriangularPrism.volume());
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << aVertex1;
     aMesh.addNode(1, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << aVertex2;
     aMesh.addNode(2, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << aVertex3;
     aMesh.addNode(3, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << aVertex4;
     aMesh.addNode(4, aNode4);
 
-    CMshNode<decimal> aNode5;
+    CMshNode<Decimal> aNode5;
     aNode5 << aVertex5;
     aMesh.addNode(5, aNode5);
 
-    CMshNode<decimal> aNode6;
+    CMshNode<Decimal> aNode6;
     aNode6 << aVertex6;
     aMesh.addNode(6, aNode6);
 
-    CMshElement<decimal> anElement1(ET_TRIANGULAR_PRISM);
+    CMshElement<Decimal> anElement1(ET_TRIANGULAR_PRISM);
     anElement1.addNodeId(1);
     anElement1.addNodeId(2);
     anElement1.addNodeId(3);
@@ -371,8 +371,8 @@ TEST_F(CTestFvmMesh, orient2) {
 
     aMesh.generateFaces(1E-6);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aMesh.extractBoundary(1E-6));
     aPosGmsh.save(T, "prism_orient2.msh", "prism");
@@ -381,18 +381,18 @@ TEST_F(CTestFvmMesh, orient2) {
 
 TEST_F(CTestFvmMesh, orient3) {
 
-    CMshMesh<decimal> aMesh;
+    CMshMesh<Decimal> aMesh;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -407,39 +407,39 @@ TEST_F(CTestFvmMesh, orient3) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CMshNode<decimal> aNode1;
+    CMshNode<Decimal> aNode1;
     aNode1 << aVertex1;
     aMesh.addNode(1, aNode1);
 
-    CMshNode<decimal> aNode2;
+    CMshNode<Decimal> aNode2;
     aNode2 << aVertex2;
     aMesh.addNode(2, aNode2);
 
-    CMshNode<decimal> aNode3;
+    CMshNode<Decimal> aNode3;
     aNode3 << aVertex3;
     aMesh.addNode(3, aNode3);
 
-    CMshNode<decimal> aNode4;
+    CMshNode<Decimal> aNode4;
     aNode4 << aVertex4;
     aMesh.addNode(4, aNode4);
 
-    CMshNode<decimal> aNode5;
+    CMshNode<Decimal> aNode5;
     aNode5 << aVertex5;
     aMesh.addNode(5, aNode5);
 
-    CMshNode<decimal> aNode6;
+    CMshNode<Decimal> aNode6;
     aNode6 << aVertex6;
     aMesh.addNode(6, aNode6);
 
-    CMshNode<decimal> aNode7;
+    CMshNode<Decimal> aNode7;
     aNode7 << aVertex7;
     aMesh.addNode(7, aNode7);
 
-    CMshNode<decimal> aNode8;
+    CMshNode<Decimal> aNode8;
     aNode8 << aVertex8;
     aMesh.addNode(8, aNode8);
 
-    CMshElement<decimal> anElement1(ET_HEXAHEDRON);
+    CMshElement<Decimal> anElement1(ET_HEXAHEDRON);
     anElement1.addNodeId(1);
     anElement1.addNodeId(2);
     anElement1.addNodeId(3);
@@ -452,8 +452,8 @@ TEST_F(CTestFvmMesh, orient3) {
 
     aMesh.generateFaces(1E-6);
 
-    CPdeField<decimal> T;
-    CPosGmsh<decimal> aPosGmsh;
+    CPdeField<Decimal> T;
+    CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aMesh.extractBoundary(1E-6));
     aPosGmsh.save(T, "hexa_orient3.msh", "hexa");
@@ -462,16 +462,16 @@ TEST_F(CTestFvmMesh, orient3) {
 
 TEST_F(CTestFvmMesh, clip1) {
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(1.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(1.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, 1.0, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex6(1.0, 0.0, -1.0);
-    CGeoCoordinate<decimal> aVertex7(1.0, 1.0, -1.0);
-    CGeoCoordinate<decimal> aVertex8(0.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(1.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, 1.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex6(1.0, 0.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex7(1.0, 1.0, -1.0);
+    CGeoCoordinate<Decimal> aVertex8(0.0, 1.0, -1.0);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -486,7 +486,7 @@ TEST_F(CTestFvmMesh, clip1) {
 
     EXPECT_NEAR(1.0, aHexahedron.volume(), 1E-12);
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     const Integer nu = 3;
     const Integer nv = 2;
@@ -502,7 +502,7 @@ TEST_F(CTestFvmMesh, clip1) {
     EXPECT_EQ(nbTotalFaces, aBasicMesher.mesh().nbFaces());
     EXPECT_EQ(nbExteriorFaces, aBasicMesher.mesh().nbBoundaryFaces());
 
-    CFvmMesh<decimal> aFvmMesh(aBasicMesher.mesh());
+    CFvmMesh<Decimal> aFvmMesh(aBasicMesher.mesh());
 
     Integer nbDuplicateFaces = (nbTotalFaces - nbExteriorFaces);               // Number of duplicate faces (interior)
     Integer nbNonDuplicateInteriorFaces = nbDuplicateFaces / 2;                // Number of non-duplicate faces (interior)
@@ -512,7 +512,7 @@ TEST_F(CTestFvmMesh, clip1) {
 
     Integer aControlId = 0;
 
-    CFvmControlVolume<decimal> aControlVolume = aFvmMesh.controlVolume(aControlId);
+    CFvmControlVolume<Decimal> aControlVolume = aFvmMesh.controlVolume(aControlId);
     
     aControlVolume.calculateVolume();
 
@@ -524,11 +524,11 @@ TEST_F(CTestFvmMesh, clip1) {
 
     EXPECT_EQ(6, aControlVolume.nbFaces());
 
-    CFvmMeshSearch<decimal> aFvmMeshSearch(aFvmMesh);
+    CFvmMeshSearch<Decimal> aFvmMeshSearch(aFvmMesh);
 
     aFvmMeshSearch.build();
 
-    CGeoCoordinate<decimal> aCoordinate(0.5, 0.75, -1.0);
+    CGeoCoordinate<Decimal> aCoordinate(0.5, 0.75, -1.0);
 
     std::vector<Integer> sFaceIds;
 
@@ -546,7 +546,7 @@ TEST_F(CTestFvmMesh, clip1) {
 
         Integer aFaceId = aControlVolume.faceId(i);
 
-        CFvmFace<decimal> aFace = aFvmMesh.face(aFaceId);
+        CFvmFace<Decimal> aFace = aFvmMesh.face(aFaceId);
 
         aFace.calculateNormal();
 
@@ -576,12 +576,12 @@ TEST_F(CTestFvmMesh, clip1) {
     }
 
     // Clip current CV
-    decimal volumeFactionAct;
+    Decimal volumeFactionAct;
     Integer nIterations;
 
-    CGeoNormal<decimal> aNormal(1, 0, 0);
+    CGeoNormal<Decimal> aNormal(1, 0, 0);
 
-    CFvmFace<decimal> aNewFace;
+    CFvmFace<Decimal> aNewFace;
 
     // Get highest face id
     Integer aNewFaceId = aFvmMesh.nextFaceId();
@@ -598,7 +598,7 @@ TEST_F(CTestFvmMesh, clip1) {
 
         Integer aFaceId = aControlVolume.faceId(i);
 
-        CFvmFace<decimal> aFace = aFvmMesh.face(aFaceId);
+        CFvmFace<Decimal> aFace = aFvmMesh.face(aFaceId);
 
         aFace.calculateNormal();
 
@@ -631,20 +631,20 @@ TEST_F(CTestFvmMesh, clip1) {
 
 TEST_F(CTestFvmMesh, clip2) {
 
-    decimal length = 0.02;
-    decimal width = 0.01;
-    decimal height = 0.001;
+    Decimal length = 0.02;
+    Decimal width = 0.01;
+    Decimal height = 0.001;
 
-    CGeoCoordinate<decimal> aVertex1(0.0, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex2(length, 0.0, 0.0);
-    CGeoCoordinate<decimal> aVertex3(length, width, 0.0);
-    CGeoCoordinate<decimal> aVertex4(0.0, width, 0.0);
-    CGeoCoordinate<decimal> aVertex5(0.0, 0.0, -height);
-    CGeoCoordinate<decimal> aVertex6(length, 0.0, -height);
-    CGeoCoordinate<decimal> aVertex7(length, width, -height);
-    CGeoCoordinate<decimal> aVertex8(0.0, width, -height);
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(length, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(length, width, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, width, 0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, -height);
+    CGeoCoordinate<Decimal> aVertex6(length, 0.0, -height);
+    CGeoCoordinate<Decimal> aVertex7(length, width, -height);
+    CGeoCoordinate<Decimal> aVertex8(0.0, width, -height);
 
-    CGeoHexahedron<decimal> aHexahedron;
+    CGeoHexahedron<Decimal> aHexahedron;
 
     aHexahedron.addVertex(aVertex1);
     aHexahedron.addVertex(aVertex2);
@@ -659,27 +659,27 @@ TEST_F(CTestFvmMesh, clip2) {
     const Integer nv = 5;
     const Integer nw = 1;
 
-    CMshBasicMesher<decimal> aBasicMesher;
+    CMshBasicMesher<Decimal> aBasicMesher;
 
     aBasicMesher.generate(aHexahedron, nu, nv, nw);
 
     aBasicMesher.mesh().generateFaces(1E-12);
 
-    CFvmMesh<decimal> aFvmMesh(aBasicMesher.mesh());
+    CFvmMesh<Decimal> aFvmMesh(aBasicMesher.mesh());
 
     // Clip current CV
     Integer aControlId = 25;
 
-    decimal volumeFactionAct;
+    Decimal volumeFactionAct;
     Integer nIterations;
 
-    CGeoNormal<decimal> aNormal(1, 0, 0);
+    CGeoNormal<Decimal> aNormal(1, 0, 0);
 
-    CFvmControlVolume<decimal> aControlVolume;
+    CFvmControlVolume<Decimal> aControlVolume;
 
     aControlVolume = aFvmMesh.controlVolume(aControlId);
 
-    CFvmFace<decimal> aNewFace;
+    CFvmFace<Decimal> aNewFace;
 
     // Get highest face id
     Integer aNewFaceId = aFvmMesh.nextFaceId();
