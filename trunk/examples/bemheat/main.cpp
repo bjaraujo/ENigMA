@@ -209,9 +209,9 @@ void solve2()
 
         CBemTriangle<double> aTriangle;
 
-        for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
+        for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
-            Integer aNodeId = anElement.nodeId(i);
+            Integer aNodeId = anElement.nodeId(j);
 
             CMshNode<double> aNode = aSurfaceMesh.node(aNodeId);
 
@@ -410,9 +410,9 @@ void solve3()
 
         CBemTriangle<double> aTriangle;
 
-        for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
+        for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
-            Integer aNodeId = anElement.nodeId(i);
+            Integer aNodeId = anElement.nodeId(j);
 
             CMshNode<double> aNode = aSurfaceMesh.node(aNodeId);
 
@@ -561,9 +561,9 @@ void solve4()
 
         CBemTriangle<double> aTriangle;
 
-        for (Integer i = 0; i < anElement.nbNodeIds(); ++i) {
+        for (Integer j = 0; j < anElement.nbNodeIds(); ++j) {
 
-            Integer aNodeId = anElement.nodeId(i);
+            Integer aNodeId = anElement.nodeId(j);
 
             CMshNode<double> aNode = aSurfaceMesh.node(aNodeId);
 
@@ -591,12 +591,12 @@ void solve4()
 
         aBemMesh[i].calculateCentroid();
 
-        if (fabs(aBemMesh[i].centroid().x() > 0.1)) {
+        if (fabs(aBemMesh[i].centroid().x()) > 0.1) {
             Tf[i] = 23.0;
             Tfixed[i] = true;
         }
 
-        if (fabs(aBemMesh[i].centroid().y() > 0.1)) {
+        if (fabs(aBemMesh[i].centroid().y()) > 0.1) {
             Tf[i] = 23.0;
             Tfixed[i] = true;
         }

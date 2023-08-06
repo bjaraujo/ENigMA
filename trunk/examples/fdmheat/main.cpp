@@ -149,8 +149,6 @@ void unsteadyHeatConduction1D()
     // Set BC and initial conditions
     T.u.resize(T.mesh().nbNodes());
 
-    Integer ii;
-
     for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
     {
 
@@ -160,7 +158,6 @@ void unsteadyHeatConduction1D()
         if (fabs(aNode.x() - 1.0) < 1E-6)
         {
             T.setFixedValue(i, 0.0);
-            ii = i;
         }
 
         T.u(i) = 1.0;

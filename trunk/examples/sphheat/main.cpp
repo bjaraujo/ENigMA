@@ -85,7 +85,7 @@ void steadyHeatConduction1D()
     double mass = 1.0;
     double rho = 1.0;
 
-    sParticles.init(T, mass, rho, diff, h, dt);
+    sParticles.init(T, mass, diff, h, dt);
 
     for (Integer i = 0; i < nIter; ++i)
     {
@@ -196,7 +196,7 @@ void steadyHeatConduction2D()
     double mass = 1.0;
     double rho = 1.0;
 
-    sParticles.init(T, mass, rho, diff, h, dt);
+    sParticles.init(T, mass, diff, h, dt);
 
     for (Integer i = 0; i < nIter; ++i)
     {
@@ -323,7 +323,7 @@ void steadyHeatConduction3D()
     double mass = 1.0;
     double rho = 1.0;
 
-    sParticles.init(T, mass, rho, diff, h, dt);
+    sParticles.init(T, mass, diff, h, dt);
 
     for (Integer i = 0; i < nIter; ++i)
     {
