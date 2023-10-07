@@ -12,7 +12,7 @@ jobs:
       matrix:
         platform: [windows-2022, ubuntu-22.04]
         arch: [x86, x64]
-        python-version: ['3.7.x', '3.8.x', '3.9.x']
+        python-version: ['3.7.x', '3.8.x', '3.9.x', '3.10.x']
         exclude:
           - platform: ubuntu-22.04
             arch: x86
