@@ -41,12 +41,12 @@ meshSize = 0.026
 
 edgeMesh.generateFaces(1E-3)
 triangleMesher.remesh(edgeMesh, meshSize)
-triangleMesher.generate(edgeMesh, 9999, meshSize, meshSize, meshSize, 1E-6)
-
-triangleMesher.flipEdges()
-triangleMesher.relaxNodes()
+interiorPoints = ENigMA.StdVectorCGeoCoordinateDouble()
+triangleMesher.generate(edgeMesh, 9999, interiorPoints, meshSize, meshSize, meshSize, 1E-6)
 
 surfaceMesh = triangleMesher.mesh()
+triangleMesher.flipEdges(surfaceMesh)
+triangleMesher.relaxNodes(surfaceMesh)
 
 print(surfaceMesh.nbNodes())
 print(surfaceMesh.nbElements())
