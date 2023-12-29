@@ -178,7 +178,7 @@ void unsteadyHeatConduction1D()
 
     CMshBasicMesher<double> aBasicMesher;
 
-    const Integer nu = 50;
+    const Integer nu = 100;
     const Integer nv = 1;
     const Integer nw = 1;
 
@@ -227,7 +227,7 @@ void unsteadyHeatConduction1D()
     double k = 1.0;        // conductivity
 
     double dt = 0.01;
-    Integer nIter = 1;
+    Integer nIter = 10;
     double time = dt * nIter;
 
     // Unsteady conduction in a line
