@@ -579,19 +579,19 @@ L = 1.0
 E = 30E+9
 I = b * h * h * h / 12
 
-vertex1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
-vertex2 = ENigMA.CMshNodeDouble(L, 0.0, 0.0)
-vertex3 = ENigMA.CMshNodeDouble(L, h, 0.0)
-vertex4 = ENigMA.CMshNodeDouble(0.0, h, 0.0)
+vertex1 = ENigMA.CMshNode(0.0, 0.0, 0.0)
+vertex2 = ENigMA.CMshNode(L, 0.0, 0.0)
+vertex3 = ENigMA.CMshNode(L, h, 0.0)
+vertex4 = ENigMA.CMshNode(0.0, h, 0.0)
 
-quadrilateral = ENigMA.CGeoQuadrilateralDouble()
+quadrilateral = ENigMA.CGeoQuadrilateral()
 
 quadrilateral.addVertex(vertex1)
 quadrilateral.addVertex(vertex2)
 quadrilateral.addVertex(vertex3)
 quadrilateral.addVertex(vertex4)
 
-basicMesher = ENigMA.CMshBasicMesherDouble()
+basicMesher = ENigMA.CMshBasicMesher()
 
 basicMesher.generate(quadrilateral, 400, 20, True)
 
@@ -602,13 +602,13 @@ for i in range(0, surfaceMesh.nbElements()):
     surfaceMesh.element(elementId).setThickness(b)
 
 # Material
-material = ENigMA.CMatMaterialDouble()
+material = ENigMA.CMatMaterial()
 
 material.addProperty(ENigMA.PT_ELASTIC_MODULUS, E)
 material.addProperty(ENigMA.PT_POISSON_COEFFICIENT, 0.3)
 
 # Stress field
-u = ENigMA.CPdeFieldDouble()
+u = ENigMA.CPdeField()
 
 u.setMesh(surfaceMesh)
 u.setMaterial(material)
@@ -635,7 +635,7 @@ for i in range(0, surfaceMesh.nbNodes()):
 sleSystem = ENigMA.laplacian(u)
 sleSystem.setRhs(0)
         
-pdeEquation = ENigMA.CPdeEquationDouble(sleSystem)
+pdeEquation = ENigMA.CPdeEquation(sleSystem)
 
 pdeEquation.setSources(u)
 
@@ -643,7 +643,7 @@ pdeEquation.setElimination(u)
 
 pdeEquation.solve(u)
 
-posGmsh = ENigMA.CPosGmshDouble()
+posGmsh = ENigMA.CPosGmsh()
 posGmsh.save(u, "fem_01.msh", "Structural")
 
 # Theoretical displacement
@@ -676,26 +676,26 @@ Temperature at point (0.5, 0.5) (theoretical) = 0.25
 import math
 from ENigMA import ENigMA
 
-vertex1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
-vertex2 = ENigMA.CMshNodeDouble(1.0, 0.0, 0.0)
-vertex3 = ENigMA.CMshNodeDouble(1.0, 1.0, 0.0)
-vertex4 = ENigMA.CMshNodeDouble(0.0, 1.0, 0.0)
+vertex1 = ENigMA.CMshNode(0.0, 0.0, 0.0)
+vertex2 = ENigMA.CMshNode(1.0, 0.0, 0.0)
+vertex3 = ENigMA.CMshNode(1.0, 1.0, 0.0)
+vertex4 = ENigMA.CMshNode(0.0, 1.0, 0.0)
 
-quadrilateral = ENigMA.CGeoQuadrilateralDouble()
+quadrilateral = ENigMA.CGeoQuadrilateral()
 
 quadrilateral.addVertex(vertex1)
 quadrilateral.addVertex(vertex2)
 quadrilateral.addVertex(vertex3)
 quadrilateral.addVertex(vertex4)
 
-basicMesher = ENigMA.CMshBasicMesherDouble()
+basicMesher = ENigMA.CMshBasicMesher()
 
 basicMesher.generate(quadrilateral, 16, 16, True)
 
 surfaceMesh = basicMesher.mesh()
 
 # Temperature field
-u = ENigMA.CPdeFieldDouble()
+u = ENigMA.CPdeField()
 
 u.setMesh(surfaceMesh)
 u.setSimulationType(ENigMA.ST_THERMAL)
@@ -725,7 +725,7 @@ for i in range(0, surfaceMesh.nbNodes()):
 sleSystem = ENigMA.laplacian(u)
 sleSystem.setRhs(0)
         
-pdeEquation = ENigMA.CPdeEquationDouble(sleSystem)
+pdeEquation = ENigMA.CPdeEquation(sleSystem)
 
 pdeEquation.setSources(u)
 
@@ -733,7 +733,7 @@ pdeEquation.setElimination(u)
 
 pdeEquation.solve(u)
 
-posGmsh = ENigMA.CPosGmshDouble()
+posGmsh = ENigMA.CPosGmsh()
 posGmsh.save(u, "fem_02.msh", "Thermal")
 
 for i in range(0, surfaceMesh.nbNodes()):
@@ -743,7 +743,7 @@ for i in range(0, surfaceMesh.nbNodes()):
     if (math.fabs(node.x() - 0.5) < 1E-6 and math.fabs(node.y() - 0.5) < 1E-6):
         index = surfaceMesh.nodeIndex(nodeId)
 
-anaTemperature = ENigMA.CAnaTemperatureDouble()
+anaTemperature = ENigMA.CAnaTemperature()
 
 ut = anaTemperature.steadyStateHeatConduction2D(0.5, 0.5)
 
@@ -767,16 +767,16 @@ Lid-driven cavity (Re = 1000).
 import math
 from ENigMA import ENigMA
 
-vertex1 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, +0.1)
-vertex2 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, +0.1)
-vertex3 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, +0.1)
-vertex4 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, +0.1)
-vertex5 = ENigMA.CGeoCoordinateDouble(+0.00, +0.00, -0.1)
-vertex6 = ENigMA.CGeoCoordinateDouble(+1.00, +0.00, -0.1)
-vertex7 = ENigMA.CGeoCoordinateDouble(+1.00, +1.00, -0.1)
-vertex8 = ENigMA.CGeoCoordinateDouble(+0.00, +1.00, -0.1)
+vertex1 = ENigMA.CGeoCoordinate(+0.00, +0.00, +0.1)
+vertex2 = ENigMA.CGeoCoordinate(+1.00, +0.00, +0.1)
+vertex3 = ENigMA.CGeoCoordinate(+1.00, +1.00, +0.1)
+vertex4 = ENigMA.CGeoCoordinate(+0.00, +1.00, +0.1)
+vertex5 = ENigMA.CGeoCoordinate(+0.00, +0.00, -0.1)
+vertex6 = ENigMA.CGeoCoordinate(+1.00, +0.00, -0.1)
+vertex7 = ENigMA.CGeoCoordinate(+1.00, +1.00, -0.1)
+vertex8 = ENigMA.CGeoCoordinate(+0.00, +1.00, -0.1)
 
-hexahedron = ENigMA.CGeoHexahedronDouble()
+hexahedron = ENigMA.CGeoHexahedron()
 
 hexahedron.addVertex(vertex1)
 hexahedron.addVertex(vertex2)
@@ -787,14 +787,14 @@ hexahedron.addVertex(vertex6)
 hexahedron.addVertex(vertex7)
 hexahedron.addVertex(vertex8)
 
-mesher = ENigMA.CMshBasicMesherDouble()
+mesher = ENigMA.CMshBasicMesher()
 mesher.generate(hexahedron, 40, 40, 1, False)
 mesher.mesh().generateFaces(1E-3)
 mesher.mesh().calculateFaceCentroid()
 mesher.mesh().calculateElementCentroid()
 
 volumeMesh = mesher.mesh()
-fvmMesh = ENigMA.CFvmMeshDouble(volumeMesh)
+fvmMesh = ENigMA.CFvmMesh(volumeMesh)
 
 U = 1.0    # lid velocity
 mu = 0.001 # dynamic viscosity
@@ -802,7 +802,7 @@ rho = 1.0  # density
 
 nu = mu / rho # kinematic viscosity 
 
-pisoSolver = ENigMA.CFvmPisoSolverDouble(fvmMesh)
+pisoSolver = ENigMA.CFvmPisoSolver(fvmMesh)
 
 pisoSolver.setGravity(0.0, 0.0, 0.0)
 pisoSolver.setMaterialProperties(rho, mu)
@@ -847,7 +847,7 @@ for ii in range(0, iter):
     print('Iter = ' + str(ii + 1) + ' of ' + str(iter))
     pisoSolver.iterate(dt)
 
-u = ENigMA.CPdeFieldDouble()
+u = ENigMA.CPdeField()
 u.setMesh(volumeMesh)
 u.setSimulationType(ENigMA.ST_FLOW)
 u.setDiscretMethod(ENigMA.DM_FVM)
@@ -863,7 +863,7 @@ for i in range(0, fvmMesh.nbControlVolumes()):
     u.setValue(i * 2 + 0, pisoSolver.u(controlVolumeId))
     u.setValue(i * 2 + 1, pisoSolver.v(controlVolumeId))
 
-posGmsh = ENigMA.CPosGmshDouble()
+posGmsh = ENigMA.CPosGmsh()
 posGmsh.save(u, "fvm_01.msh", "Flow")
 ```
 

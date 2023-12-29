@@ -2,25 +2,25 @@ import subprocess
 
 from ENigMA import ENigMA
  
-vertex1 = ENigMA.CGeoCoordinateDouble(0, 0, 0)
-vertex2 = ENigMA.CGeoCoordinateDouble(1, 0, 0)
-vertex3 = ENigMA.CGeoCoordinateDouble(1, 1, 0)
-vertex4 = ENigMA.CGeoCoordinateDouble(0, 1, 0)
+vertex1 = ENigMA.CGeoCoordinate(0, 0, 0)
+vertex2 = ENigMA.CGeoCoordinate(1, 0, 0)
+vertex3 = ENigMA.CGeoCoordinate(1, 1, 0)
+vertex4 = ENigMA.CGeoCoordinate(0, 1, 0)
 
-quadrilateral = ENigMA.CGeoQuadrilateralDouble()
+quadrilateral = ENigMA.CGeoQuadrilateral()
 
 quadrilateral.addVertex(vertex1)
 quadrilateral.addVertex(vertex2)
 quadrilateral.addVertex(vertex3)
 quadrilateral.addVertex(vertex4)
 
-basicMesher = ENigMA.CMshBasicMesherDouble()
+basicMesher = ENigMA.CMshBasicMesher()
 
 basicMesher.generate(quadrilateral, 15, 15, True)
 
 surfaceMesh = basicMesher.mesh()
 
-T = ENigMA.CPdeFieldDouble()
+T = ENigMA.CPdeField()
 
 T.setMesh(surfaceMesh)
 T.setDiscretMethod(ENigMA.DM_FEM)
@@ -50,13 +50,13 @@ for i in range(0, surfaceMesh.nbNodes()):
         
     T.setValue(i, 0.0)
     
-pdeEquation = ENigMA.CPdeEquationDouble(ENigMA.laplacian(T))
+pdeEquation = ENigMA.CPdeEquation(ENigMA.laplacian(T))
 
 pdeEquation.setElimination(T)
 
 pdeEquation.solve(T)
 
-posGmsh = ENigMA.CPosGmshDouble()
+posGmsh = ENigMA.CPosGmsh()
 
 posGmsh.save(T, "pde1.msh", "tris")
 

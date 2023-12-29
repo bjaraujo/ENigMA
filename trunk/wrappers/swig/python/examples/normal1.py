@@ -1,7 +1,7 @@
 
 from ENigMA import ENigMA
 
-a = ENigMA.CGeoNormalDouble(1, 2, 3)
+a = ENigMA.CGeoNormal(1, 2, 3)
 
 print('> a')
 print(a.x())

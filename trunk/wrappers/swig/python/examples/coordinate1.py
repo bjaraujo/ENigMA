@@ -1,9 +1,9 @@
 
 from ENigMA import ENigMA
 
-a = ENigMA.CGeoCoordinateDouble(1, 2, 3)
+a = ENigMA.CGeoCoordinate(1, 2, 3)
 
-b = ENigMA.CGeoCoordinateSystemDouble()
+b = ENigMA.CGeoCoordinateSystem()
 
 # set value
 b(0, 0, 1)

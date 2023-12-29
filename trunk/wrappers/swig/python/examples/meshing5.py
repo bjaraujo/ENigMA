@@ -2,31 +2,31 @@ from ENigMA import ENigMA
 
 import tkinter
 
-edgeMesh = ENigMA.CMshMeshDouble()
+edgeMesh = ENigMA.CMshMesh()
 
-node1 = ENigMA.CMshNodeDouble(0.0, 0.0, 0.0)
-node2 = ENigMA.CMshNodeDouble(1.0, 0.0, 0.0)
-node3 = ENigMA.CMshNodeDouble(1.0, 1.0, 0.0)
-node4 = ENigMA.CMshNodeDouble(0.0, 1.0, 0.0)
+node1 = ENigMA.CMshNode(0.0, 0.0, 0.0)
+node2 = ENigMA.CMshNode(1.0, 0.0, 0.0)
+node3 = ENigMA.CMshNode(1.0, 1.0, 0.0)
+node4 = ENigMA.CMshNode(0.0, 1.0, 0.0)
 
 edgeMesh.addNode(1, node1)
 edgeMesh.addNode(2, node2)
 edgeMesh.addNode(3, node3)
 edgeMesh.addNode(4, node4)
 
-element1 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element1 = ENigMA.CMshElement(ENigMA.ET_BEAM)
 element1.addNodeId(1)
 element1.addNodeId(2)
 
-element2 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element2 = ENigMA.CMshElement(ENigMA.ET_BEAM)
 element2.addNodeId(2)
 element2.addNodeId(3)
 
-element3 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element3 = ENigMA.CMshElement(ENigMA.ET_BEAM)
 element3.addNodeId(3)
 element3.addNodeId(4)
 
-element4 = ENigMA.CMshElementDouble(ENigMA.ET_BEAM)
+element4 = ENigMA.CMshElement(ENigMA.ET_BEAM)
 element4.addNodeId(4)
 element4.addNodeId(1)
 
@@ -35,13 +35,13 @@ edgeMesh.addElement(2, element2)
 edgeMesh.addElement(3, element3)
 edgeMesh.addElement(4, element4)
 
-triangleMesher = ENigMA.CMshTriangleMesherDouble()
+triangleMesher = ENigMA.CMshTriangleMesher()
 
 meshSize = 0.026
 
 edgeMesh.generateFaces(1E-3)
 triangleMesher.remesh(edgeMesh, meshSize)
-interiorPoints = ENigMA.StdVectorCGeoCoordinateDouble()
+interiorPoints = ENigMA.StdVectorCGeoCoordinate()
 triangleMesher.generate(edgeMesh, 9999, interiorPoints, meshSize, meshSize, meshSize, 1E-6)
 
 surfaceMesh = triangleMesher.mesh()

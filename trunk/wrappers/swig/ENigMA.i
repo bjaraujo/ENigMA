@@ -98,9 +98,9 @@
 
 namespace std
 {
-  %template(StdVectorInt) vector<int>;
-  %template(StdVectorFloat) vector<float>;
-  %template(StdVectorDouble) vector<double>; 
+  %template(StdVectorI) vector<int>;
+  %template(StdVectorF) vector<float>;
+  %template(StdVectorD) vector<double>; 
 }
 
 %{
@@ -168,18 +168,18 @@ namespace std
 #include "PosVtk.hpp"
 %}
 
-%template(StdVectorCGeoPolygonDouble) std::vector<ENigMA::geometry::CGeoPolygon<double> >;
-%template(StdVectorCGeoCoordinateDouble) std::vector<ENigMA::geometry::CGeoCoordinate<double> >;
-%template(StdVectorCGeoTriangleDouble) std::vector<ENigMA::geometry::CGeoTriangle<double> >;
-%template(StdVectorCGeoTetrahedronDouble) std::vector<ENigMA::geometry::CGeoTetrahedron<double> >;
-%template(StdVectorCMshFaceDouble) std::vector<ENigMA::mesh::CMshFace<double> >;
+%template(StdVectorCGeoPolygon) std::vector<ENigMA::geometry::CGeoPolygon<double> >;
+%template(StdVectorCGeoCoordinate) std::vector<ENigMA::geometry::CGeoCoordinate<double> >;
+%template(StdVectorCGeoTriangle) std::vector<ENigMA::geometry::CGeoTriangle<double> >;
+%template(StdVectorCGeoTetrahedron) std::vector<ENigMA::geometry::CGeoTetrahedron<double> >;
+%template(StdVectorCMshFace) std::vector<ENigMA::mesh::CMshFace<double> >;
 
 %include "CmnTypes.hpp"
 
 // Coordinate
 %include "GeoCoordinate.hpp"
 
-%template(CGeoCoordinateDouble) ENigMA::geometry::CGeoCoordinate<double>;
+%template(CGeoCoordinate) ENigMA::geometry::CGeoCoordinate<double>;
 
 %extend ENigMA::geometry::CGeoCoordinate<double> {
 
@@ -228,7 +228,7 @@ namespace std
 // Coordinate System
 %include "GeoCoordinateSystem.hpp"
 
-%template(CGeoCoordinateSystemDouble) ENigMA::geometry::CGeoCoordinateSystem<double>;
+%template(CGeoCoordinateSystem) ENigMA::geometry::CGeoCoordinateSystem<double>;
 
 %extend ENigMA::geometry::CGeoCoordinateSystem<double> {
 
@@ -245,7 +245,7 @@ namespace std
 // Vector
 %include "GeoVector.hpp"
 
-%template(CGeoVectorDouble) ENigMA::geometry::CGeoVector<double>;
+%template(CGeoVector) ENigMA::geometry::CGeoVector<double>;
 
 %extend ENigMA::geometry::CGeoVector<double> {
 
@@ -282,7 +282,7 @@ namespace std
 // Normal
 %include "GeoNormal.hpp"
 
-%template(CGeoNormalDouble) ENigMA::geometry::CGeoNormal<double>;
+%template(CGeoNormal) ENigMA::geometry::CGeoNormal<double>;
 
 %extend ENigMA::geometry::CGeoNormal<double> {
 
@@ -323,12 +323,12 @@ namespace std
 // Bounding Box
 %include "GeoBoundingBox.hpp"
 
-%template(CGeoBoundingBoxDouble) ENigMA::geometry::CGeoBoundingBox<double>;
+%template(CGeoBoundingBox) ENigMA::geometry::CGeoBoundingBox<double>;
 
 // Plane
 %include "GeoPlane.hpp"
 
-%template(CGeoPlaneDouble) ENigMA::geometry::CGeoPlane<double>;
+%template(CGeoPlane) ENigMA::geometry::CGeoPlane<double>;
 
 %extend ENigMA::geometry::CGeoPlane<double> {
 
@@ -337,12 +337,12 @@ namespace std
 // Vertex List
 %include "GeoVertexList.hpp"
 
-%template(CGeoVertexListDouble) ENigMA::geometry::CGeoVertexList<double>;
+%template(CGeoVertexList) ENigMA::geometry::CGeoVertexList<double>;
 
 // Line
 %include "GeoLine.hpp"
 
-%template(CGeoLineDouble) ENigMA::geometry::CGeoLine<double>;
+%template(CGeoLine) ENigMA::geometry::CGeoLine<double>;
 
 %extend ENigMA::geometry::CGeoLine<double> {
     
@@ -355,12 +355,12 @@ namespace std
 // Line List
 %include "GeoLineList.hpp"
 
-%template(CGeoLineListDouble) ENigMA::geometry::CGeoLineList<double>;
+%template(CGeoLineList) ENigMA::geometry::CGeoLineList<double>;
 
 // Polyline
 %include "GeoPolyline.hpp"
 
-%template(CGeoPolylineDouble) ENigMA::geometry::CGeoPolyline<double>;
+%template(CGeoPolyline) ENigMA::geometry::CGeoPolyline<double>;
 
 %extend ENigMA::geometry::CGeoPolyline<double> {
     
@@ -373,7 +373,7 @@ namespace std
 // Triangle
 %include "GeoTriangle.hpp"
 
-%template(CGeoTriangleDouble) ENigMA::geometry::CGeoTriangle<double>;
+%template(CGeoTriangle) ENigMA::geometry::CGeoTriangle<double>;
 
 %extend ENigMA::geometry::CGeoTriangle<double> {
     
@@ -386,7 +386,7 @@ namespace std
 // Quadrilateral
 %include "GeoQuadrilateral.hpp"
 
-%template(CGeoQuadrilateralDouble) ENigMA::geometry::CGeoQuadrilateral<double>;
+%template(CGeoQuadrilateral) ENigMA::geometry::CGeoQuadrilateral<double>;
 
 %extend ENigMA::geometry::CGeoQuadrilateral<double> {
     
@@ -399,7 +399,7 @@ namespace std
 // Tetrahedron
 %include "GeoTetrahedron.hpp"
 
-%template(CGeoTetrahedronDouble) ENigMA::geometry::CGeoTetrahedron<double>;
+%template(CGeoTetrahedron) ENigMA::geometry::CGeoTetrahedron<double>;
 
 %extend ENigMA::geometry::CGeoTetrahedron<double> {
     
@@ -412,7 +412,7 @@ namespace std
 // Triangular Prism
 %include "GeoTriangularPrism.hpp"
 
-%template(CGeoTriangularPrismDouble) ENigMA::geometry::CGeoTriangularPrism<double>;
+%template(CGeoTriangularPrism) ENigMA::geometry::CGeoTriangularPrism<double>;
 
 %extend ENigMA::geometry::CGeoTriangularPrism<double> {
     
@@ -425,7 +425,7 @@ namespace std
 // Hexahedron
 %include "GeoHexahedron.hpp"
 
-%template(CGeoHexahedronDouble) ENigMA::geometry::CGeoHexahedron<double>;
+%template(CGeoHexahedron) ENigMA::geometry::CGeoHexahedron<double>;
 
 %extend ENigMA::geometry::CGeoHexahedron<double> {
     
@@ -438,22 +438,22 @@ namespace std
 // Polygon
 %include "GeoPolygon.hpp"
 
-%template(CGeoPolygonDouble) ENigMA::geometry::CGeoPolygon<double>;
+%template(CGeoPolygon) ENigMA::geometry::CGeoPolygon<double>;
 
 // Polyhedron
 %include "GeoPolyhedron.hpp"
 
-%template(CGeoPolyhedronDouble) ENigMA::geometry::CGeoPolyhedron<double>;
+%template(CGeoPolyhedron) ENigMA::geometry::CGeoPolyhedron<double>;
 
 // Ad-Tree
 %include "GeoAdtree.hpp"
 
-%template(CGeoAdtreeDouble) ENigMA::geometry::CGeoAdtree<double>;
+%template(CGeoAdtree) ENigMA::geometry::CGeoAdtree<double>;
 
 // Hash Grid
 %include "GeoHashGrid.hpp"
 
-%template(CGeoHashGridDouble) ENigMA::geometry::CGeoHashGrid<double>;
+%template(CGeoHashGrid) ENigMA::geometry::CGeoHashGrid<double>;
 
 %extend ENigMA::geometry::CGeoHashGrid<double> {
     
@@ -466,7 +466,7 @@ namespace std
 // Octree
 %include "GeoOctree.hpp"
 
-%template(CGeoOctreeDouble) ENigMA::geometry::CGeoOctree<double>;
+%template(CGeoOctree) ENigMA::geometry::CGeoOctree<double>;
 
 %extend ENigMA::geometry::CGeoOctree<double> {
     
@@ -479,27 +479,27 @@ namespace std
 // R-Tree
 %include "GeoRtree.hpp"
 
-%template(CGeoRtreeDouble) ENigMA::geometry::CGeoRtree<double>;
+%template(CGeoRtree) ENigMA::geometry::CGeoRtree<double>;
 
 // STL - File
 %include "StlFile.hpp"
 
 %ignore ENigMA::stl::CStlStats<double>::fileSize;
 
-%template(CStlEdgeDouble) ENigMA::stl::CStlEdge<double>;
-%template(CStlFacetDouble) ENigMA::stl::CStlFacet<double>;
-%template(CStlStatsDouble) ENigMA::stl::CStlStats<double>;
-%template(CStlFileDouble) ENigMA::stl::CStlFile<double>;
+%template(CStlEdge) ENigMA::stl::CStlEdge<double>;
+%template(CStlFacet) ENigMA::stl::CStlFacet<double>;
+%template(CStlStats) ENigMA::stl::CStlStats<double>;
+%template(CStlFile) ENigMA::stl::CStlFile<double>;
 
 // STL - Utils
 %include "StlUtils.hpp"
 
-%template(CStlUtilsDouble) ENigMA::stl::CStlUtils<double>;
+%template(CStlUtils) ENigMA::stl::CStlUtils<double>;
 
 // Node
 %include "MshNode.hpp"
 
-%template(CMshNodeDouble) ENigMA::mesh::CMshNode<double>;
+%template(CMshNode) ENigMA::mesh::CMshNode<double>;
 
 %extend ENigMA::mesh::CMshNode<double> {
 
@@ -520,53 +520,53 @@ namespace std
 // Face
 %include "MshFace.hpp"
 
-%template(CMshFaceDouble) ENigMA::mesh::CMshFace<double>;
+%template(CMshFace) ENigMA::mesh::CMshFace<double>;
 
 // Element
 %include "MshElement.hpp"
 
-%template(CMshElementDouble) ENigMA::mesh::CMshElement<double>;
+%template(CMshElement) ENigMA::mesh::CMshElement<double>;
 
 // Mesh
 %include "MshMesh.hpp"
 
-%template(CMshMeshDouble) ENigMA::mesh::CMshMesh<double>;
+%template(CMshMesh) ENigMA::mesh::CMshMesh<double>;
 
 // Basic Mesher
 %include "MshBasicMesher.hpp"
 
-%template(CMshBasicMesherDouble) ENigMA::mesh::CMshBasicMesher<double>;
+%template(CMshBasicMesher) ENigMA::mesh::CMshBasicMesher<double>;
 
 // Extruded Mesher
 %include "MshExtrudedMesher.hpp"
 
-%template(CMshExtrudedMesherDouble) ENigMA::mesh::CMshExtrudedMesher<double>;
+%template(CMshExtrudedMesher) ENigMA::mesh::CMshExtrudedMesher<double>;
 
 // Triangle Mesher
 %include "MshTriangleMesher.hpp"
 
 %ignore ENigMA::mesh::CMshTriangleMesher<double>::onUpdate;
 
-%template(CMshTriangleMesherDouble) ENigMA::mesh::CMshTriangleMesher<double>;
+%template(CMshTriangleMesher) ENigMA::mesh::CMshTriangleMesher<double>;
 
 // Quadrilateral Mesher
 %include "MshQuadrilateralMesher.hpp"
 
 %ignore ENigMA::mesh::CMshQuadrilateralMesher<double>::onUpdate;
 
-%template(CMshQuadrilateralMesherDouble) ENigMA::mesh::CMshQuadrilateralMesher<double>;
+%template(CMshQuadrilateralMesher) ENigMA::mesh::CMshQuadrilateralMesher<double>;
 
 // Quadrilateral Mesher
 %include "MshTetrahedronMesher.hpp"
 
 %ignore ENigMA::mesh::CMshTetrahedronMesher<double>::onUpdate;
 
-%template(CMshTetrahedronMesherDouble) ENigMA::mesh::CMshTetrahedronMesher<double>;
+%template(CMshTetrahedronMesher) ENigMA::mesh::CMshTetrahedronMesher<double>;
 
 // System of Linear Equations
 %include "SleSystem.hpp"
 
-%template(CSleSystemDouble) ENigMA::sle::CSleSystem<double>;
+%template(CSleSystem) ENigMA::sle::CSleSystem<double>;
 
 %extend ENigMA::sle::CSleSystem<double> {
 
@@ -615,17 +615,17 @@ namespace std
 // Analytical function
 %include "AnaFunction.hpp"
 
-%template(CAnaFunctionDouble) ENigMA::analytical::CAnaFunction<double>;
+%template(CAnaFunction) ENigMA::analytical::CAnaFunction<double>;
 
 // Analytical temperature
 %include "AnaTemperature.hpp"
 
-%template(CAnaTemperatureDouble) ENigMA::analytical::CAnaTemperature<double>;
+%template(CAnaTemperature) ENigMA::analytical::CAnaTemperature<double>;
 
 // Material
 %include "MatMaterial.hpp"
 
-%template(CMatMaterialDouble) ENigMA::material::CMatMaterial<double>;
+%template(CMatMaterial) ENigMA::material::CMatMaterial<double>;
 
 // PDE Field
 %include "PdeField.hpp"
@@ -633,7 +633,7 @@ namespace std
 %ignore ENigMA::pde::CPdeField<double>::uFixed;
 %ignore ENigMA::pde::CPdeField<double>::uSource;
 
-%template(CPdeFieldDouble) ENigMA::pde::CPdeField<double>;
+%template(CPdeField) ENigMA::pde::CPdeField<double>;
 
 %extend ENigMA::pde::CPdeField<double> {
 
@@ -646,17 +646,17 @@ namespace std
 // PDE Equation
 %include "PdeEquation.hpp"
 
-%template(CPdeEquationDouble) ENigMA::pde::CPdeEquation<double>;
+%template(CPdeEquation) ENigMA::pde::CPdeEquation<double>;
 
-%template(DdtDouble) ENigMA::pde::ddt<double>;
-%template(LaplacianDouble) ENigMA::pde::laplacian<double>;
-%template(DivergenceDouble) ENigMA::pde::divergence<double>;
-%template(GradientDouble) ENigMA::pde::gradient<double>;
+%template(ddt) ENigMA::pde::ddt<double>;
+%template(laplacian) ENigMA::pde::laplacian<double>;
+%template(divergence) ENigMA::pde::divergence<double>;
+%template(gradient) ENigMA::pde::gradient<double>;
 
 // Boundary condition
 %include "PdeBoundaryCondition.hpp"
 
-%template(CPdeBoundaryConditionDouble) ENigMA::pde::CPdeBoundaryCondition<double>;
+%template(CPdeBoundaryCondition) ENigMA::pde::CPdeBoundaryCondition<double>;
 
 /*
 // FEM Beam
@@ -693,12 +693,12 @@ namespace std
 // FVM Node
 %include "FvmNode.hpp"
 
-%template(CFvmNodeDouble) ENigMA::fvm::CFvmNode<double>;
+%template(CFvmNode) ENigMA::fvm::CFvmNode<double>;
 
 // Fvm Face
 %include "FvmFace.hpp"
 
-%template(CFvmFaceDouble) ENigMA::fvm::CFvmFace<double>;
+%template(CFvmFace) ENigMA::fvm::CFvmFace<double>;
 
 %extend ENigMA::fvm::CFvmFace<double> {
     
@@ -715,75 +715,75 @@ namespace std
 // Fvm Cell
 %include "FvmCell.hpp"
 
-%template(CFvmCellDouble) ENigMA::fvm::CFvmCell<double>;
+%template(CFvmCell) ENigMA::fvm::CFvmCell<double>;
 
 // Fvm Control Volume
 %include "FvmControlVolume.hpp"
 
-%template(CFvmControlVolumDouble) ENigMA::fvm::CFvmControlVolume<double>;
+%template(CFvmControlVolume) ENigMA::fvm::CFvmControlVolume<double>;
 
 // FVM Mesh
 %include "FvmMesh.hpp"
 
-%template(CFvmMeshDouble) ENigMA::fvm::CFvmMesh<double>;
+%template(CFvmMesh) ENigMA::fvm::CFvmMesh<double>;
 
 // FVM Piso Solver
 %include "FvmPisoSolver.hpp"
 
-%template(CFvmPisoSolverDouble) ENigMA::fvm::CFvmPisoSolver<double>;
+%template(CFvmPisoSolver) ENigMA::fvm::CFvmPisoSolver<double>;
 
 // FVM Temperature Solver
 %include "FvmTemperatureSolver.hpp"
 
-%template(CFvmTemperatureSolverDouble) ENigMA::fvm::CFvmTemperatureSolver<double>;
+%template(CFvmTemperatureSolver) ENigMA::fvm::CFvmTemperatureSolver<double>;
 
 // FVM Vof Solver
 %include "FvmVofSolver.hpp"
 
-%template(CFvmVofSolverDouble) ENigMA::fvm::CFvmVofSolver<double>;
+%template(CFvmVofSolver) ENigMA::fvm::CFvmVofSolver<double>;
 
 // SPH Kernel
 %include "SphKernel.hpp"
 
-%template(CSphKernelDouble) ENigMA::sph::CSphKernel<double>;
+%template(CSphKernel) ENigMA::sph::CSphKernel<double>;
 
 // SPH Convex
 %include "SphConvex.hpp"
 
-%template(CSphConvexDouble) ENigMA::sph::CSphConvex<double>;
+%template(CSphConvex) ENigMA::sph::CSphConvex<double>;
 
 // SPH Cubic Spline
 %include "SphCubicSpline.hpp"
 
-%template(CSphCubicSplineDouble) ENigMA::sph::CSphCubicSpline<double>;
+%template(CSphCubicSpline) ENigMA::sph::CSphCubicSpline<double>;
 
 // SPH Gaussian
 %include "SphGaussian.hpp"
 
-%template(CSphGaussianDouble) ENigMA::sph::CSphGaussian<double>;
+%template(CSphGaussian) ENigMA::sph::CSphGaussian<double>;
 
 // SPH Quintic
 %include "SphQuintic.hpp"
 
-%template(CSphQuinticDouble) ENigMA::sph::CSphQuintic<double>;
+%template(CSphQuintic) ENigMA::sph::CSphQuintic<double>;
 
 // SPH Spiky
 %include "SphSpiky.hpp"
 
-%template(CSphSpikyDouble) ENigMA::sph::CSphSpiky<double>;
+%template(CSphSpiky) ENigMA::sph::CSphSpiky<double>;
 
 // SPH
 
 %include "SphParticles.hpp"
 
-%template(CSphParticlesDouble) ENigMA::sph::CSphParticles<double>;
+%template(CSphParticles) ENigMA::sph::CSphParticles<double>;
 
 // Gmsh
 %include "PosGmsh.hpp"
 
-%template(CPosGmshDouble) ENigMA::post::CPosGmsh<double>;
+%template(CPosGmsh) ENigMA::post::CPosGmsh<double>;
 
 // Vtk
 %include "PosVtk.hpp"
 
-%template(CPosVtkDouble) ENigMA::post::CPosVtk<double>;
+%template(CPosVtk) ENigMA::post::CPosVtk<double>;
