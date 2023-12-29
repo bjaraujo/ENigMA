@@ -93,7 +93,7 @@ namespace ENigMA
         {
             if (!this->m_bArea || bReCalculate)
             {
-                static const Real pi = std::acos(-1.0);
+                static const Real pi = static_cast<Real>(std::acos(-1.0));
                 this->m_area = pi * this->m_radius * this->m_radius;
                 this->m_bArea = true;
             }
