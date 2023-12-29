@@ -669,7 +669,7 @@ Temperature at point (0.5, 0.5) (theoretical) = 0.25
 
 ![plate](https://github.com/bjaraujo/ENigMA/blob/master/images/fem_02.png)
 
-<details><summary>Code</summary>
+<details><summary>Code (FEM)</summary>
 <p>
 
 ```python
@@ -742,6 +742,105 @@ for i in range(0, surfaceMesh.nbNodes()):
     
     if (math.fabs(node.x() - 0.5) < 1E-6 and math.fabs(node.y() - 0.5) < 1E-6):
         index = surfaceMesh.nodeIndex(nodeId)
+
+anaTemperature = ENigMA.CAnaTemperature()
+
+ut = anaTemperature.steadyStateHeatConduction2D(0.5, 0.5)
+
+print('Temperature at point (0.5, 0.5) (theoretical) = ' + str(ut))
+print('Temperature at point (0.5, 0.5) (calculated)  = ' + str(u.value(index)))
+```
+
+</p>
+</details>
+
+<details><summary>Code (FVM)</summary>
+<p>
+        
+```python
+import math
+from ENigMA import ENigMA
+
+vertex1 = ENigMA.CMshNode(0.0, 0.0, 0.0)
+vertex2 = ENigMA.CMshNode(1.0, 0.0, 0.0)
+vertex3 = ENigMA.CMshNode(1.0, 1.0, 0.0)
+vertex4 = ENigMA.CMshNode(0.0, 1.0, 0.0)
+vertex5 = ENigMA.CMshNode(0.0, 0.0, 0.1)
+vertex6 = ENigMA.CMshNode(1.0, 0.0, 0.1)
+vertex7 = ENigMA.CMshNode(1.0, 1.0, 0.1)
+vertex8 = ENigMA.CMshNode(0.0, 1.0, 0.1)
+
+hexahedron = ENigMA.CGeoHexahedron()
+
+hexahedron.addVertex(vertex1)
+hexahedron.addVertex(vertex2)
+hexahedron.addVertex(vertex3)
+hexahedron.addVertex(vertex4)
+hexahedron.addVertex(vertex5)
+hexahedron.addVertex(vertex6)
+hexahedron.addVertex(vertex7)
+hexahedron.addVertex(vertex8)
+
+basicMesher = ENigMA.CMshBasicMesher()
+
+basicMesher.generate(hexahedron, 65, 65, 1, False)
+
+volumeMesh = basicMesher.mesh()
+
+volumeMesh.generateFaces(1E-6);
+volumeMesh.calculateFaceCentroid();
+volumeMesh.calculateElementCentroid();
+    
+# Temperature field
+u = ENigMA.CPdeField()
+
+u.setMesh(volumeMesh)
+u.setSimulationType(ENigMA.ST_THERMAL)
+u.setDiscretMethod(ENigMA.DM_FVM)
+u.setDiscretOrder(ENigMA.DO_LINEAR)
+u.setDiscretLocation(ENigMA.DL_ELEMENT_CENTER)
+u.setNbDofs(1)
+
+index = 0
+
+for i in range(0, volumeMesh.nbFaces()):
+    faceId = volumeMesh.faceId(i)
+    face = volumeMesh.face(faceId)
+    
+    if (math.fabs(volumeMesh.faceCentroid(faceId).x() - 0.0) < 1E-6):
+        fixedBC = ENigMA.CPdeBoundaryCondition(ENigMA.BT_GENERIC_FIXED_VALUE);
+        fixedBC.addCondition(ENigMA.CT_GENERIC_FIXED_VALUE, 0.0);
+        u.addBCFace(faceId, fixedBC);
+
+    if (math.fabs(volumeMesh.faceCentroid(faceId).x() - 1.0) < 1E-6):
+        fixedBC = ENigMA.CPdeBoundaryCondition(ENigMA.BT_GENERIC_FIXED_VALUE);
+        fixedBC.addCondition(ENigMA.CT_GENERIC_FIXED_VALUE, 0.0);
+        u.addBCFace(faceId, fixedBC);
+
+    if (math.fabs(volumeMesh.faceCentroid(faceId).y() - 0.0) < 1E-6):
+        fixedBC = ENigMA.CPdeBoundaryCondition(ENigMA.BT_GENERIC_FIXED_VALUE);
+        fixedBC.addCondition(ENigMA.CT_GENERIC_FIXED_VALUE, 0.0);
+        u.addBCFace(faceId, fixedBC);
+
+    if (math.fabs(volumeMesh.faceCentroid(faceId).y() - 1.0) < 1E-6):
+        fixedBC = ENigMA.CPdeBoundaryCondition(ENigMA.BT_GENERIC_FIXED_VALUE);
+        fixedBC.addCondition(ENigMA.CT_GENERIC_FIXED_VALUE, 1.0);
+        u.addBCFace(faceId, fixedBC);
+
+sleSystem = ENigMA.laplacian(u)
+sleSystem.setRhs(0)
+        
+pdeEquation = ENigMA.CPdeEquation(sleSystem)
+pdeEquation.solve(u)
+
+posGmsh = ENigMA.CPosGmsh()
+posGmsh.save(u, "fvm_02.msh", "Thermal")
+
+for i in range(0, volumeMesh.nbElements()):
+    elementId = volumeMesh.elementId(i)
+    
+    if (math.fabs(volumeMesh.elementCentroid(elementId).x() - 0.5) < 1E-6 and math.fabs(volumeMesh.elementCentroid(elementId).y() - 0.5) < 1E-6):
+        index = volumeMesh.elementIndex(elementId)
 
 anaTemperature = ENigMA.CAnaTemperature()
 
