@@ -22,31 +22,16 @@ namespace ENigMA
                 {
                     aSystem.matrixType = MT_SPARSE;
 
-                    aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());
+                    aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());                   
                     aSystem.matrixA.reserve(aField.mesh().nbElements());
 
                     aSystem.vectorB.resize(aField.mesh().nbElements());
-
                     aSystem.vectorB.setZero();
-
-                    std::vector<bool> isFixed;
-
-                    isFixed.resize(aField.mesh().nbElements(), false);
-
-                    for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr)
-                    {
-                        Integer anIndex = itr->first;
-                        isFixed[anIndex] = true;
-                    }
 
                     for (Integer el = 0; el < aField.mesh().nbElements(); el++)
                     {
                         aSystem.matrixA.coeffRef(el, el) += 1.0;
-
-                        if (isFixed[el])
-                            aSystem.vectorB[el] += aField.uFixed[el];
-                        else
-                            aSystem.vectorB[el] += aField.u[el];
+                        aSystem.vectorB[el] += aField.u[el];
                     }
 
                     aSystem.matrixA.finalize();
@@ -58,7 +43,6 @@ namespace ENigMA
                     aSystem.matrixType = MT_SPARSE;
 
                     aSystem.matrixA.resize(aField.mesh().nbElements(), aField.mesh().nbElements());
-
                     aSystem.matrixA.reserve(aField.mesh().nbElements());
 
                     aSystem.vectorB.resize(aField.mesh().nbElements());

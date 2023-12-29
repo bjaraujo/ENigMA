@@ -27,6 +27,10 @@ include_directories(
   ../../src/post
 )
 
+if(WIN32)
+add_definitions(/bigobj)
+endif(WIN32)
+
 add_executable(BemHeat ${BEMHEAT_SOURCES})
 
 add_dependencies(BemHeat eigen)
