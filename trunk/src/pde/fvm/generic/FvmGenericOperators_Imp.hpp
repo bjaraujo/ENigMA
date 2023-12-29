@@ -34,8 +34,30 @@ namespace ENigMA
 
                     for (Integer el = 0; el < aField.mesh().nbElements(); el++)
                     {
+                        Integer anElementId = aField.mesh().elementId(el);
+
+                        CMshElement<Real> anElement = aField.mesh().element(anElementId);
+
+                        Real value = aField.u[el];
+                        for (Integer i = 0; i < anElement.nbFaceIds(); ++i)
+                        {
+                            Integer aFaceId = anElement.faceId(i);
+
+                            // Check if it has boundary condition
+                            if (aField.faceHasBC(aFaceId))
+                            {
+                                CPdeBoundaryCondition<Real> aCondition = aField.faceBC(aFaceId);
+                                if (aCondition.boundaryConditionType() == BT_GENERIC_FIXED_VALUE)
+                                {
+                                    value = aCondition.conditionValue(CT_GENERIC_FIXED_VALUE);
+                                    break;
+                                }
+                            }
+
+                        }
+
                         aSystem.matrixA.coeffRef(el, el) += 1.0;
-                        aSystem.vectorB[el] += aField.u[el];
+                        aSystem.vectorB[el] += value;
                     }
 
                     aSystem.matrixA.finalize();

@@ -103,19 +103,9 @@ void steadyHeatConduction1D()
 
     }
 
-    double dt = 0.01;
-    Integer nIter = 100;
-
-    // Steady conduction in a line
-    for (Integer i = 0; i < nIter; ++i)
-    {
-
-        // Steady-state conduction in a line
-        CPdeEquation<double> aPdeEquation(1.0 / dt * ddt<double>(T) -laplacian<double>(T) = 0);
-
-        aPdeEquation.solve(T);
-
-    }
+    // Steady-state conduction in a line
+    CPdeEquation<double> aPdeEquation(laplacian<double>(T) = 0);
+    aPdeEquation.solve(T);
 
     CPosGnuplot<double> aPosGnuplot;
     aPosGnuplot.save(T, "fvm_heat_cond_st_1D.dat");
@@ -188,7 +178,7 @@ void unsteadyHeatConduction1D()
 
     CMshBasicMesher<double> aBasicMesher;
 
-    const Integer nu = 100;
+    const Integer nu = 50;
     const Integer nv = 1;
     const Integer nw = 1;
 
@@ -237,7 +227,7 @@ void unsteadyHeatConduction1D()
     double k = 1.0;        // conductivity
 
     double dt = 0.01;
-    Integer nIter = 10;
+    Integer nIter = 1;
     double time = dt * nIter;
 
     // Unsteady conduction in a line
@@ -246,7 +236,7 @@ void unsteadyHeatConduction1D()
 
         std::cout << "Time = " << dt * (i + 1) << std::endl;
 
-        CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) -k * laplacian<double>(T) = 0);
+        CPdeEquation<double> aPdeEquation(rho * Cp / dt * ddt<double>(T) + k * laplacian<double>(T) = 0);
 
         aPdeEquation.solve(T);
 
