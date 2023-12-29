@@ -31,7 +31,7 @@ namespace ENigMA
 
                     std::vector<bool> isFixed;
 
-                    isFixed.resize(aField.mesh().nbNodes(), false);
+                    isFixed.resize(aField.mesh().nbElements(), false);
 
                     for (typename std::map<Integer, Real>::const_iterator itr = aField.uFixed.begin(); itr != aField.uFixed.end(); ++itr)
                     {
