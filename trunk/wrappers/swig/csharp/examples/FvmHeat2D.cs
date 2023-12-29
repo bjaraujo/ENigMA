@@ -11,19 +11,19 @@ namespace Demo
     class FvmHeat3D
     {
 
-        static public void GenerateMesh(CMshBasicMesherDouble aMesher, vtkRenderer aRenderer)
+        static public void GenerateMesh(CMshBasicMesher aMesher, vtkRenderer aRenderer)
         {
 
-            var aVertex1 = new CGeoCoordinateDouble(+0.00, +0.00, -0.1);
-            var aVertex2 = new CGeoCoordinateDouble(+1.00, +0.00, -0.1);
-            var aVertex3 = new CGeoCoordinateDouble(+1.00, +1.00, -0.1);
-            var aVertex4 = new CGeoCoordinateDouble(+0.00, +1.00, -0.1);
-            var aVertex5 = new CGeoCoordinateDouble(+0.00, +0.00, +0.1);
-            var aVertex6 = new CGeoCoordinateDouble(+1.00, +0.00, +0.1);
-            var aVertex7 = new CGeoCoordinateDouble(+1.00, +1.00, +0.1);
-            var aVertex8 = new CGeoCoordinateDouble(+0.00, +1.00, +0.1);
+            var aVertex1 = new CGeoCoordinate(+0.00, +0.00, -0.1);
+            var aVertex2 = new CGeoCoordinate(+1.00, +0.00, -0.1);
+            var aVertex3 = new CGeoCoordinate(+1.00, +1.00, -0.1);
+            var aVertex4 = new CGeoCoordinate(+0.00, +1.00, -0.1);
+            var aVertex5 = new CGeoCoordinate(+0.00, +0.00, +0.1);
+            var aVertex6 = new CGeoCoordinate(+1.00, +0.00, +0.1);
+            var aVertex7 = new CGeoCoordinate(+1.00, +1.00, +0.1);
+            var aVertex8 = new CGeoCoordinate(+0.00, +1.00, +0.1);
 
-            var aHexahedron = new CGeoHexahedronDouble();
+            var aHexahedron = new CGeoHexahedron();
 
             aHexahedron.addVertex(aVertex1);
             aHexahedron.addVertex(aVertex2);
@@ -40,7 +40,7 @@ namespace Demo
 
         }
 
-        static public void DrawMesh(CMshBasicMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid)
+        static public void DrawMesh(CMshBasicMesher aMesher, vtkUnstructuredGrid anUnstructuredGrid)
         {
 
             vtkPoints sPoints = vtkPoints.New();
@@ -86,10 +86,10 @@ namespace Demo
 
         }
 
-        static public void Simulate(CMshBasicMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
+        static public void Simulate(CMshBasicMesher aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
         {
 
-            var T = new CPdeFieldDouble();
+            var T = new CPdeField();
 
             aMesher.mesh().generateFaces(1E-12);
 
@@ -113,28 +113,28 @@ namespace Demo
 
                 if (Math.Abs(T.mesh().faceCentroid(aFaceId).x() - 0.0) < 1E-6)
                 {
-                    var aFixedTemperature = new CPdeBoundaryConditionDouble(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
+                    var aFixedTemperature = new CPdeBoundaryCondition(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
                     aFixedTemperature.addCondition(EConditionType.CT_GENERIC_FIXED_VALUE, 0.0);
                     T.addBCFace(aFaceId, aFixedTemperature);
                 }
 
                 if (Math.Abs(T.mesh().faceCentroid(aFaceId).x() - 1.0) < 1E-6)
                 {
-                    var aFixedTemperature = new CPdeBoundaryConditionDouble(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
+                    var aFixedTemperature = new CPdeBoundaryCondition(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
                     aFixedTemperature.addCondition(EConditionType.CT_GENERIC_FIXED_VALUE, 0.0);
                     T.addBCFace(aFaceId, aFixedTemperature);
                 }
 
                 if (Math.Abs(T.mesh().faceCentroid(aFaceId).y() - 0.0) < 1E-6)
                 {
-                    var aFixedTemperature = new CPdeBoundaryConditionDouble(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
+                    var aFixedTemperature = new CPdeBoundaryCondition(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
                     aFixedTemperature.addCondition(EConditionType.CT_GENERIC_FIXED_VALUE, 0.0);
                     T.addBCFace(aFaceId, aFixedTemperature);
                 }
 
                 if (Math.Abs(T.mesh().faceCentroid(aFaceId).y() - 1.0) < 1E-6)
                 {
-                    var aFixedTemperature = new CPdeBoundaryConditionDouble(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
+                    var aFixedTemperature = new CPdeBoundaryCondition(EBoundaryConditionType.BT_GENERIC_FIXED_VALUE);
                     aFixedTemperature.addCondition(EConditionType.CT_GENERIC_FIXED_VALUE, 1.0);
                     T.addBCFace(aFaceId, aFixedTemperature);
                 }
@@ -142,7 +142,7 @@ namespace Demo
             }
 
             // Steady conduction in a rectangle
-            var aPdeEquation = new CPdeEquationDouble(ENigMA.laplacian(T));
+            var aPdeEquation = new CPdeEquation(ENigMA.laplacian(T));
 
             aPdeEquation.solve(T);
 
@@ -215,7 +215,7 @@ namespace Demo
             // set background color
             aRenderer.SetBackground(0.2, 0.3, 0.4);
 
-            var aMesher = new CMshBasicMesherDouble();
+            var aMesher = new CMshBasicMesher();
 
             FvmHeat3D.GenerateMesh(aMesher, aRenderer);
 

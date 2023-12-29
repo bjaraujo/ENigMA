@@ -11,34 +11,34 @@ namespace Demo
     class FemHeat2D
     {
 
-        static public void GenerateMesh(CMshTriangleMesherDouble aMesher, vtkRenderer aRenderer)
+        static public void GenerateMesh(CMshTriangleMesher aMesher, vtkRenderer aRenderer)
         {
 
-            var aNode1 = new CMshNodeDouble(0.0, 0.0, 0.0);
-            var aNode2 = new CMshNodeDouble(1.0, 0.0, 0.0);
-            var aNode3 = new CMshNodeDouble(1.0, 1.0, 0.0);
-            var aNode4 = new CMshNodeDouble(0.0, 1.0, 0.0);
+            var aNode1 = new CMshNode(0.0, 0.0, 0.0);
+            var aNode2 = new CMshNode(1.0, 0.0, 0.0);
+            var aNode3 = new CMshNode(1.0, 1.0, 0.0);
+            var aNode4 = new CMshNode(0.0, 1.0, 0.0);
 
-            var anEdgeMesh = new CMshMeshDouble();
+            var anEdgeMesh = new CMshMesh();
 
             anEdgeMesh.addNode(1, aNode1);
             anEdgeMesh.addNode(2, aNode2);
             anEdgeMesh.addNode(3, aNode3);
             anEdgeMesh.addNode(4, aNode4);
 
-            var anElement1 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement1 = new CMshElement(EElementType.ET_BEAM);
             anElement1.addNodeId(1);
             anElement1.addNodeId(2);
 
-            var anElement2 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement2 = new CMshElement(EElementType.ET_BEAM);
             anElement2.addNodeId(2);
             anElement2.addNodeId(3);
 
-            var anElement3 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement3 = new CMshElement(EElementType.ET_BEAM);
             anElement3.addNodeId(3);
             anElement3.addNodeId(4);
 
-            var anElement4 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement4 = new CMshElement(EElementType.ET_BEAM);
             anElement4.addNodeId(4);
             anElement4.addNodeId(1);
 
@@ -62,7 +62,7 @@ namespace Demo
 
         }
 
-        static public void DrawMesh(CMshTriangleMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid)
+        static public void DrawMesh(CMshTriangleMesher aMesher, vtkUnstructuredGrid anUnstructuredGrid)
         {
 
             vtkPoints sPoints = vtkPoints.New();
@@ -103,10 +103,10 @@ namespace Demo
 
         }
 
-        static public void Simulate(CMshTriangleMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
+        static public void Simulate(CMshTriangleMesher aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
         {
 
-            var T = new CPdeFieldDouble();
+            var T = new CPdeField();
 
             T.setMesh(aMesher.mesh());
             T.setDiscretMethod(EDiscretMethod.DM_FEM);
@@ -141,7 +141,7 @@ namespace Demo
             }
 
             // Steady conduction in a rectangle
-            var aPdeEquation = new CPdeEquationDouble(ENigMA.laplacian(T));
+            var aPdeEquation = new CPdeEquation(ENigMA.laplacian(T));
 
             aPdeEquation.setElimination(T);
 
@@ -212,7 +212,7 @@ namespace Demo
             // set background color
             aRenderer.SetBackground(0.2, 0.3, 0.4);
 
-            var aMesher = new CMshTriangleMesherDouble();
+            var aMesher = new CMshTriangleMesher();
 
             FemHeat2D.GenerateMesh(aMesher, aRenderer);
 

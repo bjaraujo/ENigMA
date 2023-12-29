@@ -11,19 +11,19 @@ namespace Demo
     class Mesh3D
     {
 
-        static public void GenerateMesh(CMshTetrahedronMesherDouble aMesher, vtkRenderer aRenderer)
+        static public void GenerateMesh(CMshTetrahedronMesher aMesher, vtkRenderer aRenderer)
         {
 
-            var aVertex1 = new CGeoCoordinateDouble(0.0, 0.0, 0.0);
-            var aVertex2 = new CGeoCoordinateDouble(1.0, 0.0, 0.0);
-            var aVertex3 = new CGeoCoordinateDouble(1.0, 1.0, 0.0);
-            var aVertex4 = new CGeoCoordinateDouble(0.0, 1.0, 0.0);
-            var aVertex5 = new CGeoCoordinateDouble(0.0, 0.0, 1.0);
-            var aVertex6 = new CGeoCoordinateDouble(1.0, 0.0, 1.0);
-            var aVertex7 = new CGeoCoordinateDouble(1.0, 1.0, 1.0);
-            var aVertex8 = new CGeoCoordinateDouble(0.0, 1.0, 1.0);
+            var aVertex1 = new CGeoCoordinate(0.0, 0.0, 0.0);
+            var aVertex2 = new CGeoCoordinate(1.0, 0.0, 0.0);
+            var aVertex3 = new CGeoCoordinate(1.0, 1.0, 0.0);
+            var aVertex4 = new CGeoCoordinate(0.0, 1.0, 0.0);
+            var aVertex5 = new CGeoCoordinate(0.0, 0.0, 1.0);
+            var aVertex6 = new CGeoCoordinate(1.0, 0.0, 1.0);
+            var aVertex7 = new CGeoCoordinate(1.0, 1.0, 1.0);
+            var aVertex8 = new CGeoCoordinate(0.0, 1.0, 1.0);
 
-            var aHexahedron = new CGeoHexahedronDouble();
+            var aHexahedron = new CGeoHexahedron();
 
             aHexahedron.addVertex(aVertex1);
             aHexahedron.addVertex(aVertex2);
@@ -34,11 +34,11 @@ namespace Demo
             aHexahedron.addVertex(aVertex7);
             aHexahedron.addVertex(aVertex8);
 
-            var aBasicMesher = new CMshBasicMesherDouble();
+            var aBasicMesher = new CMshBasicMesher();
 
             aBasicMesher.generate(aHexahedron, 10, 10, 10, true);
 
-            CMshMeshDouble aBoundaryMesh = aBasicMesher.mesh().extractBoundary(1E-6);
+            CMshMesh aBoundaryMesh = aBasicMesher.mesh().extractBoundary(1E-6);
 
             aBoundaryMesh.generateFaces(1E-4);
 
@@ -50,7 +50,7 @@ namespace Demo
 
         }
 
-        static public void DrawMesh(CMshTetrahedronMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
+        static public void DrawMesh(CMshTetrahedronMesher aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
         {
 
             vtkPoints sPoints = vtkPoints.New();
@@ -118,7 +118,7 @@ namespace Demo
             // set background color
             aRenderer.SetBackground(0.2, 0.3, 0.4);
 
-            var aMesher = new CMshTetrahedronMesherDouble();
+            var aMesher = new CMshTetrahedronMesher();
 
             Mesh3D.GenerateMesh(aMesher, aRenderer);
 

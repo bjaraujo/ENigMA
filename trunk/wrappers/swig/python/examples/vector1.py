@@ -1,8 +1,8 @@
 
 from ENigMA import ENigMA
 
-a = ENigMA.CGeoVectorDouble(1, 0, 0)
-b = ENigMA.CGeoVectorDouble(0, 1, 0)
+a = ENigMA.CGeoVector(1, 0, 0)
+b = ENigMA.CGeoVector(0, 1, 0)
 
 print('> a')
 print(a.x())

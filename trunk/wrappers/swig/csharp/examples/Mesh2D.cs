@@ -11,7 +11,7 @@ namespace Demo
     class Mesh2D
     {
 
-        static public void AddCircle(CMshMeshDouble anEdgeMesh, double cx, double cy, double radius)
+        static public void AddCircle(CMshMesh anEdgeMesh, double cx, double cy, double radius)
         {
 
             int aFirstNodeId = anEdgeMesh.nextNodeId();
@@ -21,12 +21,12 @@ namespace Demo
 
                 var teta = i / 16.0 * 2 * Math.PI;
 
-                var aNode5 = new CMshNodeDouble(cx - radius * Math.Cos(teta), cy + radius * Math.Sin(teta), 0.0);
+                var aNode5 = new CMshNode(cx - radius * Math.Cos(teta), cy + radius * Math.Sin(teta), 0.0);
                 anEdgeMesh.addNode(anEdgeMesh.nextNodeId(), aNode5);
 
                 if (i > 0)
                 {
-                    var anElement = new CMshElementDouble(EElementType.ET_BEAM);
+                    var anElement = new CMshElement(EElementType.ET_BEAM);
                     anElement.addNodeId(anEdgeMesh.nextNodeId() - 2);
                     anElement.addNodeId(anEdgeMesh.nextNodeId() - 1);
                     anEdgeMesh.addElement(anEdgeMesh.nextElementId(), anElement);
@@ -35,7 +35,7 @@ namespace Demo
             }
 
             {
-                var anElement = new CMshElementDouble(EElementType.ET_BEAM);
+                var anElement = new CMshElement(EElementType.ET_BEAM);
                 anElement.addNodeId(anEdgeMesh.nextNodeId() - 1);
                 anElement.addNodeId(aFirstNodeId);
                 anEdgeMesh.addElement(anEdgeMesh.nextElementId(), anElement);
@@ -43,34 +43,34 @@ namespace Demo
 
         }
 
-        static public void GenerateMesh(CMshTriangleMesherDouble aMesher, vtkRenderer aRenderer)
+        static public void GenerateMesh(CMshTriangleMesher aMesher, vtkRenderer aRenderer)
         {
 
-            var aNode1 = new CMshNodeDouble(0.0, 0.0, 0.0);
-            var aNode2 = new CMshNodeDouble(1.0, 0.0, 0.0);
-            var aNode3 = new CMshNodeDouble(1.0, 1.0, 0.0);
-            var aNode4 = new CMshNodeDouble(0.0, 1.0, 0.0);
+            var aNode1 = new CMshNode(0.0, 0.0, 0.0);
+            var aNode2 = new CMshNode(1.0, 0.0, 0.0);
+            var aNode3 = new CMshNode(1.0, 1.0, 0.0);
+            var aNode4 = new CMshNode(0.0, 1.0, 0.0);
 
-            var anEdgeMesh = new CMshMeshDouble();
+            var anEdgeMesh = new CMshMesh();
 
             anEdgeMesh.addNode(1, aNode1);
             anEdgeMesh.addNode(2, aNode2);
             anEdgeMesh.addNode(3, aNode3);
             anEdgeMesh.addNode(4, aNode4);
 
-            var anElement1 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement1 = new CMshElement(EElementType.ET_BEAM);
             anElement1.addNodeId(1);
             anElement1.addNodeId(2);
 
-            var anElement2 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement2 = new CMshElement(EElementType.ET_BEAM);
             anElement2.addNodeId(2);
             anElement2.addNodeId(3);
 
-            var anElement3 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement3 = new CMshElement(EElementType.ET_BEAM);
             anElement3.addNodeId(3);
             anElement3.addNodeId(4);
 
-            var anElement4 = new CMshElementDouble(EElementType.ET_BEAM);
+            var anElement4 = new CMshElement(EElementType.ET_BEAM);
             anElement4.addNodeId(4);
             anElement4.addNodeId(1);
 
@@ -144,7 +144,7 @@ namespace Demo
 
         }
 
-        static public void DrawMesh(CMshTriangleMesherDouble aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
+        static public void DrawMesh(CMshTriangleMesher aMesher, vtkUnstructuredGrid anUnstructuredGrid, vtkRenderer aRenderer)
         {
 
             vtkPoints sPoints = vtkPoints.New();
@@ -211,7 +211,7 @@ namespace Demo
             // set background color
             aRenderer.SetBackground(0.2, 0.3, 0.4);
 
-            var aMesher = new CMshTriangleMesherDouble();
+            var aMesher = new CMshTriangleMesher();
 
             Mesh2D.GenerateMesh(aMesher, aRenderer);
 

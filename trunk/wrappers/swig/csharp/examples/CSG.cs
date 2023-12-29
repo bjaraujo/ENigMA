@@ -27,25 +27,25 @@ namespace Demo
             // set background color
             aRenderer.SetBackground(0.2, 0.3, 0.4);
 
-            var aCenter = new CGeoCoordinateDouble(0, 0, 0);
+            var aCenter = new CGeoCoordinate(0, 0, 0);
 
-            var aRadius = new CGeoVectorDouble(1.0);
+            var aRadius = new CGeoVector(1.0);
 
             var a = CCsgCubeDouble.create(aCenter, aRadius);
             var b = CCsgSphereDouble.create(aCenter, 1.35, 16, 12);
 
-            var aVertex_x1 = new CGeoCoordinateDouble(-2, 0, 0);
-            var aVertex_x2 = new CGeoCoordinateDouble(+2, 0, 0);
+            var aVertex_x1 = new CGeoCoordinate(-2, 0, 0);
+            var aVertex_x2 = new CGeoCoordinate(+2, 0, 0);
 
             var c = CCsgCylinderDouble.create(aVertex_x1, aVertex_x2, 0.7, 16);
 
-            var aVertex_y1 = new CGeoCoordinateDouble(0, -2, 0);
-            var aVertex_y2 = new CGeoCoordinateDouble(0, +2, 0);
+            var aVertex_y1 = new CGeoCoordinate(0, -2, 0);
+            var aVertex_y2 = new CGeoCoordinate(0, +2, 0);
 
             var d = CCsgCylinderDouble.create(aVertex_y1, aVertex_y2, 0.7, 16);
 
-            var aVertex_z1 = new CGeoCoordinateDouble(0, 0, -2);
-            var aVertex_z2 = new CGeoCoordinateDouble(0, 0, +2);
+            var aVertex_z1 = new CGeoCoordinate(0, 0, -2);
+            var aVertex_z2 = new CGeoCoordinate(0, 0, +2);
 
             var e = CCsgCylinderDouble.create(aVertex_z1, aVertex_z2, 0.7, 16);
 

@@ -11,18 +11,18 @@ namespace Demo
     class FvmLidDriven2D
     {
 
-        static public void GenerateMesh(CMshBasicMesherDouble aMesher, vtkRenderer aRenderer)
+        static public void GenerateMesh(CMshBasicMesher aMesher, vtkRenderer aRenderer)
         {
-            var aVertex1 = new CGeoCoordinateDouble(+0.00, +0.00, -0.1);
-            var aVertex2 = new CGeoCoordinateDouble(+1.00, +0.00, -0.1);
-            var aVertex3 = new CGeoCoordinateDouble(+1.00, +1.00, -0.1);
-            var aVertex4 = new CGeoCoordinateDouble(+0.00, +1.00, -0.1);
-            var aVertex5 = new CGeoCoordinateDouble(+0.00, +0.00, +0.1);
-            var aVertex6 = new CGeoCoordinateDouble(+1.00, +0.00, +0.1);
-            var aVertex7 = new CGeoCoordinateDouble(+1.00, +1.00, +0.1);
-            var aVertex8 = new CGeoCoordinateDouble(+0.00, +1.00, +0.1);
+            var aVertex1 = new CGeoCoordinate(+0.00, +0.00, -0.1);
+            var aVertex2 = new CGeoCoordinate(+1.00, +0.00, -0.1);
+            var aVertex3 = new CGeoCoordinate(+1.00, +1.00, -0.1);
+            var aVertex4 = new CGeoCoordinate(+0.00, +1.00, -0.1);
+            var aVertex5 = new CGeoCoordinate(+0.00, +0.00, +0.1);
+            var aVertex6 = new CGeoCoordinate(+1.00, +0.00, +0.1);
+            var aVertex7 = new CGeoCoordinate(+1.00, +1.00, +0.1);
+            var aVertex8 = new CGeoCoordinate(+0.00, +1.00, +0.1);
 
-            var aHexahedron = new CGeoHexahedronDouble();
+            var aHexahedron = new CGeoHexahedron();
 
             aHexahedron.addVertex(aVertex1);
             aHexahedron.addVertex(aVertex2);
@@ -92,7 +92,7 @@ namespace Demo
             aMesher.mesh().calculateFaceCentroid();
             aMesher.mesh().calculateElementCentroid();
 
-            var aFvmMesh = new CFvmMeshDouble(aMesher.mesh());
+            var aFvmMesh = new CFvmMesh(aMesher.mesh());
 
             double U = 1.0; // Lid velocity
             double mu = 0.001; // dynamic viscosity
@@ -100,7 +100,7 @@ namespace Demo
 
             double nu = mu / rho; // kinematic viscosity 
 
-            var aPisoSolver = new CFvmPisoSolverDouble(aFvmMesh);
+            var aPisoSolver = new CFvmPisoSolver(aFvmMesh);
 
             aPisoSolver.setGravity(0.0, 0.0, 0.0);
             aPisoSolver.setMaterialProperties(rho, mu);
@@ -240,7 +240,7 @@ namespace Demo
             // set background color
             aRenderer.SetBackground(0.2, 0.3, 0.4);
 
-            var aMesher = new CMshBasicMesherDouble();
+            var aMesher = new CMshBasicMesher();
 
             FvmLidDriven2D.GenerateMesh(aMesher, aRenderer);
 

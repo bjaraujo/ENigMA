@@ -14,16 +14,16 @@ namespace Demo
         static public void DrawPolygon(vtkRenderer aRenderer)
         {
 
-            var aVertex1 = new CGeoCoordinateDouble(+0.00, +0.00, -0.5);
-            var aVertex2 = new CGeoCoordinateDouble(+1.00, +0.00, -0.5);
-            var aVertex3 = new CGeoCoordinateDouble(+1.00, +1.00, -0.5);
-            var aVertex4 = new CGeoCoordinateDouble(+0.00, +1.00, -0.5);
-            var aVertex5 = new CGeoCoordinateDouble(+0.00, +0.00, +0.5);
-            var aVertex6 = new CGeoCoordinateDouble(+1.00, +0.00, +0.5);
-            var aVertex7 = new CGeoCoordinateDouble(+1.00, +1.00, +0.5);
-            var aVertex8 = new CGeoCoordinateDouble(+0.00, +1.00, +0.5);
+            var aVertex1 = new CGeoCoordinate(+0.00, +0.00, -0.5);
+            var aVertex2 = new CGeoCoordinate(+1.00, +0.00, -0.5);
+            var aVertex3 = new CGeoCoordinate(+1.00, +1.00, -0.5);
+            var aVertex4 = new CGeoCoordinate(+0.00, +1.00, -0.5);
+            var aVertex5 = new CGeoCoordinate(+0.00, +0.00, +0.5);
+            var aVertex6 = new CGeoCoordinate(+1.00, +0.00, +0.5);
+            var aVertex7 = new CGeoCoordinate(+1.00, +1.00, +0.5);
+            var aVertex8 = new CGeoCoordinate(+0.00, +1.00, +0.5);
 
-            var aHexahedron = new CGeoHexahedronDouble();
+            var aHexahedron = new CGeoHexahedron();
 
             aHexahedron.addVertex(aVertex1);
             aHexahedron.addVertex(aVertex2);
@@ -34,17 +34,17 @@ namespace Demo
             aHexahedron.addVertex(aVertex7);
             aHexahedron.addVertex(aVertex8);
 
-            var aPolyhedron = new CGeoPolyhedronDouble(aHexahedron);
+            var aPolyhedron = new CGeoPolyhedron(aHexahedron);
 
             double aFracAct;
 
             int aNewPolygonId = 999;
-            var aNewPolygon = new CGeoPolygonDouble();
+            var aNewPolygon = new CGeoPolygon();
 
-            var aNewNormal = new CGeoNormalDouble(0.45, 0.45, 0.1);
+            var aNewNormal = new CGeoNormal(0.45, 0.45, 0.1);
             aNewNormal.normalize();
 
-            var aNewPlane = new CGeoPlaneDouble();
+            var aNewPlane = new CGeoPlane();
             double d;
 
             int nIter;
