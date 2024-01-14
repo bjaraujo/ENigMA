@@ -176,10 +176,7 @@ namespace ENigMA
         template <typename Real>
         bool CPdeField<Real>::hasMaterial(const Integer anElementIndex)
         {
-            if (m_materials.find(anElementIndex) != m_materials.end())
-                return true;
-            else
-                return false;
+            return (m_materials.find(anElementIndex) != m_materials.end());
         }
 
         template <typename Real>
@@ -199,10 +196,7 @@ namespace ENigMA
         template <typename Real>
         bool CPdeField<Real>::nodeHasBC(const Integer aNodeId)
         {
-            if (m_bcNode.find(aNodeId) != m_bcNode.end())
-                return true;
-            else
-                return false;
+            return (m_bcNode.find(aNodeId) != m_bcNode.end());
         }
 
         template <typename Real>
@@ -220,10 +214,7 @@ namespace ENigMA
         template <typename Real>
         bool CPdeField<Real>::faceHasBC(const Integer aFaceId)
         {
-            if (m_bcFace.find(aFaceId) != m_bcFace.end())
-                return true;
-            else
-                return false;
+            return (m_bcFace.find(aFaceId) != m_bcFace.end());
         }
 
         template <typename Real>
@@ -241,10 +232,7 @@ namespace ENigMA
         template <typename Real>
         bool CPdeField<Real>::elementHasBC(const Integer anElementId, const Integer anIndex)
         {
-            if (m_bcElement.find(std::make_pair(anElementId, anIndex)) != m_bcElement.end())
-                return true;
-            else
-                return false;
+            return (m_bcElement.find(std::make_pair(anElementId, anIndex)) != m_bcElement.end());
         }
 
         template <typename Real>

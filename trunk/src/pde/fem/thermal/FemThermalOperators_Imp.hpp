@@ -36,7 +36,6 @@ namespace ENigMA
                     aSystem.matrixA.reserve(aField.mesh().nbNodes());
 
                     aSystem.vectorB.resize(aField.mesh().nbNodes());
-
                     aSystem.vectorB.setZero();
 
                     for (Integer el = 0; el < aField.mesh().nbElements(); el++)
