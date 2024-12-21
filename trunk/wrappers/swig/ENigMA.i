@@ -98,9 +98,9 @@
 
 namespace std
 {
-  %template(StdVectorI) vector<int>;
-  %template(StdVectorF) vector<float>;
-  %template(StdVectorD) vector<double>; 
+  %template(StdVectorInt) vector<int>;
+  %template(StdVectorFloat) vector<float>;
+  %template(StdVectorDouble) vector<double>;
 }
 
 %{
