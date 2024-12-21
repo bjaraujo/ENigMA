@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows-2022, ubuntu-22.04]
+        platform: [windows-latest, ubuntu-latest]
         arch: [x64]
         python-version: ['3.10.x']
             
@@ -102,7 +102,7 @@ jobs:
     - name: Save Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ENigMA
+        name: ENigMA_${{github.run_number}}_${{github.run_id}}
         path: | 
           ${{runner.workspace}}/ENigMA/release/ENigMApy/dist/*.whl
           ${{runner.workspace}}/ENigMA/release/ENigMAcs/dist/*.zip
