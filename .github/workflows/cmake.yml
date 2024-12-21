@@ -91,7 +91,7 @@ jobs:
         fi
         
     - name: Build CSharp Package
-      if: matrix.platform == 'windows-2022'
+      if: matrix.platform == 'windows-latest'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMAcs
       shell: bash
       run: | 
