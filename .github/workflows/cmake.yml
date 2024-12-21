@@ -100,9 +100,9 @@ jobs:
         fi
         
     - name: Save Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
-        name: ENigMA_${{github.run_number}}_${{github.run_id}}
+        name: ENigMA
         path: | 
           ${{runner.workspace}}/ENigMA/release/ENigMApy/dist/*.whl
           ${{runner.workspace}}/ENigMA/release/ENigMAcs/dist/*.zip
