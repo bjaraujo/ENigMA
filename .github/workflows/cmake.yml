@@ -11,11 +11,8 @@ jobs:
     strategy:
       matrix:
         platform: [windows-2022, ubuntu-22.04]
-        arch: [x86, x64]
+        arch: [x64]
         python-version: ['3.10.x', '3.11.x', '3.12.x', '3.13.x']
-        exclude:
-          - platform: ubuntu-22.04
-            arch: x86
             
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -94,16 +91,6 @@ jobs:
       shell: bash
       run: ./UnitTests
 
-    - name: Build Python Package x86
-      if: matrix.arch == 'x86'
-      working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
-      shell: bash
-      run: | 
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          pip install wheel
-          python setup.py bdist_wheel --python-tag py${{matrix.python-version}} --plat-name win32
-        fi
-
     - name: Build Python Package x64
       if: matrix.arch == 'x64'
       working-directory: ${{runner.workspace}}/ENigMA/release/ENigMApy
@@ -111,9 +98,11 @@ jobs:
       run: | 
         if [ "$RUNNER_OS" == "Windows" ]; then
           pip install wheel
+          pip install setuptools
           python setup.py bdist_wheel --python-tag py${{matrix.python-version}} --plat-name win_amd64
         else
           pip install wheel
+          pip install setuptools
           python setup.py bdist_wheel --python-tag py${{matrix.python-version}} --plat-name linux_x86_64
         fi
         
