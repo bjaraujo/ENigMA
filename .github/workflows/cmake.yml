@@ -12,7 +12,7 @@ jobs:
       matrix:
         platform: [windows-latest, ubuntu-latest]
         arch: [x64]
-        python-version: ['3.10.x', '3.11.x', '3.12.x']
+        python-version: ['3.9.x', '3.10.x', '3.11.x', '3.12.x']
             
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
@@ -99,6 +99,14 @@ jobs:
           python setup.py ${{matrix.arch}}
         fi
         
+  save_artifacts:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Save Artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -107,4 +115,5 @@ jobs:
           ${{runner.workspace}}/ENigMA/release/ENigMApy/dist/*.whl
           ${{runner.workspace}}/ENigMA/release/ENigMAcs/dist/*.zip
         retention-days: 3
+
 
