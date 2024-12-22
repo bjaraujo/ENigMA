@@ -756,7 +756,7 @@ print('Temperature at point (0.5, 0.5) (calculated)  = ' + str(u.value(index)))
 
 <details><summary>Code (FVM)</summary>
 <p>
-        
+
 ```python
 import math
 from ENigMA import ENigMA
@@ -859,12 +859,29 @@ Lid-driven cavity (Re = 1000).
 
 ![liddriven](https://github.com/bjaraujo/ENigMA/blob/master/images/fvm_01.png)
 
+Note for extracting components (v0, v1) in gmsh:
+```
+Components:
+MathEval (plugin)
+Expression 0: v0
+Expression 1: v1
+```
+or
+```
+Magnitude:
+MathEval (plugin)
+Expression 0: Sqrt(v0^2+v1^2)
+```
+
 <details><summary>Code</summary>
 <p>
 
 ```python
 import math
 from ENigMA import ENigMA
+
+def modulus(v):
+    return math.sqrt(sum(x**2 for x in v))
 
 vertex1 = ENigMA.CGeoCoordinate(+0.00, +0.00, +0.1)
 vertex2 = ENigMA.CGeoCoordinate(+1.00, +0.00, +0.1)
@@ -887,7 +904,7 @@ hexahedron.addVertex(vertex7)
 hexahedron.addVertex(vertex8)
 
 mesher = ENigMA.CMshBasicMesher()
-mesher.generate(hexahedron, 40, 40, 1, False)
+mesher.generate(hexahedron, 80, 80, 1, False)
 mesher.mesh().generateFaces(1E-3)
 mesher.mesh().calculateFaceCentroid()
 mesher.mesh().calculateElementCentroid()
@@ -939,13 +956,16 @@ pisoSolver.setBoundaryVelocity(faceIds, ENigMA.BT_WALL_NO_SLIP, U, 0.0, 0.0)
 # Courant < 1
 dt = U / 40			
 
-iter = 100
+iter = 2000
 
 # Flow in a rectangle
 for ii in range(0, iter):
-    print('Iter = ' + str(ii + 1) + ' of ' + str(iter))
     pisoSolver.iterate(dt)
-
+    r = modulus(pisoSolver.residual())
+    print('Iter = {} of {} residual = {}'.format(ii + 1, iter, r))
+    if (r < 1E-6):
+        break
+    
 u = ENigMA.CPdeField()
 u.setMesh(volumeMesh)
 u.setSimulationType(ENigMA.ST_FLOW)
