@@ -954,7 +954,7 @@ for i in range(0, fvmMesh.nbFaces()):
 pisoSolver.setBoundaryVelocity(faceIds, ENigMA.BT_WALL_NO_SLIP, U, 0.0, 0.0)
 
 # Courant < 1
-dt = U / 40			
+dt = U / 80		
 
 iter = 2000
 
