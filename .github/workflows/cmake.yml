@@ -13,7 +13,7 @@ jobs:
         platform: [windows-latest, ubuntu-latest]
         arch: [x64]
         python-version: ['3.9.x', '3.10.x', '3.11.x', '3.12.x']
-            
+        
     # The CMake configure and build commands are platform agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
@@ -98,14 +98,20 @@ jobs:
         if [ "$RUNNER_OS" == "Windows" ]; then
           python setup.py ${{matrix.arch}}
         fi
+
+    - name: Save Artifacts
+      if: matrix.platform == 'windows-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ENigMA_cs_${{matrix.platform}}_${{matrix.arch}}_${{matrix.python-version}}
+        path: ${{runner.workspace}}/ENigMA/release/ENigMAcs/dist/*.zip
+        retention-days: 3
         
     - name: Save Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ENigMA
-        path: | 
-          ${{runner.workspace}}/ENigMA/release/ENigMApy/dist/*.whl
-          ${{runner.workspace}}/ENigMA/release/ENigMAcs/dist/*.zip
+        name: ENigMA_py_${{matrix.platform}}_${{matrix.arch}}_${{matrix.python-version}}
+        path: ${{runner.workspace}}/ENigMA/release/ENigMApy/dist/*.whl
         retention-days: 3
 
 
