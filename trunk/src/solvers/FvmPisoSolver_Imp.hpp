@@ -24,12 +24,10 @@ namespace ENigMA
             , m_gy(0.0)
             , m_gz(0.0)
         {
-
             m_fvmMesh = aFvmMesh;
 
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 m_fvmMesh.controlVolume(aControlVolumeId).calculateVolume();
@@ -38,7 +36,6 @@ namespace ENigMA
 
                 for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j)
                 {
-
                     Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                     m_fvmMesh.controlVolume(aControlVolumeId).calculateFaceArea(aFaceId);
@@ -57,7 +54,6 @@ namespace ENigMA
 
             for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i)
             {
-
                 Integer aFaceId = m_fvmMesh.faceId(i);
 
                 m_fvmMesh.face(aFaceId).calculateArea();
@@ -84,12 +80,10 @@ namespace ENigMA
         template <typename Real>
         CGeoVector<Real> CFvmPisoSolver<Real>::gradient(varMap& var, varMap& varf, const Integer aControlVolumeId)
         {
-
             CGeoVector<Real> aVector(0.0, 0.0, 0.0);
 
             for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j)
             {
-
                 Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                 Real v = 0;
@@ -98,7 +92,6 @@ namespace ENigMA
 
                 if (m_fvmMesh.face(aFaceId).hasPair())
                 {
-
                     Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                     v = var.at(aControlVolumeId) + var[aNeighborId];
@@ -107,7 +100,6 @@ namespace ENigMA
                 }
                 else
                 {
-
                     v = varf.at(aFaceId);
                     aVector += v * aNormal * area;
                 }
@@ -124,14 +116,12 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::setTimeInterval(Real dt)
         {
-
             m_dt = dt;
         }
 
         template <typename Real>
         void CFvmPisoSolver<Real>::storePreviousQuantities()
         {
-
             m_u0 = m_u;
             m_v0 = m_v;
             m_w0 = m_w;
@@ -142,7 +132,6 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::setGravity(const Real gx, const Real gy, const Real gz)
         {
-
             m_gx = gx;
             m_gy = gy;
             m_gz = gz;
@@ -151,10 +140,8 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::setMaterialProperties(const Real aDensity, const Real aViscosity)
         {
-
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 m_dens[aControlVolumeId] = aDensity;
@@ -165,10 +152,8 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::setBoundaryVelocity(const std::vector<Integer>& sFaceIds, EBoundaryType sFaceType, const Real u, const Real v, const Real w)
         {
-
             for (Integer i = 0; i < static_cast<Integer>(sFaceIds.size()); ++i)
             {
-
                 Integer aFaceId = sFaceIds[i];
 
                 m_uf[aFaceId] = u;
@@ -182,10 +167,8 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::setBoundaryPressure(const std::vector<Integer>& sFaceIds, EBoundaryType sFaceType, const Real p)
         {
-
             for (Integer i = 0; i < static_cast<Integer>(sFaceIds.size()); ++i)
             {
-
                 Integer aFaceId = sFaceIds[i];
 
                 m_pf[aFaceId] = p;
@@ -197,7 +180,6 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::calculateVelocityField()
         {
-
             Eigen::SparseMatrix<Real> A;
             Eigen::Matrix<Real, Eigen::Dynamic, 1> bu, bv, bw;
 
@@ -216,9 +198,7 @@ namespace ENigMA
             // Assemble momentum matrix
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
-
                 Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
 
                 Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
@@ -231,7 +211,6 @@ namespace ENigMA
 
                 for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j)
                 {
-
                     Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                     Real dens = m_dens.at(aControlVolumeId);
@@ -251,14 +230,11 @@ namespace ENigMA
 
                     if (m_fvmMesh.face(aFaceId).hasPair())
                     {
-
                         Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
-
                         Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                         if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId))
                         {
-
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
                             dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
@@ -285,7 +261,6 @@ namespace ENigMA
                     }
                     else
                     {
-
                         // Diffusion
                         A.coeffRef(anIndexP, anIndexP) += visc * area / dist / volume;
 
@@ -314,7 +289,6 @@ namespace ENigMA
 
                 if (m_dt > 0.0)
                 {
-
                     A.coeffRef(anIndexP, anIndexP) += m_dens.at(aControlVolumeId) / m_dt;
 
                     bu[anIndexP] += m_dens.at(aControlVolumeId) / m_dt * m_u0.at(aControlVolumeId);
@@ -334,7 +308,6 @@ namespace ENigMA
 
             for (int k = 0; k < A.outerSize(); ++k)
             {
-
                 Integer aControlVolumeId = m_mapIndexToId.at(k);
 
                 CGeoVector<Real> gradp = this->gradient(m_p, m_pf, aControlVolumeId);
@@ -345,7 +318,6 @@ namespace ENigMA
 
                 for (typename Eigen::SparseMatrix<Real>::InnerIterator it(A, k); it; ++it)
                 {
-
                     if (it.row() == it.col())
                         m_ap[aControlVolumeId] = it.value();
                     else
@@ -361,7 +333,6 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::calculatePressureField()
         {
-
             Eigen::SparseMatrix<Real> A;
             Eigen::Matrix<Real, Eigen::Dynamic, 1> b;
 
@@ -374,14 +345,11 @@ namespace ENigMA
             // Assemble pressure matrix
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
-
                 Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
 
                 for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j)
                 {
-
                     Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                     CGeoNormal<Real>& aNormal = m_fvmMesh.controlVolume(aControlVolumeId).faceNormal(aFaceId);
@@ -397,14 +365,12 @@ namespace ENigMA
 
                     if (m_fvmMesh.face(aFaceId).hasPair())
                     {
-
                         Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                         Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                         if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId))
                         {
-
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
                             dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
@@ -431,18 +397,15 @@ namespace ENigMA
                     }
                     else
                     {
-
                         Real Hf = Huj * aNormal.x() + Hvj * aNormal.y() + Hwj * aNormal.z();
 
                         if (m_fvmMesh.face(aFaceId).boundaryType() == BT_WALL_NO_SLIP)
                         {
-
                             // specified flux = 0
                             // pressure gradient = 0
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_FLOW)
                         {
-
                             // specified flux
                             // pressure gradient = 0
                             b[anIndexP] -= m_flux.at(aFaceId);
@@ -451,7 +414,6 @@ namespace ENigMA
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_PRESSURE)
                         {
-
                             // specified pressure
                             // velocity gradient = 0
 
@@ -468,7 +430,6 @@ namespace ENigMA
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_OUTLET)
                         {
-
                             // specified pressure = 0
                             // velocity gradient = 0
 
@@ -495,7 +456,6 @@ namespace ENigMA
 
             for (int i = 0; i < p.rows(); ++i)
             {
-
                 Integer aControlVolumeId = m_mapIndexToId.at(i);
 
                 m_p[aControlVolumeId] = p[i];
@@ -505,15 +465,12 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::correctFlux()
         {
-
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
-                Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
+               Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j)
                 {
-
                     Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
                     Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
@@ -523,12 +480,10 @@ namespace ENigMA
 
                     if (m_fvmMesh.face(aFaceId).hasPair())
                     {
-
                         Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
                         if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId))
                         {
-
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId);
                             area *= 0.5;
                             dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
@@ -542,26 +497,21 @@ namespace ENigMA
                     }
                     else
                     {
-
                         if (m_fvmMesh.face(aFaceId).boundaryType() == BT_WALL_NO_SLIP)
                         {
-
                             m_flux[aFaceId] = 0.0;
                             m_pf[aFaceId] = m_p.at(aControlVolumeId);
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_FLOW)
                         {
-
                             m_pf[aFaceId] = m_p.at(aControlVolumeId);
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_PRESSURE)
                         {
-
                             m_flux[aFaceId] += area / (apj * dist) * (m_pf[aFaceId] - m_p.at(aControlVolumeId));
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_OUTLET)
                         {
-
                             m_flux[aFaceId] += area / (apj * dist) * m_p.at(aControlVolumeId);
                             m_pf[aFaceId] = 0.0;
                         }
@@ -573,10 +523,8 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::correctVelocityField()
         {
-
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 CGeoVector<Real> gradp = this->gradient(m_p, m_pf, aControlVolumeId);
@@ -590,12 +538,10 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::correctPressureField()
         {
-
             Real p_min = std::numeric_limits<Real>::max();
 
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 p_min = std::min(p_min, m_p.at(aControlVolumeId));
@@ -603,7 +549,6 @@ namespace ENigMA
 
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 m_p.at(aControlVolumeId) -= p_min;
@@ -611,7 +556,6 @@ namespace ENigMA
 
             for (Integer i = 0; i < m_fvmMesh.nbFaces(); ++i)
             {
-
                 Integer aFaceId = m_fvmMesh.faceId(i);
 
                 m_pf[aFaceId] -= p_min;
@@ -621,7 +565,6 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::iterate(const Real dt, const bool bInit)
         {
-
             this->setTimeInterval(dt);
 
             this->storePreviousQuantities();
@@ -637,7 +580,6 @@ namespace ENigMA
         template <typename Real>
         Real CFvmPisoSolver<Real>::checkMassConservationCell(const Integer aControlVolumeId)
         {
-
             Real sumCellFlux = 0.0;
 
             for (Integer j = 0; j < m_fvmMesh.controlVolume(aControlVolumeId).nbFaces(); ++j)
@@ -661,12 +603,10 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::checkMassConservation(Real& aMassError)
         {
-
             Real sumFlux = 0.0;
 
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 Real sumCellFlux = this->checkMassConservationCell(aControlVolumeId);
@@ -685,7 +625,6 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::residual(Real& ru, Real& rv, Real& rw, Real& rp)
         {
-
             ru = 0;
             rv = 0;
             rw = 0;
@@ -693,7 +632,6 @@ namespace ENigMA
 
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
             {
-
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
                 ru += (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId)) * (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId));
@@ -706,98 +644,84 @@ namespace ENigMA
         template <typename Real>
         Real CFvmPisoSolver<Real>::u(const Integer aControlVolumeId)
         {
-
             return m_u.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::v(const Integer aControlVolumeId)
         {
-
             return m_v.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::w(const Integer aControlVolumeId)
         {
-
             return m_w.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::p(const Integer aControlVolumeId)
         {
-
             return m_p.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::uf(const Integer aFaceId)
         {
-
             return m_uf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::vf(const Integer aFaceId)
         {
-
             return m_vf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::wf(const Integer aFaceId)
         {
-
             return m_wf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::pf(const Integer aFaceId)
         {
-
             return m_pf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::flux(const Integer aFaceId)
         {
-
             return m_flux.at(aFaceId);
         }
 
         template <typename Real>
         CGeoVector<Real> CFvmPisoSolver<Real>::gradu(const Integer aControlVolumeId)
         {
-
             return this->gradient(m_u, m_uf, aControlVolumeId);
         }
 
         template <typename Real>
         CGeoVector<Real> CFvmPisoSolver<Real>::gradv(const Integer aControlVolumeId)
         {
-
             return this->gradient(m_v, m_vf, aControlVolumeId);
         }
 
         template <typename Real>
         CGeoVector<Real> CFvmPisoSolver<Real>::gradw(const Integer aControlVolumeId)
         {
-
             return this->gradient(m_w, m_wf, aControlVolumeId);
         }
 
         template <typename Real>
         CGeoVector<Real> CFvmPisoSolver<Real>::gradp(const Integer aControlVolumeId)
         {
-
             return this->gradient(m_p, m_pf, aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::massError(const Integer aControlVolumeId)
         {
-
             return m_massError.at(aControlVolumeId);
         }
     }

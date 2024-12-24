@@ -706,10 +706,9 @@ namespace std
         return (*$self).centroid();
     }
 
-    void calculateCentroid() { 
-        (*$self).calculateCentroid();
+    double area() { 
+        return (*$self).area();
     }
-
 };
 
 // Fvm Cell

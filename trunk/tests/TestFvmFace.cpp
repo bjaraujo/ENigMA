@@ -50,7 +50,6 @@ TEST_F(CTestFvmFace, calcArea) {
     aFace.calculateArea();
 
     EXPECT_NEAR(1.0, aFace.area(), 1E-12);
-
 }
 
 
