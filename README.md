@@ -992,7 +992,7 @@ posGmsh.save(u, "fvm_lid_01.msh", "Flow")
 <details><summary>Code FEM</summary>
 <p>
 
-```
+```python
 import math
 from ENigMA import ENigMA
 
