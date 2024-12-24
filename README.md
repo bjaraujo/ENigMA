@@ -873,7 +873,7 @@ MathEval (plugin)
 Expression 0: Sqrt(v0^2+v1^2)
 ```
 
-<details><summary>Code</summary>
+<details><summary>Code FVM</summary>
 <p>
 
 ```python
@@ -983,7 +983,130 @@ for i in range(0, fvmMesh.nbControlVolumes()):
     u.setValue(i * 2 + 1, pisoSolver.v(controlVolumeId))
 
 posGmsh = ENigMA.CPosGmsh()
-posGmsh.save(u, "fvm_01.msh", "Flow")
+posGmsh.save(u, "fvm_lid_01.msh", "Flow")
+```
+
+</p>
+</details>
+
+<details><summary>Code FEM</summary>
+<p>
+
+```
+import math
+from ENigMA import ENigMA
+
+edgeMesh = ENigMA.CMshMesh()
+
+node1 = ENigMA.CMshNode(0.0, 0.0, 0.0)
+node2 = ENigMA.CMshNode(1.0, 0.0, 0.0)
+node3 = ENigMA.CMshNode(1.0, 1.0, 0.0)
+node4 = ENigMA.CMshNode(0.0, 1.0, 0.0)
+
+edgeMesh.addNode(1, node1)
+edgeMesh.addNode(2, node2)
+edgeMesh.addNode(3, node3)
+edgeMesh.addNode(4, node4)
+
+element1 = ENigMA.CMshElement(ENigMA.ET_BEAM)
+element1.addNodeId(1)
+element1.addNodeId(2)
+
+element2 = ENigMA.CMshElement(ENigMA.ET_BEAM)
+element2.addNodeId(2)
+element2.addNodeId(3)
+
+element3 = ENigMA.CMshElement(ENigMA.ET_BEAM)
+element3.addNodeId(3)
+element3.addNodeId(4)
+
+element4 = ENigMA.CMshElement(ENigMA.ET_BEAM)
+element4.addNodeId(4)
+element4.addNodeId(1)
+
+edgeMesh.addElement(1, element1)
+edgeMesh.addElement(2, element2)
+edgeMesh.addElement(3, element3)
+edgeMesh.addElement(4, element4)
+
+triangleMesher = ENigMA.CMshTriangleMesher()
+
+meshSize = 0.03
+
+edgeMesh.generateFaces(1E-3)
+triangleMesher.remesh(edgeMesh, meshSize)
+interiorPoints = ENigMA.StdVectorCGeoCoordinate()
+triangleMesher.generate(edgeMesh, 9999, interiorPoints, meshSize, meshSize, meshSize, 1E-6)
+triangleMesher.flipEdges(triangleMesher.mesh())
+triangleMesher.relaxNodes(triangleMesher.mesh())
+
+surfaceMesh = triangleMesher.mesh()
+
+U = 1.0    # lid velocity
+mu = 0.001 # dynamic viscosity
+rho = 1.0  # density
+
+nu = mu / rho # kinematic viscosit
+
+cbsSolver = ENigMA.CFemCbsSolver2(surfaceMesh)
+
+cbsSolver.setGravity(0.0, 0.0);
+cbsSolver.setMaterialProperties(rho, mu);
+
+index = 0
+
+for i in range(0, surfaceMesh.nbNodes()):
+    nodeId = surfaceMesh.nodeId(i)
+    node = surfaceMesh.node(nodeId)
+    
+    if (math.fabs(node.x() - 0.0) < 1E-6):
+        cbsSolver.u().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+        cbsSolver.v().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+
+    if (math.fabs(node.x() - 1.0) < 1E-6):
+        cbsSolver.u().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+        cbsSolver.v().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+
+    if (math.fabs(node.y() - 0.0) < 1E-6):
+        cbsSolver.u().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+        cbsSolver.v().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+        
+    if (math.fabs(node.y() - 1.0) < 1E-6):
+        cbsSolver.u().setFixedValue(surfaceMesh.nodeIndex(nodeId), 1.0)
+        cbsSolver.v().setFixedValue(surfaceMesh.nodeIndex(nodeId), 0.0)
+
+    cbsSolver.u().setValue(i, 0.0);
+    cbsSolver.v().setValue(i, 0.0);
+
+    cbsSolver.p().setValue(i, 0.0);
+        
+# Courant < 1
+dt = 0.01
+
+iter = 20
+
+# Flow in a rectangle
+for ii in range(0, iter):
+    cbsSolver.iterate(dt)
+    print('Iter = {} of {}'.format(ii + 1, iter))
+
+u = ENigMA.CPdeField()
+u.setMesh(surfaceMesh)
+u.setSimulationType(ENigMA.ST_FLOW)
+u.setDiscretMethod(ENigMA.DM_FEM)
+u.setDiscretOrder(ENigMA.DO_LINEAR)
+u.setDiscretLocation(ENigMA.DL_NODE)
+u.setNbDofs(2)
+u.setSize(surfaceMesh.nbNodes() * 2)
+   
+for i in range(0, surfaceMesh.nbNodes()):
+    nodeId = surfaceMesh.nodeId(i)
+
+    u.setValue(i * 2 + 0, cbsSolver.u().value(nodeId))
+    u.setValue(i * 2 + 1, cbsSolver.v().value(nodeId))
+
+posGmsh = ENigMA.CPosGmsh()
+posGmsh.save(u, "fem_lid_01.msh", "Flow")
 ```
 
 </p>

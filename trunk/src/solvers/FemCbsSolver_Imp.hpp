@@ -143,7 +143,6 @@ namespace ENigMA
         // Three-dimensional
         template <typename Real>
         CFemCbsSolver<Real, 3>::CFemCbsSolver(CMshMesh<Real>& aMesh)
-            : CFemCbsSolver<Real, 2>(aMesh)
         {
             m_mesh = aMesh;
 

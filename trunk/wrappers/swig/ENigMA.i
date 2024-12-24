@@ -143,12 +143,14 @@ namespace std
 #include "PdeField.hpp"
 #include "PdeEquation.hpp"
 #include "PdeBoundaryCondition.hpp"
+#include "IntGaussIntegration.hpp"
 #include "FemBeam.hpp"
 #include "FemTriangle.hpp"
 #include "FemQuadrilateral.hpp"
 #include "FemTetrahedron.hpp"
 #include "FemTriangularPrism.hpp"
 #include "FemHexahedron.hpp"
+#include "FemCbsSolver.hpp"
 #include "FvmNode.hpp"
 #include "FvmFace.hpp"
 #include "FvmCell.hpp"
@@ -662,33 +664,39 @@ namespace std
 // FEM Beam
 %include "FemBeam.hpp"
 
-%template(CFemBeamDouble211) ENigMA::fem::CFemBeam<double, 2, 1, 1>;
+%template(CFemBeam) ENigMA::fem::CFemBeam<double, 2, 1, 1>;
 
 // FEM Triangle
 %include "FemTriangle.hpp"
 
-%template(CFemTriangleDouble311) ENigMA::fem::CFemTriangle<double, 3, 1, 1>;
+%template(CFemTriangle) ENigMA::fem::CFemTriangle<double, 3, 1, 1>;
 
 // FEM Quadrilateral
 %include "FemQuadrilateral.hpp"
 
-%template(CFemQuadrilateralDouble411) ENigMA::fem::CFemQuadrilateral<double, 4, 1, 1>;
+%template(CFemQuadrilateral) ENigMA::fem::CFemQuadrilateral<double, 4, 1, 1>;
 
 // FEM Tetrahedron
 %include "FemTetrahedron.hpp"
 
-%template(CFemTetrahedronDouble411) ENigMA::fem::CFemTetrahedron<double, 4, 1, 1>;
+%template(CFemTetrahedron) ENigMA::fem::CFemTetrahedron<double, 4, 1, 1>;
 
 // FEM Triangular Prism
 %include "FemTriangularPrism.hpp"
 
-%template(CFemTriangularPrismDouble611) ENigMA::fem::CFemTriangularPrism<double, 6, 1, 1>;
+%template(CFemTriangularPrism) ENigMA::fem::CFemTriangularPrism<double, 6, 1, 1>;
 
 // FEM Hexahedron
 %include "FemHexahedron.hpp"
 
-%template(CFemHexahedronDouble811) ENigMA::fem::CFemHexahedron<double, 8, 1, 1>;
+%template(CFemHexahedron) ENigMA::fem::CFemHexahedron<double, 8, 1, 1>;
 */
+
+// FEM CBS Solver
+%include "FemCbsSolver.hpp"
+
+%template(CFemCbsSolver2) ENigMA::fem::CFemCbsSolver<double, 2>;
+%template(CFemCbsSolver3) ENigMA::fem::CFemCbsSolver<double, 3>;
 
 // FVM Node
 %include "FvmNode.hpp"

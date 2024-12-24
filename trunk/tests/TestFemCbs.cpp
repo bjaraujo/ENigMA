@@ -67,7 +67,6 @@ TEST_F(CTestFemCbs, hydroPressure) {
 
     for (Integer i = 0; i < aBasicMesher.mesh().nbNodes(); ++i)
     {
-
         Integer aNodeId = aBasicMesher.mesh().nodeId(i);
         CMshNode<Decimal> aNode = aBasicMesher.mesh().node(aNodeId);
 
@@ -94,7 +93,6 @@ TEST_F(CTestFemCbs, hydroPressure) {
         aCbsSolver.v().setValue(i, 0.0);
 
         aCbsSolver.p().setValue(i, 0.0);
-
     }
 
     Decimal dt = 1E-3;
@@ -113,6 +111,5 @@ TEST_F(CTestFemCbs, hydroPressure) {
     }
 
     EXPECT_NEAR(rho*std::fabs(g), p, 1000);
-
 }
 

@@ -13,7 +13,6 @@
 
 namespace ENigMA
 {
-
     namespace integration
     {
 
