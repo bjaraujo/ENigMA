@@ -9,7 +9,8 @@ endif()
 
 project(ENigMA CXX)
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_TLS_VERIFY FALSE)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin)
@@ -64,8 +65,8 @@ if(ENIGMA_BUILD_UNIT_TESTS)
         include(CodeCoverage)
         setup_target_for_coverage_lcov(UnitTests_coverage UnitTests coverage)
 
-        SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-        SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+        set(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+        set(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
     endif()
 endif()
 
