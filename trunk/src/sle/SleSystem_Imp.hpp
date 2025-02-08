@@ -45,42 +45,9 @@ namespace ENigMA
         {
             Eigen::Matrix<Real, Eigen::Dynamic, 1> x;
 
-            if (matrixType == MT_SPARSE_SYMMETRIC)
-            {
-#ifdef USE_VIENNACL
-
-                x = viennacl::linalg::solve(matrixA, vectorB, viennacl::linalg::cg_tag());
-
-#else
-
-                Eigen::ConjugateGradient<Eigen::SparseMatrix<Real>> solver;
-                solver.compute(matrixA);
-                x = solver.solve(vectorB);
-
-#endif
-            }
-            else if (matrixType == MT_SPARSE)
-            {
-#ifdef USE_VIENNACL
-
-                x = viennacl::linalg::solve(matrixA, vectorB, viennacl::linalg::bicgstab_tag());
-
-#else
-
-                Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
-                solver.compute(matrixA);
-                x = solver.solve(vectorB);
-
-#endif
-            }
-            else if (matrixType == MT_DENSE)
-            {
-                Eigen::SparseLU<Eigen::SparseMatrix<Real, Eigen::ColMajor>, Eigen::COLAMDOrdering<Integer>> solver;
-
-                solver.analyzePattern(matrixA);
-                solver.factorize(matrixA);
-                x = solver.solve(vectorB);
-            }
+            Eigen::SimplicialLDLT<Eigen::SparseMatrix<Real, Eigen::RowMajor>> solver;
+            solver.compute(matrixA);
+            x = solver.solve(vectorB);
 
             return x;
         }
