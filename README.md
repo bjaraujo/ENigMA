@@ -690,7 +690,7 @@ quadrilateral.addVertex(vertex4)
 
 basicMesher = ENigMA.CMshBasicMesher()
 
-basicMesher.generate(quadrilateral, 16, 16, True)
+basicMesher.generate(quadrilateral, 64, 64, True)
 
 surfaceMesh = basicMesher.mesh()
 
@@ -736,19 +736,31 @@ pdeEquation.solve(u)
 posGmsh = ENigMA.CPosGmsh()
 posGmsh.save(u, "fem_02.msh", "Thermal")
 
+anaTemperature = ENigMA.CAnaTemperature()
+
+Tr = 0
 for i in range(0, surfaceMesh.nbNodes()):
     nodeId = surfaceMesh.nodeId(i)
     node = surfaceMesh.node(nodeId)
+
+    x = node.x()
+    y = node.y()
+
+    index = surfaceMesh.nodeIndex(nodeId)
     
-    if (math.fabs(node.x() - 0.5) < 1E-6 and math.fabs(node.y() - 0.5) < 1E-6):
-        index = surfaceMesh.nodeIndex(nodeId)
+    Ta = anaTemperature.steadyStateHeatConduction2D(x, y)       
+    Tc = u.value(index)
+    
+    diff = (Ta - Tc)
+    Tr = Tr + diff * diff
+        
+    if (math.fabs(x - 0.5) < 1E-6 and math.fabs(y - 0.5) < 1E-6):
+        print(f'Temperature at point (0.5, 0.5) (calculated) = {Tc:.3f}')
+        print(f'Temperature at point (0.5, 0.5) (theoretical) = {Ta:.3f}')
 
-anaTemperature = ENigMA.CAnaTemperature()
+Tr = Tr / surfaceMesh.nbNodes()
 
-ut = anaTemperature.steadyStateHeatConduction2D(0.5, 0.5)
-
-print('Temperature at point (0.5, 0.5) (theoretical) = ' + str(ut))
-print('Temperature at point (0.5, 0.5) (calculated)  = ' + str(u.value(index)))
+print(f'Temperature (error) = {Tr:.6f}')
 ```
 
 </p>
@@ -836,18 +848,160 @@ pdeEquation.solve(u)
 posGmsh = ENigMA.CPosGmsh()
 posGmsh.save(u, "fvm_02.msh", "Thermal")
 
+anaTemperature = ENigMA.CAnaTemperature()
+
+Tr = 0
 for i in range(0, volumeMesh.nbElements()):
     elementId = volumeMesh.elementId(i)
+
+    x = volumeMesh.elementCentroid(elementId).x()
+    y = volumeMesh.elementCentroid(elementId).y()
+
+    index = volumeMesh.elementIndex(elementId)
     
-    if (math.fabs(volumeMesh.elementCentroid(elementId).x() - 0.5) < 1E-6 and math.fabs(volumeMesh.elementCentroid(elementId).y() - 0.5) < 1E-6):
-        index = volumeMesh.elementIndex(elementId)
+    Ta = anaTemperature.steadyStateHeatConduction2D(x, y)       
+    Tc = u.value(index)
+    
+    diff = (Ta - Tc)
+    Tr = Tr + diff * diff
+        
+    if (math.fabs(x - 0.5) < 1E-6 and math.fabs(y - 0.5) < 1E-6):
+        print(f'Temperature at point (0.5, 0.5) (calculated) = {Tc:.3f}')
+        print(f'Temperature at point (0.5, 0.5) (theoretical) = {Ta:.3f}')
+
+Tr = Tr / volumeMesh.nbElements()
+
+print(f'Temperature (error) = {Tr:.6f}')
+```
+
+</p>
+</details>
+
+<details><summary>Code (SPH)</summary>
+<p>
+
+```python
+import math
+from ENigMA import ENigMA
+
+vertex1 = ENigMA.CMshNode(0.0, 0.0, 0.0)
+vertex2 = ENigMA.CMshNode(1.0, 0.0, 0.0)
+vertex3 = ENigMA.CMshNode(1.0, 1.0, 0.0)
+vertex4 = ENigMA.CMshNode(0.0, 1.0, 0.0)
+
+quadrilateral = ENigMA.CGeoQuadrilateral()
+
+quadrilateral.addVertex(vertex1)
+quadrilateral.addVertex(vertex2)
+quadrilateral.addVertex(vertex3)
+quadrilateral.addVertex(vertex4)
+
+divisions = 40
+meshSize = 1.0 / divisions
+
+basicMesher = ENigMA.CMshBasicMesher()
+basicMesher.generate(quadrilateral, divisions, divisions, True)
+surfaceMesh = basicMesher.mesh()
+
+pointMesh = ENigMA.CMshMesh()
+
+for i in range(0, surfaceMesh.nbNodes()):
+    nodeId = surfaceMesh.nodeId(i)
+    node = surfaceMesh.node(nodeId)
+
+    pointMesh.addNode(pointMesh.nextNodeId(), node)
+
+for i in range(0, pointMesh.nbNodes()):
+    nodeId = pointMesh.nodeId(i)
+
+    element = ENigMA.CMshElement(ENigMA.ET_NODE)
+    element.addNodeId(nodeId)
+    
+    pointMesh.addElement(pointMesh.nextElementId(), element)
+
+# Temperature field
+u = ENigMA.CPdeField()
+
+u.setMesh(pointMesh)
+u.setSimulationType(ENigMA.ST_THERMAL)
+u.setDiscretMethod(ENigMA.DM_SPH)
+u.setDiscretOrder(ENigMA.DO_LINEAR)
+u.setDiscretLocation(ENigMA.DL_NODE)
+u.setNbDofs(1)
+
+u.init()
+
+index = 0
+
+for i in range(0, pointMesh.nbNodes()):
+    nodeId = pointMesh.nodeId(i)
+    node = pointMesh.node(nodeId)
+    
+    u.setValue(pointMesh.nodeIndex(nodeId), 0.0)
+    
+    if node.x() < +0.01:
+        u.setFixedValue(pointMesh.nodeIndex(nodeId), 0.0)
+
+    if node.x() > +0.99:
+        u.setFixedValue(pointMesh.nodeIndex(nodeId), 0.0)
+
+    if node.y() < +0.01:
+        u.setFixedValue(pointMesh.nodeIndex(nodeId), 0.0)
+        
+    if node.y() > +0.99:
+        u.setFixedValue(pointMesh.nodeIndex(nodeId), 1.0)
+
+aKernel = ENigMA.CSphSpiky(2)
+#aKernel = ENigMA.CSphGaussian(2)
+#aKernel = ENigMA.CSphConvex(2)
+#aKernel = ENigMA.CSphCubicSpline(2)
+#aKernel = ENigMA.CSphQuintic(2)
+
+sParticles = ENigMA.CSphParticles(aKernel)
+
+dt = 0.002
+nIter = 100
+
+h = meshSize * 8.0
+diff = 1.0
+mass = 3.0 / pointMesh.nbNodes()
+
+sParticles.init(u, mass, diff, h, dt)
+
+t = 0
+for i in range(nIter):
+    print(i)
+    sParticles.solve(u)
+    t = t + dt
+
+posGmsh = ENigMA.CPosGmsh()
+posGmsh.save(u, "sph_02.msh", "Thermal")
 
 anaTemperature = ENigMA.CAnaTemperature()
 
-ut = anaTemperature.steadyStateHeatConduction2D(0.5, 0.5)
+Tr = 0
+for i in range(0, pointMesh.nbNodes()):
+    nodeId = pointMesh.nodeId(i)
+    node = pointMesh.node(nodeId)
 
-print('Temperature at point (0.5, 0.5) (theoretical) = ' + str(ut))
-print('Temperature at point (0.5, 0.5) (calculated)  = ' + str(u.value(index)))
+    x = node.x()
+    y = node.y()
+
+    index = pointMesh.nodeIndex(nodeId)
+    
+    Ta = anaTemperature.steadyStateHeatConduction2D(x, y)       
+    Tc = u.value(index)
+    
+    diff = (Ta - Tc)
+    Tr = Tr + diff * diff
+        
+    if (math.fabs(x - 0.5) < 1E-6 and math.fabs(y - 0.5) < 1E-6):
+        print(f'Temperature at point (0.5, 0.5) (calculated) = {Tc:.3f}')
+        print(f'Temperature at point (0.5, 0.5) (theoretical) = {Ta:.3f}')
+
+Tr = Tr / surfaceMesh.nbNodes()
+
+print(f'Temperature (error) = {Tr:.6f}')
 ```
 
 </p>
