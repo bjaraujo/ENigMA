@@ -45,9 +45,25 @@ namespace ENigMA
         {
             Eigen::Matrix<Real, Eigen::Dynamic, 1> x;
 
-            Eigen::SimplicialLDLT<Eigen::SparseMatrix<Real, Eigen::RowMajor>> solver;
-            solver.compute(matrixA);
-            x = solver.solve(vectorB);
+            if (matrixType == MT_SPARSE_SYMMETRIC)
+            {
+                Eigen::SimplicialLDLT<Eigen::SparseMatrix<Real, Eigen::RowMajor>> solver;
+                solver.compute(matrixA);
+                x = solver.solve(vectorB);
+            }
+            else if (matrixType == MT_SPARSE)
+            {
+                Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
+                solver.compute(matrixA);
+                x = solver.solve(vectorB);
+            }
+            else if (matrixType == MT_DENSE)
+            {
+                Eigen::SparseLU<Eigen::SparseMatrix<Real, Eigen::ColMajor>, Eigen::COLAMDOrdering<Integer>> solver;
+                solver.analyzePattern(matrixA);
+                solver.factorize(matrixA);
+                x = solver.solve(vectorB);
+            }
 
             return x;
         }
