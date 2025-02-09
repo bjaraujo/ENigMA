@@ -354,6 +354,7 @@ source_group("Header Files\\pde\\fvm\\flow" FILES ${PDE_FVM_FLOW_HEADERS})
 source_group("Header Files\\analytical" FILES ${ANA_HEADERS})
 source_group("Header Files\\post" FILES ${POS_HEADERS})
 source_group("Header Files\\stl" FILES ${STL_HEADERS})
+source_group("Header Files\\stl" FILES ${SOL_HEADERS})
 
 source_group("Header Files" FILES ENigMA.hpp)
 source_group("Source Files" FILES ENigMA.cpp)
@@ -430,6 +431,7 @@ add_library(ENigMAcpp
     ${ANA_HEADERS} 
     ${POS_HEADERS} 
     ${STL_HEADERS}
+    ${SOL_HEADERS}
 )
 
 add_dependencies(ENigMAcpp eigen)
