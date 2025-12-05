@@ -2,8 +2,8 @@ include(ExternalProject)
 
 ExternalProject_Add(
     eigen
-    URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz    
-    URL_HASH SHA1=d222db69a9e87d9006608e029d1039039f360b52
+    URL https://gitlab.com/libeigen/eigen/-/archive/5.0.0/eigen-5.0.0.tar.gz
+    URL_HASH SHA1=67ff2328ab2c771baf14b0dc1254f7272f712c98
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     UPDATE_COMMAND ""
