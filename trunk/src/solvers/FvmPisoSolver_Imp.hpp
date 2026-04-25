@@ -300,9 +300,9 @@ namespace ENigMA
             Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
 
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> u = solver.solve(bu);
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> v = solver.solve(bv);
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> w = solver.solve(bw);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> u = solver.solveWithGuess(bu, u);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> v = solver.solveWithGuess(bv, v);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> w = solver.solveWithGuess(bw, w);
 
             for (int k = 0; k < A.outerSize(); ++k)
             {
@@ -376,12 +376,9 @@ namespace ENigMA
                             apj += m_ap.at(aNeighborId);
                             apj *= 0.5;
 
-                            Huj += m_Hu.at(aNeighborId);
-                            Huj *= 0.5;
-                            Hvj += m_Hv.at(aNeighborId);
-                            Hvj *= 0.5;
-                            Hwj += m_Hw.at(aNeighborId);
-                            Hwj *= 0.5;
+                            Huj += m_Hu.at(aNeighborId); Huj *= 0.5;
+                            Hvj += m_Hv.at(aNeighborId); Hvj *= 0.5;
+                            Hwj += m_Hw.at(aNeighborId); Hwj *= 0.5;
 
                             Real Hf = Huj * aNormal.x() + Hvj * aNormal.y() + Hwj * aNormal.z();
 
@@ -450,7 +447,7 @@ namespace ENigMA
             Eigen::ConjugateGradient<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
 
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> p = solver.solve(b);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> p = solver.solveWithGuess(b, p);
 
             for (int i = 0; i < p.rows(); ++i)
             {
