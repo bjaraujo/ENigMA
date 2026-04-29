@@ -1,5 +1,5 @@
-from sympy.solvers import solve
 from sympy import Symbol
+from sympy.solvers import solve
 
 u1 = Symbol('u1')
 u2 = Symbol('u2')

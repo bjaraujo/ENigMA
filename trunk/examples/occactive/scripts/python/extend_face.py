@@ -17,23 +17,22 @@
 
 import math
 
-from OCC.gp import *
-from OCC.BRepBuilderAPI import *
-from OCC.BRepOffsetAPI import *
-from OCC.TColgp import *
-from OCC.GeomAPI import *
-from OCC.GeomAbs import *
-from OCC.Geom2d import *
-from OCC.BRepLib import *
-from OCC.Quantity import *
-from OCC.BRepPrimAPI import *
 from OCC.BRepAlgoAPI import *
-from OCC.TopOpeBRepTool import *
+from OCC.BRepBuilderAPI import *
+from OCC.BRepLib import *
+from OCC.BRepOffsetAPI import *
+from OCC.BRepPrimAPI import *
+from OCC.Display.SimpleGui import init_display
+from OCC.Geom2d import *
+from OCC.GeomAbs import *
+from OCC.GeomAPI import *
+from OCC.gp import *
+from OCC.Quantity import *
+from OCC.TColgp import *
 from OCC.TopAbs import *
 from OCC.TopExp import *
 from OCC.TopoDS import *
-        
-from OCC.Display.SimpleGui import init_display
+from OCC.TopOpeBRepTool import *
 
 display, start_display, add_menu, add_function_to_menu = init_display()
 

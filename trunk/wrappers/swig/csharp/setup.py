@@ -1,6 +1,6 @@
-import sys
-import os
 import glob
+import os
+import sys
 from zipfile import ZipFile
 
 with open('version.h', 'r') as fh:

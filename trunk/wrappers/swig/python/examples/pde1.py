@@ -1,7 +1,7 @@
 import subprocess
 
 from ENigMA import ENigMA
- 
+
 vertex1 = ENigMA.CGeoCoordinate(0, 0, 0)
 vertex2 = ENigMA.CGeoCoordinate(1, 0, 0)
 vertex3 = ENigMA.CGeoCoordinate(1, 1, 0)

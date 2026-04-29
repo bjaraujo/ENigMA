@@ -1,7 +1,7 @@
-import os
-import sys
-import shutil
 import argparse
+import os
+import shutil
+import sys
 
 #python BuildRelease.py --configure --build --install --package --swig=D:\Libraries\SWIG\swigwin-4.0.2\swig.exe -a 64
 

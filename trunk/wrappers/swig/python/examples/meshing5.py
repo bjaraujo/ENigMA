@@ -1,6 +1,6 @@
-from ENigMA import ENigMA
-
 import tkinter
+
+from ENigMA import ENigMA
 
 edgeMesh = ENigMA.CMshMesh()
 

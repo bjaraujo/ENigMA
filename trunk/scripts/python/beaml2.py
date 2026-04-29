@@ -1,7 +1,7 @@
-from sympy.solvers import solve
-from sympy.plotting import plot
 from sympy import Symbol
- 
+from sympy.plotting import plot
+from sympy.solvers import solve
+
 u1 = Symbol('u1')
 u2 = Symbol('u2')
 
