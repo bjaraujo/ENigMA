@@ -487,7 +487,7 @@ namespace ENigMA
                             apj *= 0.5;
 
                             if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                                m_flux[aFaceId] -= area / (apj * dist) * (m_p[aNeighborId] - m_p.at(aControlVolumeId));
+                                m_flux[aFaceId] -= area / (apj * dist) * (m_p.at(aNeighborId) - m_p.at(aControlVolumeId));
                         }
                     }
                     else
