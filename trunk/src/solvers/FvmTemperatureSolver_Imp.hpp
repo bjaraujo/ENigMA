@@ -182,7 +182,6 @@ namespace ENigMA
 
             Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
-
             Eigen::Matrix<Real, Eigen::Dynamic, 1> T = solver.solve(b);
 
             for (int i = 0; i < T.rows(); ++i)

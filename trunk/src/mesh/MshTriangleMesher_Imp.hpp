@@ -175,7 +175,7 @@ namespace ENigMA
         void CMshTriangleMesher<Real>::findClosestNodes(std::vector<Integer>& sEdges, std::vector<Integer>& sNodes)
         {
             sNodes.clear();
-
+            
             for (Integer j = 0; j < static_cast<Integer>(sEdges.size()); ++j)
             {
                 if (m_anAdvFront.at(sEdges[j]).remove)
@@ -192,10 +192,10 @@ namespace ENigMA
 
             for (Integer j = 0; j < static_cast<Integer>(m_interiorNodes.size()); ++j)
             {
-                if (m_interiorNodes[j].remove)
+                const auto& aNode = m_interiorNodes[j];
+                if (aNode.remove)
                     continue;
-
-                Integer aNodeId = m_interiorNodes[j].nodeId;
+                Integer aNodeId = aNode.nodeId;
 
                 if (std::find(sNodes.begin(), sNodes.end(), aNodeId) == sNodes.end())
                     sNodes.emplace_back(aNodeId);

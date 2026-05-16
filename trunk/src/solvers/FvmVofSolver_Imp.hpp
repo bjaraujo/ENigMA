@@ -45,7 +45,6 @@ namespace ENigMA
         void CFvmVofSolver<Real>::storePreviousQuantities()
         {
             CFvmPisoSolver<Real>::storePreviousQuantities();
-
             m_s0 = m_s;
         }
 
@@ -418,13 +417,11 @@ namespace ENigMA
 
             Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
-
             Eigen::Matrix<Real, Eigen::Dynamic, 1> s = solver.solve(b);
 
             for (int i = 0; i < s.rows(); ++i)
             {
                 Integer aControlVolumeId = CFvmPisoSolver<Real>::m_mapIndexToId.at(i);
-
                 m_s[aControlVolumeId] = std::min(std::max(s[i], 0.0), 1.0);
             }
         }
