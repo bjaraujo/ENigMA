@@ -177,23 +177,26 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::calculateVelocityField()
         {
-            Eigen::SparseMatrix<Real> A;
+            typedef Eigen::Triplet<Real> Triplet;
+            std::vector<Triplet> aTriplets;
+            
             Eigen::Matrix<Real, Eigen::Dynamic, 1> bu, bv, bw;
 
-            A.resize(m_fvmMesh.nbControlVolumes(), m_fvmMesh.nbControlVolumes());
-            A.reserve(m_fvmMesh.nbControlVolumes());
-
-            bu.resize(m_fvmMesh.nbControlVolumes());
+            Integer nbCv = m_fvmMesh.nbControlVolumes();
+            bu.resize(nbCv);
             bu.setZero();
 
-            bv.resize(m_fvmMesh.nbControlVolumes());
+            bv.resize(nbCv);
             bv.setZero();
 
-            bw.resize(m_fvmMesh.nbControlVolumes());
+            bw.resize(nbCv);
             bw.setZero();
 
+            // Reserve approximate space for triplets
+            aTriplets.reserve(nbCv * 7);
+
             // Assemble momentum matrix
-            for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
+            for (Integer i = 0; i < nbCv; ++i)
             {
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
                 Integer anIndexP = m_mapIdToIndex[aControlVolumeId];
@@ -240,23 +243,20 @@ namespace ENigMA
 
                             Real xsi = 0.5; // CDS
 
-                            // Convection
-                            A.coeffRef(anIndexP, anIndexP) += (1.0 - xsi) * dens * flux / volume;
+                            // Convection and Diffusion - diagonal
+                            Real aVal_P_P = (1.0 - xsi) * dens * flux / volume + visc * area / dist / volume;
+                            aTriplets.emplace_back(anIndexP, anIndexP, aVal_P_P);
 
-                            // Diffusion
-                            A.coeffRef(anIndexP, anIndexP) += +visc * area / dist / volume;
-
-                            // Convection
-                            A.coeffRef(anIndexP, anIndexN) += xsi * dens * flux / volume;
-
-                            // Diffusion
-                            A.coeffRef(anIndexP, anIndexN) += -visc * area / dist / volume;
+                            // Convection and Diffusion - off-diagonal
+                            Real aVal_P_N = xsi * dens * flux / volume - visc * area / dist / volume;
+                            aTriplets.emplace_back(anIndexP, anIndexN, aVal_P_N);
                         }
                     }
                     else
                     {
-                        // Diffusion
-                        A.coeffRef(anIndexP, anIndexP) += visc * area / dist / volume;
+                        // Diffusion - diagonal
+                        Real aVal_P_P = visc * area / dist / volume;
+                        aTriplets.emplace_back(anIndexP, anIndexP, aVal_P_P);
 
                         bu[anIndexP] += visc * m_uf[aFaceId] * area / dist / volume;
                         bv[anIndexP] += visc * m_vf[aFaceId] * area / dist / volume;
@@ -283,7 +283,8 @@ namespace ENigMA
 
                 if (m_dt > 0.0)
                 {
-                    A.coeffRef(anIndexP, anIndexP) += m_dens.at(aControlVolumeId) / m_dt;
+                    Real aVal_dt = m_dens.at(aControlVolumeId) / m_dt;
+                    aTriplets.emplace_back(anIndexP, anIndexP, aVal_dt);
 
                     bu[anIndexP] += m_dens[aControlVolumeId] / m_dt * m_u0[aControlVolumeId];
                     bv[anIndexP] += m_dens[aControlVolumeId] / m_dt * m_v0[aControlVolumeId];
@@ -291,7 +292,8 @@ namespace ENigMA
                 }
             }
 
-            A.finalize();
+            Eigen::SparseMatrix<Real> A(nbCv, nbCv);
+            A.setFromTriplets(aTriplets.begin(), aTriplets.end());
 
             Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
@@ -299,7 +301,7 @@ namespace ENigMA
             Eigen::Matrix<Real, Eigen::Dynamic, 1> v = solver.solve(bv);
             Eigen::Matrix<Real, Eigen::Dynamic, 1> w = solver.solve(bw);
 
-            for (int k = 0; k < A.outerSize(); ++k)
+            for (int k = 0; k < nbCv; ++k)
             {
                 Integer aControlVolumeId = m_mapIndexToId[k];
 
@@ -326,17 +328,20 @@ namespace ENigMA
         template <typename Real>
         void CFvmPisoSolver<Real>::calculatePressureField()
         {
-            Eigen::SparseMatrix<Real> A;
+            typedef Eigen::Triplet<Real> Triplet;
+            std::vector<Triplet> aTriplets;
+
             Eigen::Matrix<Real, Eigen::Dynamic, 1> b;
 
-            A.resize(m_fvmMesh.nbControlVolumes(), m_fvmMesh.nbControlVolumes());
-            A.reserve(m_fvmMesh.nbControlVolumes());
-
-            b.resize(m_fvmMesh.nbControlVolumes());
+            Integer nbCv = m_fvmMesh.nbControlVolumes();
+            b.resize(nbCv);
             b.setZero();
 
+            // Reserve approximate space for triplets
+            aTriplets.reserve(nbCv * 5);
+
             // Assemble pressure matrix
-            for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
+            for (Integer i = 0; i < nbCv; ++i)
             {
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
                 Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
@@ -374,8 +379,9 @@ namespace ENigMA
 
                             Real Hf = Huj * aNormal.x() + Hvj * aNormal.y() + Hwj * aNormal.z();
 
-                            A.coeffRef(anIndexP, anIndexP) += -1.0 / (apj * dist) * area;
-                            A.coeffRef(anIndexP, anIndexN) += +1.0 / (apj * dist) * area;
+                            Real aCoeff = -1.0 / (apj * dist) * area;
+                            aTriplets.emplace_back(anIndexP, anIndexP, aCoeff);
+                            aTriplets.emplace_back(anIndexP, anIndexN, -aCoeff);
 
                             m_flux[aFaceId] = -Hf / apj * area;
 
@@ -404,8 +410,9 @@ namespace ENigMA
                             // specified pressure
                             // velocity gradient = 0
 
-                            A.coeffRef(anIndexP, anIndexP) += -1.0 / (apj * dist) * area;
-                            b[anIndexP] += -1.0 / (apj * dist) * area * m_pf.at(aFaceId);
+                            Real aCoeff = -1.0 / (apj * dist) * area;
+                            aTriplets.emplace_back(anIndexP, anIndexP, aCoeff);
+                            b[anIndexP] += aCoeff * m_pf.at(aFaceId);
 
                             m_flux[aFaceId] = -Hf / apj * area;
 
@@ -420,7 +427,8 @@ namespace ENigMA
                             // specified pressure = 0
                             // velocity gradient = 0
 
-                            A.coeffRef(anIndexP, anIndexP) += -1.0 / (apj * dist) * area;
+                            Real aCoeff = -1.0 / (apj * dist) * area;
+                            aTriplets.emplace_back(anIndexP, anIndexP, aCoeff);
 
                             m_flux[aFaceId] = -Hf / apj * area;
 
@@ -434,13 +442,14 @@ namespace ENigMA
                 }
             }
 
-            A.finalize();
+            Eigen::SparseMatrix<Real> A(nbCv, nbCv);
+            A.setFromTriplets(aTriplets.begin(), aTriplets.end());
 
             Eigen::ConjugateGradient<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
             Eigen::Matrix<Real, Eigen::Dynamic, 1> p = solver.solve(b);
 
-            for (int i = 0; i < p.rows(); ++i)
+            for (Integer i = 0; i < nbCv; ++i)
             {
                 Integer aControlVolumeId = m_mapIndexToId.at(i);
 
