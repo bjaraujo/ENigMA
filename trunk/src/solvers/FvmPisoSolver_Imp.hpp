@@ -295,10 +295,9 @@ namespace ENigMA
 
             Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
-
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> u = solver.solveWithGuess(bu, u);
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> v = solver.solveWithGuess(bv, v);
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> w = solver.solveWithGuess(bw, w);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> u = solver.solve(bu);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> v = solver.solve(bv);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> w = solver.solve(bw);
 
             for (int k = 0; k < A.outerSize(); ++k)
             {
@@ -439,8 +438,7 @@ namespace ENigMA
 
             Eigen::ConjugateGradient<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
-
-            Eigen::Matrix<Real, Eigen::Dynamic, 1> p = solver.solveWithGuess(b, p);
+            Eigen::Matrix<Real, Eigen::Dynamic, 1> p = solver.solve(b);
 
             for (int i = 0; i < p.rows(); ++i)
             {
