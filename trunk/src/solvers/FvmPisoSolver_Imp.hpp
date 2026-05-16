@@ -92,12 +92,12 @@ namespace ENigMA
                 {
                     Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
-                    v = var[aControlVolumeId] + var[aNeighborId]; v *= 0.5;
+                    v = var.at(aControlVolumeId) + var.at(aNeighborId); v *= 0.5;
                     aVector += v * aNormal * area;
                 }
                 else
                 {
-                    v = varf[aFaceId];
+                    v = varf.at(aFaceId);
                     aVector += v * aNormal * area;
                 }
             }
@@ -199,7 +199,7 @@ namespace ENigMA
             for (Integer i = 0; i < nbCv; ++i)
             {
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
-                Integer anIndexP = m_mapIdToIndex[aControlVolumeId];
+                Integer anIndexP = m_mapIdToIndex.at(aControlVolumeId);
 
                 Real volume = m_fvmMesh.controlVolume(aControlVolumeId).originalVolume();
 
@@ -213,8 +213,8 @@ namespace ENigMA
                 {
                     Integer aFaceId = m_fvmMesh.controlVolume(aControlVolumeId).faceId(j);
 
-                    Real dens = m_dens[aControlVolumeId];
-                    Real visc = m_visc[aControlVolumeId];
+                    Real dens = m_dens.at(aControlVolumeId);
+                    Real visc = m_visc.at(aControlVolumeId);
 
                     CGeoNormal<Real>& aNormal = m_fvmMesh.controlVolume(aControlVolumeId).faceNormal(aFaceId);
 
@@ -224,22 +224,22 @@ namespace ENigMA
                     Real flux;
 
                     if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                        flux = +m_flux[aFaceId];
+                        flux = +m_flux.at(aFaceId);
                     else
-                        flux = -m_flux[aFaceId];
+                        flux = -m_flux.at(aFaceId);
 
                     if (m_fvmMesh.face(aFaceId).hasPair())
                     {
                         Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
-                        Integer anIndexN = m_mapIdToIndex[aNeighborId];
+                        Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                         if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId))
                         {
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId); area *= 0.5;
                             dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
-                            dens += m_dens[aNeighborId]; dens *= 0.5;
-                            visc += m_visc[aNeighborId]; visc *= 0.5;
+                            dens += m_dens.at(aNeighborId); dens *= 0.5;
+                            visc += m_visc.at(aNeighborId); visc *= 0.5;
 
                             Real xsi = 0.5; // CDS
 
@@ -258,21 +258,21 @@ namespace ENigMA
                         Real aVal_P_P = visc * area / dist / volume;
                         aTriplets.emplace_back(anIndexP, anIndexP, aVal_P_P);
 
-                        bu[anIndexP] += visc * m_uf[aFaceId] * area / dist / volume;
-                        bv[anIndexP] += visc * m_vf[aFaceId] * area / dist / volume;
-                        bw[anIndexP] += visc * m_wf[aFaceId] * area / dist / volume;
+                        bu[anIndexP] += visc * m_uf.at(aFaceId) * area / dist / volume;
+                        bv[anIndexP] += visc * m_vf.at(aFaceId) * area / dist / volume;
+                        bw[anIndexP] += visc * m_wf.at(aFaceId) * area / dist / volume;
 
                         // Convection
-                        bu[anIndexP] += -dens * m_uf[aFaceId] * area * flux * aNormal.x() / volume;
-                        bv[anIndexP] += -dens * m_vf[aFaceId] * area * flux * aNormal.y() / volume;
-                        bw[anIndexP] += -dens * m_wf[aFaceId] * area * flux * aNormal.z() / volume;
+                        bu[anIndexP] += -dens * m_uf.at(aFaceId) * area * flux * aNormal.x() / volume;
+                        bv[anIndexP] += -dens * m_vf.at(aFaceId) * area * flux * aNormal.y() / volume;
+                        bw[anIndexP] += -dens * m_wf.at(aFaceId) * area * flux * aNormal.z() / volume;
                     }
                 }
 
                 // Source - gravity
-                bu[anIndexP] += m_dens[aControlVolumeId] * m_gx;
-                bv[anIndexP] += m_dens[aControlVolumeId] * m_gy;
-                bw[anIndexP] += m_dens[aControlVolumeId] * m_gz;
+                bu[anIndexP] += m_dens.at(aControlVolumeId) * m_gx;
+                bv[anIndexP] += m_dens.at(aControlVolumeId) * m_gy;
+                bw[anIndexP] += m_dens.at(aControlVolumeId) * m_gz;
 
                 // Source - pressure
                 CGeoVector<Real> gradp = this->gradient(m_p, m_pf, aControlVolumeId);
@@ -286,9 +286,9 @@ namespace ENigMA
                     Real aVal_dt = m_dens.at(aControlVolumeId) / m_dt;
                     aTriplets.emplace_back(anIndexP, anIndexP, aVal_dt);
 
-                    bu[anIndexP] += m_dens[aControlVolumeId] / m_dt * m_u0[aControlVolumeId];
-                    bv[anIndexP] += m_dens[aControlVolumeId] / m_dt * m_v0[aControlVolumeId];
-                    bw[anIndexP] += m_dens[aControlVolumeId] / m_dt * m_w0[aControlVolumeId];
+                    bu[anIndexP] += m_dens.at(aControlVolumeId) / m_dt * m_u0.at(aControlVolumeId);
+                    bv[anIndexP] += m_dens.at(aControlVolumeId) / m_dt * m_v0.at(aControlVolumeId);
+                    bw[anIndexP] += m_dens.at(aControlVolumeId) / m_dt * m_w0.at(aControlVolumeId);
                 }
             }
 
@@ -303,7 +303,7 @@ namespace ENigMA
 
             for (int k = 0; k < nbCv; ++k)
             {
-                Integer aControlVolumeId = m_mapIndexToId[k];
+                Integer aControlVolumeId = m_mapIndexToId.at(k);
 
                 CGeoVector<Real> gradp = this->gradient(m_p, m_pf, aControlVolumeId);
 
@@ -355,27 +355,27 @@ namespace ENigMA
                     Real area = m_fvmMesh.controlVolume(aControlVolumeId).faceArea(aFaceId);
                     Real dist = m_fvmMesh.controlVolume(aControlVolumeId).faceDist(aFaceId).norm();
 
-                    Real apj = m_ap[aControlVolumeId];
+                    Real apj = m_ap.at(aControlVolumeId);
 
-                    Real Huj = m_Hu[aControlVolumeId];
-                    Real Hvj = m_Hv[aControlVolumeId];
-                    Real Hwj = m_Hw[aControlVolumeId];
+                    Real Huj = m_Hu.at(aControlVolumeId);
+                    Real Hvj = m_Hv.at(aControlVolumeId);
+                    Real Hwj = m_Hw.at(aControlVolumeId);
 
                     if (m_fvmMesh.face(aFaceId).hasPair())
                     {
                         Integer aNeighborId = m_fvmMesh.face(aFaceId).neighborId(aControlVolumeId);
 
-                        Integer anIndexN = m_mapIdToIndex[aNeighborId];
+                        Integer anIndexN = m_mapIdToIndex.at(aNeighborId);
 
                         if (m_fvmMesh.controlVolume(aNeighborId).containsFace(aFaceId))
                         {
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId); area *= 0.5;
                             dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
-                            apj += m_ap[aNeighborId]; apj *= 0.5;
-                            Huj += m_Hu[aNeighborId]; Huj *= 0.5;
-                            Hvj += m_Hv[aNeighborId]; Hvj *= 0.5;
-                            Hwj += m_Hw[aNeighborId]; Hwj *= 0.5;
+                            apj += m_ap.at(aNeighborId); apj *= 0.5;
+                            Huj += m_Hu.at(aNeighborId); Huj *= 0.5;
+                            Hvj += m_Hv.at(aNeighborId); Hvj *= 0.5;
+                            Hwj += m_Hw.at(aNeighborId); Hwj *= 0.5;
 
                             Real Hf = Huj * aNormal.x() + Hvj * aNormal.y() + Hwj * aNormal.z();
 
@@ -403,7 +403,7 @@ namespace ENigMA
                             // pressure gradient = 0
                             b[anIndexP] -= m_flux.at(aFaceId);
 
-                            m_flux[aFaceId] = -(m_uf[aFaceId] * aNormal.x() + m_vf[aFaceId] * aNormal.y() + m_wf[aFaceId] * aNormal.z()) * area;
+                            m_flux[aFaceId] = -(m_uf.at(aFaceId) * aNormal.x() + m_vf.at(aFaceId) * aNormal.y() + m_wf.at(aFaceId) * aNormal.z()) * area;
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_PRESSURE)
                         {
@@ -434,9 +434,9 @@ namespace ENigMA
 
                             b[anIndexP] -= m_flux.at(aFaceId);
 
-                            m_uf[aFaceId] = -m_flux[aFaceId] / area * aNormal.x();
-                            m_vf[aFaceId] = -m_flux[aFaceId] / area * aNormal.y();
-                            m_wf[aFaceId] = -m_flux[aFaceId] / area * aNormal.z();
+                            m_uf[aFaceId] = -m_flux.at(aFaceId) / area * aNormal.x();
+                            m_vf[aFaceId] = -m_flux.at(aFaceId) / area * aNormal.y();
+                            m_wf[aFaceId] = -m_flux.at(aFaceId) / area * aNormal.z();
                         }
                     }
                 }
@@ -482,10 +482,10 @@ namespace ENigMA
                             area += m_fvmMesh.controlVolume(aNeighborId).faceArea(aFaceId); area *= 0.5;
                             dist += m_fvmMesh.controlVolume(aNeighborId).faceDist(aFaceId).norm();
 
-                            apj += m_ap[aNeighborId]; apj *= 0.5;
+                            apj += m_ap.at(aNeighborId); apj *= 0.5;
 
                             if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                                m_flux[aFaceId] -= area / (apj * dist) * (m_p[aNeighborId] - m_p[aControlVolumeId]);
+                                m_flux[aFaceId] -= area / (apj * dist) * (m_p.at(aNeighborId) - m_p.at(aControlVolumeId));
                         }
                     }
                     else
@@ -493,19 +493,19 @@ namespace ENigMA
                         if (m_fvmMesh.face(aFaceId).boundaryType() == BT_WALL_NO_SLIP)
                         {
                             m_flux[aFaceId] = 0.0;
-                            m_pf[aFaceId] = m_p[aControlVolumeId];
+                            m_pf[aFaceId] = m_p.at(aControlVolumeId);
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_FLOW)
                         {
-                            m_pf[aFaceId] = m_p[aControlVolumeId];
+                            m_pf[aFaceId] = m_p.at(aControlVolumeId);
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_PRESSURE)
                         {
-                            m_flux[aFaceId] += area / (apj * dist) * (m_pf[aFaceId] - m_p[aControlVolumeId]);
+                            m_flux[aFaceId] += area / (apj * dist) * (m_pf.at(aFaceId) - m_p.at(aControlVolumeId));
                         }
                         else if (m_fvmMesh.face(aFaceId).boundaryType() == BT_OUTLET)
                         {
-                            m_flux[aFaceId] += area / (apj * dist) * m_p[aControlVolumeId];
+                            m_flux[aFaceId] += area / (apj * dist) * m_p.at(aControlVolumeId);
                             m_pf[aFaceId] = 0.0;
                         }
                     }
@@ -522,9 +522,9 @@ namespace ENigMA
 
                 CGeoVector<Real> gradp = this->gradient(m_p, m_pf, aControlVolumeId);
 
-                m_u[aControlVolumeId] = (m_Hu[aControlVolumeId] - gradp.x()) / m_ap[aControlVolumeId];
-                m_v[aControlVolumeId] = (m_Hv[aControlVolumeId] - gradp.y()) / m_ap[aControlVolumeId];
-                m_w[aControlVolumeId] = (m_Hw[aControlVolumeId] - gradp.z()) / m_ap[aControlVolumeId];
+                m_u[aControlVolumeId] = (m_Hu.at(aControlVolumeId) - gradp.x()) / m_ap.at(aControlVolumeId);
+                m_v[aControlVolumeId] = (m_Hv.at(aControlVolumeId) - gradp.y()) / m_ap.at(aControlVolumeId);
+                m_w[aControlVolumeId] = (m_Hw.at(aControlVolumeId) - gradp.z()) / m_ap.at(aControlVolumeId);
             }
         }
 
@@ -537,7 +537,7 @@ namespace ENigMA
             {
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
-                p_min = std::min(p_min, m_p[aControlVolumeId]);
+                p_min = std::min(p_min, m_p.at(aControlVolumeId));
             }
 
             for (Integer i = 0; i < m_fvmMesh.nbControlVolumes(); ++i)
@@ -583,9 +583,9 @@ namespace ENigMA
                 Real flux;
 
                 if (m_fvmMesh.face(aFaceId).controlVolumeId() == aControlVolumeId)
-                    flux = +m_flux[aFaceId];
+                    flux = +m_flux.at(aFaceId);
                 else
-                    flux = -m_flux[aFaceId];
+                    flux = -m_flux.at(aFaceId);
 
                 sumCellFlux += flux;
             }
@@ -627,65 +627,65 @@ namespace ENigMA
             {
                 Integer aControlVolumeId = m_fvmMesh.controlVolumeId(i);
 
-                ru += (m_u[aControlVolumeId] - m_u0[aControlVolumeId]) * (m_u[aControlVolumeId] - m_u0[aControlVolumeId]);
-                rv += (m_v[aControlVolumeId] - m_v0[aControlVolumeId]) * (m_v[aControlVolumeId] - m_v0[aControlVolumeId]);
-                rw += (m_w[aControlVolumeId] - m_w0[aControlVolumeId]) * (m_w[aControlVolumeId] - m_w0[aControlVolumeId]);
-                rp += (m_p[aControlVolumeId] - m_p0[aControlVolumeId]) * (m_p[aControlVolumeId] - m_p0[aControlVolumeId]);
+                ru += (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId)) * (m_u.at(aControlVolumeId) - m_u0.at(aControlVolumeId));
+                rv += (m_v.at(aControlVolumeId) - m_v0.at(aControlVolumeId)) * (m_v.at(aControlVolumeId) - m_v0.at(aControlVolumeId));
+                rw += (m_w.at(aControlVolumeId) - m_w0.at(aControlVolumeId)) * (m_w.at(aControlVolumeId) - m_w0.at(aControlVolumeId));
+                rp += (m_p.at(aControlVolumeId) - m_p0.at(aControlVolumeId)) * (m_p.at(aControlVolumeId) - m_p0.at(aControlVolumeId));
             }
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::u(const Integer aControlVolumeId)
         {
-            return m_u[aControlVolumeId];
+            return m_u.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::v(const Integer aControlVolumeId)
         {
-            return m_v[aControlVolumeId];
+            return m_v.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::w(const Integer aControlVolumeId)
         {
-            return m_w[aControlVolumeId];
+            return m_w.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::p(const Integer aControlVolumeId)
         {
-            return m_p[aControlVolumeId];
+            return m_p.at(aControlVolumeId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::uf(const Integer aFaceId)
         {
-            return m_uf[aFaceId];
+            return m_uf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::vf(const Integer aFaceId)
         {
-            return m_vf[aFaceId];
+            return m_vf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::wf(const Integer aFaceId)
         {
-            return m_wf[aFaceId];
+            return m_wf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::pf(const Integer aFaceId)
         {
-            return m_pf[aFaceId];
+            return m_pf.at(aFaceId);
         }
 
         template <typename Real>
         Real CFvmPisoSolver<Real>::flux(const Integer aFaceId)
         {
-            return m_flux[aFaceId];
+            return m_flux.at(aFaceId);
         }
 
         template <typename Real>
@@ -715,7 +715,7 @@ namespace ENigMA
         template <typename Real>
         Real CFvmPisoSolver<Real>::massError(const Integer aControlVolumeId)
         {
-            return m_massError[aControlVolumeId];
+            return m_massError.at(aControlVolumeId);
         }
     }
 }
