@@ -78,14 +78,17 @@ namespace ENigMA
         template <typename Real>
         void CFvmTemperatureSolver<Real>::calculateTemperatureField()
         {
-            Eigen::SparseMatrix<Real> A;
+            typedef Eigen::Triplet<Real> Triplet;
+            std::vector<Triplet> aTriplets;
+
             Eigen::Matrix<Real, Eigen::Dynamic, 1> b;
 
-            A.resize(CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(), CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes());
-            A.reserve(CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes());
-
-            b.resize(CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes());
+            Integer nbCellsP = CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes();
+            
+            b.resize(nbCellsP);
             b.setZero();
+
+            aTriplets.reserve(nbCellsP * 7);
 
             // Assemble temperature matrix
             for (Integer i = 0; i < CFvmPisoSolver<Real>::m_fvmMesh.nbControlVolumes(); ++i)
@@ -135,8 +138,8 @@ namespace ENigMA
                             spheat *= 0.5;
 
                             // Conduction
-                            A.coeffRef(anIndexP, anIndexP) += thcond * area / dist;
-                            A.coeffRef(anIndexP, anIndexN) += -thcond * area / dist;
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
+                            aTriplets.push_back(Triplet(anIndexP, anIndexN, -thcond * area / dist));
 
                             // Convection
                             Real xsi;
@@ -145,8 +148,8 @@ namespace ENigMA
                             else
                                 xsi = 1.0; // UPWIND
 
-                            A.coeffRef(anIndexP, anIndexP) += (1.0 - xsi) * dens * spheat * flux;
-                            A.coeffRef(anIndexP, anIndexN) += xsi * dens * spheat * flux;
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
+                            aTriplets.push_back(Triplet(anIndexP, anIndexN, xsi * dens * spheat * flux));
                         }
                     }
                     else
@@ -155,7 +158,7 @@ namespace ENigMA
                         thcond *= 0.5;
 
                         // Conduction
-                        A.coeffRef(anIndexP, anIndexP) += thcond * area / dist;
+                        aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
                         b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
 
                         // Convection
@@ -165,7 +168,7 @@ namespace ENigMA
                         else
                             xsi = 1.0; // UPWIND
 
-                        A.coeffRef(anIndexP, anIndexP) += (1.0 - xsi) * dens * spheat * flux;
+                        aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
                         b[anIndexP] += -xsi * dens * spheat * flux * m_Tf.at(aFaceId);
                     }
                 }
@@ -173,12 +176,14 @@ namespace ENigMA
                 if (CFvmPisoSolver<Real>::m_dt > 0)
                 {
                     // Unsteady term - Euler
-                    A.coeffRef(anIndexP, anIndexP) += volume * spheat * dens / CFvmPisoSolver<Real>::m_dt;
+                    aTriplets.push_back(Triplet(anIndexP, anIndexP, volume * spheat * dens / CFvmPisoSolver<Real>::m_dt));
                     b[anIndexP] += volume * spheat * dens / CFvmPisoSolver<Real>::m_dt * m_T0.at(aControlVolumeId);
                 }
             }
 
-            A.finalize();
+            Eigen::SparseMatrix<Real> A(nbCellsP, nbCellsP);
+            A.setFromTriplets(aTriplets.begin(), aTriplets.end());
+            A.makeCompressed();
 
             Eigen::BiCGSTAB<Eigen::SparseMatrix<Real>> solver;
             solver.compute(A);
