@@ -18,6 +18,8 @@
 
 using namespace ENigMA::geometry;
 
+const Decimal pi = static_cast<Decimal>(std::acos(-1.0));
+
 class CTestGeoCircle : public ::testing::Test {
 protected:
 
@@ -31,6 +33,39 @@ protected:
 
 };
 
+TEST_F(CTestGeoCircle, circle1) {
+
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(0.5, 0.5, 0.0);
+
+    CGeoCircle<Decimal> aCircle(aPoint1, aPoint2, aPoint3);
+
+    aCircle.calculateArea();
+
+    EXPECT_NEAR(pi/4.0, aCircle.area(), 1E-3);
+
+}
+
+TEST_F(CTestGeoCircle, boundingBox1) {
+
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint3(0.5, 0.5, 0.0);
+
+    CGeoCircle<Decimal> aCircle(aPoint1, aPoint2, aPoint3);
+
+    aCircle.calculateBoundingBox();
+
+    EXPECT_NEAR(+0.0, aCircle.boundingBox().min().x(), 1E-3);
+    EXPECT_NEAR(-0.5, aCircle.boundingBox().min().y(), 1E-3);
+    EXPECT_NEAR(+0.0, aCircle.boundingBox().min().z(), 1E-3);
+
+    EXPECT_NEAR(+1.0, aCircle.boundingBox().max().x(), 1E-3);
+    EXPECT_NEAR(+0.5, aCircle.boundingBox().max().y(), 1E-3);
+    EXPECT_NEAR(+0.0, aCircle.boundingBox().max().z(), 1E-3);
+}
+
 TEST_F(CTestGeoCircle, area1) {
 
     CGeoCoordinate<Decimal> aCenter(0.0, 0.0, 0.0);
@@ -39,7 +74,7 @@ TEST_F(CTestGeoCircle, area1) {
 
     aCircle.calculateArea();
 
-    EXPECT_NEAR(3.14159265359, aCircle.area(), 1E-3);
+    EXPECT_NEAR(pi, aCircle.area(), 1E-3);
 
 }
 
@@ -53,7 +88,7 @@ TEST_F(CTestGeoCircle, area2) {
 
     aCircle.calculateArea();
 
-    EXPECT_NEAR(3.14159265359, aCircle.area(), 1E-3);
+    EXPECT_NEAR(pi, aCircle.area(), 1E-3);
 
 }
 

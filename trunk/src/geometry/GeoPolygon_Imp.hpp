@@ -213,9 +213,11 @@ namespace ENigMA
             Integer p2 = 1;
             Integer p3 = 2;
 
+            static const Real pi = static_cast<Real>(std::acos(-1.0));
+
             while (chain.size() > 2)
             {
-                Real minAngle = +2 * 3.142;
+                Real minAngle = 2 * pi;
 
                 Integer wi = 0;
 

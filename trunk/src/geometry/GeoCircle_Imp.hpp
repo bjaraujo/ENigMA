@@ -20,7 +20,7 @@ namespace ENigMA
             Real xDelta_b = aPoint3.x() - aPoint2.x();
             Real yDelta_b = aPoint3.y() - aPoint2.y();
 
-            if (std::fabs(xDelta_a) <= aTolerance * aTolerance && std::fabs(yDelta_b) <= aTolerance * aTolerance)
+            if (std::fabs(xDelta_a) <= aTolerance && std::fabs(yDelta_b) <= aTolerance)
             {
                 this->m_center.x() = 0.5 * (aPoint2.x() + aPoint3.x());
                 this->m_center.y() = 0.5 * (aPoint1.y() + aPoint2.y());
@@ -29,18 +29,30 @@ namespace ENigMA
             }
             else
             {
-                Real aSlope = yDelta_a / xDelta_a; //
-                Real bSlope = yDelta_b / xDelta_b;
+                Real aSlope = 0.0;
+                Real bSlope = 0.0;
 
-                if (std::fabs(aSlope - bSlope) <= aTolerance * aTolerance)
+                if (std::fabs(xDelta_a) > aTolerance)
+                    aSlope = yDelta_a / xDelta_a;
+
+                if (std::fabs(xDelta_b) > aTolerance)
+                    bSlope = yDelta_b / xDelta_b;
+
+                if (std::fabs(aSlope - bSlope) <= aTolerance)
                 {
                     this->m_center << 0.0, 0.0, 0.0;
                     this->m_radius = 0.0;
                 }
                 else
                 {
-                    this->m_center.x() = (aSlope * bSlope * (aPoint1.y() - aPoint3.y()) + bSlope * (aPoint1.x() + aPoint2.x()) - aSlope * (aPoint2.x() + aPoint3.x())) / (2.0 * (bSlope - aSlope));
-                    this->m_center.y() = -(m_center.x() - (aPoint1.x() + aPoint2.x()) * 0.5) / aSlope + (aPoint1.y() + aPoint2.y()) * 0.5;
+                    if (std::fabs(bSlope - aSlope) > aTolerance)
+                    {
+                        this->m_center.x() = (aSlope * bSlope * (aPoint1.y() - aPoint3.y()) + bSlope * (aPoint1.x() + aPoint2.x()) - aSlope * (aPoint2.x() + aPoint3.x())) / (2.0 * (bSlope - aSlope));
+                        if (std::fabs(aSlope) > aTolerance)
+                            this->m_center.y() = -(m_center.x() - (aPoint1.x() + aPoint2.x()) * 0.5) / aSlope + (aPoint1.y() + aPoint2.y()) * 0.5;
+                        else
+                            this->m_center.y() = (aPoint1.y() + aPoint2.y()) * 0.5;
+                    }
                     this->m_center.z() = aPoint1.z();
 
                     this->m_radius = (aPoint1 - this->m_center).norm();
@@ -106,8 +118,8 @@ namespace ENigMA
             {
                 this->m_boundingBox.reset();
 
-                CGeoCoordinate<Real> aCoordinate1(-this->m_radius, -this->m_radius, 0.0);
-                CGeoCoordinate<Real> aCoordinate2(+this->m_radius, +this->m_radius, 0.0);
+                CGeoCoordinate<Real> aCoordinate1(this->m_center.x() - this->m_radius, this->m_center.y() - this->m_radius, this->m_center.z());
+                CGeoCoordinate<Real> aCoordinate2(this->m_center.x() + this->m_radius, this->m_center.y() + this->m_radius, this->m_center.z());
 
                 this->m_boundingBox.addCoordinate(aCoordinate1);
                 this->m_boundingBox.addCoordinate(aCoordinate2);

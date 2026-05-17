@@ -255,13 +255,13 @@ namespace ENigMA
             const Real C_EPS = std::numeric_limits<Real>::epsilon();
 
             m_root.xmin = m_boundingBox.min().x() - C_EPS;
-            m_root.xmax = m_boundingBox.min().x() + C_EPS;
+            m_root.xmax = m_boundingBox.max().x() + C_EPS;
 
             m_root.ymin = m_boundingBox.min().y() - C_EPS;
-            m_root.ymax = m_boundingBox.min().y() + C_EPS;
+            m_root.ymax = m_boundingBox.max().y() + C_EPS;
 
             m_root.zmin = m_boundingBox.min().z() - C_EPS;
-            m_root.zmax = m_boundingBox.min().z() + C_EPS;
+            m_root.zmax = m_boundingBox.max().z() + C_EPS;
 
             m_root.xmid = (m_boundingBox.min().x() + m_boundingBox.max().x()) * 0.5;
             m_root.ymid = (m_boundingBox.min().y() + m_boundingBox.max().y()) * 0.5;
