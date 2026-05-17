@@ -303,7 +303,7 @@ namespace ENigMA
 
                         anAdvTriangle2.neighborId[l] = anAdvTriangle1.id;
                         anAdvTriangle2.nodeNotId[l] = (k + 2) % 3;
-                        break;
+                        return true;
                     }
                 }
             }
@@ -1408,15 +1408,10 @@ namespace ENigMA
                     aTetrahedron.addVertex(aNode3);
                     aTetrahedron.addVertex(aNode4);
 
+                    aTetrahedron.calculateCentroid();
                     aTetrahedron.calculateVolume();
-
-                    aNewNode += aNode1;
-                    aNewNode += aNode2;
-                    aNewNode += aNode3;
-                    aNewNode += aNode4;
-                    aNewNode /= 4.0;
-
-                    aNewNode *= aTetrahedron.volume();
+                    
+                    aNewNode += aTetrahedron.centroid() * aTetrahedron.volume();
 
                     aTotalVolume += aTetrahedron.volume();
                 }
