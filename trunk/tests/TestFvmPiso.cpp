@@ -354,21 +354,29 @@ TEST_F(CTestFvmPiso, channelTemperature) {
         aPisoSolver.iterate(dt);
     }
 
+    CPosGmsh<Decimal> aPosGmsh;
+    CPdeField<Decimal> t;
+    t.setMesh(aFvmMesh.mesh());
+    t.setSize(aFvmMesh.nbControlVolumes());
+    t.setDiscretLocation(DL_ELEMENT_CENTER);
+    t.setNbDofs(1);    
+
     Decimal tmid = 0.0;
     
     for (Integer i = 0; i < aFvmMesh.nbControlVolumes(); ++i)
     {
         unsigned int aControlVolumeId = aFvmMesh.controlVolumeId(i);
         CGeoCoordinate<Decimal> aCentroid = aFvmMesh.controlVolume(aControlVolumeId).centroid();
-        
+        t.setValue(i, aPisoSolver.T(aControlVolumeId));
         if (std::abs(aCentroid.z()) < 1E-3)
         {
             tmid = aPisoSolver.T(aControlVolumeId);
             break;
         }
     }
+
+    aPosGmsh.save(t, "channel_temperature.pos", "Temperature");
     
     EXPECT_NEAR(0.5, tmid, 0.1);
-
 }
 
