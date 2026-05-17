@@ -17,8 +17,11 @@
 #include "MshBasicMesher.hpp"
 #include "FvmPisoSolver.hpp"
 #include "FvmTemperatureSolver.hpp"
+#include "PosGmsh.hpp"
 
 using namespace ENigMA::fvm;
+using namespace ENigMA::post;
+using namespace ENigMA::pde;
 
 class CTestFvmPiso : public ::testing::Test {
 protected:
@@ -112,16 +115,25 @@ TEST_F(CTestFvmPiso, hydroPressure) {
         aPisoSolver.iterate(dt);
     }
 
-    Decimal p = 0.0;
+    CPosGmsh<Decimal> aPosGmsh;
+    CPdeField<Decimal> p;
+    p.setMesh(aFvmMesh.mesh());
+    p.setSize(aFvmMesh.nbControlVolumes());
+    p.setDiscretLocation(DL_ELEMENT_CENTER);
+    p.setNbDofs(1);    
+
+    Decimal pmax = 0.0;
     
     for (Integer i = 0; i < aFvmMesh.nbControlVolumes(); ++i)
     {
         unsigned int aControlVolumeId = aFvmMesh.controlVolumeId(i);
-        p = std::max(p, aPisoSolver.p(aControlVolumeId));
-    }
-     
-    EXPECT_NEAR(rho*std::fabs(g), p, 200);
+        p.setValue(i, aPisoSolver.p(aControlVolumeId));
+        pmax = std::max(pmax, aPisoSolver.p(aControlVolumeId));
+    }    
 
+    aPosGmsh.save(p, "hydro_pressure.pos", "Pressure");
+    
+    EXPECT_NEAR(rho*std::fabs(g), pmax, 200);
 }
 
 TEST_F(CTestFvmPiso, channelPressure) {
@@ -218,17 +230,26 @@ TEST_F(CTestFvmPiso, channelPressure) {
         aPisoSolver.iterate(dt);
     }
 
-    Decimal pMax = 0.0;
+    CPosGmsh<Decimal> aPosGmsh;
+    CPdeField<Decimal> p;
+    p.setMesh(aFvmMesh.mesh());
+    p.setSize(aFvmMesh.nbControlVolumes());
+    p.setDiscretLocation(DL_ELEMENT_CENTER);
+    p.setNbDofs(1);    
+
+    Decimal pmax = 0.0;
     
     for (Integer i = 0; i < aFvmMesh.nbControlVolumes(); ++i)
     {
         unsigned int aControlVolumeId = aFvmMesh.controlVolumeId(i);
-        pMax = std::max(pMax, aPisoSolver.p(aControlVolumeId));
+        p.setValue(i, aPisoSolver.p(aControlVolumeId));
+        pmax = std::max(pmax, aPisoSolver.p(aControlVolumeId));
     }
 
-    Decimal pExpected = 28.45 * mu * L * v / (a * a);
-    EXPECT_NEAR(pExpected, pMax, 0.15);
+    aPosGmsh.save(p, "channel_pressure.pos", "Pressure");
 
+    Decimal pExpected = 28.45 * mu * L * v / (a * a);
+    EXPECT_NEAR(pExpected, pmax, 0.15);
 }
 
 TEST_F(CTestFvmPiso, channelTemperature) {
@@ -333,7 +354,7 @@ TEST_F(CTestFvmPiso, channelTemperature) {
         aPisoSolver.iterate(dt);
     }
 
-    Decimal TMid = 0.0;
+    Decimal tmid = 0.0;
     
     for (Integer i = 0; i < aFvmMesh.nbControlVolumes(); ++i)
     {
@@ -342,12 +363,12 @@ TEST_F(CTestFvmPiso, channelTemperature) {
         
         if (std::abs(aCentroid.z()) < 1E-3)
         {
-            TMid = aPisoSolver.T(aControlVolumeId);
+            tmid = aPisoSolver.T(aControlVolumeId);
             break;
         }
     }
     
-    EXPECT_NEAR(0.5, TMid, 0.1);
+    EXPECT_NEAR(0.5, tmid, 0.1);
 
 }
 
