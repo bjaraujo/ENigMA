@@ -242,9 +242,9 @@ namespace ENigMA
 
             for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
             {
-                aNodeId = sNodes[j];
+                Integer aTestNodeId = sNodes[j];
 
-                CMshNode<Real>& aNode = m_surfaceMesh.node(aNodeId);
+                CMshNode<Real>& aNode = m_surfaceMesh.node(aTestNodeId);
 
                 if ((aNode - aNode1).norm() < aTolerance || (aNode - aNode2).norm() < aTolerance || (aNode - aNode3).norm() < aTolerance)
                     continue;
@@ -256,7 +256,10 @@ namespace ENigMA
                 if (aTriangle.contains(aNode, anIntersectionType, aTolerance))
                 {
                     if (anIntersectionType == IT_INTERNAL || anIntersectionType == IT_EDGE)
+                    {
+                        aNodeId = aTestNodeId;
                         return true;
+                    }
                 }
             }
 
@@ -310,7 +313,8 @@ namespace ENigMA
                     continue;
                 }
 
-                if (anAdvEdge.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvEdge.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size()))
+                if (anAdvEdge.neighborId[0] < 0 || anAdvEdge.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || 
+                    anAdvEdge.neighborId[1] < 0 || anAdvEdge.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size()))
                 {
                     throw std::out_of_range("Connectivity is out of range!");
                 }
@@ -408,8 +412,9 @@ namespace ENigMA
 
             m_surfaceMesh.addElement(aNewElementId, aNewElement);
 
-            SMshAdvancingFrontEdge<Real>& aPrevEdge = m_anAdvFront.at(anAdvEdge.neighborId[0]);
-            SMshAdvancingFrontEdge<Real>& aNextEdge = m_anAdvFront.at(anAdvEdge.neighborId[1]);
+            // Copy neighbor IDs before they might be invalidated by emplace_back
+            Integer aPrevNeighborId = anAdvEdge.neighborId[0];
+            Integer aNextNeighborId = anAdvEdge.neighborId[1];
 
             Integer aNewEdgeId1 = m_nextEdgeId++;
             Integer aNewEdgeId2 = m_nextEdgeId++;
@@ -421,15 +426,12 @@ namespace ENigMA
             aNewEdge1.boundary = false;
             aNewEdge1.nodeId[0] = aNodeId1;
             aNewEdge1.nodeId[1] = aNodeId3;
-            aNewEdge1.neighborId[0] = anAdvEdge.neighborId[0];
+            aNewEdge1.neighborId[0] = aPrevNeighborId;
             aNewEdge1.neighborId[1] = aNewEdgeId2;
             aNewEdge1.elementId = aNewElementId;
             aNewEdge1.nodeNotId3 = aNodeId2;
 
             aNewEdge1.build(m_surfaceMesh);
-
-            // Correct connectivity
-            aPrevEdge.neighborId[1] = aNewEdgeId1;
 
             // Add edge to rtree
             addEdgeToRtree(aNewEdge1, aTolerance);
@@ -442,14 +444,11 @@ namespace ENigMA
             aNewEdge2.nodeId[0] = aNodeId3;
             aNewEdge2.nodeId[1] = aNodeId2;
             aNewEdge2.neighborId[0] = aNewEdgeId1;
-            aNewEdge2.neighborId[1] = anAdvEdge.neighborId[1];
+            aNewEdge2.neighborId[1] = aNextNeighborId;
             aNewEdge2.elementId = aNewElementId;
             aNewEdge2.nodeNotId3 = aNodeId1;
 
             aNewEdge2.build(m_surfaceMesh);
-
-            // Correct connectivity
-            aNextEdge.neighborId[0] = aNewEdgeId2;
 
             // Add edge to rtree
             this->addEdgeToRtree(aNewEdge2, aTolerance);
@@ -460,6 +459,10 @@ namespace ENigMA
             m_anAdvFront.emplace_back(aNewEdge1);
             m_anAdvFront.emplace_back(aNewEdge2);
 
+            // Correct connectivity after emplace_back
+            m_anAdvFront.at(aPrevNeighborId).neighborId[1] = aNewEdgeId1;
+            m_anAdvFront.at(aNextNeighborId).neighborId[0] = aNewEdgeId2;
+
             this->cleanDuplicateEdges(sEdges, aTolerance);
         }
 
@@ -468,10 +471,11 @@ namespace ENigMA
         {
             Real x, y;
 
-            std::vector<bool> sRemeshed;
+            std::map<Integer, bool> sRemeshed;
             for (Integer i = 0; i < aMesh.nbElements(); ++i)
             {
-                sRemeshed.emplace_back(false);
+                Integer anElementId = aMesh.elementId(i);
+                sRemeshed[anElementId] = false;
             }
 
             // Split edge mesh according to local mesh size
@@ -684,7 +688,7 @@ namespace ENigMA
                 CMshFace<Real>& aFace = aMesh.face(aFaceId);
 
                 if (aFace.pairFaceId() >= aMesh.nextFaceId())
-                    aFace.setPairFaceId(aFirstFaceId);
+                    aFace.setHasPair(false);
             }
 
             aMesh.generateFaces(aTolerance);
@@ -810,7 +814,7 @@ namespace ENigMA
 
                 m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
-                anInteriorNode.id = i;
+                anInteriorNode.id = aNewNodeId;
                 anInteriorNode.remove = false;
 
                 anInteriorNode.nodeId = aNewNodeId;
@@ -828,7 +832,7 @@ namespace ENigMA
             if (this->frontSize() > 0)
             {
                 std::cout << "Meshing error!" << std::endl;
-                throw(m_anAdvFront);
+                throw std::runtime_error("Meshing error: advancing front not closed!");
             }
 
             m_surfaceMesh.removeDanglingNodes();
@@ -896,7 +900,7 @@ namespace ENigMA
                     if (m_surfaceMesh.nbElements() >= maxNbElements)
                     {
                         std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
-                        throw(this->m_anAdvFront);
+                        throw std::runtime_error("Maximum number of elements reached!");
                     }
                 }
 
@@ -1109,16 +1113,17 @@ namespace ENigMA
 
                         if (q2 > 1.5 * minQuality)
                         {
+                            // Validate boundary before mutating mesh
+                            if (!m_boundingBox.contains(aNewNode, aTolerance))
+                            {
+                                throw std::runtime_error("Node is outside boundary!");
+                            }
+
                             // Create a new node
                             m_surfaceMesh.addNode(aNewNodeId, aNewNode);
 
                             this->addTriangle(anAdvEdge, aNewNodeId, sEdges, aTolerance);
                             res = true;
-
-                            if (!m_boundingBox.contains(aNewNode, aTolerance))
-                            {
-                                throw std::runtime_error("Node is outside boundary!");
-                            }
                         }
                     }
                 }
@@ -1571,17 +1576,6 @@ namespace ENigMA
 
             aMesh.mergeNodes(aTolerance);
             aMesh.renumber();
-
-            for (Integer i = 0; i < aMesh.nbElements(); ++i)
-            {
-                Integer anElementId = aMesh.elementId(i);
-                CMshElement<Real>& anElement = aMesh.element(anElementId);
-
-                if (anElement.elementType() == ET_NONE)
-                {
-                    aMesh.element(anElementId).setElementType(ET_TRIANGLE);
-                }
-            }
 
             aMesh.generateFaces(aTolerance);
         }
