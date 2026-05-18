@@ -32,7 +32,7 @@ protected:
     // -----------------------------------------------------------------------
     // Helper: build a unit hexahedron [0,1]^3 as a CGeoPolyhedron.
     // -----------------------------------------------------------------------
-    CGeoHexahedron<Decimal> buildUnitHexahedron1(const CGeoCoordinate<Decimal>& anOffset)
+    CGeoHexahedron<Decimal> buildUnitHexahedron1(const CGeoCoordinate<Decimal> anOffset)
     {
         CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
         CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
@@ -59,7 +59,7 @@ protected:
         return aHexedron;
     }
 
-    CGeoHexahedron<Decimal> buildUnitHexahedron2(const CGeoCoordinate<Decimal>& anOffset)
+    CGeoHexahedron<Decimal> buildUnitHexahedron2(const CGeoCoordinate<Decimal> anOffset)
     {
         CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
         CGeoCoordinate<Decimal> aVertex2(1.0, 0.0, 0.0);
@@ -89,7 +89,7 @@ protected:
     // -----------------------------------------------------------------------
     // Helper: build a tetrahedron polyhedron with all-triangular faces.
     // -----------------------------------------------------------------------
-    CGeoTetrahedron<Decimal> buildUnitTetrahedron(const CGeoCoordinate<Decimal>& anOffset)
+    CGeoTetrahedron<Decimal> buildUnitTetrahedron(const CGeoCoordinate<Decimal> anOffset)
     {
         CGeoCoordinate<Decimal> aVertex1(0.0, 0.0,  0.0);
         CGeoCoordinate<Decimal> aVertex2(1.0, 0.0,  0.0);
