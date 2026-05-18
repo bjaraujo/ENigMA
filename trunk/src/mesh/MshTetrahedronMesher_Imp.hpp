@@ -1670,18 +1670,6 @@ namespace ENigMA
 
                     if (std::min(q3, std::min(q4, q5)) > std::min(q1, q2) && aTetrahedron3.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron4.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron5.volume() > aTolerance * aTolerance * aTolerance)
                     {
-                        Integer anElementId1 = sElementIds[0];
-                        Integer anElementId2 = sElementIds[1];
-                        Integer anElementId3 = sElementIds[2];
-                        
-                        // Verify all three elements are tetrahedra before flipping
-                        if (aMesh.element(anElementId1).elementType() != ET_TETRAHEDRON ||
-                            aMesh.element(anElementId2).elementType() != ET_TETRAHEDRON ||
-                            aMesh.element(anElementId3).elementType() != ET_TETRAHEDRON)
-                        {
-                            continue;
-                        }
-
                         // Do flip
                         aMesh.element(anElementId).setNodeId(0, aNodeId1);
                         aMesh.element(anElementId).setNodeId(1, aNodeId2);
