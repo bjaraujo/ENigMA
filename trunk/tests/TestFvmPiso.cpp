@@ -254,7 +254,7 @@ TEST_F(CTestFvmPiso, channelPressure) {
 
 TEST_F(CTestFvmPiso, channelTemperature) {
 
-    GTEST_SKIP();
+    GTEST_SKIP() << "Solver is broken atm.";
     
     Decimal L = 0.1;
     Decimal a = 0.01;

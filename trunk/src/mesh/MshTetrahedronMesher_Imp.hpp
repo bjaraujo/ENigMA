@@ -244,15 +244,18 @@ namespace ENigMA
 
             for (Integer j = 0; j < static_cast<Integer>(sNodes.size()); ++j)
             {
-                aNodeId = sNodes[j];
+                Integer aTestNodeId = sNodes[j];
 
-                CMshNode<Real>& aNode = m_volumeMesh.node(aNodeId);
+                CMshNode<Real>& aNode = m_volumeMesh.node(aTestNodeId);
 
                 if ((aNode - aNode1).norm() < aTolerance || (aNode - aNode2).norm() < aTolerance || (aNode - aNode3).norm() < aTolerance || (aNode - aNode4).norm() < aTolerance)
                     continue;
 
                 if (aTetrahedron.contains(aNode, aTolerance))
+                {
+                    aNodeId = aTestNodeId;
                     return true;
+                }
             }
 
             return false;
@@ -330,7 +333,9 @@ namespace ENigMA
                     continue;
                 }
 
-                if (anAdvTriangle.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvTriangle.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size()) || anAdvTriangle.neighborId[2] >= static_cast<Integer>(m_anAdvFront.size()))
+                if (anAdvTriangle.neighborId[0] < 0 || anAdvTriangle.neighborId[0] >= static_cast<Integer>(m_anAdvFront.size()) || 
+                    anAdvTriangle.neighborId[1] < 0 || anAdvTriangle.neighborId[1] >= static_cast<Integer>(m_anAdvFront.size()) || 
+                    anAdvTriangle.neighborId[2] < 0 || anAdvTriangle.neighborId[2] >= static_cast<Integer>(m_anAdvFront.size()))
                 {
                     throw std::out_of_range("Connectivity is out of range!");
                 }
@@ -422,9 +427,13 @@ namespace ENigMA
 
             m_volumeMesh.addElement(aNewElementId, aNewElement);
 
-            SMshAdvancingFrontTriangle<Real>& aTriangle1 = m_anAdvFront.at(anAdvTriangle.neighborId[0]);
-            SMshAdvancingFrontTriangle<Real>& aTriangle2 = m_anAdvFront.at(anAdvTriangle.neighborId[1]);
-            SMshAdvancingFrontTriangle<Real>& aTriangle3 = m_anAdvFront.at(anAdvTriangle.neighborId[2]);
+            // Copy neighbor IDs before emplace_back calls that may invalidate references
+            Integer aNeighbor0 = anAdvTriangle.neighborId[0];
+            Integer aNeighbor1 = anAdvTriangle.neighborId[1];
+            Integer aNeighbor2 = anAdvTriangle.neighborId[2];
+            Integer aNodeNotId0 = anAdvTriangle.nodeNotId[0];
+            Integer aNodeNotId1 = anAdvTriangle.nodeNotId[1];
+            Integer aNodeNotId2 = anAdvTriangle.nodeNotId[2];
 
             Integer aNewTriangleId1 = m_nextTriangleId++;
             Integer aNewTriangleId2 = m_nextTriangleId++;
@@ -438,20 +447,16 @@ namespace ENigMA
             aNewTriangle1.nodeId[0] = aNodeId1;
             aNewTriangle1.nodeId[1] = aNodeId2;
             aNewTriangle1.nodeId[2] = aNodeId4;
-            aNewTriangle1.neighborId[0] = anAdvTriangle.neighborId[0];
+            aNewTriangle1.neighborId[0] = aNeighbor0;
             aNewTriangle1.neighborId[1] = aNewTriangleId2;
             aNewTriangle1.neighborId[2] = aNewTriangleId3;
-            aNewTriangle1.nodeNotId[0] = anAdvTriangle.nodeNotId[0];
+            aNewTriangle1.nodeNotId[0] = aNodeNotId0;
             aNewTriangle1.nodeNotId[1] = 1;
             aNewTriangle1.nodeNotId[2] = 0;
             aNewTriangle1.elementId = aNewElementId;
             aNewTriangle1.nodeNotId4 = aNodeId3;
 
             aNewTriangle1.build(m_volumeMesh);
-
-            // Correct connectivity
-            aTriangle1.neighborId[(anAdvTriangle.nodeNotId[0] + 1) % 3] = aNewTriangleId1;
-            aTriangle1.nodeNotId[(anAdvTriangle.nodeNotId[0] + 1) % 3] = 2;
 
             // Add triangle to rtree
             this->addTriangleToRtree(aNewTriangle1, aTolerance);
@@ -464,20 +469,16 @@ namespace ENigMA
             aNewTriangle2.nodeId[0] = aNodeId2;
             aNewTriangle2.nodeId[1] = aNodeId3;
             aNewTriangle2.nodeId[2] = aNodeId4;
-            aNewTriangle2.neighborId[0] = anAdvTriangle.neighborId[1];
+            aNewTriangle2.neighborId[0] = aNeighbor1;
             aNewTriangle2.neighborId[1] = aNewTriangleId3;
             aNewTriangle2.neighborId[2] = aNewTriangleId1;
-            aNewTriangle2.nodeNotId[0] = anAdvTriangle.nodeNotId[1];
+            aNewTriangle2.nodeNotId[0] = aNodeNotId1;
             aNewTriangle2.nodeNotId[1] = 1;
             aNewTriangle2.nodeNotId[2] = 0;
             aNewTriangle2.elementId = aNewElementId;
             aNewTriangle2.nodeNotId4 = aNodeId1;
 
             aNewTriangle2.build(m_volumeMesh);
-
-            // Correct connectivity
-            aTriangle2.neighborId[(anAdvTriangle.nodeNotId[1] + 1) % 3] = aNewTriangleId2;
-            aTriangle2.nodeNotId[(anAdvTriangle.nodeNotId[1] + 1) % 3] = 2;
 
             // Add triangle to rtree
             this->addTriangleToRtree(aNewTriangle2, aTolerance);
@@ -490,20 +491,16 @@ namespace ENigMA
             aNewTriangle3.nodeId[0] = aNodeId3;
             aNewTriangle3.nodeId[1] = aNodeId1;
             aNewTriangle3.nodeId[2] = aNodeId4;
-            aNewTriangle3.neighborId[0] = anAdvTriangle.neighborId[2];
+            aNewTriangle3.neighborId[0] = aNeighbor2;
             aNewTriangle3.neighborId[1] = aNewTriangleId1;
             aNewTriangle3.neighborId[2] = aNewTriangleId2;
-            aNewTriangle3.nodeNotId[0] = anAdvTriangle.nodeNotId[2];
+            aNewTriangle3.nodeNotId[0] = aNodeNotId2;
             aNewTriangle3.nodeNotId[1] = 1;
             aNewTriangle3.nodeNotId[2] = 0;
             aNewTriangle3.elementId = aNewElementId;
             aNewTriangle3.nodeNotId4 = aNodeId2;
 
             aNewTriangle3.build(m_volumeMesh);
-
-            // Correct connectivity
-            aTriangle3.neighborId[(anAdvTriangle.nodeNotId[2] + 1) % 3] = aNewTriangleId3;
-            aTriangle3.nodeNotId[(anAdvTriangle.nodeNotId[2] + 1) % 3] = 2;
 
             // Add triangle to rtree
             this->addTriangleToRtree(aNewTriangle3, aTolerance);
@@ -514,6 +511,14 @@ namespace ENigMA
             m_anAdvFront.emplace_back(aNewTriangle1);
             m_anAdvFront.emplace_back(aNewTriangle2);
             m_anAdvFront.emplace_back(aNewTriangle3);
+
+            // Correct connectivity after emplace_back
+            m_anAdvFront.at(aNeighbor0).neighborId[(aNodeNotId0 + 1) % 3] = aNewTriangleId1;
+            m_anAdvFront.at(aNeighbor0).nodeNotId[(aNodeNotId0 + 1) % 3] = 2;
+            m_anAdvFront.at(aNeighbor1).neighborId[(aNodeNotId1 + 1) % 3] = aNewTriangleId2;
+            m_anAdvFront.at(aNeighbor1).nodeNotId[(aNodeNotId1 + 1) % 3] = 2;
+            m_anAdvFront.at(aNeighbor2).neighborId[(aNodeNotId2 + 1) % 3] = aNewTriangleId3;
+            m_anAdvFront.at(aNeighbor2).nodeNotId[(aNodeNotId2 + 1) % 3] = 2;
 
             this->cleanDuplicateTriangles(sTriangles, aTolerance);
         }
@@ -544,6 +549,7 @@ namespace ENigMA
 
             // Add boundary to advancing front and rtree
             m_anAdvFront.clear();
+            m_innerNodes.clear();
 
             m_anAdvFront.reserve(aSurfaceMesh.nbElements() * 50);
 
@@ -688,7 +694,7 @@ namespace ENigMA
             if (this->frontSize() > 0)
             {
                 std::cout << "Meshing error!" << std::endl;
-                throw(m_anAdvFront);
+                throw std::runtime_error("Meshing error: advancing front not closed!");
             }
 
             m_volumeMesh.removeDanglingNodes();
@@ -763,7 +769,7 @@ namespace ENigMA
                     if (m_volumeMesh.nbElements() >= maxNbElements)
                     {
                         std::cout << "Max number of elements (" << maxNbElements << ") reached!" << std::endl;
-                        throw(this->m_anAdvFront);
+                        throw std::runtime_error("Maximum number of elements reached!");
                     }
                 }
 
@@ -974,16 +980,17 @@ namespace ENigMA
 
                         if (q2 > 1.5 * minQuality)
                         {
+                            // Validate boundary before mutating mesh
+                            if (!m_boundingBox.contains(aNewNode, aTolerance))
+                            {
+                                throw std::runtime_error("Node is outside boundary!");
+                            }
+
                             // Create a new node
                             m_volumeMesh.addNode(aNewNodeId, aNewNode);
 
                             this->addTetrahedron(anAdvTriangle, aNewNodeId, sTriangles, aTolerance);
                             res = true;
-
-                            if (!m_boundingBox.contains(aNewNode, aTolerance))
-                            {
-                                throw std::runtime_error("Node is outside boundary!");
-                            }
                         }
                     }
                 }
@@ -1084,9 +1091,21 @@ namespace ENigMA
                 SMshAdvancingFrontTriangle<Real>& anAdvTriangle = aReducedAdvFront[i];
 
                 anAdvTriangle.id = aAdvFrontMapId.at(anAdvTriangle.id);
-                anAdvTriangle.neighborId[0] = aAdvFrontMapId.at(anAdvTriangle.neighborId[0]);
-                anAdvTriangle.neighborId[1] = aAdvFrontMapId.at(anAdvTriangle.neighborId[1]);
-                anAdvTriangle.neighborId[2] = aAdvFrontMapId.at(anAdvTriangle.neighborId[2]);
+                
+                // Map neighbor IDs, handling removed neighbors
+                for (Integer j = 0; j < 3; ++j)
+                {
+                    auto it = aAdvFrontMapId.find(anAdvTriangle.neighborId[j]);
+                    if (it != aAdvFrontMapId.end())
+                    {
+                        anAdvTriangle.neighborId[j] = it->second;
+                    }
+                    else
+                    {
+                        // Neighbor was removed; mark as invalid
+                        anAdvTriangle.neighborId[j] = std::numeric_limits<Integer>::max();
+                    }
+                }
 
                 m_anAdvFront.emplace_back(anAdvTriangle);
 
@@ -1128,12 +1147,6 @@ namespace ENigMA
                     if (anotherAdvTriangle.elementId == std::numeric_limits<Integer>::max())
                         continue;
 
-                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anAdvTriangle.elementId) == sElementsToRemove.end())
-                        sElementsToRemove.emplace_back(anAdvTriangle.elementId);
-
-                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anotherAdvTriangle.elementId) == sElementsToRemove.end())
-                        sElementsToRemove.emplace_back(anotherAdvTriangle.elementId);
-
                     for (Integer k = 0; k < 3; ++k)
                     {
                         Integer aNodeId1 = anAdvTriangle.nodeId[(k + 0) % 3];
@@ -1171,6 +1184,12 @@ namespace ENigMA
 
                                 if (aDistance < aLength * 0.20)
                                 {
+                                    // Only add to removal list when intersection is confirmed
+                                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anAdvTriangle.elementId) == sElementsToRemove.end())
+                                        sElementsToRemove.emplace_back(anAdvTriangle.elementId);
+
+                                    if (std::find(sElementsToRemove.begin(), sElementsToRemove.end(), anotherAdvTriangle.elementId) == sElementsToRemove.end())
+                                        sElementsToRemove.emplace_back(anotherAdvTriangle.elementId);
                                     CGeoCoordinate<Real> aNewPoint = (aPoint6 + aPoint5) * 0.5;
 
                                     bool bAddNode = true;
@@ -1381,6 +1400,7 @@ namespace ENigMA
                 if (bBoundaryNode.at(aMovingNodeId))
                     continue;
 
+                sElementIds.clear();
                 aMeshQuery.elementsSharingNode(aMovingNodeId, sElementIds);
 
                 Real aTotalVolume = 0.0;
@@ -1650,6 +1670,18 @@ namespace ENigMA
 
                     if (std::min(q3, std::min(q4, q5)) > std::min(q1, q2) && aTetrahedron3.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron4.volume() > aTolerance * aTolerance * aTolerance && aTetrahedron5.volume() > aTolerance * aTolerance * aTolerance)
                     {
+                        Integer anElementId1 = sElementIds[0];
+                        Integer anElementId2 = sElementIds[1];
+                        Integer anElementId3 = sElementIds[2];
+                        
+                        // Verify all three elements are tetrahedra before flipping
+                        if (aMesh.element(anElementId1).elementType() != ET_TETRAHEDRON ||
+                            aMesh.element(anElementId2).elementType() != ET_TETRAHEDRON ||
+                            aMesh.element(anElementId3).elementType() != ET_TETRAHEDRON)
+                        {
+                            continue;
+                        }
+
                         // Do flip
                         aMesh.element(anElementId).setNodeId(0, aNodeId1);
                         aMesh.element(anElementId).setNodeId(1, aNodeId2);
@@ -1857,6 +1889,14 @@ namespace ENigMA
                                 Integer anElementId1 = sElementIds[0];
                                 Integer anElementId2 = sElementIds[1];
                                 Integer anElementId3 = sElementIds[2];
+                                
+                                // Verify all three elements are tetrahedra before flipping
+                                if (aMesh.element(anElementId1).elementType() != ET_TETRAHEDRON ||
+                                    aMesh.element(anElementId2).elementType() != ET_TETRAHEDRON ||
+                                    aMesh.element(anElementId3).elementType() != ET_TETRAHEDRON)
+                                {
+                                    continue;
+                                }
 
                                 // Do flip
                                 aMesh.element(anElementId1).setNodeId(0, aNodeId1);
@@ -1869,11 +1909,8 @@ namespace ENigMA
                                 aMesh.element(anElementId2).setNodeId(2, aNodeId3);
                                 aMesh.element(anElementId2).setNodeId(3, aNodeId5);
 
-                                // Contract one of them
-                                aMesh.element(anElementId3).setNodeId(0, aNodeId1);
-                                aMesh.element(anElementId3).setNodeId(1, aNodeId1);
-                                aMesh.element(anElementId3).setNodeId(2, aNodeId1);
-                                aMesh.element(anElementId3).setNodeId(3, aNodeId1);
+                                // Mark degenerate element for removal without mutating node IDs
+                                aMesh.element(anElementId3).setElementType(ET_NONE);
 
                                 sFlipped[anElementId1] = true;
                                 sFlipped[anElementId2] = true;
