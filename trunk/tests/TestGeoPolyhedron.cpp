@@ -141,7 +141,8 @@ protected:
 
 TEST_F(CTestGeoPolyhedron, centroid) {
 
-    CGeoPolyhedron<Decimal> aPolyhedron { buildUnitHexahedron1({0.0, 0.0, 0.0}) };
+    CGeoHexahedron<Decimal> aHexahedron = buildUnitHexahedron1({0.0, 0.0, 0.0});
+    CGeoPolyhedron<Decimal> aPolyhedron { aHexahedron };
 
     aPolyhedron.calculateCentroid(true);
 
@@ -152,7 +153,8 @@ TEST_F(CTestGeoPolyhedron, centroid) {
 
 TEST_F(CTestGeoPolyhedron, volume1) {
 
-    CGeoPolyhedron<Decimal> aPolyhedron{ buildUnitHexahedron2({0.0, 0.0, 0.0}) };
+    CGeoHexahedron<Decimal> aHexahedron = buildUnitHexahedron2({0.0, 0.0, 0.0});
+    CGeoPolyhedron<Decimal> aPolyhedron{ aHexahedron };
 
     aPolyhedron.calculateSurfaceArea(true);
 
@@ -166,7 +168,8 @@ TEST_F(CTestGeoPolyhedron, volume1) {
 
 TEST_F(CTestGeoPolyhedron, volume2) {
 
-    CGeoPolyhedron<Decimal> aPolyhedron{ buildUnitTetrahedron({2.0, 5.0, -20.0}) };
+    CGeoTetrahedron<Decimal> aTetrahedron = buildUnitTetrahedron({2.0, 5.0, -20.0});
+    CGeoPolyhedron<Decimal> aPolyhedron{ aTetrahedron };
 
     aPolyhedron.calculateSurfaceArea(true);
 
@@ -231,7 +234,8 @@ TEST_F(CTestGeoPolyhedron, volume3) {
 
 TEST_F(CTestGeoPolyhedron, volume4) {
 
-    CGeoPolyhedron<Decimal> aPolyhedron { buildUnitTetrahedron({0.0, 0.0, 0.0}) };
+    CGeoTetrahedron<Decimal> aTetrahedron = buildUnitTetrahedron({0.0, 0.0, 0.0});
+    CGeoPolyhedron<Decimal> aPolyhedron { aTetrahedron };
     
     aPolyhedron.calculateVolume();
 
