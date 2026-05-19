@@ -154,22 +154,115 @@ namespace ENigMA
                     }
                     else
                     {
-                        thcond += m_bthcond;
-                        thcond *= 0.5;
+                        // Boundary face - handle based on boundary type
+                        if (CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).boundaryType() == BT_WALL_NO_SLIP || 
+                            CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).boundaryType() == BT_WALL_SLIP)
+                        {
+                            // Wall - specified temperature
+                            thcond += m_bthcond;
+                            thcond *= 0.5;
 
-                        // Conduction
-                        aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
-                        b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
+                            // Conduction
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
+                            b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
 
-                        // Convection
-                        Real xsi;
-                        if (flux > 0.0)
-                            xsi = 0.0;
+                            // Convection - no flow across wall
+                            // Do nothing - flux is already handled
+                        }
+                        else if (CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_FLOW)
+                        {
+                            // Inlet with specified flow - temperature is specified at inlet
+                            thcond += m_bthcond;
+                            thcond *= 0.5;
+
+                            // Conduction
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
+                            b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
+
+                            // Convection - use inlet temperature
+                            dens += CFvmPisoSolver<Real>::m_dens[CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId()];
+                            dens *= 0.5;
+                            spheat += m_spheat[CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId()];
+                            spheat *= 0.5;
+
+                            Real xsi;
+                            if (flux > 0.0)
+                                xsi = 0.0;
+                            else
+                                xsi = 1.0; // UPWIND
+
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
+                            b[anIndexP] += -xsi * dens * spheat * flux * m_Tf.at(aFaceId);
+                        }
+                        else if (CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).boundaryType() == BT_INLET_PRESSURE)
+                        {
+                            // Inlet with specified pressure - use gradient = 0 assumption
+                            thcond += m_bthcond;
+                            thcond *= 0.5;
+
+                            // Conduction
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
+                            b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
+
+                            // Convection - temperature gradient = 0
+                            dens += CFvmPisoSolver<Real>::m_dens[CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId()];
+                            dens *= 0.5;
+                            spheat += m_spheat[CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId()];
+                            spheat *= 0.5;
+
+                            Real xsi;
+                            if (flux > 0.0)
+                                xsi = 0.0;
+                            else
+                                xsi = 1.0; // UPWIND
+
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
+                        }
+                        else if (CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).boundaryType() == BT_OUTLET)
+                        {
+                            // Outlet - temperature gradient = 0 (advective outlet)
+                            // Conduction still present
+                            thcond += m_bthcond;
+                            thcond *= 0.5;
+
+                            // Conduction
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
+                            b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
+
+                            // Convection - temperature gradient = 0 (advective outlet)
+                            dens += CFvmPisoSolver<Real>::m_dens[CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId()];
+                            dens *= 0.5;
+                            spheat += m_spheat[CFvmPisoSolver<Real>::m_fvmMesh.face(aFaceId).controlVolumeId()];
+                            spheat *= 0.5;
+
+                            Real xsi;
+                            if (flux > 0.0)
+                                xsi = 0.0;
+                            else
+                                xsi = 1.0; // UPWIND
+
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
+                        }
                         else
-                            xsi = 1.0; // UPWIND
+                        {
+                            // Default: Dirichlet condition
+                            thcond += m_bthcond;
+                            thcond *= 0.5;
 
-                        aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
-                        b[anIndexP] += -xsi * dens * spheat * flux * m_Tf.at(aFaceId);
+                            // Conduction
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, thcond * area / dist));
+                            b[anIndexP] += thcond * area / dist / volume * m_Tf.at(aFaceId);
+
+                            // Convection
+                            Real xsi;
+                            if (flux > 0.0)
+                                xsi = 0.0;
+                            else
+                                xsi = 1.0; // UPWIND
+
+                            aTriplets.push_back(Triplet(anIndexP, anIndexP, (1.0 - xsi) * dens * spheat * flux));
+                            b[anIndexP] += -xsi * dens * spheat * flux * m_Tf.at(aFaceId);
+                        }
                     }
                 }
 
