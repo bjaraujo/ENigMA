@@ -14,11 +14,15 @@
 
 #include "TypeDef.hpp"
 
+#include "MatMaterial.hpp"
 #include "MshBasicMesher.hpp"
 #include "PdeEquation.hpp"
 #include "PdeField.hpp"
+#include "PosGmsh.hpp"
 
+using namespace ENigMA::material;
 using namespace ENigMA::pde;
+using namespace ENigMA::post;
 
 class CTestPdeEquation : public ::testing::Test {
 protected:
@@ -705,5 +709,104 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceBox2)
     EXPECT_NEAR(0.33, T.u(5), 1E-2);
     EXPECT_NEAR(0.66, T.u(6), 1E-2);
     EXPECT_NEAR(1.00, T.u(7), 1E-2);
+
+}
+
+TEST_F(CTestPdeEquation, femCantileverBeamDeflection) {
+
+    // Beam parameters
+    Decimal b = 0.05;      // width
+    Decimal h = 0.05;      // height
+    Decimal L = 1.0;       // length
+    Decimal F = -1000.0;   // applied force
+    Decimal E = 30E9;      // elastic modulus
+    Decimal nu = 0.3;      // Poisson's ratio
+
+    // Calculate moment of inertia
+    Decimal I = b * h * h * h / 12.0;
+
+    // Create mesh vertices
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(L, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(L, h, 0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, h, 0.0);
+
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
+
+    aQuadrilateral.addVertex(aVertex1);
+    aQuadrilateral.addVertex(aVertex2);
+    aQuadrilateral.addVertex(aVertex3);
+    aQuadrilateral.addVertex(aVertex4);
+
+    // Generate mesh
+    CMshBasicMesher<Decimal> aBasicMesher;
+
+    aBasicMesher.generate(aQuadrilateral, 200, 10, true);
+
+    CMshMesh<Decimal> surfaceMesh = aBasicMesher.mesh();
+
+    // Set thickness for all elements
+    for (Integer i = 0; i < surfaceMesh.nbElements(); ++i) {
+        Integer elementId = surfaceMesh.elementId(i);
+        surfaceMesh.element(elementId).setThickness(b);
+    }
+
+    // Create material
+    CMatMaterial<Decimal> aMaterial;
+
+    aMaterial.addProperty(PT_ELASTIC_MODULUS, E);
+    aMaterial.addProperty(PT_POISSON_COEFFICIENT, nu);
+
+    // Create displacement field
+    CPdeField<Decimal> u;
+
+    u.setMesh(surfaceMesh);
+    u.setMaterial(aMaterial);
+    u.setSimulationType(ST_STRUCTURAL);
+    u.setDiscretMethod(DM_FEM);
+    u.setDiscretOrder(DO_LINEAR);
+    u.setDiscretLocation(DL_NODE);
+    u.setNbDofs(2);
+
+    // Apply boundary conditions and loads
+    Integer maxDeflectionNodeIndex = 0;
+
+    for (Integer i = 0; i < surfaceMesh.nbNodes(); ++i) {
+        Integer nodeId = surfaceMesh.nodeId(i);
+        CMshNode<Decimal> aNode = surfaceMesh.node(nodeId);
+
+        // Fixed end (x = 0)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6) {
+            u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 0, 0.0);
+            u.setFixedValue(surfaceMesh.nodeIndex(nodeId), 1, 0.0);
+        }
+
+        // Applied load at free end (x = L, y = h)
+        if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6) {
+            maxDeflectionNodeIndex = i;
+            u.setSource(surfaceMesh.nodeIndex(nodeId), 1, F);
+        }
+    }
+
+    // Solve the system
+    CPdeEquation<Decimal> pdeEquation(laplacian<Decimal>(u) = 0);
+
+    pdeEquation.setSources(u);
+    pdeEquation.setElimination(u);
+    pdeEquation.solve(u);
+
+    // Calculate theoretical deflection
+    Decimal deflectionTheoretical = (F * L * L * L) / (3.0 * E * I);
+
+    // Get calculated deflection (y-component at max deflection node)
+    Decimal deflectionCalculated = u.value(maxDeflectionNodeIndex * 2 + 1);
+
+    // Verify the result is close to theoretical value (within 5% tolerance)
+    EXPECT_NEAR(deflectionTheoretical, deflectionCalculated, 
+                std::fabs(deflectionTheoretical) * 0.05);
+
+    // Save results to Gmsh file
+    CPosGmsh<Decimal> aPosGmsh;
+    aPosGmsh.save(u, "fem_cantilever_beam.pos", "Structural");
 
 }
