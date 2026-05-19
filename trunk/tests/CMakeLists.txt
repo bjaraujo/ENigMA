@@ -68,6 +68,7 @@ TestSphGaussian.cpp
 TestSphQuintic.cpp
 TestSphSpiky.cpp
 TestSphConvex.cpp
+TestSphStructuralSolver.cpp
 )
 
 set(TEST_PDE_SOURCES
