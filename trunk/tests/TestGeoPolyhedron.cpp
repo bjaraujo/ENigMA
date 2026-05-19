@@ -183,38 +183,6 @@ TEST_F(CTestGeoPolyhedron, volume2) {
 
 TEST_F(CTestGeoPolyhedron, volume3) {
 
-    /*
-    Decimal px, py, pz;
-
-    px = 2.0;
-    py = 5.0;
-    pz = 20.0;
-
-    CGeoCoordinate<Decimal> aVertex1(px + 0.0, py + 0.0, pz + 0.0);
-    CGeoCoordinate<Decimal> aVertex2(px + 1.0, py + 0.0, pz + 0.0);
-    CGeoCoordinate<Decimal> aVertex3(px + 1.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<Decimal> aVertex4(px + 0.0, py + 1.0, pz + 0.0);
-    CGeoCoordinate<Decimal> aVertex5(px + 0.0, py + 0.0, pz - 1.0);
-    CGeoCoordinate<Decimal> aVertex6(px + 1.0, py + 0.0, pz - 1.0);
-    CGeoCoordinate<Decimal> aVertex7(px + 1.0, py + 1.0, pz - 1.0);
-    CGeoCoordinate<Decimal> aVertex8(px + 0.0, py + 1.0, pz - 1.0);
-
-    CGeoHexahedron<Decimal> aHexahedron;
-
-    aHexahedron.addVertex(aVertex1);
-    aHexahedron.addVertex(aVertex2);
-    aHexahedron.addVertex(aVertex3);
-    aHexahedron.addVertex(aVertex4);
-    aHexahedron.addVertex(aVertex5);
-    aHexahedron.addVertex(aVertex6);
-    aHexahedron.addVertex(aVertex7);
-    aHexahedron.addVertex(aVertex8);
-
-    aHexahedron.calculateVolume();
-
-    CGeoPolyhedron<Decimal> aPolyhedron(aHexahedron);
-    */
-
     CGeoHexahedron<Decimal> aHexahedron = buildUnitHexahedron2({2.0, 5.0, 20.0});
     CGeoPolyhedron<Decimal> aPolyhedron { aHexahedron };
 
