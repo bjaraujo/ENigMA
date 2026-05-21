@@ -19,10 +19,12 @@
 #include "PdeEquation.hpp"
 #include "PdeField.hpp"
 #include "PosGmsh.hpp"
+#include "SphCubicSpline.hpp"
 
 using namespace ENigMA::material;
 using namespace ENigMA::pde;
 using namespace ENigMA::post;
+using namespace ENigMA::sph;
 
 class CTestPdeEquation : public ::testing::Test {
 protected:
@@ -91,6 +93,98 @@ TEST_F(CTestPdeEquation, femSteadyLaplaceLine)
 
         EXPECT_NEAR(aNode.x(), T.u(i), 1E-2);
     }
+
+}
+
+TEST_F(CTestPdeEquation, sphSteadyLaplaceLine)
+{
+
+    CGeoCoordinate<Decimal> aPoint1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aPoint2(1.0, 0.0, 0.0);
+
+    CGeoLine<Decimal> aLine(aPoint1, aPoint2);
+
+    CMshBasicMesher<Decimal> aBasicMesher;
+
+    const Integer nu = 10;
+
+    aBasicMesher.generate(aLine, nu);
+
+    EXPECT_EQ(nu, aBasicMesher.mesh().nbElements());
+
+    CPdeField<Decimal> T;
+
+    T.setMesh(aBasicMesher.mesh());
+    T.setDiscretMethod(DM_SPH);
+    T.setDiscretOrder(DO_LINEAR);
+    T.setDiscretLocation(DL_NODE);
+    T.setSimulationType(ST_GENERIC);
+    T.setNbDofs(1);
+    T.setSize(aBasicMesher.mesh().nbNodes());
+
+    // Set BC and initial conditions
+    for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
+    {
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
+        {
+            T.setFixedValue(i, 0.0);
+            T.setValue(i, 0.0);
+        }
+        else if (std::fabs(aNode.x() - 1.0) < 1E-6)
+        {
+            T.setFixedValue(i, 1.0);
+            T.setValue(i, 1.0);
+        }
+        else
+        {
+            T.setValue(i, 0.5);
+        }
+    }
+
+    // Setup SPH solver
+    CSphCubicSpline<Decimal> kernel;
+    CPdeEquation<Decimal> aPdeEquation(laplacian<Decimal>(T) = 0);
+
+    // SPH parameters
+    Decimal h = 0.15;           // smoothing length
+    Decimal dt = 0.01;          // time step
+    Decimal mass = 0.1;         // particle mass
+    Decimal conductivity = 1.0; // thermal conductivity
+    
+    aPdeEquation.setSphKernel(kernel);
+    aPdeEquation.setSphParameters(mass, conductivity, h, dt, false);
+
+    // Set boundary for potential cyclic conditions
+    CGeoCoordinate<Decimal> minPoint(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> maxPoint(1.0, 0.0, 0.0);
+    CGeoBoundingBox<Decimal> aBoundary(minPoint, maxPoint);
+    aPdeEquation.setSphBoundary(aBoundary);
+
+    aPdeEquation.solve(T);
+
+    // Check that middle node is approximately 0.5
+    // Find the middle node (approximately x = 0.5)
+    Integer middleNodeIndex = -1;
+    Decimal minDist = 1.0;
+    
+    for (Integer i = 0; i < T.mesh().nbNodes(); ++i)
+    {
+        CMshNode<Decimal> aNode = T.mesh().node(T.mesh().nodeId(i));
+        Decimal dist = std::fabs(aNode.x() - 0.5);
+        
+        if (dist < minDist)
+        {
+            minDist = dist;
+            middleNodeIndex = i;
+        }
+    }
+
+    ASSERT_NE(middleNodeIndex, -1);
+    
+    // The middle should be close to 0.5 (within reasonable tolerance for SPH)
+    EXPECT_NEAR(0.5, T.u(middleNodeIndex), 0.2);
 
 }
 
