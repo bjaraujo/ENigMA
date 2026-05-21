@@ -11,6 +11,8 @@
 
 #include "PdeField.hpp"
 #include "SleSystem.hpp"
+#include "SphParticles.hpp"
+#include "GeoBoundingBox.hpp"
 
 namespace ENigMA
 {
@@ -31,11 +33,24 @@ namespace ENigMA
             std::vector<bool> m_bDeleteIndex;
             bool m_eliminationMethod;
 
+            // SPH members
+            ENigMA::sph::CSphKernel<Real>* m_sphKernel;
+            Real m_sphMass;
+            Real m_sphConductivity;
+            Real m_sphH;
+            Real m_sphDt;
+            bool m_sphCyclic;
+            ENigMA::geometry::CGeoBoundingBox<Real> m_sphBoundary;
+
         public:
             explicit CPdeEquation(const ENigMA::sle::CSleSystem<Real>& aSystem);
             virtual ~CPdeEquation();
 
             ENigMA::sle::CSleSystem<Real>& system();
+
+            void setSphKernel(ENigMA::sph::CSphKernel<Real>& aKernel);
+            void setSphParameters(Real mass, Real conductivity, Real h, Real dt, bool cyclic = false);
+            void setSphBoundary(const ENigMA::geometry::CGeoBoundingBox<Real>& aBoundary);
 
             void setPenaltyFactor(ENigMA::pde::CPdeField<Real>& aField, Real aPenaltyFactor);
             void setElimination(ENigMA::pde::CPdeField<Real>& aField);
