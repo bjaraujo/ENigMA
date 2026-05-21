@@ -13,6 +13,7 @@
 #include "fdm/FdmOperators.hpp"
 #include "fem/FemOperators.hpp"
 #include "fvm/FvmOperators.hpp"
+#include "SphParticles.hpp"
 
 namespace ENigMA
 {
@@ -23,6 +24,12 @@ namespace ENigMA
             : m_system(aSystem)
             , m_bDeleteIndex()
             , m_eliminationMethod(false)
+            , m_sphKernel(nullptr)
+            , m_sphMass(0.0)
+            , m_sphConductivity(0.0)
+            , m_sphH(0.0)
+            , m_sphDt(0.0)
+            , m_sphCyclic(false)
         {
         }
 
@@ -35,6 +42,28 @@ namespace ENigMA
         ENigMA::sle::CSleSystem<Real>& CPdeEquation<Real>::system()
         {
             return m_system;
+        }
+
+        template <typename Real>
+        void CPdeEquation<Real>::setSphKernel(ENigMA::sph::CSphKernel<Real>& aKernel)
+        {
+            m_sphKernel = &aKernel;
+        }
+
+        template <typename Real>
+        void CPdeEquation<Real>::setSphParameters(Real mass, Real conductivity, Real h, Real dt, bool cyclic)
+        {
+            m_sphMass = mass;
+            m_sphConductivity = conductivity;
+            m_sphH = h;
+            m_sphDt = dt;
+            m_sphCyclic = cyclic;
+        }
+
+        template <typename Real>
+        void CPdeEquation<Real>::setSphBoundary(const ENigMA::geometry::CGeoBoundingBox<Real>& aBoundary)
+        {
+            m_sphBoundary = aBoundary;
         }
 
         template <typename Real>
@@ -136,7 +165,18 @@ namespace ENigMA
         template <typename Real>
         void CPdeEquation<Real>::solve(ENigMA::pde::CPdeField<Real>& aField)
         {
-            if (m_eliminationMethod)
+            if (aField.discretMethod() == DM_SPH)
+            {
+                // SPH solving - handles everything internally
+                if (m_sphKernel == nullptr)
+                    throw std::runtime_error("SPH kernel not set. Call setSphKernel() before solve().");
+
+                ENigMA::sph::CSphParticles<Real> sphSolver(*m_sphKernel);
+                sphSolver.init(aField, m_sphMass, m_sphConductivity, m_sphH, m_sphDt, m_sphCyclic);
+                sphSolver.setBoundary(m_sphBoundary);
+                sphSolver.solve(aField);
+            }
+            else if (m_eliminationMethod)
             {
                 Integer newIndex = 0;
                 std::map<Integer, Integer> newToOldIndex;
