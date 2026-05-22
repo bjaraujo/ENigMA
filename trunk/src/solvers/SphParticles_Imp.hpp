@@ -10,6 +10,7 @@
 #pragma once
 
 using namespace ENigMA::geometry;
+using namespace ENigMA::pde;
 
 namespace ENigMA
 {
