@@ -9,8 +9,6 @@
 
 #pragma once
 
-using namespace ENigMA::geometry;
-
 namespace ENigMA
 {
     namespace fem

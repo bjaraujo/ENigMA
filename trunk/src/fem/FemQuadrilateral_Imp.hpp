@@ -232,5 +232,50 @@ namespace ENigMA
             this->source((anEdgeIndex + 0) % 4) += aValue * 0.5;
             this->source((anEdgeIndex + 1) % 4) += aValue * 0.5;
         }
+
+        template <typename Real>
+        void CFemQuadrilateral<Real, 4, 2, 1>::calculateB(Eigen::Matrix<Real, 3, 8>& B)
+        {
+            Real xi  = 0.0;
+            Real eta = 0.0;
+
+            Real xim  = (1 - xi);
+            Real xip  = (1 + xi);
+            Real etam = (1 - eta);
+            Real etap = (1 + eta);
+
+            Eigen::Matrix<Real, 2, 2> J;
+            J << -xim * m_x1 + xim * m_x2 + xip * m_x3 - xip * m_x4,
+                -xim * m_y1 + xim * m_y2 + xip * m_y3 - xip * m_y4,
+                -etam * m_x1 - etap * m_x2 + etap * m_x3 + etam * m_x4,
+                -etam * m_y1 - etap * m_y2 + etap * m_y3 + etam * m_y4;
+            J *= 0.25;
+
+            Eigen::Matrix<Real, 2, 4> G;
+            G << -xim, +xim, +xip, -xip,
+                -etam, -etap, +etap, +etam;
+            G *= 0.25;
+
+            Eigen::Matrix<Real, 2, 4> dN = J.inverse() * G;
+
+            // --- Assemble B (3 x 8) ---
+            // DOF column order : [u1, v1, u2, v2, u3, v3, u4, v4]
+            // Strain row order :
+            //   row 0 : exx = dNi/dx * ui
+            //   row 1 : eyy = dNi/dy * vi
+            //   row 2 : gxy = dNi/dy * ui + dNi/dx * vi
+            B.setZero();
+
+            for (Integer i = 0; i < 4; ++i)
+            {
+                const Integer uCol = 2 * i;
+                const Integer vCol = 2 * i + 1;
+
+                B(0, uCol) = dN(0, i);  // exx <- dNi/dx * ui
+                B(1, vCol) = dN(1, i);  // eyy <- dNi/dy * vi
+                B(2, uCol) = dN(1, i);  // gxy <- dNi/dy * ui
+                B(2, vCol) = dN(0, i);  // gxy <- dNi/dx * vi
+            }
+        }        
     }
 }

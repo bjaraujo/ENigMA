@@ -68,6 +68,13 @@ namespace ENigMA
             void setSourceOnNode(const Integer aNodeIndex, const Real aValue);
             void setSourceOnEdge(const Integer anEdgeIndex, const Real aValue);
         };
+
+        template <typename Real>
+        class CFemQuadrilateral<Real, 4, 2, 1> : public CFemQuadrilateral<Real, 4, 1, 1>
+        {
+        protected:
+            void calculateB(Eigen::Matrix<Real, 3, 8>& B);
+        };
     }
 }
 

@@ -11,6 +11,7 @@
 
 #include "structural/FemConstantStrainTetrahedron.hpp"
 #include "structural/FemConstantStrainTriangle.hpp"
+#include "structural/FemConstantStrainQuadrilateral.hpp"
 
 using namespace ENigMA::fem;
 using namespace ENigMA::fem::structural;
@@ -95,7 +96,44 @@ namespace ENigMA
                         }
                         else if (anElement.elementType() == ET_QUADRILATERAL && anElement.nbNodeIds() == 4)
                         {
-                            // TODO:
+                            CFemConstantStrainQuadrilateral<Real, 4, 2, 1> aQuadrilateral;
+
+                            ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
+
+                            aQuadrilateral.setThickness(anElement.thickness());
+
+                            aQuadrilateral.setElasticModulus(aMaterial.propertyValue(ENigMA::material::PT_ELASTIC_MODULUS));
+                            aQuadrilateral.setCoeffPoisson(aMaterial.propertyValue(ENigMA::material::PT_POISSON_COEFFICIENT));
+
+                            for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
+                            {
+                                CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
+                                aQuadrilateral.addVertex(aVertex);
+                            }
+
+                            aQuadrilateral.calculateArea();
+
+                            aQuadrilateral.setTransient(false);
+
+                            aQuadrilateral.update();
+
+                            for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
+                            {
+                                for (Integer k = 0; k < aField.nbDofs(); ++k)
+                                {
+                                    for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                                    {
+                                        for (Integer l = 0; l < aField.nbDofs(); ++l)
+                                        {
+                                            aSystem.matrixA.coeffRef(
+                                                aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
+                                                aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
+                                                += aQuadrilateral.laplacian(i * aField.nbDofs() + k, j * aField.nbDofs() + l);
+                                        }
+                                    }
+                                }
+                                aSystem.vectorB(aField.mesh().nodeIndex(anElement.nodeId(i))) += aQuadrilateral.source(i);
+                            }
                         }
                         else if (anElement.elementType() == ET_TETRAHEDRON && anElement.nbNodeIds() == 4)
                         {
