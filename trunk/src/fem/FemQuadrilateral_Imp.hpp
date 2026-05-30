@@ -238,9 +238,38 @@ namespace ENigMA
         }
 
         template <typename Real>
-        void CFemQuadrilateral<Real, 4, 2, 1>::calculateB(Eigen::Matrix<Real, 3, 8>& B)
+        void CFemQuadrilateral<Real, 4, 2, 1>::calculateB(Eigen::Matrix<Real, 3, 8>& B, Real xi, Real eta)
         {
-            // TODO:
-        }        
+            Real dN1dxi  = -(1.0 - eta) * 0.25;
+            Real dN2dxi  =  (1.0 - eta) * 0.25;
+            Real dN3dxi  =  (1.0 + eta) * 0.25;
+            Real dN4dxi  = -(1.0 + eta) * 0.25;
+
+            Real dN1deta = -(1.0 - xi) * 0.25;
+            Real dN2deta = -(1.0 + xi) * 0.25;
+            Real dN3deta =  (1.0 + xi) * 0.25;
+            Real dN4deta =  (1.0 - xi) * 0.25;
+
+            Eigen::Matrix<Real, 2, 2> J;
+            J(0, 0) = dN1dxi * this->m_x1 + dN2dxi * this->m_x2 + dN3dxi * this->m_x3 + dN4dxi * this->m_x4;
+            J(0, 1) = dN1dxi * this->m_y1 + dN2dxi * this->m_y2 + dN3dxi * this->m_y3 + dN4dxi * this->m_y4;
+            J(1, 0) = dN1deta * this->m_x1 + dN2deta * this->m_x2 + dN3deta * this->m_x3 + dN4deta * this->m_x4;
+            J(1, 1) = dN1deta * this->m_y1 + dN2deta * this->m_y2 + dN3deta * this->m_y3 + dN4deta * this->m_y4;
+
+            Eigen::Matrix<Real, 2, 2> Jinv = J.inverse();
+
+            Real b1x = Jinv(0,0) * dN1dxi + Jinv(0,1) * dN1deta;
+            Real b1y = Jinv(1,0) * dN1dxi + Jinv(1,1) * dN1deta;
+            Real b2x = Jinv(0,0) * dN2dxi + Jinv(0,1) * dN2deta;
+            Real b2y = Jinv(1,0) * dN2dxi + Jinv(1,1) * dN2deta;
+            Real b3x = Jinv(0,0) * dN3dxi + Jinv(0,1) * dN3deta;
+            Real b3y = Jinv(1,0) * dN3dxi + Jinv(1,1) * dN3deta;
+            Real b4x = Jinv(0,0) * dN4dxi + Jinv(0,1) * dN4deta;
+            Real b4y = Jinv(1,0) * dN4dxi + Jinv(1,1) * dN4deta;
+
+            B << b1x, 0.0, b2x, 0.0, b3x, 0.0, b4x, 0.0,
+                 0.0, b1y, 0.0, b2y, 0.0, b3y, 0.0, b4y,
+                 b1y, b1x, b2y, b2x, b3y, b3x, b4y, b4x;
+        }
     }
 }

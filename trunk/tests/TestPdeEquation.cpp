@@ -813,7 +813,6 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionTri) {
 
 TEST_F(CTestPdeEquation, femCantileverBeamDeflectionQuad) {
 
-    GTEST_SKIP() << "Fails, need to check quadrilateral element formulation and boundary condition application.";
 
     // Beam parameters
     Decimal b = 0.05;      // width

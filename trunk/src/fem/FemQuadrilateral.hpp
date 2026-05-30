@@ -73,7 +73,7 @@ namespace ENigMA
         class CFemQuadrilateral<Real, 4, 2, 1> : public CFemQuadrilateral<Real, 4, 1, 1>
         {
         protected:
-            void calculateB(Eigen::Matrix<Real, 3, 8>& B);
+            void calculateB(Eigen::Matrix<Real, 3, 8>& B, Real xi, Real eta);
         };
     }
 }
