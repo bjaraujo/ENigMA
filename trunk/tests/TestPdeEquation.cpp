@@ -14,6 +14,7 @@
 
 #include "TypeDef.hpp"
 
+#include "GeoHexahedron.hpp"
 #include "MatMaterial.hpp"
 #include "MshBasicMesher.hpp"
 #include "PdeEquation.hpp"
@@ -908,5 +909,106 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionQuad) {
     // Save results to Gmsh file
     CPosGmsh<Decimal> aPosGmsh;
     aPosGmsh.save(u, "fem_cantilever_beam_quad.pos", "quad");
+
+}
+
+TEST_F(CTestPdeEquation, femCantileverBeamDeflectionHex) {
+
+    // Beam parameters (same as quad test)
+    Decimal b = 0.05;      // width (z-direction)
+    Decimal h = 0.05;      // height (y-direction)
+    Decimal L = 1.0;       // length (x-direction)
+    Decimal F = -1000.0;   // applied force (y-direction)
+    Decimal E = 30E9;      // elastic modulus
+    Decimal nu = 0.3;      // Poisson's ratio
+
+    Decimal I = b * h * h * h / 12.0;
+
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(L,   0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(L,   h,   0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, h,   0.0);
+    CGeoCoordinate<Decimal> aVertex5(0.0, 0.0, b);
+    CGeoCoordinate<Decimal> aVertex6(L,   0.0, b);
+    CGeoCoordinate<Decimal> aVertex7(L,   h,   b);
+    CGeoCoordinate<Decimal> aVertex8(0.0, h,   b);
+
+    CGeoHexahedron<Decimal> aHexahedron;
+    aHexahedron.addVertex(aVertex1);
+    aHexahedron.addVertex(aVertex2);
+    aHexahedron.addVertex(aVertex3);
+    aHexahedron.addVertex(aVertex4);
+    aHexahedron.addVertex(aVertex5);
+    aHexahedron.addVertex(aVertex6);
+    aHexahedron.addVertex(aVertex7);
+    aHexahedron.addVertex(aVertex8);
+
+    CMshBasicMesher<Decimal> aBasicMesher;
+    const Integer nU = 50, nV = 4, nW = 2;
+    aBasicMesher.generate(aHexahedron, nU, nV, nW, false);
+    CMshMesh<Decimal> solidMesh = aBasicMesher.mesh();
+
+    CMatMaterial<Decimal> aMaterial;
+    aMaterial.addProperty(PT_ELASTIC_MODULUS, E);
+    aMaterial.addProperty(PT_POISSON_COEFFICIENT, nu);
+
+    CPdeField<Decimal> u;
+    u.setMesh(solidMesh);
+    u.setMaterial(aMaterial);
+    u.setSimulationType(ST_STRUCTURAL);
+    u.setDiscretMethod(DM_FEM);
+    u.setDiscretOrder(DO_LINEAR);
+    u.setDiscretLocation(DL_NODE);
+    u.setNbDofs(3);
+
+    // Count nodes at the loaded top edge (x=L, y=h) to distribute F evenly
+    Integer nTopNodes = 0;
+    for (Integer i = 0; i < solidMesh.nbNodes(); ++i)
+    {
+        Integer nodeId = solidMesh.nodeId(i);
+        CMshNode<Decimal> aNode = solidMesh.node(nodeId);
+        if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6)
+            nTopNodes++;
+    }
+
+    Integer maxDeflectionNodeIndex = 0;
+
+    for (Integer i = 0; i < solidMesh.nbNodes(); ++i)
+    {
+        Integer nodeId = solidMesh.nodeId(i);
+        CMshNode<Decimal> aNode = solidMesh.node(nodeId);
+
+        // Fixed wall at x = 0
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
+        {
+            u.setFixedValue(solidMesh.nodeIndex(nodeId), 0, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nodeId), 1, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nodeId), 2, 0.0);
+        }
+
+        // Distributed load on top edge at free end
+        if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6)
+        {
+            u.setSource(solidMesh.nodeIndex(nodeId), 1, F / nTopNodes);
+
+            // Track the centre node (z = b/2) for deflection comparison
+            if (std::fabs(aNode.z() - b * 0.5) < 1E-6)
+                maxDeflectionNodeIndex = i;
+        }
+    }
+
+    CPdeEquation<Decimal> pdeEquation(laplacian<Decimal>(u) = 0);
+    pdeEquation.setSources(u);
+    pdeEquation.setElimination(u);
+    pdeEquation.solve(u);
+
+    Decimal deflectionTheoretical = (F * L * L * L) / (3.0 * E * I);
+    Decimal deflectionCalculated  = u.value(maxDeflectionNodeIndex * 3 + 1);
+
+    EXPECT_NEAR(deflectionTheoretical, deflectionCalculated,
+                std::fabs(deflectionTheoretical) * 0.15);
+
+    CPosGmsh<Decimal> aPosGmsh;
+    aPosGmsh.save(u, "fem_cantilever_beam_hex.pos", "hex");
 
 }

@@ -49,6 +49,11 @@ namespace ENigMA
         };
 
         template <typename Real>
+        class CFemHexahedron<Real, 8, 3, 1> : public CFemHexahedron<Real, 8, 1, 1>
+        {
+        };
+
+        template <typename Real>
         class CFemHexahedron<Real, 8, 1, 1> : public CFemElement<Real>, public CFemSolid<Real>, public CIntHexahedron<Real>, public CGeoHexahedron<Real>
         {
         protected:

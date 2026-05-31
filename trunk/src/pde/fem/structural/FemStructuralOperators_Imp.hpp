@@ -12,6 +12,7 @@
 #include "structural/FemConstantStrainTetrahedron.hpp"
 #include "structural/FemConstantStrainTriangle.hpp"
 #include "structural/FemConstantStrainQuadrilateral.hpp"
+#include "structural/FemConstantStrainHexahedron.hpp"
 
 using namespace ENigMA::fem;
 using namespace ENigMA::fem::structural;
@@ -177,7 +178,42 @@ namespace ENigMA
                         }
                         else if (anElement.elementType() == ET_HEXAHEDRON && anElement.nbNodeIds() == 8)
                         {
-                            // TODO:
+                            CFemConstantStrainHexahedron<Real, 8, 3, 1> aHexahedron;
+
+                            ENigMA::material::CMatMaterial<Real> aMaterial = aField.material();
+
+                            aHexahedron.setElasticModulus(aMaterial.propertyValue(ENigMA::material::PT_ELASTIC_MODULUS));
+                            aHexahedron.setCoeffPoisson(aMaterial.propertyValue(ENigMA::material::PT_POISSON_COEFFICIENT));
+
+                            for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
+                            {
+                                CGeoCoordinate<Real> aVertex(aField.mesh().node(anElement.nodeId(i)));
+                                aHexahedron.addVertex(aVertex);
+                            }
+
+                            aHexahedron.calculateVolume();
+
+                            aHexahedron.setTransient(false);
+
+                            aHexahedron.update();
+
+                            for (Integer i = 0; i < anElement.nbNodeIds(); ++i)
+                            {
+                                for (Integer k = 0; k < aField.nbDofs(); ++k)
+                                {
+                                    for (Integer j = 0; j < anElement.nbNodeIds(); ++j)
+                                    {
+                                        for (Integer l = 0; l < aField.nbDofs(); ++l)
+                                        {
+                                            aSystem.matrixA.coeffRef(
+                                                aField.mesh().nodeIndex(anElement.nodeId(i)) * aField.nbDofs() + k,
+                                                aField.mesh().nodeIndex(anElement.nodeId(j)) * aField.nbDofs() + l)
+                                                += aHexahedron.laplacian(i * aField.nbDofs() + k, j * aField.nbDofs() + l);
+                                        }
+                                    }
+                                }
+                                aSystem.vectorB(aField.mesh().nodeIndex(anElement.nodeId(i))) += aHexahedron.source(i);
+                            }
                         }
                     }
 
