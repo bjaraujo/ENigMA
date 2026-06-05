@@ -15,8 +15,10 @@
 #include "TypeDef.hpp"
 
 #include "GeoHexahedron.hpp"
+#include "GeoQuadrilateral.hpp"
 #include "MatMaterial.hpp"
 #include "MshBasicMesher.hpp"
+#include "MshExtrudedMesher.hpp"
 #include "PdeEquation.hpp"
 #include "PdeField.hpp"
 #include "PosGmsh.hpp"
@@ -1010,5 +1012,125 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionHex) {
 
     CPosGmsh<Decimal> aPosGmsh;
     aPosGmsh.save(u, "fem_cantilever_beam_hex.pos", "hex");
+
+}
+
+TEST_F(CTestPdeEquation, femCantileverBeamDeflectionPrism) {
+
+    Decimal b = 0.05;      // width (z-direction)
+    Decimal h = 0.05;      // height (y-direction)
+    Decimal L = 1.0;       // length (x-direction)
+    Decimal F = -1000.0;   // applied force (y-direction)
+    Decimal E = 30E9;
+    Decimal nu = 0.3;
+
+    Decimal I = b * h * h * h / 12.0;
+
+    const Integer nU = 50, nV = 4, nW = 2;
+    const Integer nNx = nU + 1, nNy = nV + 1, nNz = nW + 1;
+
+    // Build a connected structured prism mesh by splitting each hex cell into 2 prisms.
+    // Node numbering: nodeId = i*(nNy*nNz) + j*nNz + k
+    CMshMesh<Decimal> solidMesh;
+
+    auto nodeId = [&](int i, int j, int k) -> Integer {
+        return i * (nNy * nNz) + j * nNz + k;
+    };
+
+    for (int i = 0; i < nNx; ++i)
+        for (int j = 0; j < nNy; ++j)
+            for (int k = 0; k < nNz; ++k)
+            {
+                Decimal x = i * L / nU;
+                Decimal y = j * h / nV;
+                Decimal z = k * b / nW;
+                CMshNode<Decimal> aNode(x, y, z);
+                solidMesh.addNode(nodeId(i,j,k), aNode);
+            }
+
+    Integer elemId = 0;
+    for (int i = 0; i < nU; ++i)
+        for (int j = 0; j < nV; ++j)
+            for (int k = 0; k < nW; ++k)
+            {
+                Integer n0 = nodeId(i,   j,   k  );
+                Integer n1 = nodeId(i+1, j,   k  );
+                Integer n2 = nodeId(i+1, j+1, k  );
+                Integer n3 = nodeId(i,   j+1, k  );
+                Integer n4 = nodeId(i,   j,   k+1);
+                Integer n5 = nodeId(i+1, j,   k+1);
+                Integer n6 = nodeId(i+1, j+1, k+1);
+                Integer n7 = nodeId(i,   j+1, k+1);
+
+                // Prism 1: bottom triangle n0-n1-n2, top triangle n4-n5-n6
+                CMshElement<Decimal> prism1(ET_TRIANGULAR_PRISM);
+                prism1.addNodeId(n0); prism1.addNodeId(n1); prism1.addNodeId(n2);
+                prism1.addNodeId(n4); prism1.addNodeId(n5); prism1.addNodeId(n6);
+                solidMesh.addElement(elemId++, prism1);
+
+                // Prism 2: bottom triangle n0-n2-n3, top triangle n4-n6-n7
+                CMshElement<Decimal> prism2(ET_TRIANGULAR_PRISM);
+                prism2.addNodeId(n0); prism2.addNodeId(n2); prism2.addNodeId(n3);
+                prism2.addNodeId(n4); prism2.addNodeId(n6); prism2.addNodeId(n7);
+                solidMesh.addElement(elemId++, prism2);
+            }
+
+    CMatMaterial<Decimal> aMaterial;
+    aMaterial.addProperty(PT_ELASTIC_MODULUS, E);
+    aMaterial.addProperty(PT_POISSON_COEFFICIENT, nu);
+
+    CPdeField<Decimal> u;
+    u.setMesh(solidMesh);
+    u.setMaterial(aMaterial);
+    u.setSimulationType(ST_STRUCTURAL);
+    u.setDiscretMethod(DM_FEM);
+    u.setDiscretOrder(DO_LINEAR);
+    u.setDiscretLocation(DL_NODE);
+    u.setNbDofs(3);
+
+    Integer nTopNodes = 0;
+    for (Integer i = 0; i < solidMesh.nbNodes(); ++i)
+    {
+        Integer nId = solidMesh.nodeId(i);
+        CMshNode<Decimal> aNode = solidMesh.node(nId);
+        if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6)
+            nTopNodes++;
+    }
+
+    Integer maxDeflectionNodeIndex = 0;
+
+    for (Integer i = 0; i < solidMesh.nbNodes(); ++i)
+    {
+        Integer nId = solidMesh.nodeId(i);
+        CMshNode<Decimal> aNode = solidMesh.node(nId);
+
+        if (std::fabs(aNode.x()) < 1E-6)
+        {
+            u.setFixedValue(solidMesh.nodeIndex(nId), 0, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nId), 1, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nId), 2, 0.0);
+        }
+
+        if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6)
+        {
+            u.setSource(solidMesh.nodeIndex(nId), 1, F / nTopNodes);
+            if (std::fabs(aNode.z() - b * 0.5) < 1E-6)
+                maxDeflectionNodeIndex = i;
+        }
+    }
+
+    CPdeEquation<Decimal> pdeEquation(laplacian<Decimal>(u) = 0);
+    pdeEquation.setSources(u);
+    pdeEquation.setElimination(u);
+    pdeEquation.solve(u);
+
+    Decimal deflectionTheoretical = (F * L * L * L) / (3.0 * E * I);
+    Decimal deflectionCalculated  = u.value(maxDeflectionNodeIndex * 3 + 1);
+
+    EXPECT_NEAR(deflectionTheoretical, deflectionCalculated,
+                std::fabs(deflectionTheoretical) * 0.15);
+
+    CPosGmsh<Decimal> aPosGmsh;
+    aPosGmsh.save(u, "fem_cantilever_beam_prism.pos", "prism");
 
 }

@@ -54,6 +54,11 @@ namespace ENigMA
         };
 
         template <typename Real>
+        class CFemTriangularPrism<Real, 6, 3, 1> : public CFemTriangularPrism<Real, 6, 1, 1>
+        {
+        };
+
+        template <typename Real>
         class CFemTriangularPrism<Real, 6, 1, 1> : public CFemElement<Real>, public CFemSolid<Real>, public CIntTriangularPrism<Real>, public CGeoTriangularPrism<Real>
         {
         protected:
