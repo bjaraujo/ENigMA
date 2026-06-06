@@ -275,7 +275,8 @@ namespace ENigMA
 
                         for (Integer i = 0; i < aField.mesh().nbNodes(); ++i)
                         {
-                            Integer index = aField.mesh().nodeIndex(i);
+                            Integer aNodeId = aField.mesh().nodeId(i);
+                            Integer index = aField.mesh().nodeIndex(aNodeId);
 
                             if (aField.nbDofs() == 1)
                                 fileGmsh << index + 1 << std::setprecision(16) << " " << aField.u(i) << std::endl;

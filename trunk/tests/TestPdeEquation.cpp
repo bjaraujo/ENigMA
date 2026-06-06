@@ -1026,54 +1026,29 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionPrism) {
 
     Decimal I = b * h * h * h / 12.0;
 
+    CGeoCoordinate<Decimal> aVertex1(0.0, 0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex2(L,   0.0, 0.0);
+    CGeoCoordinate<Decimal> aVertex3(L,   h,   0.0);
+    CGeoCoordinate<Decimal> aVertex4(0.0, h,   0.0);
+
+    CGeoQuadrilateral<Decimal> aQuadrilateral;
+    aQuadrilateral.addVertex(aVertex1);
+    aQuadrilateral.addVertex(aVertex2);
+    aQuadrilateral.addVertex(aVertex3);
+    aQuadrilateral.addVertex(aVertex4);
+
+    CMshBasicMesher<Decimal> aBasicMesher;
     const Integer nU = 50, nV = 4, nW = 2;
-    const Integer nNx = nU + 1, nNy = nV + 1, nNz = nW + 1;
+    aBasicMesher.generate(aQuadrilateral, nU, nV, true);
 
-    // Build a connected structured prism mesh by splitting each hex cell into 2 prisms.
-    // Node numbering: nodeId = i*(nNy*nNz) + j*nNz + k
-    CMshMesh<Decimal> solidMesh;
+    CMshExtrudedMesher<Decimal> anExtrudedMesher;
+    CMshMesh<Decimal>& aPlanarMesh = aBasicMesher.mesh();
 
-    auto nodeId = [&](int i, int j, int k) -> Integer {
-        return i * (nNy * nNz) + j * nNz + k;
-    };
+    for (Integer i = 0; i < nW; i++)
+        anExtrudedMesher.generate(aPlanarMesh, b / nW, 1E-6);
 
-    for (int i = 0; i < nNx; ++i)
-        for (int j = 0; j < nNy; ++j)
-            for (int k = 0; k < nNz; ++k)
-            {
-                Decimal x = i * L / nU;
-                Decimal y = j * h / nV;
-                Decimal z = k * b / nW;
-                CMshNode<Decimal> aNode(x, y, z);
-                solidMesh.addNode(nodeId(i,j,k), aNode);
-            }
-
-    Integer elemId = 0;
-    for (int i = 0; i < nU; ++i)
-        for (int j = 0; j < nV; ++j)
-            for (int k = 0; k < nW; ++k)
-            {
-                Integer n0 = nodeId(i,   j,   k  );
-                Integer n1 = nodeId(i+1, j,   k  );
-                Integer n2 = nodeId(i+1, j+1, k  );
-                Integer n3 = nodeId(i,   j+1, k  );
-                Integer n4 = nodeId(i,   j,   k+1);
-                Integer n5 = nodeId(i+1, j,   k+1);
-                Integer n6 = nodeId(i+1, j+1, k+1);
-                Integer n7 = nodeId(i,   j+1, k+1);
-
-                // Prism 1: bottom triangle n0-n1-n2, top triangle n4-n5-n6
-                CMshElement<Decimal> prism1(ET_TRIANGULAR_PRISM);
-                prism1.addNodeId(n0); prism1.addNodeId(n1); prism1.addNodeId(n2);
-                prism1.addNodeId(n4); prism1.addNodeId(n5); prism1.addNodeId(n6);
-                solidMesh.addElement(elemId++, prism1);
-
-                // Prism 2: bottom triangle n0-n2-n3, top triangle n4-n6-n7
-                CMshElement<Decimal> prism2(ET_TRIANGULAR_PRISM);
-                prism2.addNodeId(n0); prism2.addNodeId(n2); prism2.addNodeId(n3);
-                prism2.addNodeId(n4); prism2.addNodeId(n6); prism2.addNodeId(n7);
-                solidMesh.addElement(elemId++, prism2);
-            }
+    CMshMesh<Decimal> solidMesh = anExtrudedMesher.mesh();
+    solidMesh.mergeNodes(1E-6);
 
     CMatMaterial<Decimal> aMaterial;
     aMaterial.addProperty(PT_ELASTIC_MODULUS, E);
@@ -1091,8 +1066,8 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionPrism) {
     Integer nTopNodes = 0;
     for (Integer i = 0; i < solidMesh.nbNodes(); ++i)
     {
-        Integer nId = solidMesh.nodeId(i);
-        CMshNode<Decimal> aNode = solidMesh.node(nId);
+        Integer nodeId = solidMesh.nodeId(i);
+        CMshNode<Decimal> aNode = solidMesh.node(nodeId);
         if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6)
             nTopNodes++;
     }
@@ -1101,21 +1076,20 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionPrism) {
 
     for (Integer i = 0; i < solidMesh.nbNodes(); ++i)
     {
-        Integer nId = solidMesh.nodeId(i);
-        CMshNode<Decimal> aNode = solidMesh.node(nId);
+        Integer nodeId = solidMesh.nodeId(i);
+        CMshNode<Decimal> aNode = solidMesh.node(nodeId);
 
-        if (std::fabs(aNode.x()) < 1E-6)
+        if (std::fabs(aNode.x() - 0.0) < 1E-6)
         {
-            u.setFixedValue(solidMesh.nodeIndex(nId), 0, 0.0);
-            u.setFixedValue(solidMesh.nodeIndex(nId), 1, 0.0);
-            u.setFixedValue(solidMesh.nodeIndex(nId), 2, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nodeId), 0, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nodeId), 1, 0.0);
+            u.setFixedValue(solidMesh.nodeIndex(nodeId), 2, 0.0);
         }
 
         if (std::fabs(aNode.x() - L) < 1E-6 && std::fabs(aNode.y() - h) < 1E-6)
         {
-            u.setSource(solidMesh.nodeIndex(nId), 1, F / nTopNodes);
-            if (std::fabs(aNode.z() - b * 0.5) < 1E-6)
-                maxDeflectionNodeIndex = i;
+            u.setSource(solidMesh.nodeIndex(nodeId), 1, F / nTopNodes);
+            maxDeflectionNodeIndex = i;
         }
     }
 
