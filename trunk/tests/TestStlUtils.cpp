@@ -75,8 +75,10 @@ TEST_F(CTestStlUtils, io)
 
     aStl.stlFile().stats.type = FT_BINARY;
 
-    EXPECT_TRUE(aStl.save("box.stl"));
-    EXPECT_TRUE(aStl.load("box.stl"));
+    if (g_saveFiles) {
+        EXPECT_TRUE(aStl.save("box.stl"));
+        EXPECT_TRUE(aStl.load("box.stl"));
+    }
 
 }
 
@@ -158,7 +160,8 @@ TEST_F(CTestStlUtils, connectivity)
     EXPECT_EQ(-1, aStl.stlFile().facet(3).edge(1).whichVertexNot());
     EXPECT_EQ(1, aStl.stlFile().facet(3).edge(2).whichVertexNot());
 
-    EXPECT_TRUE(aStl.save("plane_con.stl"));
+    if (g_saveFiles)
+        aStl.save("plane_con.stl");
 
 }
 
@@ -212,7 +215,8 @@ TEST_F(CTestStlUtils, mesh)
 
     CStlUtils<Decimal> aNewStlFile(aSurfaceMesh);
 
-    EXPECT_TRUE(aNewStlFile.save("plane.stl"));
+    if (g_saveFiles)
+        aNewStlFile.save("plane.stl");
 
     EXPECT_EQ(6, aSurfaceMesh.nbNodes());
     EXPECT_EQ(4, aSurfaceMesh.nbElements());
@@ -268,7 +272,8 @@ TEST_F(CTestStlUtils, split)
 
     EXPECT_EQ(96, aStl.stlFile().nbFacets());
 
-    aStl.save("box_remesh.stl");
+    if (g_saveFiles)
+        aStl.save("box_remesh.stl");
 
 }
 
@@ -330,7 +335,8 @@ TEST_F(CTestStlUtils, collapseEdges)
 
     EXPECT_EQ(4, aStl.stlFile().nbFacets());
 
-    aStl.save("plane_collapse.stl");
+    if (g_saveFiles)
+        aStl.save("plane_collapse.stl");
 
 }
 
@@ -406,7 +412,8 @@ TEST_F(CTestStlUtils, setOrientation1)
     EXPECT_EQ(-1, aStl.stlFile().facet(3).edge(1).whichVertexNot());
     EXPECT_EQ(0, aStl.stlFile().facet(3).edge(2).whichVertexNot());
 
-    aStl.save("plane1_fixnorm.stl");
+    if (g_saveFiles)
+        aStl.save("plane1_fixnorm.stl");
 
 }
 
@@ -509,7 +516,8 @@ TEST_F(CTestStlUtils, setOrientation2)
     EXPECT_EQ(0, aStl.stlFile().facet(5).edge(1).whichVertexNot());
     EXPECT_EQ(2, aStl.stlFile().facet(5).edge(2).whichVertexNot());
 
-    aStl.save("plane2_fixnorm.stl");
+    if (g_saveFiles)
+        aStl.save("plane2_fixnorm.stl");
 
 }
 
@@ -542,13 +550,15 @@ TEST_F(CTestStlUtils, setOrientation3)
     CPdeField<Decimal> aField;
 
     aField.setMesh(aBasicMesher.mesh());
-    aPosGmsh.save(aField, "plane3_fixnorm.msh", "");
+    if (g_saveFiles)
+        aPosGmsh.save(aField, "plane3_fixnorm.msh", "");
 
     CStlUtils<Decimal> aStl(aBasicMesher.mesh());
 
     aStl.generateConnectivity(1E-12);
 
-    aStl.save("plane3.stl");
+    if (g_saveFiles)
+        aStl.save("plane3.stl");
 
     aStl.setOrientation(0, 1E-12);
 
@@ -568,6 +578,7 @@ TEST_F(CTestStlUtils, setOrientation3)
     EXPECT_EQ(-1, aStl.stlFile().facet(13).edge(1).whichVertexNot());
     EXPECT_EQ(0, aStl.stlFile().facet(13).edge(2).whichVertexNot());
 
-    aStl.save("plane3_fixnorm.stl");
+    if (g_saveFiles)
+        aStl.save("plane3_fixnorm.stl");
 
 }

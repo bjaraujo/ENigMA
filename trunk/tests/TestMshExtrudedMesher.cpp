@@ -69,7 +69,8 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aPlanarMesh);
-    aPosGmsh.save(T, "planar_tris.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "planar_tris.msh", "tris");
 
     const Decimal dw = 0.25;
 
@@ -83,7 +84,8 @@ TEST_F(CTestMshExtrudedMesher, extrudeTriangles) {
     aVolumeMesh = anExtrudedMesher.mesh();
 
     T.setMesh(aVolumeMesh);
-    aPosGmsh.save(T, "extruded_tris.msh", "prisms");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "extruded_tris.msh", "prisms");
 
     EXPECT_EQ(nu * nv * nw * 2, aVolumeMesh.nbElements());
 
@@ -147,7 +149,8 @@ TEST_F(CTestMshExtrudedMesher, extrudeQuadrilaterals) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aVolumeMesh);
-    aPosGmsh.save(T, "extruded_quads.msh", "hex");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "extruded_quads.msh", "hex");
 
     EXPECT_EQ(nu * nv * nw, aVolumeMesh.nbElements());
 

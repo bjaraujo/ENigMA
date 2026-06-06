@@ -131,7 +131,8 @@ TEST_F(CTestFvmPiso, hydroPressure) {
         pmax = std::max(pmax, aPisoSolver.p(aControlVolumeId));
     }    
 
-    aPosGmsh.save(p, "hydro_pressure.pos", "Pressure");
+    if (g_saveFiles)
+        aPosGmsh.save(p, "hydro_pressure.pos", "Pressure");
     
     EXPECT_NEAR(rho*std::fabs(g), pmax, 200);
 }
@@ -246,7 +247,8 @@ TEST_F(CTestFvmPiso, channelPressure) {
         pmax = std::max(pmax, aPisoSolver.p(aControlVolumeId));
     }
 
-    aPosGmsh.save(p, "channel_pressure.pos", "Pressure");
+    if (g_saveFiles)
+        aPosGmsh.save(p, "channel_pressure.pos", "Pressure");
 
     Decimal pExpected = 28.45 * mu * L * v / (a * a);
     EXPECT_NEAR(pExpected, pmax, 0.15);
@@ -375,7 +377,8 @@ TEST_F(CTestFvmPiso, channelTemperature) {
         }
     }
 
-    aPosGmsh.save(t, "channel_temperature.pos", "Temperature");
+    if (g_saveFiles)
+        aPosGmsh.save(t, "channel_temperature.pos", "Temperature");
     
     EXPECT_NEAR(0.5, tmid, 0.1);
 }

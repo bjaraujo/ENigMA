@@ -55,11 +55,14 @@ TEST_F(CTestPosGmsh, line)
     CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
-    aPosGmsh1.save(T1, "line.msh", "line");
-    aPosGmsh2.load(T2, "line.msh");
+    if (g_saveFiles)
+    {
+        aPosGmsh1.save(T1, "line.msh", "line");
+        aPosGmsh2.load(T2, "line.msh");
 
-    EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
-    EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+        EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
+        EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+    }
 
 }
 
@@ -91,11 +94,14 @@ TEST_F(CTestPosGmsh, rectangle1)
     CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
-    aPosGmsh1.save(T1, "rectangle1.msh", "rectangle1");
-    aPosGmsh2.load(T2, "rectangle1.msh");
+    if (g_saveFiles)
+    {
+        aPosGmsh1.save(T1, "rectangle1.msh", "rectangle1");
+        aPosGmsh2.load(T2, "rectangle1.msh");
 
-    EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
-    EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+        EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
+        EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+    }
 
 }
 
@@ -127,11 +133,14 @@ TEST_F(CTestPosGmsh, rectangle2)
     CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
-    aPosGmsh1.save(T1, "rectangle2.msh", "rectangle2");
-    aPosGmsh2.load(T2, "rectangle2.msh");
+    if (g_saveFiles)
+    {
+        aPosGmsh1.save(T1, "rectangle2.msh", "rectangle2");
+        aPosGmsh2.load(T2, "rectangle2.msh");
 
-    EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
-    EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+        EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
+        EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+    }
 
 }
 
@@ -172,11 +181,14 @@ TEST_F(CTestPosGmsh, box1)
     CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
-    aPosGmsh1.save(T1, "box1.msh", "box1");
-    aPosGmsh2.load(T2, "box1.msh");
+    if (g_saveFiles)
+    {
+        aPosGmsh1.save(T1, "box1.msh", "box1");
+        aPosGmsh2.load(T2, "box1.msh");
 
-    EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
-    EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+        EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
+        EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+    }
 
 }
 
@@ -217,10 +229,13 @@ TEST_F(CTestPosGmsh, box2)
     CPosGmsh<Decimal> aPosGmsh1, aPosGmsh2;
 
     T1.setMesh(aBasicMesher.mesh());
-    aPosGmsh1.save(T1, "box2.msh", "box2");
-    aPosGmsh2.load(T2, "box2.msh");
+    if (g_saveFiles)
+    {
+        aPosGmsh1.save(T1, "box2.msh", "box2");
+        aPosGmsh2.load(T2, "box2.msh");
 
-    EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
-    EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+        EXPECT_EQ(T1.mesh().nbNodes(), T2.mesh().nbNodes());
+        EXPECT_EQ(T1.mesh().nbElements(), T2.mesh().nbElements());
+    }
 
 }

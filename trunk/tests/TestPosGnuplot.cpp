@@ -63,7 +63,8 @@ TEST_F(CTestPosGnuplot, plot)
         T.u[i] = 0.0;
     }
 
-    aPosGnuplot.save(T, "plot.dat");
+    if (g_saveFiles)
+        aPosGnuplot.save(T, "plot.dat");
 
     EXPECT_EQ(T.u.size(), 4);
 

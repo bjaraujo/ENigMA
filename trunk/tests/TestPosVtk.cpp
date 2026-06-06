@@ -72,7 +72,9 @@ TEST_F(CTestPosVtk, box)
     CPosVtk<Decimal> aPosVtk;
 
     T.setMesh(aBasicMesher.mesh());
-    aPosVtk.save(T, "box.vtk");
+
+    if (g_saveFiles)
+        aPosVtk.save(T, "box.vtk");
 
     EXPECT_EQ(T.mesh().nbNodes(), 36);
 

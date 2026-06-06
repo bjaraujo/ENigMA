@@ -10,3 +10,7 @@
 #pragma once
 
 typedef double Decimal;
+
+extern bool g_saveFiles;
+
+#define SAVE_IF_ENABLED(expr) do { if (g_saveFiles) { expr; } } while(0)

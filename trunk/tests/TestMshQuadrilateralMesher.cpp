@@ -86,7 +86,8 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "quad_edge1.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_edge1.msh", "beams");
 
     aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 1.0, 1E-3);
 
@@ -94,7 +95,8 @@ TEST_F(CTestMshQuadrilateralMesher, mesh1) {
     aSurfaceMesh = aQuadrilateralMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "quad_surface1.msh", "quads");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_surface1.msh", "quads");
 
     EXPECT_EQ(100, aSurfaceMesh.nbElements());
 
@@ -188,7 +190,8 @@ TEST_F(CTestMshQuadrilateralMesher, mesh2) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "quad_edge2.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_edge2.msh", "beams");
 
     aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 1.0, 1E-3);
 
@@ -198,7 +201,8 @@ TEST_F(CTestMshQuadrilateralMesher, mesh2) {
     aSurfaceMesh = aQuadrilateralMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "quad_surface2.msh", "quads");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_surface2.msh", "quads");
 
     EXPECT_EQ(91, aSurfaceMesh.nbElements());
 
@@ -456,7 +460,8 @@ TEST_F(CTestMshQuadrilateralMesher, mesh3)
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "quad_edge3.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_edge3.msh", "beams");
 
     aQuadrilateralMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.5, 0.5, 0.5, 1E-3);
 
@@ -464,7 +469,8 @@ TEST_F(CTestMshQuadrilateralMesher, mesh3)
     aSurfaceMesh = aQuadrilateralMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "quad_surface3.msh", "quads");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_surface3.msh", "quads");
 
     EXPECT_EQ(35, aSurfaceMesh.nbElements());
 }
@@ -522,7 +528,8 @@ TEST_F(CTestMshQuadrilateralMesher, flip1)
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "quad_surface4.msh", "quads");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_surface4.msh", "quads");
 
     EXPECT_EQ(2, aSurfaceMesh.element(0).nodeId(0));
     EXPECT_EQ(3, aSurfaceMesh.element(0).nodeId(1));
@@ -582,7 +589,8 @@ TEST_F(CTestMshQuadrilateralMesher, flip2)
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aQuadrilateralMesher.mesh());
-    aPosGmsh.save(T, "quad_surface5.msh", "quads");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "quad_surface5.msh", "quads");
 
     EXPECT_EQ(3, aSurfaceMesh.element(0).nodeId(0));
     EXPECT_EQ(0, aSurfaceMesh.element(0).nodeId(1));

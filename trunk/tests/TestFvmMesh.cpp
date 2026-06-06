@@ -308,7 +308,8 @@ TEST_F(CTestFvmMesh, orient1) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aMesh.extractBoundary(1E-6));
-    aPosGmsh.save(T, "tetra_orient1.msh", "tetra");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_orient1.msh", "tetra");
 
 }
 
@@ -375,7 +376,8 @@ TEST_F(CTestFvmMesh, orient2) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aMesh.extractBoundary(1E-6));
-    aPosGmsh.save(T, "prism_orient2.msh", "prism");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "prism_orient2.msh", "prism");
 
 }
 
@@ -456,7 +458,8 @@ TEST_F(CTestFvmMesh, orient3) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aMesh.extractBoundary(1E-6));
-    aPosGmsh.save(T, "hexa_orient3.msh", "hexa");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "hexa_orient3.msh", "hexa");
 
 }
 

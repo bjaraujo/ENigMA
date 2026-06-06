@@ -808,9 +808,11 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionTri) {
     EXPECT_NEAR(deflectionTheoretical, deflectionCalculated, 
                 std::fabs(deflectionTheoretical) * 0.05);
 
-    // Save results to Gmsh file
-    CPosGmsh<Decimal> aPosGmsh;
-    aPosGmsh.save(u, "fem_cantilever_beam_tri.pos", "tri");
+    if (g_saveFiles)
+    {
+        CPosGmsh<Decimal> aPosGmsh;
+        aPosGmsh.save(u, "fem_cantilever_beam_tri.pos", "tri");
+    }
 
 }
 
@@ -908,9 +910,11 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionQuad) {
     EXPECT_NEAR(deflectionTheoretical, deflectionCalculated, 
                 std::fabs(deflectionTheoretical) * 0.05);
 
-    // Save results to Gmsh file
-    CPosGmsh<Decimal> aPosGmsh;
-    aPosGmsh.save(u, "fem_cantilever_beam_quad.pos", "quad");
+    if (g_saveFiles)
+    {
+        CPosGmsh<Decimal> aPosGmsh;
+        aPosGmsh.save(u, "fem_cantilever_beam_quad.pos", "quad");
+    }
 
 }
 
@@ -1010,8 +1014,11 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionHex) {
     EXPECT_NEAR(deflectionTheoretical, deflectionCalculated,
                 std::fabs(deflectionTheoretical) * 0.15);
 
-    CPosGmsh<Decimal> aPosGmsh;
-    aPosGmsh.save(u, "fem_cantilever_beam_hex.pos", "hex");
+    if (g_saveFiles)
+    {
+        CPosGmsh<Decimal> aPosGmsh;
+        aPosGmsh.save(u, "fem_cantilever_beam_hex.pos", "hex");
+    }
 
 }
 
@@ -1104,7 +1111,10 @@ TEST_F(CTestPdeEquation, femCantileverBeamDeflectionPrism) {
     EXPECT_NEAR(deflectionTheoretical, deflectionCalculated,
                 std::fabs(deflectionTheoretical) * 0.15);
 
-    CPosGmsh<Decimal> aPosGmsh;
-    aPosGmsh.save(u, "fem_cantilever_beam_prism.pos", "prism");
+    if (g_saveFiles)
+    {
+        CPosGmsh<Decimal> aPosGmsh;
+        aPosGmsh.save(u, "fem_cantilever_beam_prism.pos", "prism");
+    }
 
 }

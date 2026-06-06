@@ -133,10 +133,12 @@ TEST_F(CTestMshTriangleMesher, mesh1) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge1.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge1.msh", "beams");
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface1.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface1.msh", "tris");
 
     EXPECT_EQ(16, anEdgeMesh.nbElements());
     EXPECT_EQ(16, aSurfaceMesh.nbElements());
@@ -195,7 +197,8 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge2.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge2.msh", "beams");
 
     aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 1.0, 1E-3);
 
@@ -205,7 +208,8 @@ TEST_F(CTestMshTriangleMesher, mesh2) {
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface2.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface2.msh", "tris");
 
     EXPECT_EQ(262, aSurfaceMesh.nbElements());
 
@@ -299,7 +303,8 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge3.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge3.msh", "beams");
 
     aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 0.1, 0.01, 10.0, 1E-3);
 
@@ -309,7 +314,8 @@ TEST_F(CTestMshTriangleMesher, mesh3) {
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface3.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface3.msh", "tris");
 
     EXPECT_EQ(238, aSurfaceMesh.nbElements());
 
@@ -383,7 +389,8 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge4.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge4.msh", "beams");
 
     aTriangleMesher.generate(anEdgeMesh, 99, sInteriorPoints, 2.0, 0.1, 10.0, 1E-3);
 
@@ -396,7 +403,8 @@ TEST_F(CTestMshTriangleMesher, mesh4) {
     aTriangleMesher.relaxNodes(aSurfaceMesh);
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface4.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface4.msh", "tris");
 
     EXPECT_EQ(4, aSurfaceMesh.nbElements());
 
@@ -509,7 +517,8 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge5.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge5.msh", "beams");
 
     aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 10.0, 1.0, 100.0, 1E-3);
 
@@ -519,7 +528,8 @@ TEST_F(CTestMshTriangleMesher, mesh5) {
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface5.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface5.msh", "tris");
 
     EXPECT_EQ(246, aSurfaceMesh.nbElements());
 
@@ -649,7 +659,8 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge6.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge6.msh", "beams");
 
     aTriangleMesher.generate(anEdgeMesh, 999, sInteriorPoints, 10.0, 1.0, 50.0, 1E-3);
 
@@ -659,7 +670,8 @@ TEST_F(CTestMshTriangleMesher, mesh6) {
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface6.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface6.msh", "tris");
 
     EXPECT_EQ(254, aSurfaceMesh.nbElements());
 
@@ -735,13 +747,15 @@ TEST_F(CTestMshTriangleMesher, mesh7) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge7.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge7.msh", "beams");
 
     CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface7.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface7.msh", "tris");
 
     EXPECT_EQ(11, aSurfaceMesh.nbElements());
 
@@ -868,13 +882,15 @@ TEST_F(CTestMshTriangleMesher, mesh8) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge8.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge8.msh", "beams");
 
     CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface8.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface8.msh", "tris");
 
     EXPECT_EQ(28, aSurfaceMesh.nbElements());
 
@@ -954,13 +970,15 @@ TEST_F(CTestMshTriangleMesher, mesh9) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(anEdgeMesh);
-    aPosGmsh.save(T, "tri_edge9.msh", "beams");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_edge9.msh", "beams");
 
     CMshMesh<Decimal> aSurfaceMesh;
     aSurfaceMesh = aTriangleMesher.mesh();
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tri_surface9.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tri_surface9.msh", "tris");
 
     EXPECT_EQ(6940, aSurfaceMesh.nbElements());
 

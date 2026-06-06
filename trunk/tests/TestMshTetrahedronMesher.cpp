@@ -77,7 +77,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tetra_surface1.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_surface1.msh", "tris");
 
     CMshTetrahedronMesher<Decimal> aTetrahedronMesher;
     std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
@@ -88,7 +89,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh1) {
     aVolumeMesh = aTetrahedronMesher.mesh();
 
     T.setMesh(aVolumeMesh);
-    aPosGmsh.save(T, "tetra_volume1.msh", "tetras");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_volume1.msh", "tetras");
 
     EXPECT_EQ(52, aVolumeMesh.nbElements());
 
@@ -149,7 +151,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tetra_surface2.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_surface2.msh", "tris");
 
     CMshTetrahedronMesher<Decimal> aTetrahedronMesher;
     std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
@@ -160,7 +163,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh2) {
     aVolumeMesh = aTetrahedronMesher.mesh();
 
     T.setMesh(aVolumeMesh);
-    aPosGmsh.save(T, "tetra_volume2.msh", "tetras");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_volume2.msh", "tetras");
 
     EXPECT_EQ(95, aVolumeMesh.nbElements());
 
@@ -206,7 +210,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tetra_surface3.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_surface3.msh", "tris");
 
     CMshTetrahedronMesher<Decimal> aTetrahedronMesher;
     std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
@@ -217,7 +222,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh3) {
     aVolumeMesh = aTetrahedronMesher.mesh();
 
     T.setMesh(aVolumeMesh);
-    aPosGmsh.save(T, "tetra_volume3.msh", "tetras");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_volume3.msh", "tetras");
 
     EXPECT_EQ(307, aVolumeMesh.nbElements());
 
@@ -266,7 +272,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh4)
     CPosGmsh<Decimal> aPosGmsh;
 
     T.setMesh(aSurfaceMesh);
-    aPosGmsh.save(T, "tetra_surface4.msh", "tris");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_surface4.msh", "tris");
 
     CMshTetrahedronMesher<Decimal> aTetrahedronMesher;
     std::vector<CGeoCoordinate<Decimal>> sInteriorPoints;
@@ -277,7 +284,8 @@ TEST_F(CTestMshTetrahedronMesher, mesh4)
     aVolumeMesh = aTetrahedronMesher.mesh();
 
     T.setMesh(aVolumeMesh);
-    aPosGmsh.save(T, "tetra_volume4.msh", "tetras");
+    if (g_saveFiles)
+        aPosGmsh.save(T, "tetra_volume4.msh", "tetras");
 
     EXPECT_EQ(2291, aVolumeMesh.nbElements());
 }

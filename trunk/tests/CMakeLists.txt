@@ -146,9 +146,9 @@ include_directories(
   ../src/stl
 )
 
-add_executable(UnitTests ${TEST_GEOMETRY_SOURCES} ${TEST_MESH_SOURCES} ${TEST_BEM_SOURCES} ${TEST_FEM_SOURCES} ${TEST_CVFEM_SOURCES} ${TEST_FVM_SOURCES} ${TEST_SPH_SOURCES} ${TEST_PDE_SOURCES} ${TEST_ANA_SOURCES} ${TEST_POS_SOURCES} ${TEST_STL_SOURCES})
+add_executable(UnitTests main.cpp ${TEST_GEOMETRY_SOURCES} ${TEST_MESH_SOURCES} ${TEST_BEM_SOURCES} ${TEST_FEM_SOURCES} ${TEST_CVFEM_SOURCES} ${TEST_FVM_SOURCES} ${TEST_SPH_SOURCES} ${TEST_PDE_SOURCES} ${TEST_ANA_SOURCES} ${TEST_POS_SOURCES} ${TEST_STL_SOURCES})
 
-add_dependencies(UnitTests eigen gtest gtest_main)
+add_dependencies(UnitTests eigen gtest)
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     add_definitions(/bigobj)
@@ -162,12 +162,10 @@ endif()
 if(WIN32)
     target_link_libraries(UnitTests
     gtest
-    gtest_main
 )
 else(WIN32)
     target_link_libraries(UnitTests
     gtest
-    gtest_main
     pthread
 )
 endif(WIN32)
