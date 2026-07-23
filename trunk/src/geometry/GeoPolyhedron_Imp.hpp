@@ -414,6 +414,139 @@ namespace ENigMA
         }
 
         template <typename Real>
+        Real CGeoPolyhedron<Real>::clippedVolume(CGeoPlane<Real>& aPlane, const Real aTolerance)
+        {
+            // Decompose the (convex) polyhedron into tetrahedra fanned from an
+            // interior apex, then clip each tetrahedron against the plane
+            // analytically. This avoids rebuilding face polygons, a cap polygon
+            // and a new CGeoPolyhedron just to read off a volume, which is all
+            // the caller needs while searching for the cutting plane offset.
+
+            this->calculateCentroid();
+
+            const CGeoCoordinate<Real> apex = this->centroid();
+
+            const CGeoNormal<Real> n = aPlane.normal();
+            const Real d = aPlane.d();
+
+            auto tetVolume = [](const CGeoCoordinate<Real>& p0, const CGeoCoordinate<Real>& p1,
+                                 const CGeoCoordinate<Real>& p2, const CGeoCoordinate<Real>& p3) -> Real
+            {
+                return std::fabs((p1 - p0).dot((p2 - p0).cross(p3 - p0))) / static_cast<Real>(6.0);
+            };
+
+            // Clip tetrahedron (v0,v1,v2,v3) against the plane and return the volume of the
+            // part satisfying n.dot(p) <= d.
+            auto clipTet = [&](const CGeoCoordinate<Real>& v0, const CGeoCoordinate<Real>& v1,
+                                const CGeoCoordinate<Real>& v2, const CGeoCoordinate<Real>& v3) -> Real
+            {
+                const CGeoCoordinate<Real> v[4] = { v0, v1, v2, v3 };
+
+                Real g[4];
+                bool in[4];
+                Integer nbIn = 0;
+
+                for (Integer i = 0; i < 4; ++i)
+                {
+                    g[i] = n.dot(v[i]) - d;
+                    in[i] = (g[i] <= 0.0);
+
+                    if (in[i])
+                        ++nbIn;
+                }
+
+                if (nbIn == 0)
+                    return static_cast<Real>(0.0);
+
+                Real vFull = tetVolume(v[0], v[1], v[2], v[3]);
+
+                if (nbIn == 4)
+                    return vFull;
+
+                auto edgePoint = [&](Integer i, Integer j) -> CGeoCoordinate<Real>
+                {
+                    Real t = g[i] / (g[i] - g[j]);
+                    return CGeoCoordinate<Real>(v[i] + (v[j] - v[i]) * t);
+                };
+
+                if (nbIn == 1 || nbIn == 3)
+                {
+                    bool oddIn = (nbIn == 1);
+
+                    Integer odd = 0;
+                    for (Integer i = 0; i < 4; ++i)
+                    {
+                        if (in[i] == oddIn)
+                        {
+                            odd = i;
+                            break;
+                        }
+                    }
+
+                    Integer others[3];
+                    Integer k = 0;
+                    for (Integer i = 0; i < 4; ++i)
+                        if (i != odd)
+                            others[k++] = i;
+
+                    CGeoCoordinate<Real> p0 = edgePoint(odd, others[0]);
+                    CGeoCoordinate<Real> p1 = edgePoint(odd, others[1]);
+                    CGeoCoordinate<Real> p2 = edgePoint(odd, others[2]);
+
+                    Real cornerVol = tetVolume(v[odd], p0, p1, p2);
+
+                    return oddIn ? cornerVol : (vFull - cornerVol);
+                }
+
+                // nbIn == 2: two vertices kept (A,B), two clipped away (C,D).
+                Integer insideIdx[2], outsideIdx[2];
+                Integer ki = 0, ko = 0;
+
+                for (Integer i = 0; i < 4; ++i)
+                {
+                    if (in[i])
+                        insideIdx[ki++] = i;
+                    else
+                        outsideIdx[ko++] = i;
+                }
+
+                const CGeoCoordinate<Real>& A = v[insideIdx[0]];
+                const CGeoCoordinate<Real>& B = v[insideIdx[1]];
+
+                CGeoCoordinate<Real> pAC = edgePoint(insideIdx[0], outsideIdx[0]);
+                CGeoCoordinate<Real> pAD = edgePoint(insideIdx[0], outsideIdx[1]);
+                CGeoCoordinate<Real> pBC = edgePoint(insideIdx[1], outsideIdx[0]);
+                CGeoCoordinate<Real> pBD = edgePoint(insideIdx[1], outsideIdx[1]);
+
+                // Standard triangular-prism-to-3-tetrahedra split of the kept solid
+                // (triangular ends A,pAC,pAD and B,pBC,pBD).
+                return tetVolume(A, pAC, pAD, pBD) + tetVolume(A, pAC, pBC, pBD) + tetVolume(A, B, pBC, pBD);
+            };
+
+            Real total = 0.0;
+
+            for (auto it = m_polygons.begin(); it != m_polygons.end(); ++it)
+            {
+                CGeoPolyline<Real>& aPolyline = it->second.polyline();
+
+                Integer nbUnique = aPolyline.nbVertices();
+
+                if (nbUnique > 1 && (aPolyline.vertex(0) - aPolyline.vertex(nbUnique - 1)).norm() <= aTolerance)
+                    --nbUnique; // closed loop: last vertex duplicates the first
+
+                if (nbUnique < 3)
+                    continue;
+
+                const CGeoCoordinate<Real> v0 = aPolyline.vertex(0);
+
+                for (Integer i = 1; i < nbUnique - 1; ++i)
+                    total += clipTet(apex, v0, aPolyline.vertex(i), aPolyline.vertex(i + 1));
+            }
+
+            return total;
+        }
+
+        template <typename Real>
         CGeoPolyhedron<Real> CGeoPolyhedron<Real>::clip(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real volumeFractionReq, Real& volumeFractionAct, Integer& nIterations, const Integer nMaxIterations, const Real aNormalizedTolerance, const Real aTolerance)
         {
             CGeoPolyhedron<Real> aPolyhedron;
@@ -515,9 +648,7 @@ namespace ENigMA
                 }
 
                 aPlane.setD(s);
-                aPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
-                aPolyhedron.calculateVolume(true);
-                vs = aPolyhedron.volume();                
+                vs = this->clippedVolume(aPlane, aTolerance);
                 fs = vs / vt - volumeFractionReq;
 
                 f = e;
@@ -549,6 +680,10 @@ namespace ENigMA
             }
 
             volumeFractionAct = vs / vt;
+
+            // Build the actual clipped polyhedron/cap only once, for the accepted plane,
+            // instead of on every search iteration above.
+            aPolyhedron = this->clip(aNewPolygon, aNewPolygonId, aPlane, aTolerance);
 
             return aPolyhedron;
         }

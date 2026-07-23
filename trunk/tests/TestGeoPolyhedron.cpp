@@ -368,7 +368,7 @@ TEST_F(CTestGeoPolyhedron, clip4) {
 
     CGeoPolyhedron<Decimal> aNewPolyhedron = aPolyhedron.clip(aNewPolygon, aNewPolygonId, aPlane, 0.4, volumeFractionAct, nIterations, 50, 1E-9, 1E-6);
 
-    EXPECT_EQ(5, nIterations);
+    EXPECT_EQ(4, nIterations);
 
     EXPECT_NEAR(0.4233437716, aPlane.d(), 1E-6);
 

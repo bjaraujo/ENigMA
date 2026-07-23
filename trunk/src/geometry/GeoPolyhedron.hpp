@@ -54,6 +54,12 @@ namespace ENigMA
 
             void close(CGeoPolygon<Real>& aNewPolygon, const Integer aNewPolygonId, CGeoPlane<Real>& aPlane, Real const aTolerance = 0);
 
+            // Volume of the part of this convex polyhedron on the kept side of aPlane
+            // (normal().dot(p) <= d()), computed directly via tetrahedral decomposition
+            // without rebuilding any face/cap topology. Used to evaluate volume fraction
+            // candidates cheaply inside the iterative search in clip(...).
+            Real clippedVolume(CGeoPlane<Real>& aPlane, const Real aTolerance = 0);
+
             inline void calculateCentroid(bool bReCalculate = false);
             inline void calculateSurfaceArea(bool bReCalculate = false);
             inline void calculateVolume(bool bReCalculate = false);
